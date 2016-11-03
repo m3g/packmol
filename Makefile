@@ -44,64 +44,31 @@ endif
 #
 # Files required
 #
-oall = cenmass.o \
-       gencan.o \
-       pgencan.o \
-       initial.o \
-       title.o \
-       setsizes.o \
-       getinp.o \
-       strlength.o \
-       output.o \
-       checkpoint.o \
-       writesuccess.o \
-       fparc.o \
-       gparc.o \
-       gwalls.o \
-       comprest.o \
-       comparegrad.o \
-       packmol.o \
-       polartocart.o \
-       resetboxes.o \
-       tobar.o \
-       setibox.o \
-       restmol.o \
-       swaptype.o \
-       swaptypemod.o \
-       ahestetic.o \
-       heuristics.o \
-       flashsort.o \
-       jacobi.o \
-       random.o \
-       sizes.o \
-       usegencan.o \
-       compute_data.o \
-       flashmod.o \
-       computef.o \
-       computeg.o \
-       input.o
-#
-# Linking 
-#
-all : $(oall)
+# source files and objects
+SRC_FILES=$(wildcard *.f*)
+OBJ_FILES=$(patsubst %.f90, %.o, $(wildcard *.f90)) \
+          $(patsubst %.f,   %.o, $(wildcard *.f))
+
+
+## all       : Linking 
+all : $(OBJ_FILES)
 	@echo " ------------------------------------------------------ " 
 	@echo " Compiling packmol with $(FORTRAN) " 
 	@echo " Flags: $(FLAGS) " 
 	@echo " ------------------------------------------------------ " 
-	@$(FORTRAN) -o packmol $(oall) $(FLAGS) 
+	@$(FORTRAN) -o packmol $(OBJ_FILES) $(FLAGS) 
 	@\rm -f *.mod *.o
 	@echo " ------------------------------------------------------ " 
 	@echo " Packmol succesfully built." 
 	@echo " ------------------------------------------------------ " 
-#
-# Compiling with flags for development
-#
-devel : $(oall)
+
+## devel     : Compiling with flags for development
+devel : $(OBJ_FILES)
 	@echo " ------------------------------------------------------ " 
 	@echo " Compiling packmol with $(FORTRAN) " 
 	@echo " Flags: $(FLAGS)"
 	@echo " ------------------------------------------------------ "
-	@$(FORTRAN) -o packmol $(oall) $(FLAGS)
+	@$(FORTRAN) -o packmol $(OBJ_FILES) $(FLAGS)
 	@echo " ------------------------------------------------------ " 
 	@echo " Packmol succesfully built. " 
 	@echo " ------------------------------------------------------ " 
@@ -184,13 +151,21 @@ computef.o : computef.f90 $(modules)
 	@$(FORTRAN) $(FLAGS) -c computef.f90
 computeg.o : computeg.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c computeg.f90
-#
-# Clean build files
-#
+
+## clean     : Clean build files
 clean: 
 	@\rm -f ./*.o ./*.mod 
-#
-# Remove all build and executable files to upload to git
-#
+
+## cleanall  : Remove all build and executable files to upload to git
 cleanall:  
 	@\rm -f ./packmol ./*.o ./*.mod
+
+## variables : Print variables.
+.PHONY : variables
+variables :
+	@echo SRC_FILES: $(SRC_FILES)
+	@echo OBJ_FILES: $(OBJ_FILES)
+
+.PHONY : help
+help : Makefile
+	@sed -n 's/^## //p' $<
