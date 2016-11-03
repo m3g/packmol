@@ -77,80 +77,80 @@ devel : $(OBJ_FILES)
 #
 modules = sizes.o compute_data.o usegencan.o input.o flashmod.o swaptypemod.o ahestetic.o
 sizes.o : sizes.f90 
-	@$(FORTRAN) $(FLAGS) -c sizes.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 compute_data.o : compute_data.f90 sizes.o
-	@$(FORTRAN) $(FLAGS) -c compute_data.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 input.o : input.f90 sizes.o 
-	@$(FORTRAN) $(FLAGS) -c input.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 flashmod.o : flashmod.f90 sizes.o 
-	@$(FORTRAN) $(FLAGS) -c flashmod.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 usegencan.o : usegencan.f90 sizes.o
-	@$(FORTRAN) $(FLAGS) -c usegencan.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 swaptypemod.o : swaptypemod.f90 
-	@$(FORTRAN) $(FLAGS) -c swaptypemod.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 ahestetic.o : ahestetic.f90 
-	@$(FORTRAN) $(FLAGS) -c ahestetic.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 #
 # Code compiled only for all versions
 #
 cenmass.o : cenmass.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c cenmass.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 initial.o : initial.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c initial.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 title.o : title.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c title.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 setsizes.o : setsizes.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c setsizes.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 getinp.o : getinp.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c getinp.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 strlength.o : strlength.f90  
-	@$(FORTRAN) $(FLAGS) -c strlength.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 output.o : output.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c output.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 checkpoint.o : checkpoint.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c checkpoint.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 writesuccess.o : writesuccess.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c writesuccess.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 fparc.o : fparc.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c fparc.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 gparc.o : gparc.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c gparc.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 gwalls.o : gwalls.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c gwalls.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 comprest.o : comprest.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c comprest.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 comparegrad.o : comparegrad.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c comparegrad.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 packmol.o : packmol.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c packmol.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 polartocart.o : polartocart.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c polartocart.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 resetboxes.o : resetboxes.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c resetboxes.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 tobar.o : tobar.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c tobar.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 setibox.o : setibox.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c setibox.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 restmol.o : restmol.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c restmol.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 swaptype.o : swaptype.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c swaptype.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 heuristics.o : heuristics.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c heuristics.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 flashsort.o : flashsort.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c flashsort.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 jacobi.o : jacobi.f90
-	@$(FORTRAN) $(FLAGS) -c jacobi.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 pgencan.o : pgencan.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c pgencan.f90
-gencan.o : gencan.f
-	@$(FORTRAN) $(GENCANFLAGS) -c gencan.f 
+	@$(FORTRAN) $(FLAGS) -c $<
 random.o : random.f90 
-	@$(FORTRAN) $(FLAGS) -c random.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 computef.o : computef.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c computef.f90
+	@$(FORTRAN) $(FLAGS) -c $<
 computeg.o : computeg.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c computeg.f90
+	@$(FORTRAN) $(FLAGS) -c $<
+gencan.o : gencan.f
+	@$(FORTRAN) $(GENCANFLAGS) -c $<
 
 ## clean     : Clean build files
 clean: 
