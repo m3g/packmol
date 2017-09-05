@@ -3,12 +3,6 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
-!
 ! Subroutine initial: Subroutine that reset parameters and
 !                     builds the initial point
 !
@@ -153,6 +147,7 @@ subroutine initial(n,x)
         xcart(icart,1) = coor(idfatom,1)
         xcart(icart,2) = coor(idfatom,2)
         xcart(icart,3) = coor(idfatom,3)
+        fixedatom(icart) = .true.
       end do
     end do
   end if
@@ -175,6 +170,7 @@ subroutine initial(n,x)
         call compcart(icart,xbar,ybar,zbar,&
                       coor(idatom,1),coor(idatom,2),coor(idatom,3),&
                       v1,v2,v3)
+        fixedatom(icart) = .false.
       end do
     end do
   end do
@@ -185,21 +181,6 @@ subroutine initial(n,x)
   do i = 1, ntotat
     radmax = dmax1(radmax,2.d0*radius(i))
   end do
-
-  ! Compare analytical and finite-difference gradients
-
-  if(chkgrad) then
-    dbox = discale * radmax + 0.01d0 * radmax
-    do i = 1, 3
-      xlength = sizemax(i) - sizemin(i)
-      nb = int(xlength/dbox + 1.d0)  
-      if(nb.gt.nbp) nb = nbp
-      boxl(i) = dmax1(xlength/dfloat(nb),dbox)
-      nboxes(i) = nb
-    end do
-    call comparegrad(n,x)
-    stop
-  end if
 
   ! Performing some steps of optimization for the restrictions only
   
@@ -294,6 +275,7 @@ subroutine initial(n,x)
     if(nb.gt.nbp) nb = nbp
     boxl(i) = dmax1(xlength/dfloat(nb),dbox)
     nboxes(i) = nb
+    nb2(i) = nboxes(i) + 2
   end do
 
   ! Reseting latomfix array
@@ -302,7 +284,9 @@ subroutine initial(n,x)
     do j = 0, nbp + 1
       do k = 0, nbp + 1
         latomfix(i,j,k) = 0
+        latomfirst(i,j,k) = 0
         hasfixed(i,j,k) = .false.
+        hasfree(i,j,k) = .false.
       end do
     end do
   end do   
@@ -321,9 +305,10 @@ subroutine initial(n,x)
                      sizemin,boxl,nboxes,iboxx,iboxy,iboxz)
         latomnext(icart) = latomfix(iboxx,iboxy,iboxz)
         latomfix(iboxx,iboxy,iboxz) = icart
+        latomfirst(iboxx,iboxy,iboxz) = icart
         ibtype(icart) = iftype
         ibmol(icart) = 1
-        hasfixed(iboxx,  iboxy,  iboxz  ) = .true.
+        hasfixed(iboxx,iboxy,iboxz) = .true.
       end do
     end do
   end if
@@ -392,7 +377,12 @@ subroutine initial(n,x)
   write(*,*) ' Setting initial trial coordinates ... '
   write(*,dash2_line)
 
-  ! Setting random center of mass coordinates, withing size limits
+  if ( chkgrad ) then 
+     write(*,*) ' For checking gradient, will set avoidoverlap to false. '
+     avoidoverlap = .false. 
+  end if
+
+  ! Setting random center of mass coordinates, within size limits
 
   ilubar = 0
   do itype = 1, ntype
@@ -492,6 +482,22 @@ subroutine initial(n,x)
       ilugan = ilugan + 3
     end do
   end do
+
+  ! Compare analytical and finite-difference gradients
+
+  if(chkgrad) then
+    dbox = discale * radmax + 0.01d0 * radmax
+    do i = 1, 3
+      xlength = sizemax(i) - sizemin(i)
+      nb = int(xlength/dbox + 1.d0)  
+      if(nb.gt.nbp) nb = nbp
+      boxl(i) = dmax1(xlength/dfloat(nb),dbox)
+      nboxes(i) = nb
+      nb2(i) = nboxes(i) + 2
+    end do
+    call comparegrad(n,x)
+    stop
+  end if
 
   !
   ! Reading restart files of specific molecule types, if available

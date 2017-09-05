@@ -3,11 +3,6 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 ! Subroutine that sets the sizes of all allocatable arrays
 !
 
@@ -23,7 +18,7 @@ subroutine setsizes()
   integer :: i, ival, ilast, iline, itype
   integer :: ioerr
   integer :: strlength
-  character(len=200) :: record, word, blank
+  character(len=200) :: record, word, blank, alltospace
 
   ! Instructions on how to run packmol
 
@@ -44,6 +39,11 @@ subroutine setsizes()
   ntype = 0
   do
     read(5,"(a200)",iostat=ioerr) record
+
+    ! Replace any strange blank character by spaces
+
+    record = alltospace(record)
+
     if ( ioerr /= 0 ) exit
 
     ! Remove comments
@@ -91,6 +91,10 @@ subroutine setsizes()
   do
     read(5,"(a200)",iostat=ioerr) record
     if ( ioerr /= 0 ) exit
+
+    ! Convert all strange blank characters to spaces
+
+    record = alltospace(record)
 
     ! Remove comments
 
@@ -220,6 +224,10 @@ subroutine setsizes()
         write(*,*) ' ERROR: Error reading number of molecules of type ', itype
         stop  
       end if
+      if ( nmols(itype) < 1 ) then
+        write(*,*) ' ERROR: Number of molecules of type ', itype, ' set to less than 1 '
+        stop
+      end if
     end if
 
   end do
@@ -248,6 +256,13 @@ subroutine setsizes()
 
   nbp = int((fbins*dble(ntotat))**(1.d0/3.d0)) + 1
 
+  ! Allocate arrays depending on nbp parameter
+
+  allocate(latomfirst(0:nbp+1,0:nbp+1,0:nbp+1),&
+           latomfix(0:nbp+1,0:nbp+1,0:nbp+1),&
+           hasfree(0:nbp+1,0:nbp+1,0:nbp+1),&
+           lboxnext((nbp+2)**3))
+
   ! Checking the total number of restrictions defined
 
   i = 0
@@ -264,17 +279,17 @@ subroutine setsizes()
   maxrest = i
   mrperatom = i
 
-  ! Allocate arrays depending on ntotat, nn, nbp, maxrest and mrperatom
+  ! Allocate arrays depending on ntotat, nn, maxrest, and mrperatom
 
   allocate(nratom(ntotat),iratom(ntotat,mrperatom),ibmol(ntotat),&
            ibtype(ntotat),xcart(ntotat,3),coor(ntotat,3),&
            radius(ntotat),radius_ini(ntotat),&
            gxcar(ntotat,3),&
-           fatom(ntotat),latomnext(ntotat),&
-           fmol(ntotat),radiuswork(ntotat))
+           latomnext(ntotat),&
+           fdist_atom(ntotat), frest_atom(ntotat),&
+           fmol(ntotat),radiuswork(ntotat),&
+           fixedatom(ntotat))
   allocate(ityperest(maxrest),restpars(maxrest,9))
-  allocate(latomfirst(0:nbp+1,0:nbp+1,0:nbp+1),&
-           latomfix(0:nbp+1,0:nbp+1,0:nbp+1))
   allocate(xmol(nn))
 
   ! Allocate other arrays used for input and output data
@@ -283,7 +298,7 @@ subroutine setsizes()
            amass(ntotat),charge(ntotat),ele(ntotat))
 
   allocate(irestline(maxrest),linestrut(ntype,2),resnumbers(ntype),&
-           input_itype(ntype),changechains(ntype),&
+           input_itype(ntype),changechains(ntype),chain(ntype),&
            fixedoninput(ntype),pdbfile(ntype),name(ntype))
 
   ! Allocate vectors for flashsort

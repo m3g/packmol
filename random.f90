@@ -3,11 +3,6 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 
 !
 ! Function that returns a real random number between 0. and 1.
@@ -25,11 +20,16 @@ end function rnd
 !
 
 subroutine init_random_number(iseed)
-  integer :: i, seed(12), iseed
-  do i = 1, 12
+  integer :: size
+  integer :: i, iseed
+  integer, allocatable :: seed(:)
+  call random_seed(size=size)
+  allocate(seed(size))
+  do i = 1, size
     seed(i) = i*iseed
   end do
   call random_seed(put=seed)
+  deallocate(seed)
   return
 end subroutine init_random_number
 

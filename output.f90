@@ -3,11 +3,6 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!
 ! Subroutine output: Subroutine that writes the output file
 !
 
@@ -20,7 +15,7 @@ subroutine output(n,x)
   implicit none
   integer :: n, k, i, ilugan, ilubar, itype, imol, idatom,&
              irest, iimol, ichain, iatom, irec, ilres, ifres,&
-             iires, iconn, charl, irescount,&
+             iires, strlength, irescount,&
              icart, i_ref_atom, ioerr
   integer :: nr, nres, imark  
   integer :: i_fixed, i_not_fixed
@@ -35,7 +30,7 @@ subroutine output(n,x)
   double precision :: xtemp, ytemp, ztemp
   double precision :: sxmin, symin, szmin, sxmax, symax, szmax
 
-  character :: chain, even_chain, odd_chain
+  character :: write_chain, even_chain, odd_chain
   character(len=64) :: title
   character(len=80) :: pdb_atom_line, pdb_hetatm_line, tinker_atom_line
   character(len=200) :: record
@@ -261,7 +256,7 @@ subroutine output(n,x)
           xbar = dmin1(0.999999d0,xbar)     
           ybar = dmin1(0.999999d0,ybar)     
           zbar = dmin1(0.999999d0,zbar)     
-          write(30,"( a10,tr1,7(f12.6) )") record(1:charl(record)), xbar, ybar, zbar, &
+          write(30,"( a10,tr1,7(f12.6) )") record(1:strlength(record)), xbar, ybar, zbar, &
                          q0, q1, q2, q3
           ilugan = ilugan + 3 
           ilubar = ilubar + 3 
@@ -338,7 +333,7 @@ subroutine output(n,x)
         xcm = dmin1(0.999999d0,xcm)     
         ycm = dmin1(0.999999d0,ycm)     
         zcm = dmin1(0.999999d0,zcm)     
-        write(30,"( a10,tr1,7(f12.6) )") record(1:charl(record)),&
+        write(30,"( a10,tr1,7(f12.6) )") record(1:strlength(record)),&
                        xcm, ycm, zcm, q0, q1, q2, q3
       end if
     end do
@@ -401,7 +396,7 @@ subroutine output(n,x)
             if ( ioerr /= 0 ) then
               record = pdbfile(i_not_fixed)
               write(*,*) ' ERROR: Failed reading residue number ',&
-                         ' from PDB file: ', record(1:charl(record))
+                         ' from PDB file: ', record(1:strlength(record))
               write(*,*) ' Residue numbers are integers that must',&
                          ' be between columns 23 and 26. '
               write(*,*) ' Other characters within these columns',&
@@ -430,19 +425,23 @@ subroutine output(n,x)
             read(15,"( a80 )",iostat=ioerr) record
           end do
 
-          if(imol.eq.1.or.mod(imol,9999).eq.1) then
-            ichain = ichain + 1
-            if( changechains(i_not_fixed) ) then
-              call chainc(ichain,odd_chain)
+          if( chain(i_not_fixed) == "#" ) then
+            if(imol.eq.1.or.mod(imol,9999).eq.1) then
               ichain = ichain + 1
-              call chainc(ichain,even_chain)
-            else 
-              call chainc(ichain,even_chain)
-              odd_chain = even_chain
+              if( changechains(i_not_fixed) ) then
+                call chainc(ichain,odd_chain)
+                ichain = ichain + 1
+                call chainc(ichain,even_chain)
+              else 
+                call chainc(ichain,even_chain)
+                odd_chain = even_chain
+              end if
             end if
+            if ( mod(imol,2) == 0 ) write_chain = even_chain
+            if ( mod(imol,2) /= 0 ) write_chain = odd_chain
+          else
+            write_chain = chain(i_not_fixed)
           end if
-          if ( mod(imol,2) == 0 ) chain = even_chain
-          if ( mod(imol,2) /= 0 ) chain = odd_chain
 
           xbar = x(ilubar+1) 
           ybar = x(ilubar+2) 
@@ -497,7 +496,7 @@ subroutine output(n,x)
 
             if(record(1:4).eq.'ATOM') then
               write(30, pdb_atom_line) record(1:5), i_ref_atom,&
-                                       record(12:21), chain, iires,&
+                                       record(12:21), write_chain, iires,&
                                        record(27:27),&
                                        (xcart(icart,k), k = 1, 3),&
                                        record(55:80)
@@ -505,7 +504,7 @@ subroutine output(n,x)
 
             if(record(1:6).eq.'HETATM') then
                write(30,pdb_hetatm_line) record(1:6), i_ref_atom,&
-                                         record(12:21), chain, iires,&
+                                         record(12:21), write_chain, iires,&
                                          record(27:27),&
                                          (xcart(icart,k), k = 1, 3),&
                                          record(55:80)
@@ -534,7 +533,7 @@ subroutine output(n,x)
             if ( ioerr /= 0 ) then
               record = pdbfile(i_not_fixed)
               write(*,*) ' ERROR: Failed reading residue number ',&
-                         ' from PDB file: ', record(1:charl(record))
+                         ' from PDB file: ', record(1:strlength(record))
               write(*,*) ' Residue numbers are integers that must',&
                          ' be between columns 23 and 26. ' 
               write(*,*) ' Other characters within these columns',&
@@ -590,9 +589,15 @@ subroutine output(n,x)
             iires = mod(iimol,9999)
           end if
 
+          if ( chain(i_fixed) == "#" ) then
+            write_chain = record(22:22)
+          else
+            write_chain = chain(i_fixed)
+          end if
+
           if(record(1:4).eq.'ATOM') then
             write(30,pdb_atom_line) record(1:5), i_ref_atom,&
-                                    record(12:21), record(22:22), iires,&
+                                    record(12:21), write_chain, iires,&
                                     record(27:27),&
                                     (coor(idatom,k), k = 1, 3),&
                                     record(55:80)
@@ -600,7 +605,7 @@ subroutine output(n,x)
 
           if(record(1:6).eq.'HETATM') then
             write(30,pdb_hetatm_line) record(1:6), i_ref_atom,&
-                                      record(12:21), record(22:22), iires,&
+                                      record(12:21), write_chain, iires,&
                                       record(27:27),&
                                       (coor(idatom,k), k = 1, 3),&
                                       record(55:80)
@@ -649,30 +654,24 @@ subroutine output(n,x)
 
           call eulerrmat(beta,gama,teta,v1,v2,v3) 
 
-          iconn = icart
- 
           idatom = idfirst(i_not_fixed) - 1      
           do iatom = 1, natoms(i_not_fixed) 
-
             icart = icart + 1
             idatom = idatom + 1
-            i_ref_atom = i_ref_atom + 1
-
             call compcart(icart,xbar,ybar,zbar,&
                           coor(idatom,1),coor(idatom,2),&
                           coor(idatom,3),&
                           v1,v2,v3)    
 
-            ntcon(1) = nconnect(idatom, 1)
+            ntcon(1) = nconnect(idatom,1)
             do k = 2, maxcon(idatom)
-              ntcon(k) = nconnect(idatom, k) + iconn 
+              ntcon(k) = nconnect(idatom,k) + i_ref_atom
             end do
-  
-            write(30,tinker_atom_line) i_ref_atom,&
+            write(30,tinker_atom_line) i_ref_atom+iatom,&
                                        ele(idatom), (xcart(icart, k), k = 1, 3),&
-                                       ntcon(1),&
-                                       (ntcon(k) - natfix, k = 2, maxcon(idatom))
+                                       (ntcon(k), k = 1, maxcon(idatom))
           end do 
+          i_ref_atom = i_ref_atom + natoms(i_not_fixed)
  
           ilugan = ilugan + 3 
           ilubar = ilubar + 3 
@@ -683,21 +682,21 @@ subroutine output(n,x)
 
         i_fixed = i_fixed + 1
         idatom = idfirst(i_fixed) - 1
-
-        do iatom = 1, natoms(itype)
+        do iatom = 1, natoms(i_fixed)
           idatom = idatom + 1
-          i_ref_atom = i_ref_atom + 1
-          ntcon(1) = nconnect(iatom,1)
+          ntcon(1) = nconnect(idatom,1)
           do k = 2, maxcon(idatom)
             ntcon(k) = nconnect(idatom,k) + i_ref_atom
           end do
+          write(30,tinker_atom_line) i_ref_atom+iatom, ele(idatom),&
+                                     (coor(idatom,k), k = 1, 3),&
+                                     (ntcon(k), k = 1, maxcon(idatom))
         end do
-        write(30,tinker_atom_line) i_ref_atom, ele(idatom),&
-                                   (coor(idatom,k), k = 1, 3),&
-                                   (ntcon(k), k = 1, maxcon(idatom))
+        i_ref_atom = i_ref_atom + natoms(i_fixed)
+
       end if
+
     end do             
- 
     close(30) 
   end if   
 

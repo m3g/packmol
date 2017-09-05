@@ -2,19 +2,13 @@
 !  Written by Leandro Martínez, 2009-2011.
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
-!  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 !
 module compute_data
 
   use sizes
 
   integer :: ntotmol, ntype, natfix, ntotat
-  integer :: nboxes(3)  
+  integer :: nboxes(3), nb2(3)
 
   integer, allocatable :: nmols(:) ! (ntype)
   integer, allocatable :: natoms(:) ! (ntype)
@@ -37,13 +31,14 @@ module compute_data
   double precision, allocatable :: radius(:), radius_ini(:) ! (ntotat)
   double precision, allocatable :: gxcar(:,:) ! (ntotat,3)
   
-  double precision, allocatable :: fatom(:) ! (ntotat)
+  double precision, allocatable :: fdist_atom(:), frest_atom(:) ! (ntotat)
   double precision, allocatable :: dmax(:) ! (ntype)
   double precision, allocatable :: cmxmin(:), cmymin(:), cmzmin(:) ! (ntype)
   double precision, allocatable :: cmxmax(:), cmymax(:), cmzmax(:) ! (ntype)
 
   logical, allocatable :: constrain_rot(:,:) ! (ntype,3)
   logical, allocatable :: comptype(:) ! (ntype)
+  logical, allocatable :: fixedatom(:) ! (ntotat)
   logical :: init1, move
 
   ! For linked lists
@@ -57,5 +52,10 @@ module compute_data
   ! For restmol
   double precision, allocatable :: xmol(:) ! (nn)
   logical, allocatable :: compsafe(:) ! (ntype)
+
+  ! For boxes with atoms linked lists
+  integer :: lboxfirst
+  integer, allocatable :: lboxnext(:) ! ((nbp+2)**3)
+  logical, allocatable :: hasfree(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1) 
 
 end module compute_data

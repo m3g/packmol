@@ -3,15 +3,7 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 !-----------------------------------------------------------------------------
-!
-! Packmol: A package for building initial configurations for
-! molecular dynamics simulations, to be published, 2008.
 !
 ! http://www.ime.unicamp.br/~martinez/packmol
 !
@@ -57,14 +49,14 @@ program packmol
   integer :: i, iline, iiatom, iat, iirest, iratcount, ival
   integer :: loop
   integer :: resntemp
-  integer :: charl, ioerr
+  integer :: strlength, ioerr
       
-  double precision, allocatable :: x(:) ! (nn)
+  double precision, allocatable :: x(:), xprint(:) ! (nn)
   double precision :: v1(3),v2(3),v3(3)
   double precision :: rad, radscale
   double precision :: cmx, cmy, cmz, beta, gama, teta
   double precision :: xtemp, ytemp, ztemp
-  double precision :: fx, bestf, flast, fprint, ftype
+  double precision :: fx, bestf, flast, fprint, all_type_fx
   double precision :: fimp, fimprov
   double precision, parameter :: pi=4.d0*datan(1.d0)
 
@@ -72,10 +64,12 @@ program packmol
   
   character(len=200) :: record, restart_from_temp, restart_to_temp
   character(len=80) :: xyzfile
+  character(len=1) :: chain_tmp
 
   logical :: fixtmp
   logical :: rests
   logical :: movebadprint
+  logical :: changechains_tmp
 
   logical, allocatable :: fixed(:) ! ntype
 
@@ -89,7 +83,7 @@ program packmol
 
   ! Allocate local array
 
-  allocate(fixed(ntype),x(nn),xfull(nn))
+  allocate(fixed(ntype),x(nn),xprint(nn),xfull(nn))
 
   ! Start time computation
 
@@ -244,7 +238,7 @@ program packmol
             coor(idatom, 3) = ztemp + cmz 
           end do
           record = name(itype)
-          write(*,*) ' Molecule ',record(1:charl(record)),'(',itype,') will be fixed.' 
+          write(*,*) ' Molecule ',record(1:strlength(record)),'(',itype,') will be fixed.' 
           fixed(itype) = .true.
           if(nmols(itype).gt.1) then
             write(*,*)' ERROR: Cannot set number > 1',' for fixed molecules. '
@@ -299,6 +293,8 @@ program packmol
         if(pdb) xyzfile = pdbfile(itype)
         linesttmp1 = linestrut(itype,1)
         linesttmp2 = linestrut(itype,2)
+        changechains_tmp = changechains(itype)
+        chain_tmp = chain(itype)
         jtype = itype + 1
         if(.not.fixed(jtype)) then
           name(itype) = name(jtype)
@@ -319,6 +315,10 @@ program packmol
           natoms(jtype) = natemp
           resnumbers(itype) = resnumbers(jtype)
           resnumbers(jtype) = resntemp
+          changechains(itype) = changechains(jtype)
+          changechains(jtype) = changechains_tmp
+          chain(itype) = chain(jtype)
+          chain(jtype) = chain_tmp
           if(pdb) then
             pdbfile(itype) = pdbfile(jtype) 
             pdbfile(jtype) = xyzfile
@@ -385,7 +385,14 @@ program packmol
             iiatom = -1
             do iat = 2, maxkeywords
               read(keyword(iline,iat),*,iostat=ioerr) iiatom
-              if ( ioerr /= 0 ) exit
+              if ( ioerr /= 0 ) then
+                if ( iiatom == -1 ) then 
+                  write(*,*) ' ERROR: Could not read atom selection for type: ', itype
+                  stop
+                else
+                  exit
+                end if
+              end if
               if ( iiatom > natoms(itype) ) then
                 write(*,*) ' ERROR: atom selection with index greater than number of '
                 write(*,*) '        atoms in structure ', itype
@@ -497,10 +504,10 @@ program packmol
   if(n.eq.0) then
     call output(n,x)
     write(*,dash1_line)
-    write(*,*) ' There are only fixed molecules, therefore '
-    write(*,*) ' there is nothing to do. '
-    write(*,*) ' The output file contains the fixed molecule '
-    write(*,*) ' in the desired position. '
+    write(*,*) ' There are only fixed molecules, therefore there is nothing to do. '
+    write(*,*) ' The output file contains the fixed molecules in the desired positions. '
+    write(*,dash1_line)
+    write(*,*) ' Wrote output file: ', trim(adjustl(xyzout))
     write(*,dash1_line)
     stop
   end if
@@ -517,16 +524,15 @@ program packmol
   do i = 1, ntotat
     radius_ini(i) = radius(i)
   end do
-  call computef(n,x,fx)
-  write(*,*) ' Objective function at initial point: ', fx
-  bestf = fx
-  fprint = 1.d40
+  call computef(n,x,all_type_fx)
+  write(*,*) ' Objective function at initial point: ', all_type_fx
+  fprint = all_type_fx
 
   ! Stop if only checking the initial approximation
 
   if(check) then
     call output(n,x)
-    write(*,*) ' Wrote initial point to output file: ', xyzout(1:charl(xyzout)) 
+    write(*,*) ' Wrote initial point to output file: ', xyzout(1:strlength(xyzout)) 
     stop
   end if
 
@@ -540,7 +546,7 @@ program packmol
   main : do while(itype <= ntype)
     itype = itype + 1
  
-    ! Use larger tolerance than required to improove separation
+    ! Use larger tolerance than required to improve separation
 
     radscale = discale
     do i = 1, ntotat
@@ -622,7 +628,7 @@ program packmol
 
         if(loop.eq.nloop.and.itype.eq.ntype+1) then
           write(*,*)' STOP: Maximum number of GENCAN loops achieved.'
-          call checkpoint(n,x)
+          call checkpoint(n,xprint)
           stop
         end if
 
@@ -660,10 +666,9 @@ program packmol
                   &'  Best function value before: f = ', e10.5,           /&
                   &'  Improvement from best function value: ', f8.2, ' %',/&
                   &'  Improvement from last loop: ', f8.2, ' %',          /&
-                  &'  Maximum violation of target distance: ', f12.6,/&
+                  &'  Maximum violation of target distance: ', f12.6,     /&
                   &'  Maximum violation of the constraints: ', e10.5       &
                   &)") fx, bestf, fimprov, fimp, fdist, frest
-        write(*,dash3_line)
         flast = fx
 
         !
@@ -671,6 +676,13 @@ program packmol
         !
         
         if ( itype <= ntype ) then
+
+          ! Save best function value for this packing
+
+          if ( fx < bestf ) bestf = fx
+
+          ! Check if this point is a solution
+
           call swaptype(n,x,itype,2) ! Save this type current point 
           ! If the solution was found for this type
           if( fdist < precision .and. frest < precision ) then
@@ -679,38 +691,39 @@ program packmol
             write(*,*) ' Current structure written to file: ', trim(adjustl(xyzout))
             call writesuccess(itype,fdist,frest,fx)
             exit gencanloop
-          else
-            call swaptype(n,x,itype,3) ! Restore all-molecule vectors
-            fx = 0.d0
-            do i = 1, ntype
-              call swaptype(n,x,i,1) ! Compute function value for this type
-              call computef(n,x,ftype)
-              fx = fx + ftype
-              call swaptype(n,x,itype,3) ! Restore all-molecule vectors
-            end do
-            if ( fx < bestf ) bestf = fx
-            !write(*,*) ' Type-independent function value sum: ', fx
           end if
+
+          ! Compute and report function value for all-type packing
+
+          call swaptype(n,x,itype,3) ! Restore all molecule vectors
+          call computef(n,x,all_type_fx)
+          write(*,"('  All-type function value: ', e10.5 )") all_type_fx
+
         else
+
           call computef(n,x,fx)
+          if ( fx < bestf ) bestf = fx
           ! If solution was found for all system
           if ( fdist < precision .and. frest < precision ) then
             call output(n,x)
-            write(*,*) ' Solution written to file: ', xyzout(1:charl(xyzout))
+            write(*,*) ' Solution written to file: ', xyzout(1:strlength(xyzout))
             call writesuccess(itype,fdist,frest,fx)
             write(*,*) '  Running time: ', etime(tarray) - time0,' seconds. ' 
             write(*,*)
             stop 
-          else
-            if ( fx < bestf ) bestf = fx
           end if
+
         end if
+        write(*,dash3_line)
 
         ! If this is the best structure so far
-        if( mod(loop+1,writeout) == 0 .and. fx < fprint ) then
+        if( mod(loop+1,writeout) == 0 .and. all_type_fx < fprint ) then
           call output(n,x)
           write(*,*) ' Current solution written to file: ', trim(adjustl(xyzout))
-          fprint = fx
+          fprint = all_type_fx
+          do i = 1, n
+            xprint(i) = x(i)
+          end do
 
         ! If the user required printing even bad structures
         else if ( mod(loop+1,writeout) == 0 .and. writebad ) then

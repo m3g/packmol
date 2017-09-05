@@ -2,12 +2,6 @@
 !  Written by Leandro Martínez, 2009-2011.
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
-!  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 !
 ! Subroutine getinp: subroutine that reads the input file
 !
@@ -21,7 +15,7 @@ subroutine getinp()
 
   implicit none
   integer :: i, k, ii, iarg, iline, idatom, iatom, in, lixo, irest, itype, itest,&
-             imark, charl, ioerr
+             imark, strlength, ioerr
   double precision :: clen
   character(len=200) :: record, blank
 
@@ -147,6 +141,7 @@ subroutine getinp()
              keyword(i,1) /= 'radius' .and. &
              keyword(i,1) /= 'resnumbers' .and. &
              keyword(i,1) /= 'changechains' .and. &
+             keyword(i,1) /= 'chain' .and. &
              keyword(i,1) /= 'discale' .and. &
              keyword(i,1) /= 'maxit' .and. &
              keyword(i,1) /= 'movebadrandom' .and. &
@@ -180,14 +175,14 @@ subroutine getinp()
   do iline = 1, nlines
     if(keyword(iline,1).eq.'output') then
       xyzout = keyword(iline,2)
-      xyzout = xyzout(1:charl(xyzout))
+      xyzout = xyzout(1:strlength(xyzout))
     end if
   end do
   if(xyzout(1:4) == '####') then
     write(*,*)' ERROR: Output file not (correctly?) specified. '
     stop
   end if
-  write(*,*)' Output file: ', xyzout(1:charl(xyzout))
+  write(*,*)' Output file: ', xyzout(1:strlength(xyzout))
 
   ! Reading structure files
 
@@ -197,12 +192,12 @@ subroutine getinp()
       itype = itype + 1
      
       record = keyword(iline,2)
-      write(*,*) ' Reading coordinate file: ', record(1:charl(record))
+      write(*,*) ' Reading coordinate file: ', record(1:strlength(record))
 
       ! Reading pdb input files
 
       if(pdb) then
-        name(itype) = record(1:charl(record))
+        name(itype) = record(1:strlength(record))
         record = keyword(iline,2)
         pdbfile(itype) = record(1:80)
         idfirst(itype) = 1
@@ -225,7 +220,7 @@ subroutine getinp()
             if( ioerr /= 0 ) then
               record = keyword(iline,2) 
               write(*,*) ' ERROR: Failed to read coordinates from', &
-                         ' file: ', record(1:charl(record))
+                         ' file: ', record(1:strlength(record))
               write(*,*) ' Probably the coordinates are not in', &
                          ' standard PDB file format. '
               write(*,*) ' Standard PDB format specifications', &
@@ -241,7 +236,7 @@ subroutine getinp()
             if( ioerr /= 0 ) then
               record = pdbfile(itype)
               write(*,*) ' ERROR: Failed reading residue number',&
-                         ' from PDB file: ',record(1:charl(record))
+                         ' from PDB file: ',record(1:strlength(record))
               write(*,*) ' Residue numbers are integers that',&
                          ' must be within columns 23 and 26. '
               write(*,*) ' Other characters within these columns',&
@@ -277,22 +272,32 @@ subroutine getinp()
         i = 1
         do while(record(i:i).le.' ')
           i = i + 1
+          if ( i > 200 ) exit
         end do
         iarg = i
-        do while(record(i:i).gt.' ')
-          i = i + 1
-        end do
+        if ( i < 200 ) then
+          do while(record(i:i).gt.' ')
+            i = i + 1
+            if ( i > 200 ) exit
+          end do
+        end if
         read(record(iarg:i-1),*) natoms(itype)
-        do while(record(i:i).le.' ')
-          i = i + 1
-        end do
+        if ( i < 200 ) then
+          do while(record(i:i).le.' ')
+            i = i + 1
+            if ( i > 200 ) exit
+          end do
+        end if
         iarg = i
-        do while(record(i:i).gt.' ')
-          i = i + 1
-        end do
+        if ( i < 200 ) then
+          do while(record(i:i).gt.' ')
+            i = i + 1
+            if ( i > 200 ) exit
+          end do
+        end if
         read(record(iarg:i-1),"( a200 )") name(itype)
         record = name(itype)
-        name(itype) = record(1:charl(record))
+        name(itype) = record(1:strlength(record))
         if(name(itype).lt.' ') name(itype) = 'Without_title'
         idatom = idfirst(itype) - 1
         do iatom = 1, natoms(itype)
@@ -304,19 +309,29 @@ subroutine getinp()
           i = 1
           do while(record(i:i).le.' ')
             i = i + 1
+            if ( i > 200 ) exit
           end do
           iarg = i
-          do while(record(i:i).gt.' ')
-            i = i + 1
-          end do
+          if ( i < 200 ) then
+            do while(record(i:i).gt.' ')
+              i = i + 1
+              if ( i > 200 ) exit
+            end do
+          end if
           read(record(iarg:i-1),*) in
-          do while(record(i:i).le.' ')
-            i = i + 1
-          end do
+          if ( i < 200 ) then
+            do while(record(i:i).le.' ')
+              i = i + 1
+              if ( i > 200 ) exit
+            end do
+          end if
           iarg = i
-          do while(record(i:i).gt.' ')
-            i = i + 1
-          end do
+          if ( i < 200 ) then
+            do while(record(i:i).gt.' ')
+              i = i + 1
+              if ( i > 200 ) exit
+            end do
+          end if
           read(record(iarg:i-1),*) ele(idatom)    
           read(record(i:200),*) (coor(idatom,k), k = 1, 3),&
                (nconnect(idatom, k), k = 1, maxcon(idatom))
@@ -387,7 +402,7 @@ subroutine getinp()
 
   do itype = 1, ntype
     record = name(itype)
-    write(*,*) ' Structure ', itype, ':',record(1:charl(record)),&
+    write(*,*) ' Structure ', itype, ':',record(1:strlength(record)),&
                '(',natoms(itype),' atoms)'
   end do
   if(nloop.eq.0) nloop = 200*ntype
@@ -605,16 +620,6 @@ subroutine getinp()
     end if
   end do
 
-  ! Write the number of molecules of each type 
-
-  do itype = 1, ntype
-    write(*,*) ' Number of molecules of type ', itype, ': ', nmols(itype)
-    if(pdb.and.nmols(itype).gt.9999) then
-      write(*,*) ' Warning: There will be more than 9999 molecules of type ',itype
-      write(*,*) ' They will be divided into different chains in the PDB output file. '
-    end if
-  end do
-
   ! If pdb files, get the type of residue numbering output for each
   ! molecule
 
@@ -622,6 +627,7 @@ subroutine getinp()
     do itype = 1, ntype
       resnumbers(itype) = -1
       changechains(itype) = .false.
+      chain(itype) = "#"
       do iline = 1, nlines
         if(iline.gt.linestrut(itype,1).and.&
              iline.lt.linestrut(itype,2)) then
@@ -630,6 +636,9 @@ subroutine getinp()
           end if
           if(keyword(iline,1).eq.'resnumbers') then
             read(keyword(iline,2),*) resnumbers(itype)
+          end if
+          if(keyword(iline,1).eq.'chain') then
+            read(keyword(iline,2),*) chain(itype)
           end if
         end if
       end do
@@ -644,8 +653,29 @@ subroutine getinp()
                  resnumbers(itype)
       write(*,*) ' Swap chains of molecules of structure ',&
                  itype,':', changechains(itype) 
+      if ( chain(itype) /= "#" ) then
+        write(*,*) ' Specific chain identifier set for structure ',itype,':',chain(itype)
+      end if
+      if ( chain(itype) /= "#" .and. changechains(itype) ) then
+        write(*,*) " ERROR: 'changechains' and 'chain' input parameters are not compatible "
+        write(*,*) "        for a single structure. "
+        stop
+      end if
     end do
   end if
+
+  ! Write the number of molecules of each type 
+
+  do itype = 1, ntype
+    write(*,*) ' Number of molecules of type ', itype, ': ', nmols(itype)
+    if(pdb.and.nmols(itype).gt.9999) then
+      write(*,*) ' Warning: There will be more than 9999 molecules of type ',itype
+      write(*,*) '          Residue numbering is reset after 9999. '
+      if ( chain(itype) == "#" ) then
+        write(*,*) ' Each set be will be assigned a different chain in the PDB output file. '
+      end if
+    end if
+  end do
 
   ! Checking if restart files will be used for each structure or for the whole system
 
@@ -767,7 +797,7 @@ subroutine setcon(xyzfile,idfirst)
     idatom = idatom + 1
     read(10,"( a120 )") record
     ic = 0
-    do i = 1, 120
+    do i = 1, 119
       if(record(i:i).gt.' '.and.record(i+1:i+1).le.' ') ic = ic + 1
     end do
     maxcon(idatom) = ic - 5
@@ -776,27 +806,6 @@ subroutine setcon(xyzfile,idfirst)
 
   return
 end subroutine setcon
-
-!
-! function charl: set the length of a character string
-! 
-
-function charl(file)
-
-  character(len=80) :: file
-  integer :: charl
-
-  charl = 1
-  do while(file(charl:charl).le.' ')
-    charl = charl + 1
-  end do
-  do while(file(charl:charl).gt.' ')
-    charl = charl + 1
-  end do
-  charl = charl - 1
-
-  return
-end function charl
 
 !
 ! Subroutine getkeywords: gets keywords and values from the input

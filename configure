@@ -28,10 +28,10 @@ for searchcompiler in $compilerlist; do
   compiler=`which $searchcompiler`
   if [ "$compiler" \> " " ]; then
     echo "Setting compiler to $compiler"
-    makefile=`cat Makefile.default`
-    echo "# configure generated Makefile" > Makefile
+    makefile=`cat Makefile`
+    \rm -f Makefile
     for line in $makefile; do
-      echo ${line//"FORTRAN = AUTO"/"FORTRAN = $compiler"} >> Makefile
+      echo ${line//"FORTRAN="*/"FORTRAN=$compiler"} >> Makefile
     done
     exit
   fi

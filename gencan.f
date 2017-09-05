@@ -1828,14 +1828,22 @@ C     equal to cgeps_0 and cgeps_f.
 
 C     We introduce now a linear relation between gpsupn and cgeps also.
 
-      if ( cgscre .eq. 1 ) then
-          acgeps = 2.0d0 * log10( cgepsf / cgepsi ) / 
-     +                     log10( cggpnf ** 2 / gpeucn2 )
-          bcgeps = 2.0d0 * log10( cgepsi ) - acgeps * log10( gpeucn2 )
-      else ! if ( cgscre .eq. 2 ) then
-          acgeps = log10( cgepsf / cgepsi ) / log10( cggpnf / gpsupn )
-          bcgeps = log10( cgepsi ) - acgeps * log10( gpsupn )
-      end if 
+c LM: changed to avoid error with gpsupn=0
+      if ( gpsupn .ne. 0.0d0 ) then
+         acgeps = log10( cgepsf / cgepsi ) / log10( cggpnf / gpsupn )
+         bcgeps = log10( cgepsi ) - acgeps * log10( gpsupn )
+      else
+         acgeps = 0.0d0
+         bcgeps = cgepsf
+      end if
+c      if ( cgscre .eq. 1 ) then
+c          acgeps = 2.0d0 * log10( cgepsf / cgepsi ) / 
+c     +                     log10( cggpnf ** 2 / gpeucn2 )
+c          bcgeps = 2.0d0 * log10( cgepsi ) - acgeps * log10( gpeucn2 )
+c      else ! if ( cgscre .eq. 2 ) then
+c          acgeps = log10( cgepsf / cgepsi ) / log10( cggpnf / gpsupn )
+c          bcgeps = log10( cgepsi ) - acgeps * log10( gpsupn )
+c      end if 
 
 C     And it will be used for the linear relation of cgmaxit
 
@@ -1884,7 +1892,7 @@ c          write(*,1003) iter,f,gpsupn
 C     ==================================================================
 C     Main loop
 C     ==================================================================
-
+      
  100  continue
 
 C     ==================================================================

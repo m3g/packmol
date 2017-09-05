@@ -3,11 +3,6 @@
 !  Copyright (c) 2009-2011, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
 !  
-!  This program is free software; you can redistribute it and/or
-!  modify it under the terms of the GNU General Public License
-!  as published by the Free Software Foundation; either version 2
-!  of the License, or (at your option) any later version.
-!  
 
 !
 ! Subroutine that writes the last point obtained when
@@ -23,7 +18,7 @@ subroutine checkpoint(n,x)
   use ahestetic
 
   implicit none
-  integer :: i, charl
+  integer :: i, strlength
   integer :: n
   double precision :: x(n)
   double precision :: fx
@@ -66,7 +61,7 @@ subroutine checkpoint(n,x)
   call output(n,x)
 
   write(*,*) ' The solution with the best function value was '
-  write(*,*) ' written to the output file: ', xyzout(1:charl(xyzout))
+  write(*,*) ' written to the output file: ', xyzout(1:strlength(xyzout))
   write(*,dash1_line)
   write(*,*) ' Forcing the solution to fit the constraints...'
 
@@ -84,11 +79,11 @@ subroutine checkpoint(n,x)
 
   write(*,*)
   write(*,dash1_line)
-  xyzout = xyzout(1:charl(xyzout))//'_FORCED'
+  xyzout = xyzout(1:strlength(xyzout))//'_FORCED'
   call output(n,x)
 
   write(*,*) ' The forced point was writen to the '
-  write(*,*) ' output file: ', xyzout(1:charl(xyzout)+7)
+  write(*,*) ' output file: ', xyzout(1:strlength(xyzout)+7)
   write(*,*)
   write(*,*) ' If you want that the packing procedure continues'
   write(*,*) ' for a longer time, add the following keyword '
@@ -103,7 +98,7 @@ subroutine checkpoint(n,x)
   write(*,*) ' TERMINATION WITHOUT PERFECT PACKING: '
   write(*,*) ' The output file:'
   write(*,*)
-  write(*,*) '   ',xyzout(1:charl(xyzout)-7) 
+  write(*,*) '   ',xyzout(1:strlength(xyzout)-7) 
   write(*,*)
   write(*,*) ' contains the best solution found. '
   write(*,*)
