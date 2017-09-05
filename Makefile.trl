@@ -92,66 +92,10 @@ ahestetic.o : ahestetic.f90
 #
 # Code compiled only for all versions
 #
-cenmass.o : cenmass.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-initial.o : initial.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-title.o : title.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-setsizes.o : setsizes.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-getinp.o : getinp.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-strlength.o : strlength.f90  
-	@$(FORTRAN) $(FLAGS) -c $<
-output.o : output.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-checkpoint.o : checkpoint.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-writesuccess.o : writesuccess.f90  $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-fparc.o : fparc.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-gparc.o : gparc.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-gwalls.o : gwalls.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-comprest.o : comprest.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-comparegrad.o : comparegrad.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-packmol.o : packmol.f90 $(modules)
-	@$(FORTRAN) $(FLAGS) -c $<
-polartocart.o : polartocart.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-resetboxes.o : resetboxes.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-tobar.o : tobar.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-setijk.o : setijk.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-setibox.o : setibox.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-restmol.o : restmol.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-swaptype.o : swaptype.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-heuristics.o : heuristics.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-flashsort.o : flashsort.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-jacobi.o : jacobi.f90
-	@$(FORTRAN) $(FLAGS) -c $<
-pgencan.o : pgencan.f90 $(modules)
+%.o : %.f90 $(modules)
 	@$(FORTRAN) $(FLAGS) -c $<
 gencan.o : gencan.f
 	@$(FORTRAN) $(GENCANFLAGS) -c $<
-random.o : random.f90 
-	@$(FORTRAN) $(FLAGS) -c $<
-computef.o : computef.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
-computeg.o : computeg.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $<
 
 #
 ## clean     : Clean build files
@@ -171,5 +115,5 @@ variables :
 	@echo OBJ_FILES: $(OBJ_FILES)
 
 .PHONY : help
-help : Makefile
+help : Makefile.trl
 	@sed -n 's/^## //p' $<
