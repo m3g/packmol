@@ -101,104 +101,6 @@ program packmol
      
   write(*,*) ' Total number of atoms: ', ntotat
 
-  ! Setting the vector that contains the default tolerance
-
-  do i = 1, ntotat
-    radius(i) = dism/2.d0
-  end do
-
-  ! Setting the radius defined for atoms of each molecule, 
-  ! but not atom-specific, first
-
-  icart = 0
-  do itype = 1, ntype
-    iline = linestrut(itype,1)
-    iline_atoms = 0 
-    do while( iline <= linestrut(itype,2) )
-      if ( keyword(iline,1) == "atoms" ) then
-        iline_atoms = iline
-        iline = iline + 1
-        cycle
-      end if
-      if ( keyword(iline,1) == "end" .and. &    
-           keyword(iline,2) == "atoms" ) then
-        iline_atoms = 0  
-        iline = iline + 1
-        cycle
-      end if
-      if ( iline_atoms == 0 ) then
-        if ( keyword(iline,1) == "radius" ) then
-          read(keyword(iline,2),*,iostat=ioerr) rad
-          if ( ioerr /= 0 ) then
-            write(*,*) ' ERROR: Could not read radius from keyword. '
-            stop
-          end if
-          iicart = icart
-          do imol = 1, nmols(itype)
-            do iatom = 1, natoms(itype)
-              iicart = iicart + 1
-              radius(iicart) = rad 
-            end do
-          end do
-        end if
-      end if
-      iline = iline + 1
-    end do
-    icart = icart + nmols(itype)*natoms(itype)
-  end do
- 
-  ! If some radius was defined using atom-specific definitions, overwrite
-  ! the general radius defined for the molecule
-
-  icart = 0
-  do itype = 1, ntype
-    iline = linestrut(itype,1)
-    iline_atoms = 0 
-    do while( iline <= linestrut(itype,2) )
-      if ( keyword(iline,1) == "atoms" ) then
-        iline_atoms = iline
-        iline = iline + 1
-        cycle
-      end if
-      if ( keyword(iline,1) == "end" .and. &    
-           keyword(iline,2) == "atoms" ) then
-        iline_atoms = 0  
-        iline = iline + 1
-        cycle
-      end if
-      if ( iline_atoms /= 0 ) then
-        if ( keyword(iline,1) == "radius" ) then
-          read(keyword(iline,2),*,iostat=ioerr) rad
-          if ( ioerr /= 0 ) then
-            write(*,*) ' ERROR: Could not read radius from keyword. '
-            stop
-          end if
-          ival = 2
-          do
-            read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
-            if ( ioerr /= 0 ) exit
-            if ( iat > natoms(itype) ) then
-              write(*,*) ' ERROR: atom selection with index greater than number of '
-              write(*,*) '        atoms in structure ', itype
-              stop
-            end if
-            radius(icart+iat) = rad
-            ival = ival + 1
-          end do
-        end if
-      end if
-      iline = iline + 1
-    end do
-    iicart = icart
-    icart = icart + natoms(itype)
-    do imol = 2, nmols(itype)
-      do iatom = 1, natoms(itype)
-        icart = icart + 1
-        radius(icart) = radius(iicart+iatom)
-      end do
-    end do
-  end do
-
   ! Put fixed molecules in the specified position
 
   do itype = 1, ntype
@@ -263,8 +165,8 @@ program packmol
   ntemp = 0
   do itype = 1, ntype
 
-  ! input_itype and fixedoninput vectors are used only to preserve the
-  ! order of input in the output files
+    ! input_itype and fixedoninput vectors are used only to preserve the
+    ! order of input in the output files
 
     input_itype(itype) = itype
     if(fixed(itype)) then
@@ -365,7 +267,7 @@ program packmol
 
   ! Setting the array that contains the restrictions per atom
 
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     rests = .false.
     do imol = 1, nmols(itype)
@@ -499,6 +401,104 @@ program packmol
     end do
   end do
  
+  ! Setting the vector that contains the default tolerance
+
+  do i = 1, ntotat
+    radius(i) = dism/2.d0
+  end do
+
+  ! Setting the radius defined for atoms of each molecule, 
+  ! but not atom-specific, first
+
+  icart = 0
+  do itype = 1, ntfix
+    iline = linestrut(itype,1)
+    iline_atoms = 0 
+    do while( iline <= linestrut(itype,2) )
+      if ( keyword(iline,1) == "atoms" ) then
+        iline_atoms = iline
+        iline = iline + 1
+        cycle
+      end if
+      if ( keyword(iline,1) == "end" .and. &    
+           keyword(iline,2) == "atoms" ) then
+        iline_atoms = 0  
+        iline = iline + 1
+        cycle
+      end if
+      if ( iline_atoms == 0 ) then
+        if ( keyword(iline,1) == "radius" ) then
+          read(keyword(iline,2),*,iostat=ioerr) rad
+          if ( ioerr /= 0 ) then
+            write(*,*) ' ERROR: Could not read radius from keyword. '
+            stop
+          end if
+          iicart = icart
+          do imol = 1, nmols(itype)
+            do iatom = 1, natoms(itype)
+              iicart = iicart + 1
+              radius(iicart) = rad 
+            end do
+          end do
+        end if
+      end if
+      iline = iline + 1
+    end do
+    icart = icart + nmols(itype)*natoms(itype)
+  end do
+ 
+  ! If some radius was defined using atom-specific definitions, overwrite
+  ! the general radius defined for the molecule
+
+  icart = 0
+  do itype = 1, ntfix
+    iline = linestrut(itype,1)
+    iline_atoms = 0 
+    do while( iline <= linestrut(itype,2) )
+      if ( keyword(iline,1) == "atoms" ) then
+        iline_atoms = iline
+        iline = iline + 1
+        cycle
+      end if
+      if ( keyword(iline,1) == "end" .and. &    
+           keyword(iline,2) == "atoms" ) then
+        iline_atoms = 0  
+        iline = iline + 1
+        cycle
+      end if
+      if ( iline_atoms /= 0 ) then
+        if ( keyword(iline,1) == "radius" ) then
+          read(keyword(iline,2),*,iostat=ioerr) rad
+          if ( ioerr /= 0 ) then
+            write(*,*) ' ERROR: Could not read radius from keyword. '
+            stop
+          end if
+          ival = 2
+          do
+            read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
+            if ( ioerr /= 0 ) exit
+            if ( iat > natoms(itype) ) then
+              write(*,*) ' ERROR: atom selection with index greater than number of '
+              write(*,*) '        atoms in structure ', itype
+              stop
+            end if
+            radius(icart+iat) = rad
+            ival = ival + 1
+          end do
+        end if
+      end if
+      iline = iline + 1
+    end do
+    iicart = icart
+    icart = icart + natoms(itype)
+    do imol = 2, nmols(itype)
+      do iatom = 1, natoms(itype)
+        icart = icart + 1
+        radius(icart) = radius(iicart+iatom)
+      end do
+    end do
+  end do
+
   ! If there are no variables (only fixed molecules, stop)
 
   if(n.eq.0) then
