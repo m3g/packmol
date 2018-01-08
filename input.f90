@@ -15,6 +15,7 @@ module input
   integer :: nrest
   integer :: seed
   integer :: nloop
+  integer :: nloop_all
   integer :: writeout
   integer :: ntfix
   integer :: ntcon(9) 

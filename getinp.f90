@@ -37,6 +37,7 @@ subroutine getinp()
   writeout = 10
   maxit = 20
   nloop = 0
+  nloop_all = 0
   movefrac = 0.05
   movebadrandom = .false.
   precision = 1.d-2
@@ -83,7 +84,11 @@ subroutine getinp()
     else if(keyword(i,1).eq.'nloop') then
       read(keyword(i,2),*,iostat=ioerr) nloop
       if ( ioerr /= 0 ) exit
-      write(*,*) ' User defined numer of GENCAN loops: ', nloop
+      write(*,*) ' User defined number of GENCAN loops: ', nloop
+    else if(keyword(i,1).eq.'nloop_all') then
+      read(keyword(i,2),*,iostat=ioerr) nloop_all
+      if ( ioerr /= 0 ) exit
+      write(*,*) ' User defined diferential number of GENCAN loops for All-together packing: ', nloop_all
     else if(keyword(i,1).eq.'discale') then
       read(keyword(i,2),*,iostat=ioerr) discale
       if ( ioerr /= 0 ) exit
@@ -156,6 +161,7 @@ subroutine getinp()
              keyword(i,1) /= 'restart_from' .and. &
              keyword(i,1) /= 'restart_to' .and. &
              keyword(i,1) /= 'nloop' .and. &
+             keyword(i,1) /= 'nloop_all' .and. &
              keyword(i,1) /= 'writeout' .and. &
              keyword(i,1) /= 'writebad' .and. &
              keyword(i,1) /= 'check' .and. &
@@ -410,6 +416,7 @@ subroutine getinp()
                '(',natoms(itype),' atoms)'
   end do
   if(nloop.eq.0) nloop = 200*ntype
+  if(nloop_all.eq.0) nloop_all = nloop
       
   ! Reading the restrictions that were set
 
