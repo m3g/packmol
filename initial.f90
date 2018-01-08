@@ -206,13 +206,13 @@ subroutine initial(n,x)
     i = 0
     hasbad = .true.
     call computef(n,x,fx)
-    do while( frest > precision .and. i.le. (nloop/10-1) .and. hasbad)
+    do while( frest > precision .and. i.le. (ntype+1) .and. hasbad)
       i = i + 1 
       write(*,prog1_line)
       call pgencan(n,x,fx)
       call computef(n,x,fx)
       if(frest > precision) then 
-        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',nloop/10
+        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',ntype+2
         movebadprint = .true.
         call movebad(n,x,fx,movebadprint) 
       end if
@@ -232,7 +232,7 @@ subroutine initial(n,x)
       write(*,*) '        at all. '
       write(*,*) '        Please check the spatial constraints and' 
       write(*,*) '        try again.'
-      if ( i .ge. nloop/10-1 ) then
+      if ( i .ge. ntype+1 ) then
       end if
         write(*,*) ' >The maximum number of cycles (',nloop,') was achieved.' 
         write(*,*) '  You may try increasing it with the',' nloop keyword, as in: nloop 1000 '
@@ -562,13 +562,13 @@ subroutine initial(n,x)
     i = 0
     call computef(n,x,fx)
     hasbad = .true.
-    do while( frest > precision .and. i <= (nloop/10-1) .and. hasbad)
+    do while( frest > precision .and. i <= (ntype+1) .and. hasbad)
       i = i + 1 
       write(*,prog1_line)
       call pgencan(n,x,fx)
       call computef(n,x,fx)
       if(frest > precision) then
-        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',nloop/10
+        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',ntype+2
         movebadprint = .true.
         call movebad(n,x,fx,movebadprint)
       end if

@@ -569,6 +569,7 @@ program packmol
       write(*,*) ' Packing molecules of type: ', input_itype(itype)
     else
       write(*,*) ' Packing all molecules together '
+      nloop = nloop_all
     end if
     write(*,hash3_line)
 
