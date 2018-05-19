@@ -32,7 +32,8 @@ subroutine output(n,x)
 
   character :: write_chain, even_chain, odd_chain
   character(len=64) :: title
-  character(len=80) :: pdb_atom_line, pdb_hetatm_line, tinker_atom_line
+  character(len=80) :: pdb_atom_line, pdb_hetatm_line, tinker_atom_line, format_line,&
+                       pdb_atom_line_hex, pdb_hetatm_line_hex
   character(len=200) :: record
 
   ! Job title
@@ -98,7 +99,7 @@ subroutine output(n,x)
     write(30,*) title 
     ilubar = 0 
     ilugan = ntotmol*3 
-    icart = natfix
+    icart = 0
     i_not_fixed = 0
     i_fixed = ntype
     do itype = 1, ntfix
@@ -347,9 +348,15 @@ subroutine output(n,x)
     pdb_atom_line = "( t1,a5,t7,i5,t12,a10,t22,a1,t23,&
                       &i4,t27,a1,t31,f8.3,t39,f8.3,t47,&
                       &f8.3,t55,a26 )"
+    pdb_atom_line_hex = "( t1,a5,t7,z5,t12,a10,t22,a1,t23,&
+                          &i4,t27,a1,t31,f8.3,t39,f8.3,t47,&
+                          &f8.3,t55,a26 )"
     pdb_hetatm_line = "( t1,a6,t7,i5,t12,a10,t22,a1,&
                         &t23,i4,t27,a1,t31,f8.3,t39,&
                         &f8.3,t47,f8.3,t55,a26 )"
+    pdb_hetatm_line_hex = "( t1,a6,t7,z5,t12,a10,t22,a1,&
+                            &t23,i4,t27,a1,t31,f8.3,t39,&
+                            &f8.3,t47,f8.3,t55,a26 )"
 
     open(30,file=xyzout,status='unknown') 
  
@@ -373,7 +380,7 @@ subroutine output(n,x)
       
     ilubar = 0 
     ilugan = ntotmol*3 
-    icart = natfix
+    icart = 0
     i_ref_atom = 0
     iimol = 0
     ichain = 0
@@ -419,12 +426,6 @@ subroutine output(n,x)
         mol: do imol = 1, nmols(i_not_fixed) 
           iimol = iimol + 1
 
-          rewind(15)
-          read(15,"( a80 )",iostat=ioerr) record
-          do while(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM')
-            read(15,"( a80 )",iostat=ioerr) record
-          end do
-
           if( chain(i_not_fixed) == "#" ) then
             if(imol.eq.1.or.mod(imol,9999).eq.1) then
               ichain = ichain + 1
@@ -451,10 +452,18 @@ subroutine output(n,x)
           teta = x(ilugan+3)
 
           call eulerrmat(beta,gama,teta,v1,v2,v3)
-
+           
+          rewind(15)
           idatom = idfirst(i_not_fixed) - 1     
           iatom = 0
           do while(iatom.lt.natoms(i_not_fixed))
+
+            read(15,"( a80 )",iostat=ioerr) record
+            if ( ioerr /= 0 ) exit mol
+            if(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM') then
+              cycle
+            end if
+
             iatom = iatom + 1 
             icart = icart + 1
             idatom = idatom + 1
@@ -463,18 +472,6 @@ subroutine output(n,x)
             call compcart(icart,xbar,ybar,zbar,&
                           coor(idatom,1),coor(idatom,2),&
                           coor(idatom,3),v1,v2,v3)
-
-            if(iatom.gt.1) then
-              read(15,"( a80 )",iostat=ioerr) record
-              if ( ioerr /= 0 ) exit mol
-            end if 
-            if(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM') then
-              iatom = iatom - 1
-              icart = icart - 1
-              idatom = idatom - 1
-              i_ref_atom = i_ref_atom - 1
-              cycle
-            end if
 
             ! Setting residue numbers for this molecule
 
@@ -495,19 +492,23 @@ subroutine output(n,x)
             ! Writing output line
 
             if(record(1:4).eq.'ATOM') then
-              write(30, pdb_atom_line) record(1:5), i_ref_atom,&
-                                       record(12:21), write_chain, iires,&
-                                       record(27:27),&
-                                       (xcart(icart,k), k = 1, 3),&
-                                       record(55:80)
+              format_line = pdb_atom_line
+              if ( i_ref_atom > 99999 ) format_line = pdb_atom_line_hex
+              write(30,format_line) record(1:5), i_ref_atom,&
+                                    record(12:21), write_chain, iires,&
+                                    record(27:27),&
+                                    (xcart(icart,k), k = 1, 3),&
+                                    record(55:80)
             end if
 
             if(record(1:6).eq.'HETATM') then
-               write(30,pdb_hetatm_line) record(1:6), i_ref_atom,&
-                                         record(12:21), write_chain, iires,&
-                                         record(27:27),&
-                                         (xcart(icart,k), k = 1, 3),&
-                                         record(55:80)
+              format_line = pdb_hetatm_line
+              if ( i_ref_atom > 99999 ) format_line = pdb_hetatm_line_hex
+              write(30,format_line) record(1:6), i_ref_atom,&
+                                    record(12:21), write_chain, iires,&
+                                    record(27:27),&
+                                    (xcart(icart,k), k = 1, 3),&
+                                    record(55:80)
             end if
           end do
           irescount = irescount + nres
@@ -518,6 +519,7 @@ subroutine output(n,x)
         end do mol
         close(15)
 
+      ! If fixed molecule on input:
       else
         i_fixed = i_fixed + 1
 
@@ -553,30 +555,19 @@ subroutine output(n,x)
         idatom = idfirst(i_fixed) - 1
 
         rewind(15)
-        read(15,"( a80 )",iostat=ioerr) record
-        do while(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM')
-          read(15,"( a80 )",iostat=ioerr) record
-        end do
-
         iatom = 0
         do while(iatom.lt.natoms(i_fixed))
+
+          read(15,"( a80 )",iostat=ioerr) record
+          if ( ioerr /= 0 ) exit
+          if(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM') then
+            !write(30,"( a80 )") record(1:80)
+            cycle
+          end if
+
           iatom = iatom + 1
           idatom = idatom + 1
           i_ref_atom = i_ref_atom + 1
-
-          if(iatom.gt.1) then
-            read(15,"( a80 )",iostat=ioerr) record
-            if ( ioerr /= 0 ) exit
-          end if
-
-          if(record(1:4).ne.'ATOM'.and.record(1:6).ne.'HETATM') then
-            write(30,"( a80 )") record(1:80)
-            iatom = iatom - 1
-            icart = icart - 1
-            idatom = idatom - 1
-            i_ref_atom = i_ref_atom - 1
-            cycle
-          end if    
 
           read(record(23:26),*) imark
           if(resnumbers(i_fixed).eq.0) then
@@ -633,7 +624,7 @@ subroutine output(n,x)
 
     ilubar = 0 
     ilugan = ntotmol*3 
-    icart = natfix
+    icart = 0
     i_ref_atom = 0
     i_not_fixed = 0
     i_fixed = ntype

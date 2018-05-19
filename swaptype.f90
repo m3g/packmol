@@ -11,6 +11,7 @@ subroutine swaptype(n,x,itype,action)
 
   use sizes, only : nn
   use compute_data, only : ntype, comptype, nmols, ntotmol
+  use input, only : nloop, nloop_all, nloop_type
   use swaptypemod
   use ahestetic
   implicit none
@@ -39,6 +40,7 @@ subroutine swaptype(n,x,itype,action)
     end do
     n = nmols(itype) * 6
     ntotmol = nmols(itype)
+    nloop = nloop_type(itype)
     ilubar = 0
     do i = 1, itype - 1
       ilubar = ilubar + nmols(i) * 3
@@ -75,6 +77,7 @@ subroutine swaptype(n,x,itype,action)
   if ( action == 3 ) then
     n = ntemp 
     ntotmol = ntottemp
+    nloop = nloop_all
     do i = 1, n
       x(i) = xfull(i)
     end do

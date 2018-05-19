@@ -16,7 +16,7 @@ The user must provide only the coordinates of one molecule of each type, the num
 
 The package is compatible with input files of PDB, TINKER, XYZ and MOLDY formats.
 
-See http://www.ime.unicamp.br/~martinez/packmol for more information.
+See http://m3g.iqm.unicamp.br/packmol for more information.
 
 References
 ----------

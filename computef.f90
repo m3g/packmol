@@ -39,7 +39,7 @@ subroutine computef(n,x,f)
 
   ilubar = 0 
   ilugan = ntotmol*3 
-  icart = natfix
+  icart = 0
 
   do itype = 1, ntype 
     if(.not.comptype(itype)) then

@@ -48,7 +48,7 @@ program packmol
   integer :: ntmol, n, iftype, icart, imol, iicart, iline_atoms
   integer :: i, iline, iiatom, iat, iirest, iratcount, ival
   integer :: loop
-  integer :: resntemp
+  integer :: resntemp, nloop_tmp
   integer :: strlength, ioerr
       
   double precision, allocatable :: x(:), xprint(:) ! (nn)
@@ -100,104 +100,6 @@ program packmol
   ! Writting some input data
      
   write(*,*) ' Total number of atoms: ', ntotat
-
-  ! Setting the vector that contains the default tolerance
-
-  do i = 1, ntotat
-    radius(i) = dism/2.d0
-  end do
-
-  ! Setting the radius defined for atoms of each molecule, 
-  ! but not atom-specific, first
-
-  icart = 0
-  do itype = 1, ntype
-    iline = linestrut(itype,1)
-    iline_atoms = 0 
-    do while( iline <= linestrut(itype,2) )
-      if ( keyword(iline,1) == "atoms" ) then
-        iline_atoms = iline
-        iline = iline + 1
-        cycle
-      end if
-      if ( keyword(iline,1) == "end" .and. &    
-           keyword(iline,2) == "atoms" ) then
-        iline_atoms = 0  
-        iline = iline + 1
-        cycle
-      end if
-      if ( iline_atoms == 0 ) then
-        if ( keyword(iline,1) == "radius" ) then
-          read(keyword(iline,2),*,iostat=ioerr) rad
-          if ( ioerr /= 0 ) then
-            write(*,*) ' ERROR: Could not read radius from keyword. '
-            stop
-          end if
-          iicart = icart
-          do imol = 1, nmols(itype)
-            do iatom = 1, natoms(itype)
-              iicart = iicart + 1
-              radius(iicart) = rad 
-            end do
-          end do
-        end if
-      end if
-      iline = iline + 1
-    end do
-    icart = icart + nmols(itype)*natoms(itype)
-  end do
- 
-  ! If some radius was defined using atom-specific definitions, overwrite
-  ! the general radius defined for the molecule
-
-  icart = 0
-  do itype = 1, ntype
-    iline = linestrut(itype,1)
-    iline_atoms = 0 
-    do while( iline <= linestrut(itype,2) )
-      if ( keyword(iline,1) == "atoms" ) then
-        iline_atoms = iline
-        iline = iline + 1
-        cycle
-      end if
-      if ( keyword(iline,1) == "end" .and. &    
-           keyword(iline,2) == "atoms" ) then
-        iline_atoms = 0  
-        iline = iline + 1
-        cycle
-      end if
-      if ( iline_atoms /= 0 ) then
-        if ( keyword(iline,1) == "radius" ) then
-          read(keyword(iline,2),*,iostat=ioerr) rad
-          if ( ioerr /= 0 ) then
-            write(*,*) ' ERROR: Could not read radius from keyword. '
-            stop
-          end if
-          ival = 2
-          do
-            read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
-            if ( ioerr /= 0 ) exit
-            if ( iat > natoms(itype) ) then
-              write(*,*) ' ERROR: atom selection with index greater than number of '
-              write(*,*) '        atoms in structure ', itype
-              stop
-            end if
-            radius(icart+iat) = rad
-            ival = ival + 1
-          end do
-        end if
-      end if
-      iline = iline + 1
-    end do
-    iicart = icart
-    icart = icart + natoms(itype)
-    do imol = 2, nmols(itype)
-      do iatom = 1, natoms(itype)
-        icart = icart + 1
-        radius(icart) = radius(iicart+iatom)
-      end do
-    end do
-  end do
 
   ! Put fixed molecules in the specified position
 
@@ -263,8 +165,8 @@ program packmol
   ntemp = 0
   do itype = 1, ntype
 
-  ! input_itype and fixedoninput vectors are used only to preserve the
-  ! order of input in the output files
+    ! input_itype and fixedoninput vectors are used only to preserve the
+    ! order of input in the output files
 
     input_itype(itype) = itype
     if(fixed(itype)) then
@@ -295,6 +197,7 @@ program packmol
         linesttmp2 = linestrut(itype,2)
         changechains_tmp = changechains(itype)
         chain_tmp = chain(itype)
+        nloop_tmp = nloop_type(itype)
         jtype = itype + 1
         if(.not.fixed(jtype)) then
           name(itype) = name(jtype)
@@ -319,6 +222,8 @@ program packmol
           changechains(jtype) = changechains_tmp
           chain(itype) = chain(jtype)
           chain(jtype) = chain_tmp
+          nloop_type(itype) = nloop_type(jtype)
+          nloop_type(jtype) = nloop_tmp
           if(pdb) then
             pdbfile(itype) = pdbfile(jtype) 
             pdbfile(jtype) = xyzfile
@@ -365,7 +270,7 @@ program packmol
 
   ! Setting the array that contains the restrictions per atom
 
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     rests = .false.
     do imol = 1, nmols(itype)
@@ -499,6 +404,104 @@ program packmol
     end do
   end do
  
+  ! Setting the vector that contains the default tolerance
+
+  do i = 1, ntotat
+    radius(i) = dism/2.d0
+  end do
+
+  ! Setting the radius defined for atoms of each molecule, 
+  ! but not atom-specific, first
+
+  icart = 0
+  do itype = 1, ntfix
+    iline = linestrut(itype,1)
+    iline_atoms = 0 
+    do while( iline <= linestrut(itype,2) )
+      if ( keyword(iline,1) == "atoms" ) then
+        iline_atoms = iline
+        iline = iline + 1
+        cycle
+      end if
+      if ( keyword(iline,1) == "end" .and. &    
+           keyword(iline,2) == "atoms" ) then
+        iline_atoms = 0  
+        iline = iline + 1
+        cycle
+      end if
+      if ( iline_atoms == 0 ) then
+        if ( keyword(iline,1) == "radius" ) then
+          read(keyword(iline,2),*,iostat=ioerr) rad
+          if ( ioerr /= 0 ) then
+            write(*,*) ' ERROR: Could not read radius from keyword. '
+            stop
+          end if
+          iicart = icart
+          do imol = 1, nmols(itype)
+            do iatom = 1, natoms(itype)
+              iicart = iicart + 1
+              radius(iicart) = rad 
+            end do
+          end do
+        end if
+      end if
+      iline = iline + 1
+    end do
+    icart = icart + nmols(itype)*natoms(itype)
+  end do
+ 
+  ! If some radius was defined using atom-specific definitions, overwrite
+  ! the general radius defined for the molecule
+
+  icart = 0
+  do itype = 1, ntfix
+    iline = linestrut(itype,1)
+    iline_atoms = 0 
+    do while( iline <= linestrut(itype,2) )
+      if ( keyword(iline,1) == "atoms" ) then
+        iline_atoms = iline
+        iline = iline + 1
+        cycle
+      end if
+      if ( keyword(iline,1) == "end" .and. &    
+           keyword(iline,2) == "atoms" ) then
+        iline_atoms = 0  
+        iline = iline + 1
+        cycle
+      end if
+      if ( iline_atoms /= 0 ) then
+        if ( keyword(iline,1) == "radius" ) then
+          read(keyword(iline,2),*,iostat=ioerr) rad
+          if ( ioerr /= 0 ) then
+            write(*,*) ' ERROR: Could not read radius from keyword. '
+            stop
+          end if
+          ival = 2
+          do
+            read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
+            if ( ioerr /= 0 ) exit
+            if ( iat > natoms(itype) ) then
+              write(*,*) ' ERROR: atom selection with index greater than number of '
+              write(*,*) '        atoms in structure ', itype
+              stop
+            end if
+            radius(icart+iat) = rad
+            ival = ival + 1
+          end do
+        end if
+      end if
+      iline = iline + 1
+    end do
+    iicart = icart
+    icart = icart + natoms(itype)
+    do imol = 2, nmols(itype)
+      do iatom = 1, natoms(itype)
+        icart = icart + 1
+        radius(icart) = radius(iicart+iatom)
+      end do
+    end do
+  end do
+
   ! If there are no variables (only fixed molecules, stop)
 
   if(n.eq.0) then
@@ -545,6 +548,7 @@ program packmol
   itype = 0
   main : do while(itype <= ntype)
     itype = itype + 1
+    if ( packall ) itype = ntype + 1
  
     ! Use larger tolerance than required to improve separation
 
@@ -588,17 +592,13 @@ program packmol
         write(*,*) ' Current point written to file: ', trim(adjustl(xyzout))
       end if
       call writesuccess(itype,fdist,frest,fx)
-      if ( itype == ntype + 1 ) then
-        write(*,*) '  Running time: ', etime(tarray) - time0,' seconds. ' 
-        stop 
-      end if
 
     ! Otherwise, pack the molecules
     
     else 
 
       loop = -1
-      gencanloop : do while(loop.le.nloop)
+      gencanloop : do while(loop.lt.nloop)
         loop = loop + 1
 
         ! Reseting the parameters relative to the improvement of the function
@@ -626,11 +626,6 @@ program packmol
           flast = fx
         end if
 
-        if(loop.eq.nloop.and.itype.eq.ntype+1) then
-          write(*,*)' STOP: Maximum number of GENCAN loops achieved.'
-          call checkpoint(n,xprint)
-          stop
-        end if
 
         write(*,dash3_line)
         write(*,*) ' Starting GENCAN loop: ', loop
@@ -702,15 +697,15 @@ program packmol
         else
 
           call computef(n,x,fx)
+          all_type_fx = fx
           if ( fx < bestf ) bestf = fx
           ! If solution was found for all system
           if ( fdist < precision .and. frest < precision ) then
             call output(n,x)
-            write(*,*) ' Solution written to file: ', xyzout(1:strlength(xyzout))
             call writesuccess(itype,fdist,frest,fx)
-            write(*,*) '  Running time: ', etime(tarray) - time0,' seconds. ' 
-            write(*,*)
-            stop 
+            write(*,*) ' Solution written to file: ', xyzout(1:strlength(xyzout))
+            write(*,dash3_line)
+            exit main
           end if
 
         end if
@@ -754,11 +749,25 @@ program packmol
           end if
         end if
 
+        if(loop.eq.nloop) then
+          if ( itype .eq. ntype+1 ) then
+            write(*,*)' STOP: Maximum number of GENCAN loops achieved.'
+            call checkpoint(n,xprint)
+            exit main
+          else
+            write(*,*)' Maximum number of GENCAN loops achieved.'
+          end if
+        end if
+
       end do gencanloop
 
     end if
 
   end do main
+
+  write(*,*) '  Running time: ', etime(tarray) - time0,' seconds. ' 
+  write(*,dash3_line)
+  write(*,*) 
 
 end program packmol
 

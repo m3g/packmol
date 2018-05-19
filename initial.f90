@@ -11,8 +11,9 @@ subroutine initial(n,x)
 
   use sizes
   use compute_data
-  use input, only : randini, ntfix, fix, moldy, chkgrad, nloop, avoidoverlap,&
-                    discale, precision, sidemax, restart_from, input_itype
+  use input, only : randini, ntfix, fix, moldy, chkgrad, avoidoverlap,&
+                    discale, precision, sidemax, restart_from, input_itype,&
+                    nloop0_type
   use usegencan
   use ahestetic
   implicit none
@@ -137,23 +138,9 @@ subroutine initial(n,x)
 
   ! Initialize cartesian coordinate array for the first time
 
-  if(fix) then
-    icart = 0
-    do iftype = ntype + 1, ntfix
-      idfatom = idfirst(iftype) - 1
-      do ifatom = 1, natoms(iftype)
-        idfatom = idfatom + 1
-        icart = icart + 1
-        xcart(icart,1) = coor(idfatom,1)
-        xcart(icart,2) = coor(idfatom,2)
-        xcart(icart,3) = coor(idfatom,3)
-        fixedatom(icart) = .true.
-      end do
-    end do
-  end if
   ilubar = 0
   ilugan = ntotmol*3
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     do imol = 1, nmols(itype)
       xbar = x(ilubar+1)
@@ -174,6 +161,20 @@ subroutine initial(n,x)
       end do
     end do
   end do
+  if(fix) then
+    icart = ntotat - natfix
+    do iftype = ntype + 1, ntfix
+      idfatom = idfirst(iftype) - 1
+      do ifatom = 1, natoms(iftype)
+        idfatom = idfatom + 1
+        icart = icart + 1
+        xcart(icart,1) = coor(idfatom,1)
+        xcart(icart,2) = coor(idfatom,2)
+        xcart(icart,3) = coor(idfatom,3)
+        fixedatom(icart) = .true.
+      end do
+    end do
+  end if
 
   ! Use the largest radius as the reference for binning the box
 
@@ -206,13 +207,13 @@ subroutine initial(n,x)
     i = 0
     hasbad = .true.
     call computef(n,x,fx)
-    do while( frest > precision .and. i.le. (nloop/10-1) .and. hasbad)
+    do while( frest > precision .and. i.le. nloop0_type(itype)-1 .and. hasbad)
       i = i + 1 
       write(*,prog1_line)
       call pgencan(n,x,fx)
       call computef(n,x,fx)
       if(frest > precision) then 
-        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',nloop/10
+        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ', nloop0_type(itype)
         movebadprint = .true.
         call movebad(n,x,fx,movebadprint) 
       end if
@@ -232,10 +233,10 @@ subroutine initial(n,x)
       write(*,*) '        at all. '
       write(*,*) '        Please check the spatial constraints and' 
       write(*,*) '        try again.'
-      if ( i .ge. nloop/10-1 ) then
+      if ( i .ge. nloop0_type(itype)-1 ) then
       end if
-        write(*,*) ' >The maximum number of cycles (',nloop,') was achieved.' 
-        write(*,*) '  You may try increasing it with the',' nloop keyword, as in: nloop 1000 '
+        write(*,*) ' >The maximum number of cycles (',nloop0_type(itype),') was achieved.' 
+        write(*,*) '  You may try increasing it with the',' nloop0 keyword, as in: nloop0 1000 '
       stop
     end if
   end do
@@ -295,7 +296,7 @@ subroutine initial(n,x)
 
   write(*,*) ' Add fixed molecules to permanent arrays... '
   if(fix) then
-    icart = 0
+    icart = ntotat - natfix
     do iftype = ntype + 1, ntfix
       idfatom = idfirst(iftype) - 1
       do ifatom = 1, natoms(iftype)
@@ -325,7 +326,7 @@ subroutine initial(n,x)
     cmzmax(itype) = -1.d20
   end do
 
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     do imol = 1, nmols(itype)
       cmx = 0.d0
@@ -562,13 +563,13 @@ subroutine initial(n,x)
     i = 0
     call computef(n,x,fx)
     hasbad = .true.
-    do while( frest > precision .and. i <= (nloop/10-1) .and. hasbad)
+    do while( frest > precision .and. i <= nloop0_type(itype)-1 .and. hasbad)
       i = i + 1 
       write(*,prog1_line)
       call pgencan(n,x,fx)
       call computef(n,x,fx)
       if(frest > precision) then
-        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ',nloop/10
+        write(*,"( a,i6,a,i6 )")'  Fixing bad orientations ... ', i,' of ', nloop0_type(itype)
         movebadprint = .true.
         call movebad(n,x,fx,movebadprint)
       end if

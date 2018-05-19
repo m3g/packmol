@@ -26,7 +26,7 @@ subroutine movebad(n,x,fx,movebadprint)
 
   if(movebadprint) write(*,*) ' Moving worst molecules ... ' 
 
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     if(.not.comptype(itype)) then
       icart = icart + nmols(itype)*natoms(itype)
@@ -53,7 +53,7 @@ subroutine movebad(n,x,fx,movebadprint)
   ! Moving the worst molecules
 
   hasbad = .false. 
-  icart = natfix
+  icart = 0
   do itype = 1, ntype
     if(.not.comptype(itype)) then
       icart = icart + nmols(itype)*natoms(itype)

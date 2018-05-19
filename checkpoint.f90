@@ -95,7 +95,7 @@ subroutine checkpoint(n,x)
   write(*,*)
 
   write(*,hash1_line) 
-  write(*,*) ' TERMINATION WITHOUT PERFECT PACKING: '
+  write(*,*) ' ENDED WITHOUT PERFECT PACKING: '
   write(*,*) ' The output file:'
   write(*,*)
   write(*,*) '   ',xyzout(1:strlength(xyzout)-7) 

@@ -47,7 +47,7 @@ subroutine computeg(n,x,g)
  
   ilubar = 0 
   ilugan = ntotmol*3 
-  icart = natfix
+  icart = 0
 
   do itype = 1, ntype 
 
@@ -211,7 +211,7 @@ subroutine computeg(n,x,g)
   k1 = 0 
   k2 = ntotmol * 3 
 
-  icart = natfix 
+  icart = 0
   do itype = 1, ntype 
 
     if(.not.comptype(itype)) then

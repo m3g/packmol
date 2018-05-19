@@ -15,9 +15,10 @@ subroutine getinp()
 
   implicit none
   integer :: i, k, ii, iarg, iline, idatom, iatom, in, lixo, irest, itype, itest,&
-             imark, strlength, ioerr
+             imark, strlength, ioerr, nloop0
   double precision :: clen
   character(len=200) :: record, blank
+  logical :: inside_structure
 
   ! Clearing the blank character arrays
 
@@ -37,6 +38,7 @@ subroutine getinp()
   writeout = 10
   maxit = 20
   nloop = 0
+  nloop0 = 0
   movefrac = 0.05
   movebadrandom = .false.
   precision = 1.d-2
@@ -47,7 +49,16 @@ subroutine getinp()
   sidemax = 1000.d0
   ioerr = 0
   avoidoverlap = .true.
+  packall = .false.
+
+  inside_structure = .false.
+
   do i = 1, nlines
+
+    if ( keyword(i,1).eq.'structure') inside_structure = .true.
+    if ( keyword(i,1).eq.'end' .and. &
+         keyword(i,2).eq.'structure') inside_structure = .false.
+
     if(keyword(i,1).eq.'seed') then
       read(keyword(i,2),*,iostat=ioerr) seed
       if ( ioerr /= 0 ) exit
@@ -80,9 +91,15 @@ subroutine getinp()
       if ( ioerr /= 0 ) exit
       write(*,*) ' User defined GENCAN number of iterations: ', maxit
     else if(keyword(i,1).eq.'nloop') then
-      read(keyword(i,2),*,iostat=ioerr) nloop
-      if ( ioerr /= 0 ) exit
-      write(*,*) ' User defined numer of GENCAN loops: ', nloop
+      if( .not. inside_structure ) then
+        read(keyword(i,2),*,iostat=ioerr) nloop
+        if ( ioerr /= 0 ) exit
+      end if
+    else if(keyword(i,1).eq.'nloop0') then
+      if( .not. inside_structure ) then
+        read(keyword(i,2),*,iostat=ioerr) nloop0
+        if ( ioerr /= 0 ) exit
+      end if
     else if(keyword(i,1).eq.'discale') then
       read(keyword(i,2),*,iostat=ioerr) discale
       if ( ioerr /= 0 ) exit
@@ -106,6 +123,9 @@ subroutine getinp()
         avoidoverlap = .false.
         write(*,*) ' Will NOT avoid overlap to fixed molecules at initial point. '
       end if
+    else if(keyword(i,1).eq.'packall') then
+      packall = .true.
+      write(*,*) ' Will pack all molecule types from the beginning. '
     else if(keyword(i,1).eq.'add_box_sides') then
       add_box_sides = .true.
       write(*,*) ' Will print BOX SIDE informations. '
@@ -152,6 +172,7 @@ subroutine getinp()
              keyword(i,1) /= 'restart_from' .and. &
              keyword(i,1) /= 'restart_to' .and. &
              keyword(i,1) /= 'nloop' .and. &
+             keyword(i,1) /= 'nloop0' .and. &
              keyword(i,1) /= 'writeout' .and. &
              keyword(i,1) /= 'writebad' .and. &
              keyword(i,1) /= 'check' .and. &
@@ -405,7 +426,38 @@ subroutine getinp()
     write(*,*) ' Structure ', itype, ':',record(1:strlength(record)),&
                '(',natoms(itype),' atoms)'
   end do
-  if(nloop.eq.0) nloop = 200*ntype
+
+  ! Setting the vectors for the number of GENCAN loops 
+
+  if(nloop.eq.0) then
+    nloop_all = 200*ntype
+    nloop = nloop_all
+  else
+    nloop_all = nloop
+  end if
+  write(*,*) ' Maximum number of GENCAN loops for all molecule packing: ', nloop_all
+  do itype = 1, ntype
+    if ( nloop_type(itype) == 0 ) then
+      nloop_type(itype) = nloop_all
+    else
+      write(*,*) ' Maximum number of GENCAN loops for type: ', itype, ': ', nloop_type(itype)
+    end if
+  end do
+
+  ! nloop0 are the number of loops for the initial phase packing
+      
+  if(nloop0.eq.0) then
+    nloop0 = 20*ntype
+  else
+    write(*,*) ' Maximum number of GENCAN loops-0 for all molecule packing: ', nloop0
+  end if
+  do itype = 1, ntype
+    if ( nloop0_type(itype) == 0 ) then
+      nloop0_type(itype) = nloop0
+    else
+      write(*,*) ' Maximum number of GENCAN loops-0 for type: ', itype, ': ', nloop0_type(itype)
+    end if
+  end do
       
   ! Reading the restrictions that were set
 
