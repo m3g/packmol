@@ -18,6 +18,15 @@ The package is compatible with input files of PDB, TINKER, XYZ and MOLDY formats
 
 See http://m3g.iqm.unicamp.br/packmol for more information.
 
+Installation
+------------
+
+```bash
+./configure
+make
+sudo mv packmol /path/to/binary/dir
+```
+
 References
 ----------
 
@@ -27,6 +36,4 @@ L Martinez, R Andrade, EG Birgin, JM Martinez, Packmol: A package for building i
 
 JM Martinez, L Martinez, Packing optimization for the automated generation of complex system's initial configurations for molecular dynamics and docking. Journal of Computational Chemistry, 24, 819-825, 2003.
 (http://www3.interscience.wiley.com/journal/104086246/abstract)
-
-
 
