@@ -461,8 +461,7 @@ Other input alternative would be:
 outside sphere 2.30 3.40 4.50 8.0
 </tt><br><br>
 The <tt>outside</tt> parameter is similar to the <tt>inside</tt> parameter, but the
-equation above uses <img src=./userguide/img37.png>  instead of  <img src=./userguide/img38.png> 
-and, therefore, the
+equation above uses $\geq$ instead of $\leq$  and, therefore, the
 atoms will be placed outside the defined sphere.
 <br><br></td></tr>
 <!-- END CONSTRAINT -->
@@ -583,22 +582,13 @@ inside (or outside) cylinder
 In order to define a cylinder, it is necessary first to define a
 line oriented in space. This line is defined in <tt>Packmol</tt> by the
 parametric equation
-<br><br><center>
-<i>p</i> = (
-<i>a<sub>1</sub>&nbsp;</i>,
-<i>b<sub>1</sub>&nbsp;</i>,
-<i>c<sub>1</sub>&nbsp;</i>) + <i>t</i>&nbsp;(
-<i>a<sub>2</sub>&nbsp;</i>,
-<i>b<sub>2</sub>&nbsp;</i>,
-<i>c<sub>2</sub></i>)
-</center><br>
-where <i>t</i> is the independent parameter. The vector 
-(<i>a<sub>2</sub>&nbsp;</i>,
-<i>b<sub>2</sub>&nbsp;</i>,
-<i>c<sub>2</sub></i>)                        
-defines the
+$$
+p = (a_1, b_1, c_1) + t \times (a_2, b_2, c_2)
+$$
+where $t$ is the independent parameter. The vector 
+$(a_2, b_2, c_2)$ defines the
 direction of the line. The cylinder is therefore defined by the distance
-to this line, <i>d</i>, and a length <i>l</i>. Therefore, the usage must be:
+to this line, $d$, and a length $l$. Therefore, the usage must be:
 <br><br>
 inside cylinder 
 &nbsp;<i>a<sub>1</sub></i>  
