@@ -1,0 +1,35 @@
+#
+# Lipid double layer with water over and below
+#
+
+tolerance 2.0 
+filetype pdb
+output bilayer2.pdb
+
+structure water.pdb 
+  number 500
+  inside box -10. 0. 0. 0. 40. 40.
+end structure
+
+structure water.pdb
+  number 500
+  inside box 28. 0. 0. 38. 40. 40.
+end structure
+
+structure palmitoil.pdb 
+  number 50
+  inside box 0. 0. 0. 14. 40. 40.
+  constrain_rotation y 0.   20.
+  constrain_rotation z 180. 20.
+end structure 
+
+structure palmitoil.pdb 
+  number 50
+  inside box 14. 0. 0. 28. 40. 40.
+  constrain_rotation y 180. 20.
+  constrain_rotation z 180. 20.
+end structure 
+
+
+
+

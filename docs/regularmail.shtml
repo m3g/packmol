@@ -1,0 +1,13 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3> Regular mail </h3>
+
+Leandro Martínez<br>
+Instituto de Química<br>
+Universidade Estadual de Campinas - UNICAMP<br>
+CP 6154 13083-970 Campinas SP<br>
+Brasil<br>
+<br>
+Home-Page: <a href=http://leandro.iqm.unicamp.br>http://leandro.iqm.unicamp.br</a>
+
+<!--#include virtual="./tail.shtml" -->

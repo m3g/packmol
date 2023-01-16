@@ -1,0 +1,52 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3> Packmol citation </h3>
+<br>
+
+<b>Please cite the following reference if the Packmol package was useful:</b>
+<br><br>
+L. Mart&iacute;nez, R. Andrade, E. G. Birgin, J. M.
+Mart&iacute;nez.
+Packmol: A package for building initial configurations for molecular
+dynamics simulations. 
+<em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
+<br><br>
+Download paper: <a target=_blank_ href=./packmol2.pdf> (pdf file, 232 kb) </a>
+<br><br>
+
+<b>And please also cite the following article if mentioning the packing
+strategy of Packmol:</b>
+<br><br>
+        J. M. Mart&iacute;nez and L. Mart&iacute;nez.
+        Packing optimization for automated generation of
+        complex system's initial configurations for molecular dynamics and docking.
+        <em>Journal of Computational Chemistry</em>, 24(7):819-825, 2003.
+<br><br>
+        Download Technical Report: 
+        <a target=_blank_ href=./packmol.pdf> (pdf file, 270 kb) </a> or 
+        <a target=_blank_ href=./packmol.ps> (ps file, 623 kb) </a>
+<br><br>
+<b>Further information about the research projects being developed by our
+groups can be found at our research pages:</b>
+<br><br>
+Leandro Mart&iacute;nez - <a target="_blank"
+href=http://leandro.iqm.unicamp.br>http://leandro.iqm.unicamp.br </a>
+<br>
+Institute of Chemistry, State University of Campinas
+<br><br>
+Jos&eacute; Mario Mart&iacute;nez -
+<a target="_blank"
+href=http://www.ime.unicamp.br/~martinez>http://www.ime.unicamp.br/~martinez
+</a>
+<br>
+Institute of Mathematics, Statistics and Scientific Computation -
+University of Campinas
+<br><br>
+Ernesto G. Birgin -
+<a target="_blank"
+href=http://www.ime.usp.br/~egbirgin>http://www.ime.usp.br/~egbirgin
+</a>
+<br>
+Institute of Mathematics and Statistics - University of S&atilde;o Paulo
+
+<!--#include virtual="./tail.shtml" -->

@@ -1,0 +1,39 @@
+<!--#include virtual="./head.shtml" -->
+
+<table class="tabnoborder">
+  <tr>
+    <td valign=top class="tdclean">
+
+<b>PACKMOL</b> creates an initial point for molecular dynamics
+simulations by packing molecules in defined regions of space. The
+packing guarantees that short range repulsive interactions do not
+disrupt the simulations.
+<br><br>
+The great variety of types of spatial constraints that can be attributed
+to the molecules, or atoms within the molecules, makes it easy to create
+ordered systems, such as lamellar, spherical or tubular lipid layers.
+<br><br>
+
+The user must provide only the coordinates of one molecule of each type,
+the number of molecules of each type and the spatial constraints that
+each type of molecule must satisfy.
+<br><br>
+
+The package is compatible with input files of PDB, TINKER, XYZ and MOLDY
+formats. 
+
+    </td>
+    <td valign=top width=200px class="tdclean">
+      <img src=http://m3g.iqm.unicamp.br/packmol/examples/spherical.gif><br><br>
+      <img src=http://m3g.iqm.unicamp.br/packmol/examples/interface.jpg><br>
+    </td>
+  </tr>
+</table>
+
+<center>
+If you are having trouble with this page, please go to the github page 
+at <a href=http://m3g.github.io/packmol>[this link]</a>, or write to leandromartinez98@gmail.com.
+</center>
+
+
+<!--#include virtual="./tail.shtml" -->

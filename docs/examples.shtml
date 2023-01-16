@@ -1,0 +1,208 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3> Input examples </h3>
+
+Download input files for all examples at once: <br>
+tar.gz file: <a href=./examples/examples.tar.gz>examples.tar.gz</a><br>
+zip file: <a href=./examples/examples.zip>examples.zip</a><br><br>
+<i>Both clean and commented input files can be used.</i><br>
+<br>
+<i>Important: If you are using Windows or DOS and you get
+some input/output error when using these files, open each
+file in the wordpad, save them as "txt" and try again.</i><br>
+<br>
+These examples were run in a VAIO NR11Z/S laptop. Times may
+vary for similar problems depending on how hard is to find 
+the packing solution.
+<br><br>
+
+<table align="center" width="80%" class="tabnoborder">
+
+<!-- EXAMPLE -->
+<tr>
+<td align="left" valign="top" class=tdinside><b>
+Simple mixture of water and urea
+</b>
+</td>
+<td align="center" class=tdinside width=200px> [Click on the Images] </td>
+</tr>
+<tr>
+<td class="tdclean0">
+<table align="left">
+<tr><td class="tdclean0"> Commented input file: </td><td class="tdclean0"> <a href="./examples/mixture-comment.inp">
+mixture-comment.inp </a> </td></tr>
+<tr><td class="tdclean0"> Clean input file: </td><td class="tdclean0"> <a href="./examples/mixture.inp">
+mixture.inp </a> </td></tr>
+<tr><td valign="top" class="tdclean0"> Molecules needed: </td> 
+      <td valign="top" class="tdclean0"> 
+      <a href="./examples/water.pdb"> water.pdb </a><br>
+      <a href="./examples/urea.pdb"> urea.pdb </a>
+    </td>
+</tr>
+<tr><td class="tdclean0"> Output file: </td> <td class="tdclean0"> <a href=./examples/mixture.pdb> mixture.pdb </a></td></tr>
+<tr><td class="tdclean0"> Running time: </td> <td class="tdclean0"> 5 seconds </td></tr>
+<tr><td class="tdclean0"> Number of atoms:</td> <td class="tdclean0"> 6200 </td></tr>
+<tr><td class="tdclean0"> Number of molecules: </td><td class="tdclean0"> 1400 </td></tr>
+<tr><td class="tdclean0"> Number of variables: </td><td class="tdclean0"> 8400 </td></tr>
+</table>
+</td>
+<td align="center" class="tdclean0">
+<a target=_blank_ href="./examples/mixture2.jpg">
+<img border="0" src="./examples/mixture.jpg">
+</a>
+</td>
+</tr>
+<!-- END EXAMPLE -->
+
+<!-- EXAMPLE -->
+<tr>
+<br>
+<td align="left" valign="top" class=tdinside colspan=2><b>
+Hormone in an interface of water and chloroform
+</b>
+</td>
+</tr>
+<tr>
+<td class="tdclean0">
+<table align="left">
+<tr><td class="tdclean0"> Commented input file: </td><td class="tdclean0"> <a href="./examples/interface-comment.inp">
+interface-comment.inp </a> </td></tr>
+<tr><td class="tdclean0"> Clean input file: </td><td class="tdclean0"> <a href="./examples/interface.inp">
+interface.inp </a> </td></tr>
+<tr><td valign="top" class="tdclean0"> Molecules needed: </td> 
+      <td valign="top" class="tdclean0"> 
+      <a href="./examples/water.xyz"> water.xyz </a><br>
+      <a href="./examples/chlor.xyz"> chlor.xyz </a><br>
+      <a href="./examples/t3.xyz"> t3.xyz </a>
+    </td>
+</tr>
+<tr><td class="tdclean0"> Output file: </td> <td class="tdclean0"> <a href=./examples/interface.xyz> interface.xyz </a></td></tr>
+<tr><td class="tdclean0"> Running time: </td> <td class="tdclean0"> 2.1 seconds </td></tr>
+<tr><td class="tdclean0"> Number of atoms:</td> <td class="tdclean0"> 4087 </td></tr>
+<tr><td class="tdclean0"> Number of molecules: </td><td class="tdclean0"> 1219 </td></tr>
+<tr><td class="tdclean0"> Number of variables: </td><td class="tdclean0"> 7308 </td></tr>
+</table>
+</td>
+<td align="center" class="tdclean0">
+<a target=_blank_ href="./examples/interface2.jpg">
+<img border="0" src="./examples/interface.jpg">
+</a>
+</td>
+</tr>
+<!-- END EXAMPLE -->
+
+<!-- EXAMPLE -->
+<tr>
+<td align="left" valign="top" class=tdinside colspan=2><b>
+Lipid bilayer with water over and below 
+</b>
+</td>
+</tr>
+<tr>
+<td class="tdclean0">
+<table align="left">
+<tr><td class="tdclean0"> Commented input file: </td><td class="tdclean0"> <a href="./examples/bilayer-comment.inp">
+bilayer-comment.inp </a> </td></tr>
+<tr><td class="tdclean0"> Clean input file: </td><td class="tdclean0"> <a href="./examples/bilayer.inp">
+bilayer.inp </a> </td></tr>
+<tr><td class="tdclean0"> Alternative input file using different constraints: </td><td class="tdclean0"> 
+<a href="./examples/bilayer2.inp"> bilayer2.inp </a> </td></tr>
+<tr><td valign="top" class="tdclean0"> Molecules needed: </td> 
+      <td valign="top" class="tdclean0"> 
+      <a href="./examples/palmitoil.pdb"> palmitoil.pdb </a><br>
+      <a href="./examples/water.pdb"> water.pdb </a>
+    </td>
+</tr>
+<tr><td class="tdclean0"> Output file: </td> <td class="tdclean0"> <a href=./examples/bilayer.pdb> bilayer.pdb </a></td></tr>
+<tr><td class="tdclean0"> Running time: </td> <td class="tdclean0"> 26 seconds </td></tr>
+<tr><td class="tdclean0"> Number of atoms:</td> <td class="tdclean0"> 7200 </td></tr>
+<tr><td class="tdclean0"> Number of molecules: </td><td class="tdclean0"> 1100 </td></tr>
+<tr><td class="tdclean0"> Number of variables: </td><td class="tdclean0"> 6600 </td></tr>
+</table>
+</td>
+<td align="center" class="tdclean0">
+<a target=_blank_ href="./examples/bilayer2.jpg"> 
+<img border="0" src="./examples/bilayer.jpg">
+</a></td>
+</tr>
+<!-- END EXAMPLE -->
+
+<!-- EXAMPLE -->
+<tr>
+<td align="left" valign="top" class=tdinside colspan=2><b>
+Double layered spherical vesicle with water inside and outside
+</b> </td>
+</tr>
+<tr>
+<td class="tdclean0">
+<table align="left">
+<tr><td class="tdclean0"> Commented input file: </td><td class="tdclean0"> <a href="./examples/spherical-comment.inp">
+spherical-comment.inp </a> </td></tr>
+<tr><td class="tdclean0"> Clean input file: </td><td class="tdclean0"> <a href="./examples/spherical.inp">
+spherical.inp </a> </td></tr>
+<tr><td valign="top" class="tdclean0"> Molecules needed: </td> 
+      <td valign="top" class="tdclean0"> 
+      <a href="./examples/palmitoil.pdb"> palmitoil.pdb </a><br>
+      <a href="./examples/water.pdb"> water.pdb </a>
+    </td>
+</tr>
+<tr><td class="tdclean0"> Output file: </td> <td class="tdclean0"> <a href=./examples/spherical.pdb> spherical.pdb </a></td></tr>
+<tr><td class="tdclean0"> Running time: </td> <td class="tdclean0"> 3 minutes </td></tr>
+<tr><td class="tdclean0"> Number of atoms:</td> <td class="tdclean0"> 69912 </td></tr>
+<tr><td class="tdclean0"> Number of molecules: </td><td class="tdclean0"> 18234 </td></tr>
+<tr><td class="tdclean0"> Number of variables: </td><td class="tdclean0"> 109404 </td></tr>
+</table>
+</td>
+<td align="center" class="tdclean0">
+<a target=_blank_ href="./examples/spherical2.jpg"> 
+<img border="0" src="./examples/spherical.gif">
+</a></td>
+</tr>
+<!-- END EXAMPLE -->
+
+<!-- EXAMPLE -->
+<tr>
+<td align="left" valign="top" class=tdinside colspan=2><b>
+4246 atom protein spherically solvated by water and ions.
+</b> </td>
+</tr>
+<tr>
+<td class="tdclean0">
+<table align="left">
+<tr><td class="tdclean0"> Commented input file: </td><td class="tdclean0"> <a href="./examples/solvprotein-comment.inp">
+solvprotein-comment.inp </a> </td></tr>
+<tr><td class="tdclean0"> Clean input file: </td><td class="tdclean0"> <a href="./examples/solvprotein.inp">
+solvprotein.inp </a> </td></tr>
+<tr><td valign="top" class="tdclean0"> Molecules needed: </td> 
+      <td valign="top" class="tdclean0"> 
+      <a href="./examples/protein.pdb"> protein.pdb </a><br>
+      <a href="./examples/water.pdb"> water.pdb </a><br>
+      <a href="./examples/CLA.pdb"> CLA.pdb </a><br>
+      <a href="./examples/SOD.pdb"> SOD.pdb </a>
+    </td>
+</tr>
+<tr><td class="tdclean0"> Output file: </td> <td class="tdclean0"> <a href=./examples/solvprotein.pdb> solvprotein.pdb </a></td></tr>
+<tr><td class="tdclean0"> Running time: </td> <td class="tdclean0"> 39 seconds </td></tr>
+<tr><td class="tdclean0"> Number of atoms:</td> <td class="tdclean0"> 53796 </td></tr>
+<tr><td class="tdclean0"> Number of molecules: </td><td class="tdclean0"> 16551 </td></tr>
+<tr><td class="tdclean0"> Number of variables: </td><td class="tdclean0"> 99300 </td></tr>
+</table>
+</td>
+<td class="tdclean0" align="center">
+<a target=_blank_ href="./examples/solvprotein2.jpg"> 
+<img border="0" src="./examples/solvprotein.jpg">
+</a><br>
+<small>Reference:
+<a
+href=http://pubs.acs.org/cgi-bin/sample.cgi/jmcmar/2006/49/i01/abs/jm050805n.html
+target=_blank_>
+<small>
+Mart&iacute;nez L., et al. J. Med. Chem. 49 (1) 23-26, 2006.
+</small></a>
+</small></td>
+</tr>
+<!-- END EXAMPLE -->
+
+</table>
+
+<!--#include virtual="./tail.shtml" -->

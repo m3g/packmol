@@ -1,0 +1,199 @@
+:root {
+  --cp1: #99b898;
+  --cp2: #fecea8;
+  --cp3: #ff847c;
+  --cp4: #e84a5f;
+  --cp5: #2a363b;
+  --cp6: #3c3f40;
+  --cp7: #666869;
+}
+.thebody {
+width: 100%;
+align: center;
+height: 5000px;
+}
+.title1 {
+background: url('../page_images/title1.png') no-repeat left;
+position: relative;
+top: 0px;
+display: block;
+left: 0px;
+height: 110px;
+}
+.title2 {
+background: url('../page_images/title2.png') repeat-x center;
+position: relative;
+top: 0px;
+display: block;
+left: 0px;
+height: 110px;
+}
+.title3 {
+background: url('../page_images/title3.png') no-repeat right;
+position: relative;
+top: 0px;
+left: 0px;
+display: block;
+height: 110px;
+}
+.download {
+position: relative;
+top: 5px;
+left: 0px;
+}
+.download_large a, .download_large a:visited {
+font: bold 12px/24px arial, helvetica, sans-aerif;
+background: white url('../page_images/download_large1.png') no-repeat;
+color: black;
+width: 110px;
+height: 50px;
+display: block;
+text-decoration: none;
+text-align: center;	
+center center;
+position: relative;
+top: 0px; 
+left: 0px;
+}
+.download_large a:hover {
+background: white url('../page_images/download_large2.png') no-repeat;
+}
+.download a, .download a:visited {
+font: bold 12px/24px arial, helvetica, sans-aerif;
+background: white url('../page_images/download1.png') no-repeat;
+color: black;
+width: 110px;
+height: 25px;
+display: block;
+text-decoration: none;
+text-align: center;	
+center center;
+position: relative;
+top: 0px; 
+left: 0px;
+}
+.download a:hover {
+background: white url('../page_images/download2.png') no-repeat;
+}
+.section {
+position: relative;
+top: 0px;
+left: 0px;
+font: bold 16px/24px arial, helvetica, sans-aerif;
+color: black;
+text-decoration: none;
+center center;
+}
+.blog {
+font: 15px/24px arial, helvetica, sans-aerif;
+position: relative; 
+color: black;
+font-family: arial;
+}
+.content {
+font: 13px/24px arial, helvetica, sans-aerif;
+position: relative; 
+color: black;
+font-family: arial;
+}
+.upbar_left {
+position: relative;
+top: 5px;
+left: 10px;
+background-image: url("../page_images/upbar-left.png");
+background-repeat: no-repeat;
+}                                                      
+.upbar_right {
+position: relative;
+top: 5px;
+left: 10px;
+background-image: url("../page_images/upbar-right.png") right;
+center: right;
+background-repeat: no-repeat;
+}                                                      
+td, th {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 1px solid var(--cp5);
+}
+.tdclean {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 20px solid white;
+vertical-align: top;
+}
+.tdclean0 {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 0px solid white;
+vertical-align: top;
+}
+.tdhead {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 20px solid white;
+vertical-align: center;
+}
+.tdmenuhead {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 1px solid var(--cp5);
+vertical-align: top;
+background-color:var(--cp1);
+}
+.tdmenucontent {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 1px solid var(--cp5);
+vertical-align: top;
+background-color:white;
+}
+.tdtopmenu {
+font: 13px/24px arial, helvetica, sans-aerif;
+border: 1px solid var(--cp5);
+vertical-align: top;
+background-color:var(--cp3);
+}
+.tdinside {
+font: 13px/24px arial, helvetica, sans-aerif;
+color:var(--cp5);
+border: 1px solid var(--cp5);
+vertical-align: top;
+background-color:var(--cp2);
+}
+table {
+border-collapse: collapse;
+border: 0;
+}
+.blackborder {
+  border: 1px solid black;
+}
+a:visited {
+font: 13px/24px arial, helvetica, sans-aerif, bold;
+text-decoration: none;
+color: var(--cp7);
+}
+a:link {
+font: 13px/24px arial, helvetica, sans-aerif, bold;
+text-decoration: none;
+color: var(--cp6);
+}
+a.menulink:visited {
+font: bold 14px/24px arial, helvetica, sans-aerif;
+color: var(--cp5);
+text-decoration: none;
+}
+a.menulink:link {
+font: bold 14px/24px arial, helvetica, sans-aerif;
+color: var(--cp5);
+text-decoration: none;
+}
+.largefont {
+font: bold 16px/24px arial, helvetica, sans-aerif;
+color: var(--cp5);
+text-decoration: none;
+}
+a.download_packmol:visited {
+font: bold 16px/24px arial, helvetica, sans-aerif;
+color: var(--cp3);
+text-decoration: none;
+}
+a.download_packmol:link {
+font: bold 16px/24px arial, helvetica, sans-aerif;
+color: var(--cp3);
+text-decoration: none;
+}

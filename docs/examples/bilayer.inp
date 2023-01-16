@@ -1,0 +1,40 @@
+#
+# Lipid double layer with water over and below
+#
+
+tolerance 2.0 
+filetype pdb
+output bilayer.pdb
+
+structure water.pdb 
+  number 500
+  inside box 0. 0. -10. 40. 40. 0.
+end structure
+
+structure water.pdb
+  number 500
+  inside box 0. 0. 28. 40. 40. 38.
+end structure
+
+structure palmitoil.pdb 
+  number 50
+  inside box 0. 0. 0. 40. 40. 14.
+  atoms 31 32
+    below plane 0. 0. 1. 2.
+  end atoms
+  atoms 1 2
+    over plane 0. 0. 1. 12.
+  end atoms
+end structure 
+
+structure palmitoil.pdb 
+  number 50
+  inside box 0. 0. 14. 40. 40. 28.
+  atoms 1 2
+    below plane 0. 0. 1. 16.
+  end atoms
+  atoms 31 32
+    over plane 0. 0. 1. 26 
+  end atoms
+end structure 
+

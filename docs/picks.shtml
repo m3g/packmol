@@ -1,0 +1,51 @@
+<script type="text/javascript">
+  <!--
+    var currentdate = 0;
+    var number = 0;
+    function Array (n) {
+             this.length = n;
+             for (var i =1; i <= n; i++) {
+                        this[i] = ' '
+                      }
+           }
+    var nn = 3
+    text = new Array(nn)
+    link = new Array(nn)
+    img = new Array(nn)
+
+    var ii = 0
+    text[ii] = "Solvation structure of complex solutes by means of minimum distance distribution functions."
+    link[ii] = "http://m3g.iqm.unicamp.br/ComplexMixtures"
+    img[ii] = "./highlights/mddf.png"
+
+    var ii = 1
+    text[ii] = "Automatic identification of mobile substructures in protein MD simulations."
+    link[ii] = "http://leandro.iqm.unicamp.br/mdlovofit/home.shtml"
+    img[ii] = "./mdlovofit.png"
+
+    var ii = 2
+    text[ii] = "PACKMOL-SIRAH Zika Virus Factory"
+    link[ii] = "https://pubs.acs.org/doi/full/10.1021/acs.jcim.0c01205"
+    img[ii] = "./highlights/packmol_sirah.png"
+
+    var rand = 1000/text.length
+    function randomhl() {
+                currentdate = new Date()
+                hl_number = currentdate.getMilliseconds()
+                hl_number = Math.floor(hl_number/rand)
+                return [ text[hl_number], link[hl_number], img[hl_number] ]
+           }
+    var hldata = randomhl()
+    document.write("<table width=100\%><tr><td class=tdmenu>")
+    document.write("<table width=100\% align=center>")
+    document.write("  <tr><td align=center valign=top class=tdmenu bgcolor=white>")
+    document.write("      <b>Research Pick:</b><br> "+hldata[0])
+    document.write("      <br><a target=_blank_ href="+hldata[1]+"> [click here] </a>")
+    document.write("      <center>")
+    document.write("        <img style=\"max-height:350px;max-width:350px;height:auto;width:auto;\" src="+hldata[2]+"><br><br>")
+    document.write("      </center>")
+    document.write("    </td></tr>")
+    document.write("</table>")
+    document.write("</td></tr></table>")
+   //-->
+</script>

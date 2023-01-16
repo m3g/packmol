@@ -1,0 +1,76 @@
+#
+# Lipid double layer with water over and below
+#
+
+# Every atom from diferent molecules will be far from each other at
+# least 2.0 Anstrons at the solution.
+
+tolerance 2.0 
+
+# Coordinate file types will be in pdb format (keyword not required for
+# pdb file format, but required for tinker, xyz or moldy).
+
+filetype pdb
+
+# The output pdb file
+
+output bilayer.pdb
+
+# Water molecules below the lipids:
+# The first three numbers are the minimum x, y, z coordinates for this
+# molecules, the last three are maximum coordinates. The box defined
+# here has 40. Angstron sides in the x and y directions, and a 10.
+# Angstron side in the z direction.
+
+structure water.pdb 
+  number 500
+  inside box 0. 0. -10. 40. 40. 0.
+end structure
+
+# Water molecules over the lipids:
+# The same as the input above, but the box of water molecules will be
+# placed in a diferent region of space.
+  
+structure water.pdb
+  number 500
+  inside box 0. 0. 28. 40. 40. 38.
+end structure
+
+# First lipid layer: the polar head is oriented to down to the water
+# molecules.
+# 50 lipids will be put inside a box of side 40. in the x and y
+# directions and 14. in the z direction (14 is a little more than that
+# length of the lipid). The atoms 31 and 32 of the pdb file of this
+# lipid, which belong to the polar head, will be constrained to be
+# below the the plane z = 2., and the atoms 1 and 2, which are the
+# hydrophobic end of the lipid will be constrained to be over the plane
+# z = 12. Therefore, all the lipids will be oriented, with their polar
+# heads pointing to the water box below. 
+ 
+structure palmitoil.pdb 
+  number 50
+  inside box 0. 0. 0. 40. 40. 14.
+  atoms 31 32
+    below plane 0. 0. 1. 2.
+  end atoms
+  atoms 1 2
+    over plane 0. 0. 1. 12.
+  end atoms
+end structure 
+
+# Second lipid layer: the polar head points up to the water molecules. 
+# The same thing as the input above, but defining a new lipid layer,
+# with the oposite orientation of the lipid molecules in such a way that
+# the polar head points to the water box that is over the lipid bilayer.
+  
+structure palmitoil.pdb 
+  number 50
+  inside box 0. 0. 14. 40. 40. 28.
+  atoms 1 2
+    below plane 0. 0. 1. 16.
+  end atoms
+  atoms 31 32
+    over plane 0. 0. 1. 26 
+  end atoms
+end structure 
+

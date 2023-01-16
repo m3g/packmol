@@ -1,0 +1,48 @@
+#
+# Thyroid hormone in an interface of water and carbon tetrachloride
+#
+
+
+# All atoms from diferent molecules will be at least 2.0 Angstroms apart
+# from each other at the solution.
+
+tolerance 2.0
+
+# The files are in the simple Molden-xyz format
+
+filetype xyz
+
+# The name of the output file.
+
+output interface.xyz
+
+# Water molecules will be inside a box that has 39 A of length in the y
+# and z directions and 20 A of length in the x direction. Waters will be
+# put in the box defined by the minimum x, y, and z coordinates -20. 0.
+# 0. and maximum x, y and z coordinates 0. 39. 39.
+
+structure water.xyz 
+  number 1019 
+  inside box -20. 0. 0. 0. 39. 39. 
+end structure
+
+# Chlorophorm molecules will be in a box that has the same length that
+# the water box in the y and z directions. However, this box starts at
+# x = 0. in such a way that there will be an interface in that plane.
+
+structure chlor.xyz 
+  number 199
+  inside box 0. 0. 0. 21. 39. 39.
+end structure
+
+# the hormone molecule will be fixed at the interface, in the center of
+# the box, rotated in such a way that it looks paralell to the
+# interface. The first three number indicate the position where the center
+# of mass of the hormone will be fixed and the last three number
+# indicate its rotation.
+                     
+structure t3.xyz 
+  centerofmass
+  fixed 0. 20. 20. 1.57 1.57 1.57
+end structure
+

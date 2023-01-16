@@ -1,0 +1,71 @@
+#
+# Double layered vesicle with water inside and outside
+#
+
+
+# All the atoms from diferent molecules will be at least 2.0 Angstrons
+# apart at the solution
+
+tolerance 2.0 
+
+# The output file name
+
+output spherical.pdb
+
+# File types are in pdb format
+
+filetype pdb
+
+# A small sphere of water molecules that will be inside the vesicle is
+# set: 308 water molecules will be put in a sphere of radius 13 centered
+# in the origin.
+ 
+structure water.pdb
+   number 308
+   inside sphere 0. 0. 0. 13.
+end structure
+
+# 90 lipids will be put arround the small water sphere. The polar head
+# of these lipids will be pointing to water (that's why atom 37 of the
+# molecule will be constrained to be inside the sphere of radius 14.),
+# while the hydrophobic end of the lipid will be pointing outwards
+# (thats why atom 5 of the lipid is constrained to be outside the sphere
+# of radius 26.)
+ 
+structure palmitoil.pdb 
+  number 90
+  atoms 37
+    inside sphere 0. 0. 0. 14. 
+  end atoms
+  atoms 5
+    outside sphere 0. 0. 0. 26.
+  end atoms
+end structure 
+
+# Now, 300 lipids will form a new larger layer. The hydrophobic end of
+# these lipids will point inward the sphere, in such a way that they
+# will be interacting with the hydrophobic part of the lipids that form
+# the smaller layer. The polar head will be pointing outward the sphere.
+
+structure palmitoil.pdb 
+  number 300
+  atoms 5
+    inside sphere 0. 0. 0. 29. 
+  end atoms
+  atoms 37
+    outside sphere 0. 0. 0. 41.
+  end atoms
+end structure 
+
+# Finally, 17536 water molecules will for the final solvation shell.
+# These molecules are put outside the sphere that contains the whole
+# system defined before (sphere of radius 43) and inside a large box
+# of side 95 Angstroms defined by the minimum coordinates x, y, z =
+# -47.5 and maximum coordinatex x, y and z = 47.5
+
+structure water.pdb
+   number 17536
+   inside box -47.5 -47.5 -47.5 47.5 47.5 47.5
+   outside sphere 0. 0. 0. 43.
+end structure
+ 

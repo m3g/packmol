@@ -1,0 +1,130 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3>Practical applications</h3>
+
+These examples are from simulations that have been performed
+by Packmol users. We encourage users to report examples for this 
+page. Send an one-line description of your system, a picture,
+your name, and work references to 
+<a href="mailto:leandromartinez98@gmail.com">
+leandromartinez98@gmail.com </a>
+and your example will be included in this list.
+<br><br>
+</td></tr>
+</table>
+<table align="center" width="80%">
+<tbody>
+
+
+<!-- End of Example -->
+
+<!-- Example -->
+<tr><td class="tdclean"><img width=150px src="./applications/luciano_costa.png"></td>
+<td align="left" valign="top" class="tdclean">
+Poly(ethylene oxide) doped with LiTFSI in contact with a Li metal surface.
+<br><br><small>
+See: M. Ebadi, L. T. Costa, C. M. Araujo, D. Brandell,
+Eletrochim. Acta 234, 43-51, 2017.
+<a target=_blank_ href=http://www.sciencedirect.com/science/article/pii/S0013468617304954>[LINK]</a>
+</small>
+</td>
+</tr>
+<!-- End of Example -->
+
+<!-- Example -->
+<tr><td class="tdclean"><img width=150px src="./applications/lipase.png"></td>
+<td align="left" valign="top" class="tdclean">
+Lipase solvated by water and carbon dioxide.
+<br><br><small>
+See: R. L. Silveira, J. Mart&iacute;nez, M. S. Skaf, L. Mart&iacute;nez,
+"Enzyme Microheterogeneous Hydration and Stabilization in Supercritical
+Carbon Dioxide" J. Phys. Chem. B 116, 5651-5678, 2012. 
+<a target=_blank_ href=http://leandro.iqm.unicamp.br/leandro/shtml/publications/2012_j_phys_chem_b.pdf>[PDF]</a>
+</small>
+</td>
+</tr>
+<!-- End of Example -->
+
+<!-- Example -->
+<tr><td class="tdclean"><img width=150px src="./applications/mandrupal.gif"></td>
+<td class="tdclean" align="left" valign="top">
+DMSO solutions for studying cryoprotection. <br>
+Courtesy of Jestin Mandumpal.
+<br><br><small>
+See: J. B. Mandunpal, C. Kreck, R. L. Mancera,
+"A molecular mechanism of solvent cryoprotection in aqueous DMSO
+solutions". Phys. Chem. Chem. Phys. 13, 3839-3842 (2011).
+</small>
+</td>
+</tr>
+<!-- End of Example -->
+
+<tr><td class="tdclean"><img width=150px src="./applications/luciano.jpg"></td>
+<td class="tdclean" align="left" valign="top">
+Polyoxyethylene with ions. <br>
+Courtesy of Luciano T. Costa
+<br><br><small>
+See: L. T. Costa, M. C. C. Ribeiro,
+"Molecular dynamics simulation of polymer electrolytes based
+on poly(ethylene oxide) and ionic liquids. I. Structural
+properties", J. Chem. Phys. 124, 184902 (2006).
+</small>
+</td>
+</tr>
+<tr><td class="tdclean"><img width=150px src="./applications/lu1.gif"> </td>
+<td class="tdclean" align="left" valign="top">
+Coumarin in an interface of water and zirconia. <br>
+Courtesy of L. R. Martins.
+<br><br>
+
+<small>See: L. R. Martins, M. S. Skaf and B. M. Ladanyi, 
+"Solvation Dynamics at the Water/Zirconia Interface: Molecular 
+Dynamics Simulations", J. Phys. Chem. B 108 (51) 19687-19697, 2004.
+</small>
+ 
+</td>
+</tr> 
+ 
+<tr><td class="tdclean"><img width=150px src="./applications/ney.gif"> </td>
+<td class="tdclean" align="left" valign="top">
+Interface of water and chloroform. <br>
+Courtesy of N. H. Moreira.
+<br><br>
+<small>
+See: N. H. Moreira and M. S. Skaf, 
+"Structural characterization of the H2O/CCl4 liquid 
+interface using molecular dynamics simulations",
+Prog. Coll. Pol. Sci. 128, p. 81, 2004.
+</small>
+</td>
+</tr>
+ 
+<tr><td class="tdclean"><img width=150px src="./applications/lu2.gif"> </td>
+
+<td class="tdclean" align="left" valign="top">
+Coumarin, water and sodium ions encapsulated in a zeolite. <br>
+Courtesy of L. R. Martins.
+
+</td>
+</tr> 
+
+<tr><td class="tdclean"><img width=150px src="./applications/milton.gif"> </td>
+<td class="tdclean" align="left" valign="top">
+
+DNA double strand solvated by water and sodium ions. <br>
+Courtesy of M. T. Sonoda.
+</td>
+</tr>
+
+<!-- Example -->
+<tr><td class="tdclean"><img width=150px src="./applications/frank.gif"></td>
+<td class="tdclean" align="left" valign="top">
+Supercritical carbon dioxide solvating caffeine. <br>
+Courtesy of F. W. Favero.
+</td>
+</tr>
+<!-- End of Example -->
+ 
+</table>
+
+<!--#include virtual="./tail.shtml" -->

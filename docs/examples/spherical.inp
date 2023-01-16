@@ -1,0 +1,38 @@
+#
+# Double layered vesicle with water inside and outside
+#
+
+tolerance 2.0 
+
+structure palmitoil.pdb 
+  number 90
+  atoms 37
+    inside sphere 0. 0. 0. 14. 
+  end atoms
+  atoms 5
+    outside sphere 0. 0. 0. 26.
+  end atoms
+end structure 
+
+structure palmitoil.pdb 
+  number 300
+  atoms 5
+    inside sphere 0. 0. 0. 29. 
+  end atoms
+  atoms 37
+    outside sphere 0. 0. 0. 41.
+  end atoms
+end structure 
+ 
+structure water.pdb
+   number 308
+   inside sphere 0. 0. 0. 13.
+end structure
+
+structure water.pdb
+   number 17536
+   inside box -47.5 -47.5 -47.5 47.5 47.5 47.5
+   outside sphere 0. 0. 0. 43.
+end structure
+ 
+output spherical.pdb

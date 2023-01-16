@@ -1,0 +1,21 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3> E-mail </h3>
+
+All questions regarding the usage of Packmol and its
+application to MD calculations should be adressed to:
+<br><br>
+<center>
+Leandro Mart&iacute;nez <br>
+<a href="mailto:leandromartinez98@gmail.com">
+leandromartinez98@gmail.com </a><br>
+<a target="_blank" href=http://leandro.iqm.unicamp.br>http://leandro.iqm.unicamp.br</a>
+</center>
+<br><br>
+For specific questions about the optimization package GENCAN
+refer to the site of the 
+<a href=http://www.ime.usp.br/~egbirgin/tango target="_blank">Tango Project</a> 
+or send mails to Jos&eacute; Mario Mart&iacute;nez
+(martinez@ime.unicamp.br) or Ernesto G. Birgin (birgin@ime.usp.br).
+
+<!--#include virtual="./tail.shtml" -->

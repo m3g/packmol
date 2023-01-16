@@ -1,0 +1,24 @@
+#
+# Thyroid hormone in an interface of water and carbon tetrachloride
+#
+
+
+tolerance 2.0
+filetype xyz
+output interface.xyz
+
+structure water.xyz 
+  number 1019 
+  inside box -20. 0. 0. 0. 39. 39. 
+end structure
+
+structure chlor.xyz 
+  number 199
+  inside box 0. 0. 0. 21. 39. 39.
+end structure
+
+structure t3.xyz 
+  centerofmass
+  fixed 0. 20. 20. 1.57 1.57 1.57
+end structure
+

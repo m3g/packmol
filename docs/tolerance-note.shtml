@@ -1,0 +1,26 @@
+<!--#include virtual="./head_note.shtml" -->
+
+<h3> A note on distance tolerances </h3>
+
+Distance tolerance (that is, the minimum distance between pairs of atoms of different
+molecules) may differ from one system to another. Particular cases that may need additional
+attention are:
+<br><br>
+&bull; Coarse-grained models: of course, since the models are not atomistic, the distance tolerance
+desired might be larger than that generally used for atomistic systems. However, this is not always
+the case, as the usual tolerance may well be large enough to guarantee a proper initial packing
+of the system. Since version 15.133 you can use different radii for different atoms, and this
+can be useful in these cases as well.
+<br><br>
+&bull; Cyclic systems: Some users have observed that with the 2.0 Angs tolerance some cyclic systems
+(toluene, for example) may eventually get linked during packing. If you observe that kind of behaviour, 
+a small increase on the distance tolerance probably will solve your problem. You can also try to
+increase the initial tolerance by using, for example, 
+<br><br><tt> discale 1.5 </tt> 
+<br><br>as an additional
+keyword. In this case, the packing will start with a 1.5 times greater tolerance, thus probably 
+avoiding overlaps, and will only progressively reduce the final tolerance to the actual
+desired value (usually 2.0 Angs).
+<!-- END SECTION -->
+
+<!--#include virtual="./tail_note.shtml" -->

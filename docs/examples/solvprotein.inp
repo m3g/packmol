@@ -1,0 +1,28 @@
+#
+# Protein solvated by water and ions
+#
+
+tolerance 2.0
+
+structure protein.pdb
+  number 1 
+  fixed 0. 0. 0. 0. 0. 0.
+  centerofmass
+end structure
+
+structure water.pdb
+  number 16500 
+  inside sphere 0. 0. 0. 50.
+end structure
+
+structure CLA.pdb
+  number 20
+  inside sphere 0. 0. 0. 50.
+end structure
+
+structure SOD.pdb
+  number 30
+  inside sphere 0. 0. 0. 50.
+end structure
+
+output solvprotein.pdb

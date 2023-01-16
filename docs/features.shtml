@@ -1,0 +1,63 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3> Features </h3>
+
+&bull; From version 15.133 on, it is possible to assign different radii to
+different atoms. 
+<br><br>
+
+&bull; The "constrain rotation" option can now constrain the angle of rotation
+of all molecules of one type, so that they their centers are randomly 
+placed in space, but the molecules have an overall common orientation. This
+can be used also to build lipid layers, for example, or maybe to build
+anisotropic liquids.<br><br>
+
+&bull; Packmol now prints the molecules in the same order that they were 
+setup in the input file. <br><br>
+
+&bull; Constraints can be applied to a part of the molecules, in
+such a way that molecules can be oriented in space. This is done by
+using the atom selection.
+<br><br>
+
+&bull; Thirteen different types of constraints allow you to build complex
+starting configurations. The molecules (or some atoms within them) can
+be placed inside or outside cubes, boxes, spheres, ellipsoids,
+cylinders, over or below planes or can be fixed in a specified position. 
+<br><br>
+
+&bull; The function is now evaluated with an algorithm that scales
+linearly with the number of atoms of the system: very large problems can
+be solved in reasonable time.
+<br><br>
+
+&bull; The powerful optimization algorithm GENCAN is now used as the
+optimization subroutine providing greater speed and reliability (see The
+TANGO Project link). 
+<br><br>
+
+&bull; The use of memory was optimized and now the only critical parameter
+is the maximum number of atoms of the system.
+<br><br>
+
+&bull; Much clearer code turns it possible for developers to change the
+package to fit their needs.
+<br><br>
+
+<h3> To-do list </h3>
+Features that users want but we didn't have the time to implement.
+<br><br>
+
+&bull; A graphical interface to VMD.
+<br><br>
+
+&bull; Use periodic boundary conditions explicitly.
+<br><br>  
+
+&bull; Constrain the distance between molecules.
+<br><br>  
+
+&bull; Triclinical boxes and periodic conditions.
+<br><br>  
+
+<!--#include virtual="./tail.shtml" -->

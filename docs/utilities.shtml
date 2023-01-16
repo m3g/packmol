@@ -1,0 +1,76 @@
+<!--#include virtual="./head.shtml" -->
+
+<h3>Helper applications</h3>
+
+Some applications that can help you to determinte the geometrical properties
+of the system, its charge, and its density.
+<br><br>
+
+<table align=center width=80%>
+
+<tr><td class=tdinside width=100%>
+<b> Volume guesser:</b> <br> 
+</td></tr><tr><td class="tdclean0">
+Given the number of molecules of
+each type, their molar mass and the desired density, 
+estimates the total volume of the system. Online. 
+<a href=nmols.shtml>[Click here]</a>
+<br><br>
+</tr></td>
+
+<tr><td class=tdinside width=100%>
+<b> solvate.tcl:</b> <br> 
+</td></tr><tr><td class="tdclean0">
+With a single command solvates a protein with water and ions in
+a rectangular box. Distributed alongside with the packmol
+package. 
+<br><br>
+</tr></td>
+
+<tr><td class=tdinside width=100%>
+<b> maxmin.tcl</b> <br> 
+</td></tr><tr><td class="tdclean0">
+Gets the maximum and minimum coordinates of the atoms
+of a PDB file (or of selected atoms). TCL script.
+<a href=./utils/maxmin.tcl>[Click here]</a>
+<br><br>
+</tr></td>
+
+<tr><td class=tdinside width=100%>
+<b> charge.tcl</b> <br> 
+</td></tr><tr><td class="tdclean0">
+Reads a PDB file and computes the total charge
+of protein molecules in it, considering standard
+protonation states. Outputs the number of charged
+residues of each type and histidines. 
+TCL script.
+<a href=./utils/charge.tcl>[Click here]</a>
+<br><br>
+</tr></td>
+
+<tr><td class=tdinside width=100%>
+<b> molarmass.tcl</b> <br> 
+</td></tr><tr><td class="tdclean0">
+Reads a PDB file and computes the molar mass of
+some selected group of atoms.
+TCL script.
+<a href=./utils/molarmass.tcl>[Click here]</a>
+<br><br>
+</tr></td>
+
+<tr><td class=tdinside width=100%>
+<b> addter.tcl</b> <br> 
+</td></tr><tr><td class="tdclean0">
+Add the "TER" word between different molecules in a file
+generated with multiple molecules. This is required by AMBER,
+so it may be useful.
+TCL script.
+<a href=./utils/addter.tcl>[Click here]</a><br>
+This can be done automatically with packmol, by adding
+the "add_amber_ter" option to the input file. 
+<br><br>
+</tr></td>
+
+</table>
+
+<!--#include virtual="./tail.shtml" -->
