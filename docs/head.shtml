@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,7 @@
   <title>Packmol - Initial configurations for Molecular Dynamics</title>
   <base href="https://m3g.github.io/packmol">
   <SCRIPT TYPE="text/javascript">
+-->
 <!--
 function popup(mylink, windowname)
 {
@@ -19,8 +21,11 @@ function popup(mylink, windowname)
   return false;
 }
 //-->
+<!--
   </SCRIPT>
 </head>
+-->
+
 <body>
 
 <br><br>
