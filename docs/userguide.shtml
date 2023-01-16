@@ -1,6 +1,7 @@
 ---
 ---
 {% include_relative head.shtml %}
+{% include_relative mathjax.html %}
 
 <h3>User guide</h3>
 <i>Important:</i> always download the latest version of Packmol
@@ -8,7 +9,7 @@ in order that all features are available.
 <br><br>
 
 <!-- START SECTION -->
-<b> Contents </b>
+<b> Contents $$ x = y^2 $$ </b>
 
 <br>
 <a href="./userguide.shtml#need">1. What do you need?</a><br>
