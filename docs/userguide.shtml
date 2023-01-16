@@ -2,8 +2,6 @@
 ---
 {% include_relative head.shtml %}
 
-<script id=”MathJax-script” async src=”https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 <h3>User guide</h3>
 <i>Important:</i> always download the latest version of Packmol
 in order that all features are available.
