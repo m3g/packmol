@@ -1,7 +1,7 @@
 ---
 ---
 {% include_relative head.shtml %}
-{% include relative usage.shtml %}
+{% include_relative usage.shtml %}
 
 <center><h3>Input options</h3></center>
 <table class="tabnoborder">
