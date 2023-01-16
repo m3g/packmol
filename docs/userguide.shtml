@@ -441,9 +441,9 @@ inside (or outside) sphere
 <tr><td class=tdclean0></td>
 <td class=tdclean0>
 Spheres are defined by equations of the general form <br><br>
-<center>
-<img src=./userguide/img31.png>
-</center>
+$$
+(x - a)^2 + (y - b)^2 + (z - c)^2 - d^2 = 0
+$$
 <br>
 and, therefore, you must provide four real parameters <i>a</i>,
 <i>b</i>, <i>c</i> and <i>d</i>  in
@@ -453,9 +453,9 @@ inside sphere 2.30 3.40 4.50 8.0
 </tt><br><br>
 and therefore the coordinates of the atoms will satisfy the equation
 <br><br>
-<center>
-<img src=./userguide/img36.png>
-</center><br>  
+$$
+(x - 2.30)^2 + (y - 3.40)^2 + (z - 4.50)^2 - 8.0^2 \leq 0.0
+$$
 Other input alternative would be:
 <br><br><tt>
 outside sphere 2.30 3.40 4.50 8.0
