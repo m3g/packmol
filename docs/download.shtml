@@ -11,7 +11,7 @@ MIT License.
 </a>
 <br><br>
 In order to keep our motivation in developing the software, we kindly
-ask that you register your download. And please cite the reference below
+ask that you to cite the reference below
 in your publications if the software was useful:   
 <br><br>
         L. Mart&iacute;nez, R. Andrade, E. G. Birgin, J. M.
@@ -20,40 +20,21 @@ Mart&iacute;nez.
 dynamics simulations.</b>
 <em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
 <br><br>
-You can also download Packmol from 
-<a href=https://github.com/m3g/packmol/releases target=_blank_>
-THIS SITE</a>
- without registering, but please give preference
-to this site, and recommend registration to people to whom you
-have passed packmol to. 
+
+Download the latest release of Packmol from the 
+<a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
+LATEST RELEASE SITE
+</a>
 <br><br>
+Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
+Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
+package.
 
-<center>
-<b>Please fill the form below:</b><br>
-(If you have downloaded Packmol before, fill the E-mail field only.) 
+Additionally, <a href="./Windows_Binaries">some Windows binaries</a> are available in this directory, if you want 
+to skip the compilation phase. Note that these binaries not always correspond to 
+the latest version of the package.
 
-<form method="post" action="/cgi-bin/packmol/packmol.php">
-  <table class=tdinside>
-    <tr align="center">
-      <td align="left" class="tdclean0"> &nbsp; Full name: </td>
-      <td align="left" class="tdclean0"> <input type="text" name="name" size="50" maxlength="350"> </td>
-    </tr>
-    <tr align="center">
-      <td align="left" class="tdclean0"> &nbsp; Institution: </td>
-      <td align="left" class="tdclean0"> <input type="text" name="institution" size="50" maxlength="350"> </td>
-    </tr>
-    <tr align="center">
-      <td align="left" class="tdclean0"> &nbsp; E-mail: </td>
-      <td align="left" class="tdclean0"> <input type="text" name="email" size="50" maxlength="350"> </td>
-    </tr>
-    <tr>
-      <td colspan="2" align="right" class="tdclean0"> <input type="submit" value="Submit"> </td>
-    </tr>
-  </table>
-</form>
-
-<br>
-<b> If you exprience any problem while downloading, please write
+<b> If you experience any problem while downloading, please write
 to leandromartinez98@gmail.com </b> <br><br>
 </center>
 <br>

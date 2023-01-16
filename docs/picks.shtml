@@ -20,7 +20,7 @@
 
     var ii = 1
     text[ii] = "Automatic identification of mobile substructures in protein MD simulations."
-    link[ii] = "http://leandro.iqm.unicamp.br/mdlovofit/home.shtml"
+    link[ii] = "http://m3g.iqm.unicamp.br/mdlovofit/home.shtml"
     img[ii] = "./mdlovofit.png"
 
     var ii = 2
