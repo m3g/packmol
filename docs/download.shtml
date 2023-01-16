@@ -22,11 +22,9 @@ dynamics simulations.</b>
 <br><br>
 
 The latest release of Packmol is available at the
-<center><h3>
-<a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
+<b><a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 LATEST RELEASE REPOSITORY
-</a>
-</h3></center>
+</a></b>
 <br><br>
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
