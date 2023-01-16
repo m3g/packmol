@@ -1,3 +1,5 @@
+---
+---
 {% include_relative head.shtml %}
 
 <h3>Registration</h3>
