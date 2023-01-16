@@ -1,5 +1,140 @@
 <!--#include virtual="./head.shtml" -->
-{% include head.shtml %}
+{% include ./head.shtml %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="https://m3g.github.io/packmol/docs/estilo.css">
+  <title>Packmol - Initial configurations for Molecular Dynamics</title>
+  <base href="https://m3g.github.io/packmol">
+  <SCRIPT TYPE="text/javascript">
+<!--
+function popup(mylink, windowname)
+{
+  if (! window.focus)return true;
+  var href;
+  if (typeof(mylink) == 'string')
+       href=mylink;
+  else
+       href=mylink.href;
+  window.open(href, windowname, 'width=650,height=600,scrollbars=yes');
+  return false;
+}
+//-->
+  </SCRIPT>
+</head>
+<body>
+
+<br><br>
+<table width=100% align=center><tr>
+    <td class="tdclean" align=center width=140px>
+    <img src=./logo200px.png width=130px>
+    </td>
+    <td class="tdclean" align=left>
+    <h1> PACKMOL </h1>
+    <h3> Initial configurations for Molecular Dynamics Simulations by packing optimization</h3>
+    <td class="tdclean" valign="top" align="right">
+      Institute of Chemistry and Institute of Mathematics <br><b>University of Campinas</b><br>
+      Institute of Mathematics and Statistics <br><b>University of São Paulo</b>
+    </td>
+</tr></table>
+
+<!-- Lateral Menu -->
+
+<table width=100% align=center>
+  <tr>
+    <td class="tdclean" valign="top">
+      <table width=140px align=center>
+        <tr>
+          <td class="tdclean0" height=0px></td>
+        </tr>
+        <tr>
+          <td class=tdmenuhead>
+            Packmol: <br>
+          </td>
+        </tr>
+        <tr>
+          <td class=tdmenucontent>
+            <a href=./download.shtml>Download</a><br>
+            <a href=./examples.shtml>Input Examples</a><br>
+            <a href=./userguide.shtml>User guide</a><br>
+            <a href=./utilities.shtml>Utilities</a><br>
+            <a href=./external.shtml>External links</a><br>
+            <a href=./applications.shtml>Applications</a><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="tdclean0" height=10px></td>
+        </tr>
+        <tr>
+          <td class=tdmenuhead>
+            Reference: <br>
+          </td>
+        </tr>
+        <tr>
+          <td class=tdmenucontent>
+            <a href=./citation.shtml>Citation</a><br>
+            <a href=./features.shtml>Features</a><br>
+            <a href=/cgi-bin/packmol/versions.php>Version history</a><br>
+            <a href=/cgi-bin/packmol/downloads.php>Download summary</a><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="tdclean0" height=10px></td>
+        </tr>
+        <tr>
+          <td class=tdmenuhead>
+            Contact: <br>
+          </td>
+        </tr>
+        <tr>
+          <td class=tdmenucontent>
+            <a href=./email.shtml>E-mail</a><br>
+            <a href=./regularmail.shtml>Regular mail</a><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="tdclean0" height=10px></td>
+        </tr>
+        <tr>
+          <td class=tdmenuhead>
+            See also: <br>
+          </td>
+        </tr>
+        <tr>
+          <td class=tdmenucontent>
+            <a target=_blank_ href=http://www.ime.usp.br/~egbirgin/tango>The TANGO project</a><br>
+            <a target=_blank_ href=http://leandro.iqm.unicamp.br/mdlovofit>MDLovoFit</a><br>
+            <a target=_blank_ href=http://www.ime.unicamp.br/~martinez/lovoalign>LovoAlign</a><br>
+            <a target=_blank_ href=http://m3g.iqm.unicamp.br>M3G Home-Page</a><br>
+            <a target=_blank_ href=http://www.ime.unicamp.br/~martinez>JM Home-Page</a><br>
+            <a target=_blank_ href=http://www.ime.usp.br/~egbirgin>EGB Home-Page</a><br>
+          </td>
+        </tr>
+      </table>
+    </td>
+
+<!-- Top content menu -->
+
+    <td class="tdclean" width=100% valign="top">
+     <table width=100% align=center>
+       <tr class=tdtopmenu>
+         <td align=center width=33%><b><a class="menulink" href=./home.shtml>Home</a></b> </td>
+         <td align=center width=33%><b><a class="menulink" href=./userguide.shtml>Usage</a></b></td>
+         <td align=center width=33%><b><a class="menulink" href=./download.shtml>Download</a></b></td>
+       </tr>
+       <tr>
+         <td class=tdmenucontent colspan=3>
+
+          <table class="tabnoborder" align=center width=100%>
+          <tr><td class="tdclean">
+
+<!-- CONTENT STARTS HERE --> 
 
 <table class="tabnoborder">
   <tr>
@@ -31,7 +166,7 @@ formats.
 
     <td align=center valign=top width=30% class="tdclean0">
 
-       {% include picks.shtml %}
+       {% include ./picks.shtml %}
        <!--#include virtual="./picks.shtml" -->
 
     </td>
@@ -39,5 +174,5 @@ formats.
   </tr>
 </table>
 
-{% include tail.shtml %}
+{% include ./tail.shtml %}
 <!--#include virtual="./tail.shtml" -->

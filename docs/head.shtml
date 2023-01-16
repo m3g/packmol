@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css" href="http://leandro.iqm.unicamp.br/m3g/packmol/estilo.css">
+  <link rel="stylesheet" type="text/css" href="https://m3g.github.io/packmol/docs/estilo.css">
   <title>Packmol - Initial configurations for Molecular Dynamics</title>
-  <base href="http://leandro.iqm.unicamp.br/m3g/packmol/">
+  <base href="https://m3g.github.io/packmol">
   <SCRIPT TYPE="text/javascript">
 <!--
 function popup(mylink, windowname)
