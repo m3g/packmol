@@ -21,19 +21,23 @@ dynamics simulations.</b>
 <em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
 <br><br>
 
-Download the latest release of Packmol from the 
+The latest release of Packmol is available at the
+<center><h3>
 <a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
-LATEST RELEASE SITE
+LATEST RELEASE REPOSITORY
 </a>
+</h3></center>
 <br><br>
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
 
-Additionally, <a href="./Windows_Binaries">some Windows binaries</a> are available in this directory, if you want 
+<br><br>
+Alternatively, <a href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">some Windows binaries</a> are available in this directory, if you want 
 to skip the compilation phase. Note that these binaries not always correspond to 
 the latest version of the package.
 
+<br><br>
 <b> If you experience any problem while downloading, please write
 to leandromartinez98@gmail.com </b> <br><br>
 </center>
