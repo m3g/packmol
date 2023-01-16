@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3>User guide</h3>
 <i>Important:</i> always download the latest version of Packmol
@@ -1232,4 +1234,4 @@ by: Jeremy Wong
 
 <!-- END SECTION -->
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> Regular mail </h3>
 
@@ -10,4 +12,4 @@ Brasil<br>
 <br>
 Home-Page: <a href=http://leandro.iqm.unicamp.br>http://leandro.iqm.unicamp.br</a>
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

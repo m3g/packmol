@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> Volume guesser </h3>
 
@@ -32,5 +34,5 @@ estimatives for molecular volumes can be found in the literature.
 <br><br>
 No information is saved in this site.
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}
 

@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> Features </h3>
 
@@ -60,4 +62,4 @@ Features that users want but we didn't have the time to implement.
 &bull; Triclinical boxes and periodic conditions.
 <br><br>  
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

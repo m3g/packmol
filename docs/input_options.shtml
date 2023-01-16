@@ -1,5 +1,7 @@
-<!--#include virtual="./head.shtml" -->
-<!--#include virtual="./usage.shtml" -->
+---
+---
+{% include_relative head.shtml %}
+{% include relative usage.shtml %}
 
 <center><h3>Input options</h3></center>
 <table class="tabnoborder">
@@ -89,4 +91,4 @@
   </tr>
 </table>
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

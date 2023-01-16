@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> E-mail </h3>
 
@@ -18,4 +20,4 @@ refer to the site of the
 or send mails to Jos&eacute; Mario Mart&iacute;nez
 (martinez@ime.unicamp.br) or Ernesto G. Birgin (birgin@ime.usp.br).
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

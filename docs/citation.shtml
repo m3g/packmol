@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> Packmol citation </h3>
 <br>
@@ -49,4 +51,5 @@ href=http://www.ime.usp.br/~egbirgin>http://www.ime.usp.br/~egbirgin
 <br>
 Institute of Mathematics and Statistics - University of S&atilde;o Paulo
 
-<!--#include virtual="./tail.shtml" -->
+
+{% include_relative tail.shtml %}

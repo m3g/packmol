@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3>Helper applications</h3>
 
@@ -73,4 +75,4 @@ the "add_amber_ter" option to the input file.
 
 </table>
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

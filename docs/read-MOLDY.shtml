@@ -1,4 +1,6 @@
-<!--#include virtual="./head_note.shtml" -->
+---
+---
+{% include_relative head_note.shtml %}
 
 <h3> A note for MOLDY users </h3>
 <br>
@@ -91,4 +93,4 @@ Obs. This option is not extensively tested for the new version of
 packmol, if you have any trouble using it, please contact us.
       <br>
 
-<!--#include virtual="./tail_note.shtml" -->
+{% include_relative tail_note.shtml %}

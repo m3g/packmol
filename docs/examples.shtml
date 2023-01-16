@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3> Input examples </h3>
 
@@ -205,4 +207,4 @@ Mart&iacute;nez L., et al. J. Med. Chem. 49 (1) 23-26, 2006.
 
 </table>
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

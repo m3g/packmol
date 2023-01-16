@@ -1,4 +1,6 @@
-<!--#include virtual="./head.shtml" -->
+---
+---
+{% include_relative head.shtml %}
 
 <h3>Links to applications using or interfacing with Packmol</h3>
 
@@ -76,4 +78,4 @@ box to be created, and writes a input file for packmol.
 <a href=http://code.google.com/p/molecv1/ target="_blank">[Click here]</a>
 <br><br>
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}

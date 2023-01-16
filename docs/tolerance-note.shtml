@@ -1,4 +1,6 @@
-<!--#include virtual="./head_note.shtml" -->
+---
+---
+{% include_relative head_note.shtml %}
 
 <h3> A note on distance tolerances </h3>
 
@@ -23,4 +25,4 @@ avoiding overlaps, and will only progressively reduce the final tolerance to the
 desired value (usually 2.0 Angs).
 <!-- END SECTION -->
 
-<!--#include virtual="./tail_note.shtml" -->
+{% include_relative tail_note.shtml %}
