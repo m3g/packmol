@@ -32,7 +32,7 @@ package.
 
 <br><br>
 Alternatively, <a href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">some Windows binaries</a> are available in this directory, if you want 
-to skip the compilation phase. Note that these binaries not always correspond to 
+to skip the compilation phase. Note that these binaries do not always correspond to 
 the latest version of the package.
 
 <br><br>
