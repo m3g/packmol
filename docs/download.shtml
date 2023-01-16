@@ -22,16 +22,16 @@ dynamics simulations.</b>
 <br><br>
 
 The latest release of Packmol is available at the
-<b><a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
-LATEST RELEASE REPOSITORY
-</a></b>
+<a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
+<b>[LATEST RELEASE REPOSITORY]</b>
+</a>
 <br><br>
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
 
 <br><br>
-Alternatively, <a href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">some Windows binaries</a> are available in this directory, if you want 
+Alternatively, <a href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">[some Windows binaries]</a> are available in this directory, if you want 
 to skip the compilation phase. Note that these binaries do not always correspond to 
 the latest version of the package.
 
