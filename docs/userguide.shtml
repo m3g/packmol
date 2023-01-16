@@ -482,10 +482,12 @@ inside (or outside) ellipsoid
 <td class=tdclean0>
 Ellipsoids are defined by the general equation
 <br><br>
-<center>
-<img src=./userguide/img39.png>
-</center>
-<br>
+$$
+\frac{(x-a_1)^2}{a_2^2} +
+\frac{(y-b_1)^2}{b_2^2} + 
+\frac{(z-c_1)^2}{c_2^2} -
+d² = 0
+$$
 The parameters must be given as in the sphere example, but now they are
 7, and must be entered in the following order:
 <br><br><tt>
@@ -544,9 +546,9 @@ above (or below) plane
 <td class=tdclean0>
 The planes are defined by the general equation
 <br><br>
-<center>
-<i>ax</i> + <i>by</i> + <i>cz</i> - <i>d</i> = 0
-</center><br>
+$$
+ax + by + cz - d = 0
+$$
 And it is possible to restrict atoms to be above or below the plane. The syntax is
 <br><br><tt>
 above plane 2.5 3.2 1.2 6.2
@@ -554,13 +556,13 @@ above plane 2.5 3.2 1.2 6.2
 below plane 2.5 3.2 1.2 6.2
 <br><br></tt>
 where the <tt>above</tt> keyword will make the atoms satisfy the condition
-<br><br><center>
-2.5<i>x</i> + 3.2<i>y</i> + 1.2<i>z</i> - 6.2 <img src=./userguide/img37.png> 0
-</center><br>
-the <tt>below</tt> keyword will make the atoms satisfy
-<br><br><center>
-2.5<i>x</i> + 3.2<i>y</i> + 1.2<i>z</i> - 6.2 <img src=./userguide/img38.png> 0
-</center><br><br>
+$$
+2.5x + 3.2y + 1.2z - 6.2 \geq 0
+$$
+and the <tt>below</tt> keyword will make the atoms satisfy
+$$
+2.5x + 3.2y + 1.2z - 6.2 \leq 0
+$$
 *Note: the <tt>above</tt> notation was introduced in version 20.1.1 (Sept. 5, 2020)
 <br><br></td></tr>
 <!-- END CONSTRAINT -->
