@@ -59,8 +59,8 @@
           <td class=tdmenucontent>
             <a href=./citation.shtml>Citation</a><br>
             <a href=./features.shtml>Features</a><br>
-            <a href=/cgi-bin/packmol/versions.php>Version history</a><br>
-            <a href=/cgi-bin/packmol/downloads.php>Download summary</a><br>
+            <a href=https://github.com/m3g/packmol/releases>Version history</a><br>
+            <!-- <a href=/cgi-bin/packmol/downloads.php>Download summary</a><br> -->
           </td>
         </tr>
 

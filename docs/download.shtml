@@ -1,4 +1,4 @@
-<!--#include virtual="./head.shtml" -->
+{% include_relative head.shtml %}
 
 <h3>Registration</h3>
 
@@ -25,16 +25,6 @@ THIS SITE</a>
 to this site, and recommend registration to people to whom you
 have passed packmol to. 
 <br><br>
-
-<!--
-<center><h3>
-We are currently experiencing problems with our server. Skip the registration.
-<br>Please download the Packmol package from 
-<a href=https://github.com/m3g/packmol/releases/latest target=_blank_>
-[HERE]
-</a>.
-<center></h3>
--->
 
 <center>
 <b>Please fill the form below:</b><br>
@@ -72,4 +62,4 @@ Packmol is under constant development, and new features and bug fixes
 may introduce other bugs and regressions. Please let us know if you find any
 problem, or regressions, so we can fix them.
 
-<!--#include virtual="./tail.shtml" -->
+{% include_relative tail.shtml %}
