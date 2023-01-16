@@ -105,9 +105,11 @@
         </tr>
         <tr>
           <td class=tdmenucontent>
-            <a target=_blank_ href=http://www.ime.usp.br/~egbirgin/tango>The TANGO project</a><br>
+            <a target=_blank_ href=http://m3g.github.io/ComplexMixtures.jl>ComplexMixtures.jl</a>
             <a target=_blank_ href=http://m3g.iqm.unicamp.br/mdlovofit>MDLovoFit</a><br>
+            <a target=_blank_ href=http://m3g.github.io/CellListMap.jl>CellListMap.jl</a>
             <a target=_blank_ href=http://www.ime.unicamp.br/~martinez/lovoalign>LovoAlign</a><br>
+            <a target=_blank_ href=http://www.ime.usp.br/~egbirgin/tango>The TANGO project</a><br>
             <a target=_blank_ href=http://m3g.iqm.unicamp.br>M3G Home-Page</a><br>
             <a target=_blank_ href=http://www.ime.unicamp.br/~martinez>JM Home-Page</a><br>
             <a target=_blank_ href=http://www.ime.usp.br/~egbirgin>EGB Home-Page</a><br>
