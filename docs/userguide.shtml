@@ -9,7 +9,7 @@ in order that all features are available.
 <br><br>
 
 <!-- START SECTION -->
-<b> Contents $$ x = y^2 $$ </b>
+<b> Contents</b>
 
 <br>
 <a href="./userguide.shtml#need">1. What do you need?</a><br>
@@ -186,8 +186,9 @@ end structure
 <br><br>
 This section specifies that 2000 molecules of the <tt>water.pdb</tt> type, will
 be placed inside a cube with minimum coordinates
-(<i>x</i>,<i>y</i>,<i>z</i>) = (0,0,0) and
-maximum coordinates (40,40,40). Therefore, this minimum input file must
+$$(x,y,z) = (0,0,0)$$
+and
+maximum coordinates $$(40,40,40)$$. Therefore, this minimum input file must
 be:
 <br><br>
 <tt>
