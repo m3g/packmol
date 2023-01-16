@@ -123,7 +123,7 @@
     <td class="tdclean" width=100% valign="top">
      <table width=100% align=center>
        <tr class=tdtopmenu>
-         <td align=center width=33%><b><a class="menulink" href=./home.shtml>Home</a></b> </td>
+         <td align=center width=33%><b><a class="menulink" href=./index.html>Home</a></b> </td>
          <td align=center width=33%><b><a class="menulink" href=./userguide.shtml>Usage</a></b></td>
          <td align=center width=33%><b><a class="menulink" href=./download.shtml>Download</a></b></td>
        </tr>
