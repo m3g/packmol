@@ -2,7 +2,7 @@
 ---
 {% include_relative head.shtml %}
 
-<h3>Registration</h3>
+<h3>Download</h3>
 
 Packmol is free software. You can redistribute it and/or modify it under
 the terms of the 
