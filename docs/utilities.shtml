@@ -16,7 +16,7 @@ of the system, its charge, and its density.
 Given the number of molecules of
 each type, their molar mass and the desired density, 
 estimates the total volume of the system. Online. 
-<a href=http://m3g.iqm.unicamp.br/packmol/nmols.shtml>[Click here]</a>
+<a href=http://m3g.iqm.unicamp.br/packmol/nmols.shtml onClick="return popup(this, 'Help')">[Click here]</a>.
 <br><br>
 </tr></td>
 

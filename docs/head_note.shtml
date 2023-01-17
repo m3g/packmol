@@ -14,17 +14,16 @@ function popup(mylink, windowname)
        href=mylink;
   else
        href=mylink.href;
-  window.open(href, windowname, 'width=650,height=600,scrollbars=yes');
+  window.open(href, windowname, 'width=800,height=600,scrollbars=yes');
   return false;
 }
 //-->
   </SCRIPT>
 </head>
-<body>
+<body bgcolor=#fecea8>
 
-<table class=tabnoborder>
-<tr><td class=tdclean>
+<table bgcolor=white>
+<tr><td width="90%">
 
 <!-- CONTENT STARTS HERE --> 
-
 
