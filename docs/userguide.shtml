@@ -708,7 +708,7 @@ over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0
 </tt><br><br>
 the atoms satisfy the condition
 $$
-15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{(2(20.0)^2)}\right]-(z+23.0) \geq 0.0 
+15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{2(20.0)^2}\right]-(z+23.0) \geq 0.0 
 $$
 </td></tr>
 <!-- END CONSTRAINT -->
