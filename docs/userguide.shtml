@@ -675,6 +675,45 @@ elongated in one direction, a good idea is to provide the molecule with
 the larger dimension oriented along the <tt>z</tt> axis.<br><br>
 <br><br></td></tr>
 <!-- END CONSTRAINT -->
+
+<!-- START CONSTRAINT -->
+<tr>
+<td valign="bottom" align="right" width="20" height="30"> 
+11. 
+</td>
+<td valign="bottom"><tt>
+over (or below) xygauss <it>(gaussian surface)</it>
+</tt></td>
+</tr>
+
+<tr><td></td>
+<td>
+Gaussian surfaces are defined by the equation 
+$$
+h exp\left[−\frac{(x-a\_1)^2}{2a\_2^2}−\frac{(y-b_1)^2}{(2b_2^2)}\right]-(z-c)=0 
+$$
+Parameters $(a_1, b_1)$ define center of the gaussian, while $c$ specifies the height in the $z$ dimension. 
+$a_2$ and $b_2$ set the width of the gaussian in $x$ and $y$, respectively, while $h$ specifies its height. 
+It is possible to restrict atoms to be over or below the gaussian plane. The gaussian surface 
+as implemented is restricted to be over the $xy$ plane. The syntax is
+<br><br>
+<br><br><tt>
+over xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
+</tt><br><br><tt>
+below xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
+<br><br></tt>
+For example, using 
+<br><br><tt>
+over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0
+</tt><br><br>
+the atoms satisfy the condition
+$$
+15.0 exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{(2(20.0)^2)}\right]-(z+23.0) \geq 0.0 
+$$
+</td></tr>
+<!-- END CONSTRAINT -->
+
+
 </table>
 <br><br>
 <!-- END SECTION -->
