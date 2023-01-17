@@ -2,10 +2,10 @@
 ---
 {% include_relative head.shtml %}
 
+<h3>Download</h3>
+
 <table width="80%" align="center">
 <tr><td class="tdclean0">
-
-<h3>Download</h3>
 
 Packmol is free software. You can redistribute it and/or modify it under
 the terms of the 
