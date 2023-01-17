@@ -2,6 +2,9 @@
 ---
 {% include_relative head.shtml %}
 
+<table width="80%" align="center"></table>
+<tr><td class="tdclean0">
+
 <h3>Download</h3>
 
 Packmol is free software. You can redistribute it and/or modify it under
@@ -22,10 +25,13 @@ dynamics simulations.</b>
 <br><br>
 
 The latest release of Packmol is available at the
+<br>
+<center>
 <a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <b>[LATEST RELEASE REPOSITORY]</b>
 </a>
-<br><br>
+</center>
+<br>
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
@@ -42,5 +48,8 @@ If you experience any problem while downloading, please write to leandromartinez
 Packmol is under constant development, and new features and bug fixes
 may introduce other bugs and regressions. Please let us know if you find any
 problem, or regressions, so we can fix them.
+
+</td></tr>
+</table>
 
 {% include_relative tail.shtml %}
