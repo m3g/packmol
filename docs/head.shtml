@@ -19,6 +19,10 @@
     return false;
   }
   //-->
+  function nmols_form1 (form) {
+    var NumberOfMolecules = form.ntype.value;
+    alert ("You typed: " + NumberOfMolecules)
+  }
 </SCRIPT>
 
 </head>
