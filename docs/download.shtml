@@ -2,7 +2,7 @@
 ---
 {% include_relative head.shtml %}
 
-<table width="80%" align="center"></table>
+<table width="80%" align="center">
 <tr><td class="tdclean0">
 
 <h3>Download</h3>
