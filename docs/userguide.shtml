@@ -1266,13 +1266,6 @@ by: Jeremy Wong
 
 <br><br>
 
-## test
-
-### Test
-
-!!! note
-    test
-
 <!-- END SECTION -->
 
 {% include_relative tail.shtml %}
