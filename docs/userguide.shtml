@@ -1076,7 +1076,7 @@ the following keyword:<br>
 Usage: <tt> add_amber_ter </tt> <br>
 <i>and</i><br>
 Usage: <tt> amber_ter_preserve </tt><br>
-(this option will preserve TER flags found in fixed structures).<br><br>
+(this option will preserve TER flags within input structures, fixed or not from v20.14.0 on).<br><br>
 
 
 <li>Add box side information to output PDB File (GROMACS uses this): <br>
