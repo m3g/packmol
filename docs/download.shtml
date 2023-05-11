@@ -36,12 +36,13 @@ Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the sourc
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
 
+<br><br><br>
+<h3>Windows precompiled executables:</h3>
 <br><br>
-Alternatively, <a target=_blank_ href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">[some Windows binaries]</a> are available in this directory, if you want 
-to skip the compilation phase. Note that these binaries do not always correspond to 
-the latest version of the package.
+In <a target=_blank_ href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">[this link]</a> are available, if you want 
+to skip the compilation phase. Note that these binaries do not always correspond to the latest version of the package.
 
-<br><br>
+<br><br><br>
 If you experience any problem while downloading, please write to leandromartinez98@gmail.com <br><br>
 </center>
 <br><br>
