@@ -2,10 +2,10 @@
 ---
 {% include_relative head.shtml %}
 
-<h3>Download</h3>
-
 <table width="80%" align="center">
 <tr><td class="tdclean0">
+
+<h3>Download</h3>
 
 Packmol is free software. You can redistribute it and/or modify it under
 the terms of the 
@@ -38,7 +38,6 @@ package.
 
 <br><br><br>
 <h3>Windows precompiled executables:</h3>
-<br>
 <a target=_blank_ href="https://github.com/m3g/packmol/tree/gh-pages/docs/Windows_Binaries">[This repository]</a> contains some precompiled executables for Windwows, if you want 
 to skip the compilation phase. Note that these binaries do not always correspond to the latest version of the package.
 
