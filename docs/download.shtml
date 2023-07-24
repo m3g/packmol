@@ -38,7 +38,11 @@ package.
 
 <br><br><br>
 <h3>Multi-platform Julia-based distribution:</h3>
-The Julia <a target=_blank_ href="https://github.com/m3g/Packmol.jl">[Packmol.jl]</a> package provides
+The Julia 
+<br>
+<center><a target=_blank_ href="https://github.com/m3g/Packmol.jl"><b>[Packmol.jl]</b></a></center>
+<br>
+package provides
 an interface to execute packmol on all common platforms without needing compilation. If you have
 difficulties compilting the package, using this interface is recommended.
 
