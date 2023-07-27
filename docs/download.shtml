@@ -37,7 +37,7 @@ Next, follow the <a href="./userguide.shtml">installation instructions</a> to in
 package.
 
 <br><br><br>
-<h3>Multi-platform Julia-based distribution:</h3>
+<h3>Multi-platform Julia-based distribution (for Windows, etc.):</h3>
 The Julia 
 <br>
 <center><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>[Packmol.jl]</b></a></center>

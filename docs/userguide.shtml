@@ -48,14 +48,17 @@ Of course, you also need the <tt>Packmol</tt> package, which you can get from
 <pre><tt>  http://m3g.iqm.unicamp.br/packmol
 </tt></pre>
 by clicking on the <a target="contents" href="./download.shtml">
-Download </a> link. By following this link you will download the file
-<tt>packmol-20.13.0.tar.gz</tt> which contains the whole source code of
+Download </a> link. 
+
+
+You can download the file
+<tt>packmol-20.14.2.tar.gz</tt> which contains the whole source code of
 Packmol. The <tt>20.13.0</tt> is the version number, which might change
 relative to this example.
 <br><br>
-Windows users: Download the Windows executable file to a known folder. Add the
-folder to the PATH environment variable. Packmol must be executed according
-to the instructions in this site from the command prompt.
+Windows users: We suggest trying to use the Julia-based distribution
+available at <a href="https://github.com/m3g/Packmol.jl">[Packmol.jl]</a>,
+which works on all platforms and doesn't need compilation.
 <br><br>
 If you plan to use MOLDY as your MD package, read 
 <a href=./read-MOLDY.shtml onClick="return popup(this, 'Help')">THIS</a>.
