@@ -69,11 +69,10 @@ function estimate_volume(ntypes) {
           totvol = totvol + mol_vol * input_nmols[itype].value;
       }        
       target.innerHTML += `
-      <table align=\"center\" width=\"80%\">
+      <br>
+      <table align=\"center\" width=\"50%\">
       <tr><td align=\"center\">
-      <br><br>
       <h3> Result: </h3>
-      <br><br>
       Your system must have a volume of: 
       `+totvol.toFixed(2)+` \&\#xC5;<sup>3</sup>
       <br><br>
@@ -83,6 +82,9 @@ function estimate_volume(ntypes) {
       Or a sphere of radius 
       `+(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)+` \&\#xC5;
       </tr></td>
+      <tr><td align=\"center\">
+      <b><a href=./nmols.shtml>[Reload the page to start over]</a></b>
+      </td></tr>
       </table>   
       `
 } // end function estimate_volume
