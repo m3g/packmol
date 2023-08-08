@@ -2,6 +2,92 @@
 ---
 {% include_relative head.shtml %}
 
+<script>
+    function ntypes() {
+      var target = document.getElementById("nmols1");
+      var theForm = document.forms["NumberOfMolecularTypes"];
+      ntypes = theForm.elements["nTypes"].value;
+      
+target.innerHTML += `
+<form id="EstimateVolume">
+
+<table border=1>
+<tr>
+<td>
+Desired density:
+</td>
+<td>
+<input type=\"text\" name=density size=\"10\"> g/mL 
+</td>
+</tr>
+</table>
+<br><br>
+
+<table border=1>`
+
+      for ( itype = 1; itype <= ntypes; itype++ ) {
+          target.innerHTML += `
+<tr><td colspan=6> Type `+itype+`: </td></tr>
+<tr bgcolor=lightgrey><td colspan=\"2\" align=\"left\">  
+Number of molecules: 
+</td>
+<td>
+<input type=\"text\" name=nmols[] size=\"10\"> 
+</td>
+<td>
+Molar mass:*
+</td>
+<td>
+<input type=\"text\" name=mass[] size=\"10\"> g/mol 
+</td>
+</tr><br><br>`;
+      }
+
+target.innerHTML += `
+<tr><td align=right colspan=6>
+<button type="button" onclick="estimate_volume(`+ntypes+`)">Submit</button>
+</tr></td>
+</td></tr>
+</table>
+*Molar mass of one molecule. 
+</td>
+
+</form>    
+`
+} // end function ntypes
+
+function estimate_volume(ntypes) {
+      var target = document.getElementById("nmols2");
+      var theForm = document.forms["EstimateVolume"];
+      density = theForm.elements["density"].value;
+      input_mass = document.getElementsByName("mass[]");
+      input_nmols = document.getElementsByName("nmols[]");
+      // volume occupied by each molecule
+      totvol = 0.0;
+      for ( itype = 0; itype < ntypes; itype ++ ) { 
+          mol_vol = 1.660577881 * input_mass[itype].value / density;
+          totvol = totvol + mol_vol * input_nmols[itype].value;
+      }        
+      target.innerHTML += `
+      <table align=\"center\" width=\"80%\">
+      <tr><td>
+      <br><br>
+      Your system must have a volume of: 
+      `+totvol.toFixed(2)+` \&\#xC5;<sup>3</sup>
+      <br><br>
+      This means a cubic box of side
+      `+(totvol**(1.0/3.0)).toFixed(2)+` \&\#xC5;
+      <br><br>
+      Or a sphere of radius 
+      `+(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)+` \&\#xC5;
+      </tr></td>
+      </table>   
+      `
+} // end function estimate_volume
+</script>
+
+</script>
+
 <h3> Volume guesser </h3>
 
 This script guesses the volume of a system containing a given
@@ -12,10 +98,10 @@ value.
 <br><br>
 <table class=blackborder bgcolor="lightgrey" align=center>
 <tr align="center" border=1px>
-<form method="post" action="/cgi-bin/packmol/nmols/nmols1.php">
+<form id="NumberOfMolecularTypes">
 <td align="left"> Number of types of molecules: </td>
-<td align="left"> <input type="text" name="ntype" size="10" maxlength="350"> 
-<input type="submit" value="Proceed..."> 
+<td align="left"> <input type="text" name="nTypes" size="10" maxlength="350" value="1"> 
+<button type="button" onclick="ntypes()">Submit</button>
 </form>
 </td></tr>
 </table>
@@ -34,5 +120,8 @@ estimatives for molecular volumes can be found in the literature.
 <br><br>
 No information is saved in this site.
 
-{% include_relative tail.shtml %}
+<div id="nmols1"></div>
 
+<div id="nmols2"></div>
+
+{% include_relative tail.shtml %}
