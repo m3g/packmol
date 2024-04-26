@@ -1161,7 +1161,7 @@ testing purposes. Writes chkgrad.log file containing the comparison.<br>
 Usage: <tt>chkgrad</tt>
 <br><br>
 
-<i><u><a href="#fscale">Options tho change the shape of the minimum-distance penalty function:</a></u></i>
+<i><u><a href="#fscale" name="fscale">Options tho change the shape of the minimum-distance penalty function:</a></u></i>
 <br>
 <br>
 Usage: <tt> fscale [real] </tt><br>  
