@@ -275,7 +275,7 @@ Usage: <tt>fixed </tt><i>x   y   z  a   b   g</i><br><br>
 This options holds the molecule
 fixed in the position specified by the parameters. <i>x, y, z, a, b, g,</i>
 which are six real numbers. The first three determine the translation of
-the molecule relative to its position in the coordinate file. The former
+the molecule relative to its position in the coordinate file. The latter
 three parameters are rotation angles (in radians). For this option it is
 required that only one molecule is set. It may be accompanied by the
 keyword <tt>center</tt>. If this keyword is present the first three numbers
