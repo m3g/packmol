@@ -39,7 +39,7 @@ Next, follow the <a href="./userguide.shtml">installation instructions</a> to in
 package.
 
 <br><br>
-<b>3.</b><a href=https://github.com/conda-forge/packmol-feedstock><b>[conda-forge/packmol-feedstock]:</b></a>
+<b>3. </b><a href=https://github.com/conda-forge/packmol-feedstock><b>[conda-forge/packmol-feedstock]:</b></a>
 Packmol is also available through conda and mamba package managers.
 We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
 
