@@ -24,27 +24,28 @@ dynamics simulations.</b>
 <em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
 <br><br>
 
-The latest release of Packmol is available at the
-<br>
+What to download:
+
+<br><br>
+<b>1.</b> If you do not want to compile the package yourself, use the Julia wrapper of Packmol, which is available at:
+<center><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>[Packmol.jl]</b></a></center>
+This wrapper is multi-platform and easy to use.
+
+<br><br>
+<b>2.</b> To compile the package yourself, download the latest release of Packmol at:
 <center>
 <a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <b>[LATEST RELEASE REPOSITORY]</b>
 </a>
 </center>
-<br>
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
 
-<br><br><br>
-<h3>Multi-platform Julia-based distribution (for Windows, etc.):</h3>
-The Julia 
-<br>
-<center><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>[Packmol.jl]</b></a></center>
-<br>
-package provides
-an interface to execute packmol on all common platforms without needing compilation. If you have
-difficulties compilting the package, using this interface is recommended.
+<br><br>
+<b>3.</b> Packmol is also available through conda and mamba package managers:
+<center><a href=https://github.com/conda-forge/packmol-feedstock>[conda-forge/packmol-feedstock]</a></center>
+We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
 
 <br><br>
 If you experience any problem while downloading, please write to leandromartinez98@gmail.com <br><br>
