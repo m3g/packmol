@@ -52,8 +52,8 @@ Download </a> link.
 
 
 You can download the file
-<tt>packmol-20.14.2.tar.gz</tt> which contains the whole source code of
-Packmol. The <tt>20.13.0</tt> is the version number, which might change
+<tt>packmol-20.14.4.tar.gz</tt> which contains the whole source code of
+Packmol. The <tt>20.14.4</tt> is the version number, which might change
 relative to this example.
 <br><br>
 Windows users: We suggest trying to use the Julia-based distribution
@@ -70,18 +70,18 @@ If you plan to use MOLDY as your MD package, read
 <a name="comp"></a><b>How to compile Packmol </b>
 <br><br>
 
-Once you have downloaded the <tt>packmol-20.13.0.tar.gz</tt> file from the home-page,
+Once you have downloaded the <tt>packmol-20.14.4.tar.gz</tt> file from the home-page,
 you need to expand the files and compile the package. This is done by:
 <br><br>
 Expanding the files:
-<pre><tt>  tar -xvzf packmol-20.13.0.tar.gz</tt></pre>
+<pre><tt>  tar -xvzf packmol-20.14.4.tar.gz</tt></pre>
 This will create a directory called <tt>packmol</tt> inside which you can find
 the source code. You can build the executable by:
 <pre><tt>  cd packmol
   make
 </tt></pre>
 That's it, if no error was reported the packmol executable was 
-built. Note that <tt>20.13.0</tt> is the version number, which may differ
+built. Note that <tt>20.14.4</tt> is the version number, which may differ
 relative to this example.
 <br><br>
 -----
