@@ -26,6 +26,7 @@ dynamics simulations.</b>
 
 <h3>Download alternatives:</h3>
 
+<br>
 <b>1.</b> If you do not want to compile the package yourself, use the Julia wrapper of Packmol, which is available at:
 <a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>[Packmol.jl - CLICK HERE!]</b></a>
 This wrapper is multi-platform and easy to use.
