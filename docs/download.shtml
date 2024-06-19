@@ -28,6 +28,7 @@ dynamics simulations.</b>
 
 <a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>1. [Packmol.jl]: </b></a>
 This is a multi-platform wrapper for Packmol, written in Julia. It is easy to use and install.
+Follow the instructions in the README file of the repository to install the package.
 
 <br><br>
 <b>2.  <a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
