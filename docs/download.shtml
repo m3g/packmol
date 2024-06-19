@@ -24,7 +24,7 @@ dynamics simulations.</b>
 <em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
 <br><br>
 
-What to download:
+<h3>Download alternatives:</h3>
 
 <br><br>
 <b>1.</b> If you do not want to compile the package yourself, use the Julia wrapper of Packmol, which is available at:
