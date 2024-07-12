@@ -726,29 +726,32 @@ $$
 <!-- START SECTION -->
 <a name="pbc"></a><b>Periodic Boundary Conditions </b>
 <br><br>
-
 As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
 conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
 contribution). 
-
+<br><br>
 Usage:
-
+<br><br>
 For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:
+<br><br>
 <code>
 pbc 30.0 30.0 60.0
 </code>
+<br><br>
 In this case, all molecules will be set to stay in the box defined by minimum and maximum
 coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
 conditions at the boundaries. 
-
+<br><br>
 And if six parameters are provided, the periodic boundaries will be applied at
 the minimum and maximum coordinates provided:
+<br><br>
 <code>
 pbc -15.0 -15.0 -30.0 15.0 15.0 60.0
 </code>
-
+<br><br>
 This keyword is a global keyword, and will affect all but fixed molecules. 
 For example, this creates a periodic box of water:
+<br><br>
 <code>
 tolerance 2.0
 output water_box.pdb
@@ -757,9 +760,10 @@ structure water.pdb
 &nbsp;&nbsp;number 1000
 end
 </code>
-
+<br><br>
 And this will create an interface of water and carbon tetrachloride, with
 the interface at the xy plane:
+<br><br>
 <code>
 tolerance 2.0
 output interface.pdb
@@ -773,10 +777,10 @@ structure ccl4.pdb
 &nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0
 end structure
 </code>
-
+<br><br>
 Importantly, the positions of the constraints refer to the periodic reference box,
 which is defined by the minimum and maximum coordinates provided.
-
+<br><br>
 <!-- END SECTION -->
 
 <!-- START SECTION -->
