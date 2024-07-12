@@ -21,4 +21,5 @@ if ! grep -q $3 $2; then
     echo "Error: could not find $3 in $2"
     exit 1
 fi
+echo "Test $1 OK."
 exit 0
