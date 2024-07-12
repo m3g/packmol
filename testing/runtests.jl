@@ -52,6 +52,7 @@ function check_mind(input_file::String)
             
         """)
     end
+    println("Test $input_file OK.")
     return nothing
 end 
 
