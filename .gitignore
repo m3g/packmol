@@ -1,2 +1,9 @@
 packmol
 testing/water_box.pdb
+testing/Manifest.toml
+testing/input_files/Manifest.toml
+testing/input_files/Project.toml
+testing/water_box.pdb_FORCED
+testing/packmol.log
+testing/output.pdb_FORCED
+testing/output.pdb

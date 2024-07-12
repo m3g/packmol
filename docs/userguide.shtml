@@ -727,21 +727,56 @@ $$
 <a name="pbc"></a><b>Periodic Boundary Conditions </b>
 <br><br>
 
-Periodic Boundary Conditions for cubic and rectangular boxes are often
-requested by users. We aim to implement that in the future. At the same
-time, there is a simple workaround we suggest: If your system will be
-simulated in a, for example, 100. Angs box, define your cubic constraints
-such that the packing is done in a 98. Angs box. That way, when the actual
-simulation box with PBC is built, images will be 2. Angs apart from each
-other, as illustrated in the figure below. There will be an empty space
-at the boundary, but that will readily disappear with energy
-minimization and equilibration.
+As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
+conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
+contribution). 
 
-<center>
-<br>
-<img src=./pbc.jpg width=300>
-</center>
-<br><br>
+Usage:
+
+For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:
+<code>
+pbc 30.0 30.0 60.0
+</code>
+In this case, all molecules will be set to stay in the box defined by minimum and maximum
+coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
+conditions at the boundaries. 
+
+And if six parameters are provided, the periodic boundaries will be applied at
+the minimum and maximum coordinates provided:
+<code>
+pbc -15.0 -15.0 -30.0 15.0 15.0 60.0
+</code>
+
+This keyword is a global keyword, and will affect all but fixed molecules. 
+For example, this creates a periodic box of water:
+<code>
+tolerance 2.0
+output water_box.pdb
+pbc 30.0 30.0 60.0
+structure water.pdb
+&nbsp;&nbsp;number 1000
+end
+</code>
+
+And this will create an interface of water and carbon tetrachloride, with
+the interface at the xy plane:
+<code>
+tolerance 2.0
+output interface.pdb
+pbc -20.0 -20.0 -30.0 20.0 20.0 30.0
+structure water.pdb
+&nbsp;&nbsp;number 1000
+&nbsp;&nbsp;below plane 0.0 0.0 1.0 0.0
+end structure
+structure ccl4.pdb
+&nbsp;&nbsp;number 200
+&nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0
+end structure
+</code>
+
+Importantly, the positions of the constraints refer to the periodic reference box,
+which is defined by the minimum and maximum coordinates provided.
+
 <!-- END SECTION -->
 
 <!-- START SECTION -->
