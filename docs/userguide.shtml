@@ -753,29 +753,29 @@ This keyword is a global keyword, and will affect all but fixed molecules.
 For example, this creates a periodic box of water:
 <br><br>
 <code>
-tolerance 2.0
-output water_box.pdb
-pbc 30.0 30.0 60.0
-structure water.pdb
-&nbsp;&nbsp;number 1000
-end
+tolerance 2.0<br>
+output water_box.pdb<br>
+pbc 30.0 30.0 60.0<br>
+structure water.pdb<br>
+&nbsp;&nbsp;number 1000<br>
+end<br>
 </code>
 <br><br>
 And this will create an interface of water and carbon tetrachloride, with
 the interface at the xy plane:
 <br><br>
 <code>
-tolerance 2.0
-output interface.pdb
-pbc -20.0 -20.0 -30.0 20.0 20.0 30.0
-structure water.pdb
-&nbsp;&nbsp;number 1000
-&nbsp;&nbsp;below plane 0.0 0.0 1.0 0.0
-end structure
-structure ccl4.pdb
-&nbsp;&nbsp;number 200
-&nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0
-end structure
+tolerance 2.0<br>
+output interface.pdb<br>
+pbc -20.0 -20.0 -30.0 20.0 20.0 30.0<br>
+structure water.pdb<br>
+&nbsp;&nbsp;number 1000<br>
+&nbsp;&nbsp;below plane 0.0 0.0 1.0 0.0<br>
+end structure<br>
+structure ccl4.pdb<br>
+&nbsp;&nbsp;number 200<br>
+&nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0<br>
+end structure<br>
 </code>
 <br><br>
 Importantly, the positions of the constraints refer to the periodic reference box,
