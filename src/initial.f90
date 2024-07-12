@@ -271,7 +271,7 @@ subroutine initial(n,x)
 
    if (using_pbc) then
       sizemin = 0.0d0
-      sizemax = pbc_box
+      sizemax = pbc_length
    end if
 
    ! Computing the size of the patches

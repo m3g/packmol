@@ -1,0 +1,42 @@
+#
+# Double layered vesicle with water inside and outside
+#
+
+tolerance 2.0 
+pbc -47.5 -47.5 -47.5 47.5 47.5 47.5
+
+structure ./structure_files/palmitoil.pdb 
+  resnumbers 2
+  number 20
+  atoms 37
+    inside sphere 0. 0. 0. 14. 
+  end atoms
+  atoms 5
+    outside sphere 0. 0. 0. 26.
+  end atoms
+end structure 
+
+structure ./structure_files/palmitoil.pdb 
+  resnumbers 2
+  number 30
+  atoms 5
+    inside sphere 0. 0. 0. 29. 
+  end atoms
+  atoms 37
+    outside sphere 0. 0. 0. 41.
+  end atoms
+end structure 
+ 
+structure ./structure_files/water.pdb
+   resnumbers 2
+   number 50
+   inside sphere 0. 0. 0. 13.
+end structure
+
+structure ./structure_files/water.pdb
+   resnumbers 2
+   number 5000
+   outside sphere 0. 0. 0. 43.
+end structure
+ 
+output output.pdb

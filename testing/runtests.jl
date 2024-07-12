@@ -31,8 +31,16 @@ function check_mind(input_file::String)
         keyword, values... = split(line)
         keyword == "tolerance" && (tolerance = parse(Float64, values[1]))
         keyword == "output" && (output_name = values[1])
-        keyword == "pbc" && (unitcell = parse.(Float64,values[1:3]))
         keyword == "precision" && (precision = values[1])
+        if keyword == "pbc" 
+            if length(values) == 3
+                unitcell = parse.(Float64,values[1:3])
+            elseif length(values) == 6
+                unitcell = parse.(Float64,values[4:6]) - parse.(Float64,values[1:3])
+            else
+                error("pbc not properly set")
+            end
+        end
     end
     if isnothing(tolerance) || isnothing(output_name)
         error("tolerance or output not found")
@@ -53,7 +61,7 @@ function check_mind(input_file::String)
             
         """)
     end
-    printstyled("Test $input_file OK. \n"; color=:green, bold=true)
+    printstyled(" OK. \n"; color=:green, bold=true)
     return nothing
 end 
 
@@ -61,6 +69,7 @@ println("Running tests...")
 if !isinteractive()
     packmol = joinpath(@__DIR__,"..","packmol")
     for input_test in ARGS
+        print(" Running test $input_test ...")
         log = IOBuffer()
         run(pipeline(`$packmol`; stdin=input_test, stdout=log))
         if occursin("Success!", String(take!(log)))

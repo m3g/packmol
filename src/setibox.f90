@@ -15,9 +15,9 @@ subroutine setibox(x,y,z,sizemin,boxl,nboxes,iboxx,iboxy,iboxz)
    integer :: nboxes(3), iboxx, iboxy, iboxz
 
    if (using_pbc) then
-      x = x - floor(x / pbc_box(1)) * pbc_box(1)
-      y = y - floor(y / pbc_box(2)) * pbc_box(2)
-      z = z - floor(z / pbc_box(3)) * pbc_box(3)
+      x = x - floor(x / pbc_length(1)) * pbc_length(1)
+      y = y - floor(y / pbc_length(2)) * pbc_length(2)
+      z = z - floor(z / pbc_length(3)) * pbc_length(3)
    end if
 
    xtemp = x - sizemin(1)

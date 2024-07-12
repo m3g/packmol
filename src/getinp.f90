@@ -163,8 +163,20 @@ subroutine getinp()
          read(keyword(i,3),*,iostat=ioerr) pbc_box(2)
          read(keyword(i,4),*,iostat=ioerr) pbc_box(3)
          if ( ioerr /= 0 ) exit
+         if (maxkeywords > 4 .and. trim(adjustl(keyword(i,5))) /= "none") then 
+            read(keyword(i,5),*,iostat=ioerr) pbc_box(4)
+            read(keyword(i,6),*,iostat=ioerr) pbc_box(5)
+            read(keyword(i,7),*,iostat=ioerr) pbc_box(6)
+            if ( ioerr /= 0 ) exit
+         else 
+            pbc_box(4:6) = pbc_box(1:3)
+            pbc_box(1:3) = 0.0
+         end if
+         if ( ioerr /= 0 ) exit
          using_pbc = .true.
-         write(*,*) ' Periodic boundary condition activated box: ', pbc_box(1), pbc_box(2), pbc_box(3)
+         pbc_length(1:3) = pbc_box(4:6) - pbc_box(1:3)
+         write(*,"(a, 3f8.2)") '  Periodic boundary condition activated: ', pbc_length(1), pbc_length(2), pbc_length(3)
+         write(*,"(a, 6f8.2)") '  PBC Reference box: ', pbc_box(2), pbc_box(2), pbc_box(3), pbc_box(4), pbc_box(5), pbc_box(6)
       else if( keyword(i,1) /= 'tolerance' .and. &
          keyword(i,1) /= 'short_tol_dist' .and. &
          keyword(i,1) /= 'short_tol_scale' .and. &
@@ -737,15 +749,15 @@ subroutine getinp()
       irest = irest + 1
       irestline(irest) = -1
       ityperest(irest) = 3
-      restpars(irest,1) = -dism/2
-      restpars(irest,2) = -dism/2
-      restpars(irest,3) = -dism/2
-      restpars(irest,4) = pbc_box(1) + dism/2
-      restpars(irest,5) = pbc_box(2) + dism/2
-      restpars(irest,6) = pbc_box(3) + dism/2
-      write(*,*) " For periodic boundary condition."
-      write(*,*) " We automatically add a constraint for all atoms."
-      write(*,*) " inside box -tol/2 -tol/2 -tol/2 box1+tol/2 box2+tol/2 box3+tol/2"
+      restpars(irest,1) = pbc_box(1) - dism/2
+      restpars(irest,2) = pbc_box(2) - dism/2
+      restpars(irest,3) = pbc_box(3) - dism/2
+      restpars(irest,4) = pbc_box(4) + dism/2
+      restpars(irest,5) = pbc_box(5) + dism/2
+      restpars(irest,6) = pbc_box(6) + dism/2
+      write(*,*) " PBC on: We automatically add a constraint for non-fixed atoms:"
+      write(*,"(a, 6f8.2)") "  -> inside box ", restpars(irest,1), restpars(irest,2), restpars(irest,3),&
+         restpars(irest,4), restpars(irest,5), restpars(irest,6)
    end if
 
    nrest = irest
