@@ -347,7 +347,7 @@ program packmol
             iratom(icart,iratcount) = iirest
           end if
         end do
-        if (is_pbc) then
+        if (using_pbc) then
           nratom(icart) = nratom(icart) + 1
           iratcount = iratcount + 1
           do irest = 1, nrest

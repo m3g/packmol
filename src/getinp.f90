@@ -163,7 +163,7 @@ subroutine getinp()
       read(keyword(i,3),*,iostat=ioerr) pbc_box(2)
       read(keyword(i,4),*,iostat=ioerr) pbc_box(3)
       if ( ioerr /= 0 ) exit
-      is_pbc = .true.
+      using_pbc = .true.
       write(*,*) ' Periodic boundary condition activated box: ', pbc_box(1), pbc_box(2), pbc_box(3)
     else if( keyword(i,1) /= 'tolerance' .and. &
              keyword(i,1) /= 'short_tol_dist' .and. &
@@ -733,7 +733,7 @@ subroutine getinp()
 
   end do
 
-  if (is_pbc) then
+  if (using_pbc) then
     irest = irest + 1
     irestline(irest) = -1
     ityperest(irest) = 3

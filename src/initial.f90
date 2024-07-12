@@ -269,7 +269,7 @@ subroutine initial(n,x)
     end do
   end do             
 
-  if (is_pbc) then
+  if (using_pbc) then
     sizemin = 0.0d0
     sizemax = pbc_box
   end if

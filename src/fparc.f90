@@ -53,7 +53,7 @@ double precision function fparc(icart,firstjcart)
     do icoord = 1, 3
       vdiff(icoord) = xcart(icart, icoord) - xcart(jcart, icoord)
     end do
-    if ( is_pbc ) then
+    if ( using_pbc ) then
       call pbc_vector(vdiff)
     end if
 

@@ -120,7 +120,7 @@ subroutine computef(n,x,f)
             ! are behind 
 
             if ( fix ) then
-              if (.not. is_pbc) then
+              if (.not. using_pbc) then
                 call add_box_behind(iboxx-1,iboxy,iboxz)
                 call add_box_behind(iboxx,iboxy-1,iboxz)
                 call add_box_behind(iboxx,iboxy,iboxz-1)
@@ -186,7 +186,7 @@ subroutine computef(n,x,f)
 
       if(comptype(ibtype(icart))) then
 
-        if (.not. is_pbc) then
+        if (.not. using_pbc) then
 
           ! Interactions inside box
 

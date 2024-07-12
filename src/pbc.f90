@@ -5,7 +5,7 @@
 module pbc
  
   double precision, public :: pbc_box(3) 
-  logical, public :: is_pbc = .false.
+  logical, public :: using_pbc = .false.
 
   public pbc_vector, pbc_idx_box
 

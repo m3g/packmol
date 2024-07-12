@@ -14,7 +14,7 @@ subroutine setibox(x,y,z,sizemin,boxl,nboxes,iboxx,iboxy,iboxz)
   double precision :: x, y, z, sizemin(3), boxl(3), xtemp, ytemp, ztemp
   integer :: nboxes(3), iboxx, iboxy, iboxz
 
-  if (is_pbc) then
+  if (using_pbc) then
     x = x - floor(x / pbc_box(1)) * pbc_box(1)
     y = y - floor(y / pbc_box(2)) * pbc_box(2)
     z = z - floor(z / pbc_box(3)) * pbc_box(3)
