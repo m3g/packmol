@@ -79,6 +79,7 @@ oall = cenmass.o \
        jacobi.o \
        random.o \
        sizes.o \
+       pbc.o \
        usegencan.o \
        compute_data.o \
        flashmod.o \
@@ -116,12 +117,14 @@ devel : $(oall)
 #
 # Modules
 #
-modules = exit_codes.o sizes.o compute_data.o usegencan.o input.o flashmod.o \
+modules = exit_codes.o sizes.o pbc.o compute_data.o usegencan.o input.o flashmod.o \
           swaptypemod.o ahestetic.o 
 exit_codes.o : $(SRCDIR)/exit_codes.f90
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/exit_codes.f90
 sizes.o : $(SRCDIR)/sizes.f90 
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/sizes.f90
+pbc.o : $(SRCDIR)/pbc.f90 
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/pbc.f90
 compute_data.o : $(SRCDIR)/compute_data.f90 sizes.o
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/compute_data.f90
 input.o : $(SRCDIR)/input.f90 sizes.o 

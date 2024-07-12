@@ -323,7 +323,8 @@ subroutine setsizes()
          keyword(iline,1) == 'over' .or. &
          keyword(iline,1) == 'above' .or. &
          keyword(iline,1) == 'below' .or. &
-         keyword(iline,1) == 'constrain_rotation' ) then
+         keyword(iline,1) == 'constrain_rotation' .or. &
+         keyword(iline,1) == 'pbc') then
       i = i + 1 
     end if
   end do

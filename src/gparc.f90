@@ -10,15 +10,17 @@ subroutine gparc(icart,firstjcart)
 
   use sizes
   use compute_data
+  use pbc
   implicit none
 
   ! SCALAR ARGUMENTS
   integer :: icart,firstjcart
 
   ! LOCAL SCALARS
-  integer :: jcart
+  integer :: jcart, icoord
   double precision :: datom, dtemp, xdiff, tol, &
                       short_tol, short_tol_scale
+  double precision :: vdiff(3)
 
   jcart = firstjcart
   do while ( jcart .ne. 0 )
@@ -48,18 +50,24 @@ subroutine gparc(icart,firstjcart)
     ! Otherwise, compute distance and evaluate function for this pair
     !                     
     tol = (radius(icart)+radius(jcart))**2
-    datom = (xcart(icart, 1)-xcart(jcart, 1))**2 + & 
-            (xcart(icart, 2)-xcart(jcart, 2))**2 + &
-            (xcart(icart, 3)-xcart(jcart, 3))**2
+    do icoord = 1, 3
+      vdiff(icoord) = xcart(icart, icoord) - xcart(jcart, icoord)
+    end do
+    if ( is_pbc ) then
+      call pbc_vector(vdiff)
+    end if
+    datom = (vdiff(1))**2 + & 
+            (vdiff(2))**2 + &
+            (vdiff(3))**2
     if( datom < tol ) then
       dtemp = fscale(icart)*fscale(jcart) * 4.d0 * (datom - tol)
-      xdiff = dtemp*(xcart(icart,1) - xcart(jcart,1)) 
+      xdiff = dtemp*vdiff(1)
       gxcar(icart,1)= gxcar(icart,1) + xdiff
       gxcar(jcart,1)= gxcar(jcart,1) - xdiff 
-      xdiff = dtemp*(xcart(icart,2) - xcart(jcart,2)) 
+      xdiff = dtemp*vdiff(2)
       gxcar(icart,2)= gxcar(icart,2) + xdiff
       gxcar(jcart,2)= gxcar(jcart,2) - xdiff 
-      xdiff = dtemp*(xcart(icart,3) - xcart(jcart,3)) 
+      xdiff = dtemp*vdiff(3)
       gxcar(icart,3)= gxcar(icart,3) + xdiff
       gxcar(jcart,3)= gxcar(jcart,3) - xdiff 
       if ( use_short_radius(icart) .or. use_short_radius(jcart) ) then
@@ -68,13 +76,13 @@ subroutine gparc(icart,firstjcart)
           short_tol_scale = dsqrt(short_radius_scale(icart)*short_radius_scale(jcart))
           short_tol_scale = short_tol_scale*( tol**2 / short_tol**2 )
           dtemp = fscale(icart)*fscale(jcart) * 4.d0 * short_tol_scale*(datom - short_tol)
-          xdiff = dtemp*(xcart(icart,1) - xcart(jcart,1)) 
+          xdiff = dtemp*vdiff(1)
           gxcar(icart,1)= gxcar(icart,1) + xdiff
           gxcar(jcart,1)= gxcar(jcart,1) - xdiff 
-          xdiff = dtemp*(xcart(icart,2) - xcart(jcart,2)) 
+          xdiff = dtemp*vdiff(2)
           gxcar(icart,2)= gxcar(icart,2) + xdiff
           gxcar(jcart,2)= gxcar(jcart,2) - xdiff 
-          xdiff = dtemp*(xcart(icart,3) - xcart(jcart,3)) 
+          xdiff = dtemp*vdiff(3)
           gxcar(icart,3)= gxcar(icart,3) + xdiff
           gxcar(jcart,3)= gxcar(jcart,3) - xdiff 
         end if

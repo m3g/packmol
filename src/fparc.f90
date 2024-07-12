@@ -11,14 +11,16 @@ double precision function fparc(icart,firstjcart)
 
   use sizes
   use compute_data
+  use pbc
   implicit none
 
   ! SCALAR ARGUMENTS
   integer :: icart,firstjcart
 
   ! LOCAL SCALARS
-  integer :: jcart
+  integer :: jcart, icoord
   double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
+  double precision :: vdiff(3)
 
   fparc = 0.0d0
   jcart = firstjcart
@@ -48,9 +50,16 @@ double precision function fparc(icart,firstjcart)
     !
     ! Otherwise, compute distance and evaluate function for this pair
     !
-    datom = ( xcart(icart,1)-xcart(jcart,1) )**2 + &
-            ( xcart(icart,2)-xcart(jcart,2) )**2 + &
-            ( xcart(icart,3)-xcart(jcart,3) )**2
+    do icoord = 1, 3
+      vdiff(icoord) = xcart(icart, icoord) - xcart(jcart, icoord)
+    end do
+    if ( is_pbc ) then
+      call pbc_vector(vdiff)
+    end if
+
+    datom = ( vdiff(1) )**2 + &
+            ( vdiff(2) )**2 + &
+            ( vdiff(3) )**2
     tol = (radius(icart)+radius(jcart))**2
     if ( datom < tol ) then
       fparc = fparc + fscale(icart)*fscale(jcart)*(datom-tol)**2

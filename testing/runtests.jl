@@ -30,7 +30,7 @@ function check_mind(input_file::String)
         keyword, values... = split(line)
         keyword == "tolerance" && (tolerance = parse(Float64, values[1]))
         keyword == "output" && (output_name = values[1])
-        keyword == "pbc" && (unitcell = (values[1], values[2], values[3]))
+        keyword == "pbc" && (unitcell = parse.(Float64,values[1:3]))
         keyword == "precision" && (precision = values[1])
     end
     if isnothing(tolerance) || isnothing(output_name)

@@ -19,6 +19,7 @@ f77
 fort77
 ifc
 ifort
+ifx
 "
 #
 #
@@ -47,6 +48,6 @@ echo " "
 echo "        Otherwise, install one of the following compilers"
 echo "        and run this configure script again:"
 echo " "
-echo "             gfortran, f77, fort77, ifc, ifort"
+echo "             gfortran, f77, fort77, ifc, ifort, ifx"
 echo " "
 

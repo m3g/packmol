@@ -17,6 +17,7 @@ subroutine initial(n,x)
                     nloop0_type
   use usegencan
   use ahestetic
+  use pbc
   implicit none
   integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
              imol, ntry, nb, iboxx, iboxy, iboxz, ifatom, &
@@ -267,6 +268,11 @@ subroutine initial(n,x)
       end do 
     end do
   end do             
+
+  if (is_pbc) then
+    sizemin = 0.0d0
+    sizemax = pbc_box
+  end if
 
   ! Computing the size of the patches
 

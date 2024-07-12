@@ -13,6 +13,7 @@ subroutine getinp()
   use compute_data, only : ntype, natoms, idfirst, nmols, ityperest, coor, restpars
   use input
   use usegencan
+  use pbc
 
   implicit none
   integer :: i, k, ii, iarg, iline, idatom, iatom, in, lixo, irest, itype, itest,&
@@ -157,6 +158,13 @@ subroutine getinp()
       read(keyword(i,2),*,iostat=ioerr) iprint2
       if ( ioerr /= 0 ) exit
       write(*,*) ' Optional printvalue 2 set: ', iprint2
+    else if(keyword(i,1).eq.'pbc') then
+      read(keyword(i,2),*,iostat=ioerr) pbc_box(1)
+      read(keyword(i,3),*,iostat=ioerr) pbc_box(2)
+      read(keyword(i,4),*,iostat=ioerr) pbc_box(3)
+      if ( ioerr /= 0 ) exit
+      is_pbc = .true.
+      write(*,*) ' Periodic boundary condition activated box: ', pbc_box(1), pbc_box(2), pbc_box(3)
     else if( keyword(i,1) /= 'tolerance' .and. &
              keyword(i,1) /= 'short_tol_dist' .and. &
              keyword(i,1) /= 'short_tol_scale' .and. &
@@ -523,6 +531,26 @@ subroutine getinp()
       write(*,*) ' Maximum number of GENCAN loops-0 for type: ', itype, ': ', nloop0_type(itype)
     end if
   end do
+
+  ! Getting the tolerance
+
+  ioerr = 1
+  dism = -1.d0
+  do iline = 1, nlines
+    if(keyword(iline,1).eq.'tolerance') then
+      read(keyword(iline,2),*,iostat=ioerr) dism
+      if ( ioerr /= 0 ) then
+        write(*,*) ' ERROR: Failed reading tolerance. '
+        stop exit_code_input_error
+      end if
+      exit
+    end if
+  end do
+  if ( ioerr /= 0 ) then
+    write(*,*) ' ERROR: Overall tolerance not set. Use, for example: tolerance 2.0 '
+    stop exit_code_input_error
+  end if
+  write(*,*) ' Distance tolerance: ', dism
       
   ! Reading the restrictions that were set
 
@@ -704,28 +732,25 @@ subroutine getinp()
     end if
 
   end do
+
+  if (is_pbc) then
+    irest = irest + 1
+    irestline(irest) = -1
+    ityperest(irest) = 3
+    restpars(irest,1) = -dism/2
+    restpars(irest,2) = -dism/2
+    restpars(irest,3) = -dism/2
+    restpars(irest,4) = pbc_box(1) + dism/2
+    restpars(irest,5) = pbc_box(2) + dism/2
+    restpars(irest,6) = pbc_box(3) + dism/2
+    write(*,*) " For periodic boundary condition." 
+    write(*,*) " We automatically add a constraint for all atoms."
+    write(*,*) " inside box -tol/2 -tol/2 -tol/2 box1+tol/2 box2+tol/2 box3+tol/2"
+  end if
+
   nrest = irest 
   write(*,*) ' Total number of restrictions: ', nrest
 
-  ! Getting the tolerance
-
-  ioerr = 1
-  dism = -1.d0
-  do iline = 1, nlines
-    if(keyword(iline,1).eq.'tolerance') then
-      read(keyword(iline,2),*,iostat=ioerr) dism
-      if ( ioerr /= 0 ) then
-        write(*,*) ' ERROR: Failed reading tolerance. '
-        stop exit_code_input_error
-      end if
-      exit
-    end if
-  end do
-  if ( ioerr /= 0 ) then
-    write(*,*) ' ERROR: Overall tolerance not set. Use, for example: tolerance 2.0 '
-    stop exit_code_input_error
-  end if
-  write(*,*) ' Distance tolerance: ', dism
 
   ! Reading, if defined, the short distance penalty parameters
 

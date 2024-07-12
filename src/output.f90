@@ -12,6 +12,7 @@ subroutine output(n, x, output_file_name)
   use sizes
   use compute_data
   use input
+  use pbc
 
   implicit none
   integer :: n, k, i, ilugan, ilubar, itype, imol, idatom,&
@@ -371,7 +372,7 @@ subroutine output(n, x, output_file_name)
             &'http://m3g.iqm.unicamp.br/packmol',/,&
             &'REMARK' )" ) title
 
-    if(add_box_sides) then
+    if(add_box_sides .or. is_pbc) then
       write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,&
                      &t34,f7.2,t41,f7.2,t48,f7.2,&
                      &t56,'P 1           1' )") &

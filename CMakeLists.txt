@@ -47,6 +47,7 @@ add_executable(packmol
        src/jacobi.f90
        src/random.f90
        src/sizes.f90
+       src/pbc.f90
        src/usegencan.f90
        src/compute_data.f90
        src/flashmod.f90
