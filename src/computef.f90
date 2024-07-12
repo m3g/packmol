@@ -1,212 +1,198 @@
-!  
+!
 !  Written by Leandro Martínez, 2009-2011.
 !  Copyright (c) 2009-2018, Leandro Martínez, Jose Mario Martinez,
 !  Ernesto G. Birgin.
-!  
+!
 ! Subroutine that computes the function value
 !
-  
-subroutine computef(n,x,f) 
-      
-  use sizes
-  use compute_data
-  use input, only : fix
-  use pbc
-  implicit none
 
-  integer :: n, i, j, k, ibox
-  integer :: ilugan, ilubar, icart, itype, imol, iatom, idatom, &
-             iboxx, iboxy, iboxz 
+subroutine computef(n,x,f)
 
-  double precision :: v1(3), v2(3), v3(3) 
-  double precision :: x(n)
-  double precision :: f,fparc,fplus
-  double precision :: xbar, ybar, zbar
-  double precision :: beta, gama, teta
+   use sizes
+   use compute_data
+   use input, only : fix
+   use pbc
+   implicit none
 
-  ! Reset function value
+   integer :: n, i, j, k, ibox
+   integer :: ilugan, ilubar, icart, itype, imol, iatom, idatom, &
+      iboxx, iboxy, iboxz
 
-  f = 0.d0 
-  frest = 0.d0
-  fdist = 0.d0
+   double precision :: v1(3), v2(3), v3(3)
+   double precision :: x(n)
+   double precision :: f,fparc,fplus
+   double precision :: xbar, ybar, zbar
+   double precision :: beta, gama, teta
 
-  ! Reset boxes
+   ! Reset function value
 
-  if(.not.init1) call resetboxes()
+   f = 0.d0
+   frest = 0.d0
+   fdist = 0.d0
 
-  ! Transform baricenter and angles into cartesian coordinates 
-  ! Computes cartesian coordinates from vector x and coor 
+   ! Reset boxes
 
-  ilubar = 0 
-  ilugan = ntotmol*3 
-  icart = 0
+   if(.not.init1) call resetboxes()
 
-  do itype = 1, ntype 
-    if(.not.comptype(itype)) then
-      icart = icart + nmols(itype)*natoms(itype)
-    else
-    do imol = 1, nmols(itype) 
+   ! Transform baricenter and angles into cartesian coordinates
+   ! Computes cartesian coordinates from vector x and coor
 
-      xbar = x(ilubar+1) 
-      ybar = x(ilubar+2) 
-      zbar = x(ilubar+3) 
-  
-      ! Computing the rotation matrix
+   ilubar = 0
+   ilugan = ntotmol*3
+   icart = 0
 
-      beta = x(ilugan+1)
-      gama = x(ilugan+2)
-      teta = x(ilugan+3)
+   do itype = 1, ntype
+      if(.not.comptype(itype)) then
+         icart = icart + nmols(itype)*natoms(itype)
+      else
+         do imol = 1, nmols(itype)
 
-      call eulerrmat(beta,gama,teta,v1,v2,v3)  
+            xbar = x(ilubar+1)
+            ybar = x(ilubar+2)
+            zbar = x(ilubar+3)
 
-      ! Looping over the atoms of this molecule
-  
-      idatom = idfirst(itype) - 1
-      do iatom = 1, natoms(itype) 
+            ! Computing the rotation matrix
 
-        icart = icart + 1
-        idatom = idatom + 1
+            beta = x(ilugan+1)
+            gama = x(ilugan+2)
+            teta = x(ilugan+3)
 
-        ! Computing the cartesian coordinates for this atom
+            call eulerrmat(beta,gama,teta,v1,v2,v3)
 
-        call compcart(icart,xbar,ybar,zbar, &
-                      coor(idatom,1),coor(idatom,2),coor(idatom,3), &
-                      v1,v2,v3)
+            ! Looping over the atoms of this molecule
 
-        ! Adding to f the value relative to constraints for this atom
+            idatom = idfirst(itype) - 1
+            do iatom = 1, natoms(itype)
 
-        call comprest(icart,fplus)
-        f = f + fplus
-        frest = dmax1(frest,fplus)
-        if(move) frest_atom(icart) = frest_atom(icart) + fplus
+               icart = icart + 1
+               idatom = idatom + 1
 
-        ! Putting atoms in their boxes
+               ! Computing the cartesian coordinates for this atom
 
-        if(.not.init1) then
-          
-          !
-          call setibox(xcart(icart,1), xcart(icart,2), xcart(icart,3), &
-               sizemin, boxl, nboxes, iboxx, iboxy, iboxz)
-          !xtemp = xcart(icart,1) - sizemin(1) 
-          !ytemp = xcart(icart,2) - sizemin(2) 
-          !ztemp = xcart(icart,3) - sizemin(3) 
+               call compcart(icart,xbar,ybar,zbar, &
+                  coor(idatom,1),coor(idatom,2),coor(idatom,3), &
+                  v1,v2,v3)
 
-          !iboxx = int(xtemp/boxl(1)) + 1
-          !iboxy = int(ytemp/boxl(2)) + 1
-          !iboxz = int(ztemp/boxl(3)) + 1
+               ! Adding to f the value relative to constraints for this atom
 
-          !if(xtemp.le.0) iboxx = 1
-          !if(ytemp.le.0) iboxy = 1
-          !if(ztemp.le.0) iboxz = 1 
-          !if(iboxx.gt.nboxes(1)) iboxx = nboxes(1)
-          !if(iboxy.gt.nboxes(2)) iboxy = nboxes(2)
-          !if(iboxz.gt.nboxes(3)) iboxz = nboxes(3)
+               call comprest(icart,fplus)
+               f = f + fplus
+               frest = dmax1(frest,fplus)
+               if(move) frest_atom(icart) = frest_atom(icart) + fplus
 
-          ! Atom linked list
+               ! Putting atoms in their boxes
 
-          latomnext(icart) = latomfirst(iboxx,iboxy,iboxz)
-          latomfirst(iboxx,iboxy,iboxz) = icart
+               if(.not.init1) then
 
-          ! Box with atoms linked list
+                  !
+                  call setibox(xcart(icart,1), xcart(icart,2), xcart(icart,3), &
+                     sizemin, boxl, nboxes, iboxx, iboxy, iboxz)
 
-          if ( .not. hasfree(iboxx,iboxy,iboxz) ) then
-            hasfree(iboxx,iboxy,iboxz) = .true.
-            call ijk_to_ibox(iboxx,iboxy,iboxz,ibox)
-            lboxnext(ibox) = lboxfirst
-            lboxfirst = ibox
+                  ! Atom linked list
 
-            ! Add boxes with fixed atoms which are vicinal to this box, and
-            ! are behind 
+                  latomnext(icart) = latomfirst(iboxx,iboxy,iboxz)
+                  latomfirst(iboxx,iboxy,iboxz) = icart
 
-            if ( fix ) then
-                call add_box_behind(idx_box(iboxx-1, nboxes(1)),iboxy,iboxz)
-                call add_box_behind(iboxx,idx_box(iboxy-1, nboxes(2)),iboxz)
-                call add_box_behind(iboxx,iboxy,idx_box(iboxz-1, nboxes(3)))
+                  ! Box with atoms linked list
 
-                call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),iboxz)
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),iboxz)
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz-1,nboxes(3)))
+                  if ( .not. hasfree(iboxx,iboxy,iboxz) ) then
+                     hasfree(iboxx,iboxy,iboxz) = .true.
+                     call ijk_to_ibox(iboxx,iboxy,iboxz,ibox)
+                     lboxnext(ibox) = lboxfirst
+                     lboxfirst = ibox
 
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
-            end if
+                     ! Add boxes with fixed atoms which are vicinal to this box, and
+                     ! are behind
 
-          end if
+                     if ( fix ) then
+                        call add_box_behind(idx_box(iboxx-1, nboxes(1)),iboxy,iboxz)
+                        call add_box_behind(iboxx,idx_box(iboxy-1, nboxes(2)),iboxz)
+                        call add_box_behind(iboxx,iboxy,idx_box(iboxz-1, nboxes(3)))
 
-          ibtype(icart) = itype
-          ibmol(icart) = imol
+                        call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                        call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),iboxz)
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz+1,nboxes(3)))
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),iboxz)
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz-1,nboxes(3)))
 
-        end if
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                     end if
 
-      end do 
- 
-      ilugan = ilugan + 3 
-      ilubar = ilubar + 3 
+                  end if
 
-    end do
-    end if
-  end do            
+                  ibtype(icart) = itype
+                  ibmol(icart) = imol
 
-  if(init1) return
+               end if
 
-  ! Minimum distance function evaluation
+            end do
 
-  ibox = lboxfirst
-  do while( ibox > 0 )
+            ilugan = ilugan + 3
+            ilubar = ilubar + 3
 
-    call ibox_to_ijk(ibox,i,j,k)
-
-    icart = latomfirst(i,j,k)
-    do while( icart > 0 )
-
-      if(comptype(ibtype(icart))) then
-          ! Interactions inside box
-          f = f + fparc(icart,latomnext(icart))
-          ! Interactions of boxes that share faces
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,k))
-          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(i,j,idx_box(k+1, nboxes(3))))
-          ! Interactions of boxes that share axes
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k-1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
-          ! Interactions of boxes that share vertices
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k-1, nboxes(3))))
+         end do
       end if
+   end do
 
-      icart = latomnext(icart)
-    end do
+   if(init1) return
 
-    ibox = lboxnext(ibox)
-  end do
+   ! Minimum distance function evaluation
 
-  return
+   ibox = lboxfirst
+   do while( ibox > 0 )
+
+      call ibox_to_ijk(ibox,i,j,k)
+
+      icart = latomfirst(i,j,k)
+      do while( icart > 0 )
+
+         if(comptype(ibtype(icart))) then
+            ! Interactions inside box
+            f = f + fparc(icart,latomnext(icart))
+            ! Interactions of boxes that share faces
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,k))
+            f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),k))
+            f = f + fparc(icart,latomfirst(i,j,idx_box(k+1, nboxes(3))))
+            ! Interactions of boxes that share axes
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),k))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k+1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),k))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k-1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
+            ! Interactions of boxes that share vertices
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k+1, nboxes(3))))
+            f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k-1, nboxes(3))))
+         end if
+
+         icart = latomnext(icart)
+      end do
+
+      ibox = lboxnext(ibox)
+   end do
+
+   return
 end subroutine computef
 
 subroutine add_box_behind(i,j,k)
 
-  use sizes
-  use compute_data
-  implicit none
-  integer :: ibox, i, j, k
+   use sizes
+   use compute_data
+   implicit none
+   integer :: ibox, i, j, k
 
-  if ( .not. hasfree(i,j,k) .and. latomfix(i,j,k) /= 0 ) then
-    hasfree(i,j,k) = .true.
-    call ijk_to_ibox(i,j,k,ibox)
-    lboxnext(ibox) = lboxfirst
-    lboxfirst = ibox
-  end if
+   if ( .not. hasfree(i,j,k) .and. latomfix(i,j,k) /= 0 ) then
+      hasfree(i,j,k) = .true.
+      call ijk_to_ibox(i,j,k,ibox)
+      lboxnext(ibox) = lboxfirst
+      lboxfirst = ibox
+   end if
 
 end subroutine add_box_behind
 

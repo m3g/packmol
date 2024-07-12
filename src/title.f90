@@ -8,12 +8,12 @@
 
 subroutine title()
 
-  use ahestetic
-  write(*,hash3_line)
-  write(*,"(' PACKMOL - Packing optimization for the automated generation of', /&
-           &' starting configurations for molecular dynamics simulations.', /&
-           &' ',/&
-           &t62,' Version 20.14.4 ')")
-  write(*,hash3_line)
+    use ahestetic
+    write(*,hash3_line)
+    write(*,"(' PACKMOL - Packing optimization for the automated generation of', /&
+             &' starting configurations for molecular dynamics simulations.', /&
+             &' ',/&
+             &t62,' Version 20.14.4 ')")
+    write(*,hash3_line)
 
 end subroutine title
