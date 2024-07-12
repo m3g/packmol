@@ -762,7 +762,7 @@ end<br>
 </code>
 <br><br>
 And this will create an interface of water and carbon tetrachloride, with
-the interface at the xy plane:
+the interface at the (z=0) plane:
 <br><br>
 <code>
 tolerance 2.0<br>
