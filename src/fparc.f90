@@ -18,7 +18,7 @@ double precision function fparc(icart,firstjcart)
   integer :: icart,firstjcart
 
   ! LOCAL SCALARS
-  integer :: jcart, icoord
+  integer :: jcart
   double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
   double precision :: vdiff(3)
 
@@ -50,16 +50,8 @@ double precision function fparc(icart,firstjcart)
     !
     ! Otherwise, compute distance and evaluate function for this pair
     !
-    do icoord = 1, 3
-      vdiff(icoord) = xcart(icart, icoord) - xcart(jcart, icoord)
-    end do
-    if ( using_pbc ) then
-      call pbc_vector(vdiff)
-    end if
-
-    datom = ( vdiff(1) )**2 + &
-            ( vdiff(2) )**2 + &
-            ( vdiff(3) )**2
+    vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_box)
+    datom = ( vdiff(1) )**2 + ( vdiff(2) )**2 + ( vdiff(3) )**2
     tol = (radius(icart)+radius(jcart))**2
     if ( datom < tol ) then
       fparc = fparc + fscale(icart)*fscale(jcart)*(datom-tol)**2

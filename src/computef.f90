@@ -21,7 +21,6 @@ subroutine computef(n,x,f)
   double precision :: v1(3), v2(3), v3(3) 
   double precision :: x(n)
   double precision :: f,fparc,fplus
-  double precision :: xtemp, ytemp, ztemp
   double precision :: xbar, ybar, zbar
   double precision :: beta, gama, teta
 
@@ -120,40 +119,21 @@ subroutine computef(n,x,f)
             ! are behind 
 
             if ( fix ) then
-              if (.not. using_pbc) then
-                call add_box_behind(iboxx-1,iboxy,iboxz)
-                call add_box_behind(iboxx,iboxy-1,iboxz)
-                call add_box_behind(iboxx,iboxy,iboxz-1)
+                call add_box_behind(idx_box(iboxx-1, nboxes(1)),iboxy,iboxz)
+                call add_box_behind(iboxx,idx_box(iboxy-1, nboxes(2)),iboxz)
+                call add_box_behind(iboxx,iboxy,idx_box(iboxz-1, nboxes(3)))
 
-                call add_box_behind(iboxx,iboxy-1,iboxz+1)
-                call add_box_behind(iboxx,iboxy-1,iboxz-1)
-                call add_box_behind(iboxx-1,iboxy+1,iboxz)
-                call add_box_behind(iboxx-1,iboxy,iboxz+1)
-                call add_box_behind(iboxx-1,iboxy-1,iboxz)
-                call add_box_behind(iboxx-1,iboxy,iboxz-1)
+                call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),iboxz)
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz+1,nboxes(3)))
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),iboxz)
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz-1,nboxes(3)))
 
-                call add_box_behind(iboxx-1,iboxy+1,iboxz+1)
-                call add_box_behind(iboxx-1,iboxy+1,iboxz-1)
-                call add_box_behind(iboxx-1,iboxy-1,iboxz+1)
-                call add_box_behind(iboxx-1,iboxy-1,iboxz-1)
-              else
-                call add_box_behind(pbc_idx_box(iboxx-1, nboxes(1)),iboxy,iboxz)
-                call add_box_behind(iboxx,pbc_idx_box(iboxy-1, nboxes(2)),iboxz)
-                call add_box_behind(iboxx,iboxy,pbc_idx_box(iboxz-1, nboxes(3)))
-
-                call add_box_behind(iboxx,pbc_idx_box(iboxy-1,nboxes(2)),pbc_idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(iboxx,pbc_idx_box(iboxy-1,nboxes(2)),pbc_idx_box(iboxz-1,nboxes(3)))
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy+1,nboxes(2)),iboxz)
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),iboxy,pbc_idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy-1,nboxes(2)),iboxz)
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),iboxy,pbc_idx_box(iboxz-1,nboxes(3)))
-
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy+1,nboxes(2)),pbc_idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy+1,nboxes(2)),pbc_idx_box(iboxz-1,nboxes(3)))
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy-1,nboxes(2)),pbc_idx_box(iboxz+1,nboxes(3)))
-                call add_box_behind(pbc_idx_box(iboxx-1,nboxes(1)),pbc_idx_box(iboxy-1,nboxes(2)),pbc_idx_box(iboxz-1,nboxes(3)))
-              end if
-
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
+                call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
             end if
 
           end if
@@ -185,64 +165,24 @@ subroutine computef(n,x,f)
     do while( icart > 0 )
 
       if(comptype(ibtype(icart))) then
-
-        if (.not. using_pbc) then
-
           ! Interactions inside box
-
           f = f + fparc(icart,latomnext(icart))
-
           ! Interactions of boxes that share faces
-
-          f = f + fparc(icart,latomfirst(i+1,j,k))
-          f = f + fparc(icart,latomfirst(i,j+1,k))
-          f = f + fparc(icart,latomfirst(i,j,k+1))
-
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,k))
+          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),k))
+          f = f + fparc(icart,latomfirst(i,j,idx_box(k+1, nboxes(3))))
           ! Interactions of boxes that share axes
-
-          f = f + fparc(icart,latomfirst(i+1,j+1,k))
-          f = f + fparc(icart,latomfirst(i+1,j,k+1))
-          f = f + fparc(icart,latomfirst(i+1,j-1,k))
-          f = f + fparc(icart,latomfirst(i+1,j,k-1))
-          f = f + fparc(icart,latomfirst(i,j+1,k+1))
-          f = f + fparc(icart,latomfirst(i,j+1,k-1))
-
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),k))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k+1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),k))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k-1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
           ! Interactions of boxes that share vertices
-
-          f = f + fparc(icart,latomfirst(i+1,j+1,k+1))
-          f = f + fparc(icart,latomfirst(i+1,j+1,k-1))
-          f = f + fparc(icart,latomfirst(i+1,j-1,k+1))
-          f = f + fparc(icart,latomfirst(i+1,j-1,k-1))
-
-        else
-
-          ! Interactions inside box
-
-          f = f + fparc(icart,latomnext(icart))
-
-          ! Interactions of boxes that share faces
-
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),j,k))
-          f = f + fparc(icart,latomfirst(i,pbc_idx_box(j+1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(i,j,pbc_idx_box(k+1, nboxes(3))))
-
-          ! Interactions of boxes that share axes
-
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j+1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),j,pbc_idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j-1, nboxes(2)),k))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),j,pbc_idx_box(k-1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(i,pbc_idx_box(j+1, nboxes(2)),pbc_idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(i,pbc_idx_box(j+1, nboxes(2)),pbc_idx_box(k-1, nboxes(3))))
-
-          ! Interactions of boxes that share vertices
-
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j+1, nboxes(2)),pbc_idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j+1, nboxes(2)),pbc_idx_box(k-1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j-1, nboxes(2)),pbc_idx_box(k+1, nboxes(3))))
-          f = f + fparc(icart,latomfirst(pbc_idx_box(i+1, nboxes(1)),pbc_idx_box(j-1, nboxes(2)),pbc_idx_box(k-1, nboxes(3))))
-        end if
-
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k+1, nboxes(3))))
+          f = f + fparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k-1, nboxes(3))))
       end if
 
       icart = latomnext(icart)

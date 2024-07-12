@@ -40,7 +40,7 @@ subroutine writesuccess(itype,fdist,frest,f)
               &t19,' molecular dynamics simulations. ',/,&
               &t8,' Journal of Computational Chemistry, 30(13) pp. 2157-2164, 2009.', /,&
               &t18,' https://doi.org/10.1002/jcc.21224' &
-             )")
+              &)")
     write(*,hash3_line)
   end if
 

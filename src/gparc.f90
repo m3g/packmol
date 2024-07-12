@@ -17,7 +17,7 @@ subroutine gparc(icart,firstjcart)
   integer :: icart,firstjcart
 
   ! LOCAL SCALARS
-  integer :: jcart, icoord
+  integer :: jcart
   double precision :: datom, dtemp, xdiff, tol, &
                       short_tol, short_tol_scale
   double precision :: vdiff(3)
@@ -50,15 +50,8 @@ subroutine gparc(icart,firstjcart)
     ! Otherwise, compute distance and evaluate function for this pair
     !                     
     tol = (radius(icart)+radius(jcart))**2
-    do icoord = 1, 3
-      vdiff(icoord) = xcart(icart, icoord) - xcart(jcart, icoord)
-    end do
-    if ( using_pbc ) then
-      call pbc_vector(vdiff)
-    end if
-    datom = (vdiff(1))**2 + & 
-            (vdiff(2))**2 + &
-            (vdiff(3))**2
+    vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_box)
+    datom = (vdiff(1))**2 + (vdiff(2))**2 + (vdiff(3))**2
     if( datom < tol ) then
       dtemp = fscale(icart)*fscale(jcart) * 4.d0 * (datom - tol)
       xdiff = dtemp*vdiff(1)

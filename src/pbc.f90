@@ -7,32 +7,28 @@ module pbc
   double precision, public :: pbc_box(3) 
   logical, public :: using_pbc = .false.
 
-  public pbc_vector, pbc_idx_box
+  public delta_vector, idx_box
 
   contains
 
-  subroutine pbc_vector(v)
-
+  elemental double precision function delta_vector(v1,v2,pbc_box)
       implicit none
+      double precision, intent(in) :: v1, v2, pbc_box
+      delta_vector = v1 - v2
+      if (using_pbc) then
+        delta_vector = delta_vector - pbc_box * nint(delta_vector/pbc_box)
+      end if
+ end function delta_vector
 
-      integer icoord
-
-      double precision, intent(inout) :: v(3)
-
-      do icoord = 1, 3
-          v(icoord) = v(icoord) - pbc_box(icoord) * nint(v(icoord) / pbc_box(icoord))
-      end do
-
-  end subroutine pbc_vector
-
-  integer function pbc_idx_box(ibox, nbox)
-
+  integer function idx_box(ibox, nbox)
       implicit none
       integer ibox, nbox
-
-      pbc_idx_box = modulo(ibox - 1 + nbox, nbox) + 1
-
-  end function pbc_idx_box
+      if (using_pbc) then
+        idx_box = modulo(ibox - 1 + nbox, nbox) + 1
+      else
+        idx_box = ibox
+      end if
+  end function idx_box
 
 end module pbc
 

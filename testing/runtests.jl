@@ -1,3 +1,4 @@
+println("Initalizing enviroment...")
 import Pkg; Pkg.activate(@__DIR__); Pkg.instantiate()
 using PDBTools
 using CellListMap
@@ -56,6 +57,7 @@ function check_mind(input_file::String)
     return nothing
 end 
 
+println("Running tests...")
 if !isinteractive()
     packmol = joinpath(@__DIR__,"..","packmol")
     for input_test in ARGS
