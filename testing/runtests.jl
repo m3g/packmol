@@ -52,7 +52,7 @@ function check_mind(input_file::String)
             
         """)
     end
-    println("Test $input_file OK.")
+    printstyled("Test $input_file OK. \n"; color=:green, bold=true)
     return nothing
 end 
 

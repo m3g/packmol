@@ -1,0 +1,19 @@
+#
+# A box with water with periodic boundary condition (pbc)
+#
+
+tolerance 2.0
+filetype pdb
+output output.pdb
+pbc 45. 45. 45.
+
+structure ./structure_files/water.pdb
+  number 500
+  below plane 0.0 0.0 1.0 20.0
+end structure
+
+structure ./structure_files/water.pdb
+  number 500
+  over plane 0.0 0.0 1.0 25.0
+end structure
+
