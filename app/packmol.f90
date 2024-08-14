@@ -678,13 +678,13 @@ program packmol
   if(n.eq.0) then
     call output(n,x, xyzout)
     write(*,dash1_line)
-    write(*,*) ' There are only fixed molecules, therefore there is nothing to do. '
+    write(*,*) ' Success! There are only fixed molecules, therefore there is nothing to pack. '
     write(*,*) ' The output file contains the fixed molecules in the desired positions. '
     write(*,dash1_line)
     write(*,*) ' Wrote output file: ', trim(adjustl(xyzout))
     if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
     write(*,dash1_line)
-    stop exit_code_input_error
+    stop
   end if
   
   !

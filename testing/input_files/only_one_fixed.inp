@@ -1,0 +1,10 @@
+#
+# A single fixed water molecule
+#
+tolerance 2.0
+filetype pdb
+output output.pdb
+structure ./structure_files/water.pdb
+  number 1
+  fixed 0. 0. 0. 45. 45. 45.
+end structure
