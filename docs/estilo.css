@@ -199,18 +199,12 @@ text-decoration: none;
 }
 
 .blink {
-  animation: blink 1s infinite;
+  animation: blinker 1s infinite;
 }
 
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+@keyframes blinker {
+  from { opacity: 1.0; }
+  50% { opacity: 0.5; }
+  to { opacity: 1.0; }
 }
 
