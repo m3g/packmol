@@ -197,3 +197,20 @@ font: bold 16px/24px arial, helvetica, sans-aerif;
 color: var(--cp3);
 text-decoration: none;
 }
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
