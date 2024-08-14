@@ -26,20 +26,20 @@ dynamics simulations.</b>
 
 <h3>Download alternatives:</h3>
 
-<b>1. </b><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><b>[Packmol.jl]: </b></a>
+<b>1. </b><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><blink><b>[Packmol.jl]: </b></blink></a>
 This is a multi-platform wrapper for Packmol, written in Julia. It is easy to use and install.
 Follow the instructions in the README file of the repository to install the package.
 
 <br><br>
 <b>2.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
-<b>[LATEST RELEASE REPOSITORY]:</b></a>
+<blink><b>[LATEST RELEASE REPOSITORY]:</b></blink></a>
 This is the repository of the source-code of the latest release of Packmol.
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
 
 <br><br>
-<b>3. </b><a href=https://github.com/conda-forge/packmol-feedstock><b>[conda-forge/packmol-feedstock]:</b></a>
+<b>3. </b><a href=https://github.com/conda-forge/packmol-feedstock><blink><b>conda-forge/packmol-feedstock]:</b></blink></a>
 Packmol is also available through conda and mamba package managers.
 We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
 
