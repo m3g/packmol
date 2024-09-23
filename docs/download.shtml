@@ -36,7 +36,7 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
 
 <br>
 This will open a GUI from which you will be able to select the input file to be used by Packmol.
-Additional details can be found in the 
+Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
 
 <h3> Advanced download alternatives: </h3> 
 
