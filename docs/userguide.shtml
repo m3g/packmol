@@ -69,7 +69,7 @@ If you plan to use MOLDY as your MD package, read
 <!-- START SECTION -->
 <a name="comp"></a><b>How to compile Packmol </b>
 <br><br>
-<br>Follow these instructions if you have download the Packmol source code.
+<b>Follow these instructions if you have download the Packmol source code.
 Most users should have downloaded the Julia wrapper, which doesn't need compilation.</b>
 
 Once you have downloaded the <tt>packmol-20.15.1.tar.gz</tt> file from the home-page,
