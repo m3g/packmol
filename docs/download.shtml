@@ -28,7 +28,7 @@ dynamics simulations.</b>
 
 1. The easiest way to get Packmol running on any platform (Windows, MacOS, Linux) 
 is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>. To use it:
-<br><br>
+<br>
 
 <table align="center">
 <tr><td>a) Install Julia from:</td><td> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td><td></td></tr>
