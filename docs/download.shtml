@@ -30,13 +30,18 @@ dynamics simulations.</b>
 is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>. To use it:
 <br><br>
 
-- Install Julia from: <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a><br>
-- Open Julia and type: <tt> import Pkg; Pkg.add("Packmol") </tt><br>
-- Inside the Julia REPL, type: <tt> using Packmol; run_packmol() </tt><br>
+<table align="center">
+<tr><td>a) Install Julia from:</td><td> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td><td></td></tr>
+<tr><td>b) Open Julia and type:</td><td bgcolor="lightgrey"><code>julia> import Pkg; Pkg.add("Packmol") </code> </td><td>(this will install the Packmol.jl package)</td></tr>
+<tr><td>c) Inside the Julia REPL, type: </td><td bgcolor="lightgrey"><code>julia> using Packmol; run_packmol() </code><td>(running Packmol)</td></tr>
+</table>
 
 <br>
 This will open a GUI from which you will be able to select the input file to be used by Packmol.
 Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
+<br><br>
+Steps a) and b) need to be done only once. Step c) is needed every time you want to run Packmol.
+
 
 <h3> Advanced download alternatives: </h3> 
 
