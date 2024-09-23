@@ -31,9 +31,15 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
 <br>
 
 <table align="center">
-<tr><td>a) Install Julia from:</td><td> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td><td></td></tr>
-<tr><td>b) Open Julia and type:</td><td bgcolor="lightgrey"><code>julia> import Pkg; Pkg.add("Packmol") </code> </td><td>(this will install the Packmol.jl package)</td></tr>
-<tr><td>c) Inside the Julia REPL, type: </td><td bgcolor="lightgrey"><code>julia> using Packmol; run_packmol() </code><td>(running Packmol)</td></tr>
+<tr><td class="tdclean0">a) Install Julia from:</td>
+    <td class="tdclean0"> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td>
+    <td class="tdclean0"></td></tr>
+<tr><td class="tdclean0">b) Open Julia and type:</td>
+    <td class="tdclean0" bgcolor="lightgrey"><code>julia> import Pkg; Pkg.add("Packmol") </code> </td>
+    <td class="tdclean0">(this will install the Packmol.jl package)</td></tr>
+<tr><td class="tdclean0">c) Inside the Julia REPL, type: </td>
+    <td class="tdclean0" bgcolor="lightgrey"><code>julia> using Packmol; run_packmol() </code>
+    <td class="tdclean0">(running Packmol)</td></tr>
 </table>
 
 <br>
