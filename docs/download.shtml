@@ -24,13 +24,22 @@ dynamics simulations.</b>
 <em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
 <br><br>
 
-<h3>Download alternatives:</h3>
+<h3>How to download and install Packmol:</h3>
 
-<b>1. </b><a target=_blank_ href="https://github.com/m3g/Packmol.jl#packmol"><span class="blink"><b>[Packmol.jl]: </b></span></a>
-This is a multi-platform wrapper for Packmol, written in Julia. It is easy to use and install.
-Follow the instructions in the README file of the repository to install the package.
-
+1. The easiest way to get Packmol running on any platform (Windows, MacOS, Linux) 
+is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>. To use it:
 <br><br>
+
+- Install Julia from: <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a><br>
+- Open Julia and type: <tt> import Pkg; Pkg.add("Packmol") </tt><br>
+- Inside the Julia REPL, type: <tt> using Packmol; run_packmol() </tt><br>
+
+<br>
+This will open a GUI from which you will be able to select the input file to be used by Packmol.
+Additional details can be found in the 
+
+<h3> Advanced download alternatives: </h3> 
+
 <b>2.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <span class="blink"><b>[LATEST RELEASE REPOSITORY]:</b></span></a>
 This is the repository of the source-code of the latest release of Packmol.
