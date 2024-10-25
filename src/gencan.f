@@ -1855,20 +1855,8 @@ C     And it will be used for the linear relation of cgmaxit
 
 C     Print initial information
 
-      if( iprint .ge. 2 ) then
-c LM: output for packmol
-c          write(*,1003) iter,f,gpsupn
-          if((mod((iter-1),10).eq.0.or.iter.eq.0).and.iter.ne.1) then
-            write(*,778)
-          else if(mod(iter,10).eq.0) then
-            write(*,779) 
-          else if(iter.ne.1) then
-            write(*,777)
-          end if
-      end if
-777   format('*******',$)
-778   format('          |',$)
-779   format('**********|')
+c LM: progress bar for packmol
+      call printbar(iprint, iter, maxit)
 
       if( iprint .ge. 3 ) then
           write(*, 981) iter
@@ -2421,18 +2409,8 @@ C     free variables and in array ind their identifiers.
       end do
 
 C     Print information of this iteration
-
-      if( iprint .ge. 2 ) then
-c Output for packmol
-c          write(*, 1003) iter,f,gpsupn
-          if((mod((iter-1),10).eq.0.or.iter.eq.0).and.iter.ne.1) then
-            write(*,778)
-          else if(mod(iter,10).eq.0) then
-            write(*,779) 
-          else if(iter.ne.1) then
-            write(*,777)
-          end if
-      end if
+c LM: progress bar for packmol
+      call printbar(iprint, iter, maxit)
 
       if ( iprint .ge. 3 ) then 
           write(*, 983) iter,ittype
