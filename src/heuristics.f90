@@ -130,7 +130,7 @@ subroutine movebad(n,x,fx,movebadprint)
                x(ilugan+2) = x(ilugan2+2)
                x(ilugan+3) = x(ilugan2+3)
                call restmol(itype,ilubar,n,x,fx,.true.)
-               do while( j <= 65.d0*i/nmove )
+               do while( j <= 60*i/nmove )
                   write(*,"('*',$)")
                   j = j + 1
                end do
