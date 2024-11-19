@@ -175,6 +175,12 @@ subroutine getinp()
          if ( ioerr /= 0 ) exit
          using_pbc = .true.
          pbc_length(1:3) = pbc_box(4:6) - pbc_box(1:3)
+         if ( any(pbc_length(1:3) <= 0.0) ) then
+            write(*,*) ' ERROR: Length of PBC box must be positive in all directions, got: ', pbc_length(1:3) 
+            write(*,*) '        Lower PBC coordinates read: ', pbc_box(1:3)
+            write(*,*) '        Upper PBC coordinates read: ', pbc_box(4:6)
+            stop exit_code_input_error
+         end if
          write(*,"(a, 3f8.2)") '  Periodic boundary condition activated: ', pbc_length(1), pbc_length(2), pbc_length(3)
          write(*,"(a, 6f8.2)") '  PBC Reference box: ', pbc_box(2), pbc_box(2), pbc_box(3), pbc_box(4), pbc_box(5), pbc_box(6)
       else if( keyword(i,1) /= 'tolerance' .and. &
