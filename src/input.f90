@@ -48,6 +48,7 @@ module input
    logical :: pdb
    logical :: crd
    logical :: xyz
+   logical :: towhee
    logical :: moldy
    logical :: check
    logical :: chkgrad
