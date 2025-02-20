@@ -39,6 +39,7 @@ subroutine output(n, x, output_file_name)
    character(len=strl) :: record
    character(len=strl) :: output_file_name
    character(len=5) :: i5hex
+   character(len=4) :: i4hex
 
    ! Job title
 
@@ -349,7 +350,7 @@ subroutine output(n, x, output_file_name)
 
    if(pdb) then
       pdb_atom_line = "( t1,a6,t7,a5,t12,a10,t22,a1,t23,&
-      &i4,t27,a1,t31,f8.3,t39,f8.3,t47,&
+      &a4,t27,a1,t31,f8.3,t39,f8.3,t47,&
       &f8.3,t55,a26 )"
       crd_format='(2I10,2X,A8,2X,A8,3F20.10,2X,A8,2X,A8,F20.10)'
 
@@ -371,6 +372,11 @@ subroutine output(n, x, output_file_name)
       &'REMARK   Home-Page: ',&
       &'http://m3g.iqm.unicamp.br/packmol',/,&
       &'REMARK' )" ) title
+
+      if (hexadecimal_indices) then
+          write(30,"(a)") 'REMARK  Atom and residue indices are in hexadecimal format.'
+          write(30,"(a)") 'REMARK'
+      end if
 
       if(add_box_sides .or. using_pbc) then
          write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,&
@@ -504,14 +510,14 @@ subroutine output(n, x, output_file_name)
 
                   if(record(1:4).eq.'ATOM') then
                      write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
-                        record(12:21), write_chain, i5hex(iires),&
+                        record(12:21), write_chain, i4hex(iires),&
                         record(27:27),&
                         (xcart(icart,k), k = 1, 3),&
                         record(55:80)
                   end if
                   if(record(1:6).eq.'HETATM') then
                      write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
-                        record(12:21), write_chain, i5hex(iires),&
+                        record(12:21), write_chain, i4hex(iires),&
                         record(27:27),&
                         (xcart(icart,k), k = 1, 3),&
                         record(55:80)
@@ -614,14 +620,14 @@ subroutine output(n, x, output_file_name)
 
                if(record(1:4).eq.'ATOM') then
                   write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
-                     record(12:21), write_chain, i5hex(iires),&
+                     record(12:21), write_chain, i4hex(iires),&
                      record(27:27),&
                      (coor(idatom,k), k = 1, 3),&
                      record(55:80)
                end if
                if(record(1:6).eq.'HETATM') then
                   write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
-                     record(12:21), write_chain, i5hex(iires),&
+                     record(12:21), write_chain, i4hex(iires),&
                      record(27:27),&
                      (coor(idatom,k), k = 1, 3),&
                      record(55:80)
@@ -779,6 +785,18 @@ function i5hex(i)
       write(i5hex,"(z5)") i
    else
       write(i5hex,"(i5)") i
+   end if
+end
+
+function i4hex(i)
+   use input, only: hexadecimal_indices
+   implicit none
+   integer :: i
+   character(len=4) i4hex
+   if(hexadecimal_indices .or. i > 9999) then
+      write(i4hex,"(z4)") i
+   else
+      write(i4hex,"(i4)") i
    end if
 end
 
