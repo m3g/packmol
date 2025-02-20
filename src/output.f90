@@ -793,15 +793,9 @@ subroutine write_connect(iostream,idatom,iatom,ifirst)
    character(len=5) :: i5hex, tmp_i5hex
    character(len=strl) :: str
    if(maxcon(iatom+idatom) == 0) return
-   str = "CONECT"
-   j=7
    tmp_i5hex = i5hex(iatom+ifirst-1)
-   write(str(j:j+4),"(a5)") tmp_i5hex
-   do i = 1, maxcon(iatom+idatom)
-      j = j + 5
-      tmp_i5hex = i5hex(nconnect(iatom+idatom,i)+ifirst-1)
-      write(str(j:j+4),"(a5)") tmp_i5hex
-   end do
+   write(str,"(a7,9a5)") "CONECT", tmp_i5hex, & 
+       (i5hex(nconnect(iatom+idatom,i)+ifirst-1), i=1, maxcon(iatom+idatom))
    write(iostream,"(a)") trim(adjustl(str))
 end subroutine write_connect
 
