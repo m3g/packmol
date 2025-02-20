@@ -22,3 +22,7 @@ julia runtests.jl ./input_files/water_box.inp \
 
 # check if output files are properly generated in a failed run
 ./test_failed.sh ./input_files/water_box_failed.inp packmol.log "FORCED" 
+
+# Test connectivity
+./test_connectivity.sh 
+
