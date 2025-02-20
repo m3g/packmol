@@ -59,6 +59,7 @@ module input
    logical :: avoidoverlap
    logical :: packall
    logical :: use_short_tol
+   logical :: hexadecimal_indices
 
    logical, allocatable :: changechains(:) ! (ntype)
    logical, allocatable :: fixedoninput(:) ! (ntype)

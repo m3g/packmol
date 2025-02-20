@@ -55,7 +55,7 @@ subroutine getinp()
    packall = .false.
    use_short_tol = .false.
    crd = .false.
-
+   hexadecimal_indices = .false.
    inside_structure = .false.
 
    do i = 1, nlines
@@ -91,6 +91,8 @@ subroutine getinp()
          read(keyword(i,2),*,iostat=ioerr) writeout
          if ( ioerr /= 0 ) exit
          write(*,*) ' Output frequency: ', writeout
+      else if(keyword(i,1).eq.'hexadecimal_indices') then
+         hexadecimal_indices = .true.
       else if(keyword(i,1).eq.'maxit') then
          read(keyword(i,2),*,iostat=ioerr) maxit
          if ( ioerr /= 0 ) exit
@@ -223,6 +225,7 @@ subroutine getinp()
          keyword(i,1) /= 'nloop' .and. &
          keyword(i,1) /= 'nloop0' .and. &
          keyword(i,1) /= 'writeout' .and. &
+         keyword(i,1) /= 'hexadecimal_indices' .and. &
          keyword(i,1) /= 'writebad' .and. &
          keyword(i,1) /= 'check' .and. &
          keyword(i,1) /= 'iprint1' .and. &
