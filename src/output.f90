@@ -775,13 +775,14 @@ subroutine output(n, x, output_file_name)
 end subroutine output
 
 function i5hex(i)
+   use input, only: hexadecimal_indices
    implicit none
    integer :: i
    character(len=5) i5hex
-   if(i <= 99999) then
-      write(i5hex,"(i5)") i
-   else
+   if(hexadecimal_indices .or. i > 99999) then
       write(i5hex,"(z5)") i
+   else
+      write(i5hex,"(i5)") i
    end if
 end
 
