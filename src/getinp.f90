@@ -55,7 +55,7 @@ subroutine getinp()
    packall = .false.
    use_short_tol = .false.
    crd = .false.
-
+   hexadecimal_indices = .false.
    inside_structure = .false.
 
    do i = 1, nlines
