@@ -8,6 +8,7 @@
 #
 # Example: ./test.sh "water_box.inp" "packmol.log" "FORCED"
 #
+echo "Running failed packing test ... "
 if ! [ -f $1 ]; then
     echo "Error: input file not found: $1"
     exit 1
@@ -21,5 +22,5 @@ if ! grep -q $3 $2; then
     echo "Error: could not find $3 in $2"
     exit 1
 fi
-echo "Test $1 OK."
+echo "Failed run test $1 OK."
 exit 0
