@@ -38,7 +38,7 @@ subroutine output(n, x, output_file_name)
    character(len=8) :: crdires,crdresn,crdsegi,atmname
    character(len=strl) :: record
    character(len=strl) :: output_file_name
-   character(len=5) :: i5hex, tmp_i5hex
+   character(len=5) :: i5hex
 
    ! Job title
 
@@ -503,17 +503,15 @@ subroutine output(n, x, output_file_name)
                   ! Writing output line
 
                   if(record(1:4).eq.'ATOM') then
-                     tmp_i5hex = i5hex(i_ref_atom)
-                     write(30,pdb_atom_line) "ATOM  ", tmp_i5hex,&
-                        record(12:21), write_chain, iires,&
+                     write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
+                        record(12:21), write_chain, i5hex(iires),&
                         record(27:27),&
                         (xcart(icart,k), k = 1, 3),&
                         record(55:80)
                   end if
                   if(record(1:6).eq.'HETATM') then
-                     tmp_i5hex = i5hex(i_ref_atom)
-                     write(30,pdb_atom_line) "HETATM", tmp_i5hex,&
-                        record(12:21), write_chain, iires,&
+                     write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
+                        record(12:21), write_chain, i5hex(iires),&
                         record(27:27),&
                         (xcart(icart,k), k = 1, 3),&
                         record(55:80)
@@ -615,17 +613,15 @@ subroutine output(n, x, output_file_name)
                end if
 
                if(record(1:4).eq.'ATOM') then
-                  tmp_i5hex = i5hex(i_ref_atom)
-                  write(30,pdb_atom_line) "ATOM  ", tmp_i5hex,&
-                     record(12:21), write_chain, iires,&
+                  write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
+                     record(12:21), write_chain, i5hex(iires),&
                      record(27:27),&
                      (coor(idatom,k), k = 1, 3),&
                      record(55:80)
                end if
                if(record(1:6).eq.'HETATM') then
-                  tmp_i5hex = i5hex(i_ref_atom)
-                  write(30,pdb_atom_line) "HETATM", tmp_i5hex,&
-                     record(12:21), write_chain, iires,&
+                  write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
+                     record(12:21), write_chain, i5hex(iires),&
                      record(27:27),&
                      (coor(idatom,k), k = 1, 3),&
                      record(55:80)
