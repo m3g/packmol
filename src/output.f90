@@ -789,24 +789,33 @@ subroutine write_connect(iostream,idatom,iatom,ifirst)
    use sizes
    use input
    implicit none
-   integer :: i, j, iostream, iatom, idatom, ifirst
-   character(len=5) :: i5hex, tmp_i5hex
+   integer :: iostream, iatom, idatom, ifirst, iiat, icon
+   character(len=5) :: i5hex, idatom_i5hex, str_conat
    character(len=strl) :: str
-   if(maxcon(iatom+idatom) == 0) return
-   str = "CONECT"
-   j=7
-   tmp_i5hex = i5hex(iatom+ifirst-1)
-   write(str(j:j+4),"(a5)") tmp_i5hex
-   do i = 1, maxcon(iatom+idatom)
-      j = j + 5
-      tmp_i5hex = i5hex(nconnect(iatom+idatom,i)+ifirst-1)
-      write(str(j:j+4),"(a5)") tmp_i5hex
+   iiat = iatom + idatom
+   if(maxcon(iiat) == 0) return
+   idatom_i5hex = i5hex(iatom+ifirst-1)
+   icon = 1
+   ! start CONECT line
+   write(str, "(a7,a5)") "CONECT", idatom_i5hex
+   do 
+      str_conat = i5hex(nconnect(iiat,icon)+ifirst-1)
+      ! finish CONECT line
+      if (icon >= maxcon(iiat)) then
+         write(str, "(a,a5)") trim(str), str_conat
+         write(iostream, "(a)") trim(adjustl(str))
+         exit
+      end if
+      ! Next atom in CONECT line (for a maximum of 4, must be in increasing order)
+      if (nconnect(iiat,icon+1) > nconnect(iiat,icon) .and. mod(icon,5) /= 0) then
+         write(str, "(a,a5)") trim(str), str_conat
+      else
+         ! finish connect line
+         write(str, "(a,a5)") trim(str), str_conat
+         write(iostream, "(a)") trim(adjustl(str))
+         ! Start a new CONECT line
+         write(str, "(a7,a5)") "CONECT", idatom_i5hex
+      end if
+      icon = icon + 1
    end do
-   write(iostream,"(a)") trim(adjustl(str))
 end subroutine write_connect
-
-
-
-
-
-

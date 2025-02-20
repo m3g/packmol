@@ -290,6 +290,7 @@ subroutine getinp()
                   idatom = idatom + 1
                   amass(idatom) = 1.d0
                   maxcon(idatom) = 0
+                  nconnect(idatom,1:9) = 0
                   ! Read the index of the first atom, to adjust connectivities, if any
                   if(idfirstatom == 0) read(record(7:11),*,iostat=ioerr) idfirstatom
                   read(record,"( t31,f8.3,t39,f8.3,t47,f8.3 )",iostat=ioerr) &
@@ -332,31 +333,30 @@ subroutine getinp()
                if ( ioerr /= 0 ) exit
                if(record(1:6).eq.'CONECT') then
                   iread = 7
-                  read(record(iread:iread+4),*,iostat=ioerr) iatom
-                  iatom = iatom - idfirstatom + 1
-                  idatom = idfirst(itype) - 1 + iatom
+                  read(record(7:len(record)),*,iostat=ioerr) iatom
                   if(ioerr /= 0) then
                      write(*,*) " ERROR: Could not read atom index from CONECT line: "
                      write(*,*) trim(adjustl(record))
                      stop exit_code_input_error
                   end if
-                  iread = iread + 5
-                  read(record(iread:iread+4),*,iostat=ioerr) nconnect(idatom,1)
-                  if(ioerr /= 0) then
-                     write(*,*) " ERROR: Could not read any connection index from CONECT line: "
+                  iatom = iatom - idfirstatom + 1
+                  idatom = idfirst(itype) - 1 + iatom
+                  ! count the number of connections
+                  read(record(7:len(record)), *, iostat=ioerr)  iatom, &
+                      (nconnect(idatom, i), i=maxcon(idatom)+1, 9)
+                  if(ioerr > 0) then
+                     write(*,*) " ERROR: Error reading CONECT line: "
                      write(*,*) trim(adjustl(record))
                      stop exit_code_input_error
                   end if
-                  nconnect(idatom,1) = nconnect(idatom,1) - idfirstatom + 1
-                  maxcon(idatom) = 1
-                  do while(.true.)
-                     iread = iread + 5
-                     read(record(iread:iread+4),*,iostat=ioerr) nconnect(idatom,maxcon(idatom)+1)
-                     if(ioerr == 0) then
-                        maxcon(idatom) = maxcon(idatom) + 1
-                        nconnect(idatom,maxcon(idatom)) = nconnect(idatom,maxcon(idatom)) - idfirstatom + 1
-                     else
-                        exit
+                  do i = maxcon(idatom)+1, 9
+                     if (nconnect(idatom,i) /= 0) then
+                        nconnect(idatom, i) = nconnect(idatom, i) - idfirstatom + 1
+                     end if
+                  end do
+                  do i = 1, 9
+                     if (nconnect(idatom, i) /= 0) then
+                        maxcon(idatom) = i
                      end if
                   end do
                end if
@@ -366,7 +366,6 @@ subroutine getinp()
          end if
 
          ! Reading tinker input files
-
          if(tinker) then
             open(10,file=keyword(iline,2),status='old',iostat=ioerr)
             if ( ioerr /= 0 ) call failopen(keyword(iline,2))
