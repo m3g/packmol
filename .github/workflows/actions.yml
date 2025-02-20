@@ -12,8 +12,8 @@ jobs:
       matrix:
       # windows-latest is disabled due to cmake failure:
       # https://github.com/awvwgk/setup-fortran/issues/6
-        os: [ubuntu-22.04, macos-12]
-        gcc_version: [11, 12]
+        os: [ubuntu-latest, macOS-latest]
+        gcc_version: [13]
         compiler: ['make', 'cmake']
 
     steps:
