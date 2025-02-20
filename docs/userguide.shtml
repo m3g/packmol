@@ -1198,6 +1198,10 @@ Usage: <tt> fbins [real] </tt>
 The default value is the square root of three.
 <br><br>
 
+<li>Write all atom and residue indices in hexadecimal format (v20.16.0)<br>
+Usage: <tt>hexadecimal_indices</tt>
+<br><br>
+
 <li>Compare analytical and finite-difference gradients: This is only for
 testing purposes. Writes chkgrad.log file containing the comparison.<br>
 Usage: <tt>chkgrad</tt>
