@@ -165,26 +165,30 @@ subroutine getinp()
          read(keyword(i,3),*,iostat=ioerr) pbc_box(2)
          read(keyword(i,4),*,iostat=ioerr) pbc_box(3)
          if ( ioerr /= 0 ) exit
-         if (maxkeywords > 4 .and. trim(adjustl(keyword(i,5))) /= "none") then 
-            read(keyword(i,5),*,iostat=ioerr) pbc_box(4)
-            read(keyword(i,6),*,iostat=ioerr) pbc_box(5)
-            read(keyword(i,7),*,iostat=ioerr) pbc_box(6)
-            if ( ioerr /= 0 ) exit
+         if (maxkeywords > 4)  then
+            if (trim(adjustl(keyword(i,5))) /= "none") then 
+               read(keyword(i,5),*,iostat=ioerr) pbc_box(4)
+               read(keyword(i,6),*,iostat=ioerr) pbc_box(5)
+               read(keyword(i,7),*,iostat=ioerr) pbc_box(6)
+               if ( ioerr /= 0 ) exit
+            end if
          else 
             pbc_box(4:6) = pbc_box(1:3)
             pbc_box(1:3) = 0.0
          end if
          if ( ioerr /= 0 ) exit
          using_pbc = .true.
-         pbc_length(1:3) = pbc_box(4:6) - pbc_box(1:3)
-         if ( any(pbc_length(1:3) <= 0.0) ) then
-            write(*,*) ' ERROR: Length of PBC box must be positive in all directions, got: ', pbc_length(1:3) 
+         pbc_sides(1:3) = pbc_box(4:6) - pbc_box(1:3)
+         if ( any(pbc_sides <= 0.0) ) then
+            write(*,*) ' ERROR: Length of PBC box must be positive in all directions, got: ', &
+              pbc_sides
             write(*,*) '        Lower PBC coordinates read: ', pbc_box(1:3)
             write(*,*) '        Upper PBC coordinates read: ', pbc_box(4:6)
             stop exit_code_input_error
          end if
-         write(*,"(a, 3f8.2)") '  Periodic boundary condition activated: ', pbc_length(1), pbc_length(2), pbc_length(3)
-         write(*,"(a, 6f8.2)") '  PBC Reference box: ', pbc_box(2), pbc_box(2), pbc_box(3), pbc_box(4), pbc_box(5), pbc_box(6)
+         write(*,"(a)") '  (Pseudo)-Periodic boundary condition activated: '
+         write(*,"(a, 3f8.2)") "    Minimum coordinates: ", pbc_box(1), pbc_box(2), pbc_box(3)
+         write(*,"(a, 3f8.2)") "    Maximum coordinates: ", pbc_box(4), pbc_box(5), pbc_box(6)
       else if( keyword(i,1) /= 'tolerance' .and. &
          keyword(i,1) /= 'short_tol_dist' .and. &
          keyword(i,1) /= 'short_tol_scale' .and. &

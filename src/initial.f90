@@ -249,29 +249,26 @@ subroutine initial(n,x)
 
    write(*,dash3_line)
    write(*,*) ' Rescaling maximum and minimum coordinates... '
-   do i = 1, 3
-      sizemin(i) = 1.d20
-      sizemax(i) = -1.d20
-   end do
-
-   icart = 0
-   do itype = 1, ntfix
-      do imol = 1, nmols(itype)
-         do iatom = 1, natoms(itype)
-            icart = icart + 1
-            sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
-            sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
-            sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
-            sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
-            sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
-            sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
+   if (using_pbc) then
+      sizemin = pbc_box(1:3)
+      sizemax = pbc_box(4:6)
+   else
+      sizemin(1:3) = 1.d20
+      sizemax(1:3) = -1.d20
+      icart = 0
+      do itype = 1, ntfix
+         do imol = 1, nmols(itype)
+            do iatom = 1, natoms(itype)
+               icart = icart + 1
+               sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
+               sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
+               sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
+               sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
+               sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
+               sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
+            end do
          end do
       end do
-   end do
-
-   if (using_pbc) then
-      sizemin = 0.0d0
-      sizemax = pbc_length
    end if
 
    ! Computing the size of the patches
