@@ -1,0 +1,20 @@
+#
+# Protein solvated by water and ions
+#
+
+tolerance 2.0
+pbc 30.0 30.0 30.0
+
+structure ./structure_files/protein.pdb
+  resnumbers 0
+  number 1 
+  fixed 20. 20. 20. 0. 0. 0.
+  centerofmass
+end structure
+
+structure ./structure_files/water.pdb
+  number 2000 
+  resnumbers 2
+end structure
+
+output output.pdb
