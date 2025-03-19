@@ -13,10 +13,10 @@ module pbc
 
 contains
 
-   elemental double precision function delta_vector(v2,v1,using_pbc,pbc_sides)
+   elemental double precision function delta_vector(v1,v2,using_pbc,pbc_sides)
       logical, intent(in) :: using_pbc
       double precision, intent(in) :: v1, v2, pbc_sides
-      delta_vector = v2 - v1
+      delta_vector = v1 - v2
       if (using_pbc) then
          delta_vector = mod(delta_vector, pbc_sides)
          if (delta_vector >= pbc_sides / 2) then
