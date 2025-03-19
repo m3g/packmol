@@ -181,11 +181,11 @@ program packmol
       fixedoninput(itype) = .false.
     end if
   end do
-  ntfix = ntype
+  ntype_with_fixed = ntype
   ntype = ntemp     
 
-  do i = 1, ntfix - ntype 
-    do itype = 1, ntfix - 1
+  do i = 1, ntype_with_fixed - ntype 
+    do itype = 1, ntype_with_fixed - 1
       if(fixed(itype)) then
         record = name(itype)
         restart_to_temp = restart_to(itype)
@@ -251,11 +251,11 @@ program packmol
   !
   ! ntype: 1...ntype (counter for the number of free structures)
   !
-  ! ntfix: 1...ntype...ntfix (counter for the total number of structures)
+  ! ntype_with_fixed: 1...ntype...ntype_with_fixed (counter for the total number of structures)
   !
 
   ntmol = 0
-  do itype = 1, ntfix
+  do itype = 1, ntype_with_fixed
     ntmol = ntmol + nmols(itype)
   end do
   ntotmol = 0 
@@ -270,13 +270,13 @@ program packmol
 
   ! Computing the total number of fixed atoms
 
-  natfix = 0
+  nfixedat = 0
   if(fix) then
-    do iftype = ntype + 1, ntfix
-      natfix = natfix + natoms(iftype)
+    do iftype = ntype + 1, ntype_with_fixed
+      nfixedat = nfixedat + natoms(iftype)
     end do
   end if       
-  write(*,*) ' Total number of fixed atoms: ', natfix
+  write(*,*) ' Total number of fixed atoms: ', nfixedat
 
   ! Setting the array that contains the restrictions per atom
 
@@ -441,7 +441,7 @@ program packmol
   ! but not atom-specific, first
 
   icart = 0
-  do itype = 1, ntfix
+  do itype = 1, ntype_with_fixed
     iline = linestrut(itype,1)
     iline_atoms = 0 
     do while( iline <= linestrut(itype,2) )
@@ -537,7 +537,7 @@ program packmol
   ! the general radius defined for the molecule
 
   icart = 0
-  do itype = 1, ntfix
+  do itype = 1, ntype_with_fixed
     iline = linestrut(itype,1)
     iline_atoms = 0 
     do while( iline <= linestrut(itype,2) )

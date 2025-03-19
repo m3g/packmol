@@ -107,7 +107,7 @@ subroutine output(n, x, output_file_name)
       icart = 0
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             do imol = 1, nmols(i_not_fixed)
@@ -192,7 +192,7 @@ subroutine output(n, x, output_file_name)
       ilugan = ntotmol*3
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             record = name(i_not_fixed)
@@ -397,7 +397,7 @@ subroutine output(n, x, output_file_name)
       i_not_fixed = 0
       i_fixed = ntype
       irescount = 1
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
 
@@ -657,7 +657,7 @@ subroutine output(n, x, output_file_name)
       i_ref_atom = 0
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             idatom = idfirst(i_not_fixed) - 1
@@ -711,7 +711,7 @@ subroutine output(n, x, output_file_name)
       i_not_fixed = 0
       i_fixed = ntype
 
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
 
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1

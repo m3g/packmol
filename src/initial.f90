@@ -12,7 +12,7 @@ subroutine initial(n,x)
    use exit_codes
    use sizes
    use compute_data
-   use input, only : randini, ntfix, fix, moldy, chkgrad, avoidoverlap,&
+   use input, only : randini, ntype_with_fixed, fix, moldy, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type
    use usegencan
@@ -48,7 +48,7 @@ subroutine initial(n,x)
 
    ! Initialize the comptype logical array
 
-   do i = 1, ntfix
+   do i = 1, ntype_with_fixed
       comptype(i) = .true.
    end do
 
@@ -164,8 +164,8 @@ subroutine initial(n,x)
       end do
    end do
    if(fix) then
-      icart = ntotat - natfix
-      do iftype = ntype + 1, ntfix
+      icart = ntotat - nfixedat
+      do iftype = ntype + 1, ntype_with_fixed
          idfatom = idfirst(iftype) - 1
          do ifatom = 1, natoms(iftype)
             idfatom = idfatom + 1
@@ -251,7 +251,7 @@ subroutine initial(n,x)
    sizemin(1:3) = 1.d20
    sizemax(1:3) = -1.d20
    icart = 0
-   do itype = 1, ntfix
+   do itype = 1, ntype_with_fixed
       do imol = 1, nmols(itype)
          do iatom = 1, natoms(itype)
             icart = icart + 1
@@ -264,8 +264,18 @@ subroutine initial(n,x)
          end do
       end do
    end do
-   write(*,*) " Minimum coordinates found: ", sizemin(1:3)
-   write(*,*) " Maximum coordinates found: ", sizemax(1:3)
+   write(*,*) ' Mininum and maximum coordinates after constraint fitting: '
+   write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
+   write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
+   write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
+   if (.not. using_pbc) then
+      sizemin(1) = sizemin(1) - 1.1d0*radmax
+      sizemin(2) = sizemin(2) - 1.1d0*radmax
+      sizemin(3) = sizemin(3) - 1.1d0*radmax
+      sizemax(1) = sizemax(1) + 1.1d0*radmax
+      sizemax(2) = sizemax(2) + 1.1d0*radmax
+      sizemax(3) = sizemax(3) + 1.1d0*radmax
+   end if
 
    ! Computing the size of the patches
    write(*,*) ' Computing size of patches... '
@@ -278,7 +288,11 @@ subroutine initial(n,x)
       ncells(i) = nb
       ncells2(i) = ncells(i) + 2
    end do
-
+   write(*,*) ' Number of cells in each direction and cell sides: '
+   write(*,*) '  x: ', ncells(1), ' cells of size ', cell_length(1)
+   write(*,*) '  y: ', ncells(2), ' cells of size ', cell_length(2)
+   write(*,*) '  z: ', ncells(3), ' cells of size ', cell_length(3)
+   write(*,"(a, 3(f10.5))") '  Cell-system length: ', system_length(1:3) 
    ! Reseting latomfix array
    do i = 0, nbp + 1
       do j = 0, nbp + 1
@@ -292,25 +306,15 @@ subroutine initial(n,x)
    end do
 
    ! If there are fixed molecules, add them permanently to the latomfix array
-
-   write(*,*) ' Add fixed molecules to permanent arrays... '
    if(fix) then
-      icart = ntotat - natfix
-      do iftype = ntype + 1, ntfix
+      write(*,*) ' Add fixed molecules to permanent arrays... '
+      icart = ntotat - nfixedat
+      do iftype = ntype + 1, ntype_with_fixed
          idfatom = idfirst(iftype) - 1
          do ifatom = 1, natoms(iftype)
             idfatom = idfatom + 1
             icart = icart + 1
-            if (using_pbc) then
-               if (xcart(icart, 1) < sizemin(1) .or. xcart(icart, 1) > sizemax(1) .or.&
-                   xcart(icart, 2) < sizemin(2) .or. xcart(icart, 2) > sizemax(2) .or.&
-                   xcart(icart, 3) < sizemin(3) .or. xcart(icart, 3) > sizemax(3)) then
-                  write(*,*) ' ERROR: Fixed molecule ', ifatom, ' of type ', iftype, ' is outside of the periodic the box.'
-                  stop exit_code_input_error
-               end if
-            end if
-            call seticell(xcart(icart,1),xcart(icart,2),xcart(icart,3),&
-               sizemin,cell_length,ncells,ixcell,iycell,izcell)
+            call seticell(xcart(icart,1),xcart(icart,2),xcart(icart,3),ixcell,iycell,izcell)
             latomnext(icart) = latomfix(ixcell,iycell,izcell)
             latomfix(ixcell,iycell,izcell) = icart
             latomfirst(ixcell,iycell,izcell) = icart
@@ -419,8 +423,7 @@ subroutine initial(n,x)
                x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
                x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
                if(fix) then
-                  call seticell(x(ilubar+1),x(ilubar+2),x(ilubar+3),&
-                     sizemin,cell_length,ncells,ixcell,iycell,izcell)
+                  call seticell(x(ilubar+1),x(ilubar+2),x(ilubar+3),ixcell,iycell,izcell)
                   if(hasfixed(ixcell,  iycell,  izcell  ).or.&
                      hasfixed(ixcell+1,iycell,  izcell  ).or.&
                      hasfixed(ixcell,  iycell+1,izcell  ).or.&

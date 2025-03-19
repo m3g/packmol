@@ -7,7 +7,7 @@ module compute_data
 
    use sizes
 
-   integer :: ntotmol, ntype, natfix, ntotat
+   integer :: ntotmol, ntype, nfixedat, ntotat
    integer :: ncells(3), ncells2(3)
 
    integer, allocatable :: nmols(:) ! (ntype)

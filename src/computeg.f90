@@ -86,8 +86,7 @@ subroutine computeg(n,x,g)
                end do
 
                if(.not.init1) then
-                  call seticell(xcart(icart,1), xcart(icart,2), xcart(icart,3), &
-                     sizemin, cell_length, ncells, ixcell, iycell, izcell)
+                  call seticell(xcart(icart,1), xcart(icart,2), xcart(icart,3), ixcell, iycell, izcell)
 
                   ! Atom linked list
 

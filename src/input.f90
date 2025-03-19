@@ -16,7 +16,7 @@ module input
    integer :: seed
    integer :: nloop, nloop_all
    integer :: writeout
-   integer :: ntfix
+   integer :: ntype_with_fixed
    integer :: ntcon(9)
 
    integer, allocatable :: nconnect(:,:)  ! (ntotat,9)

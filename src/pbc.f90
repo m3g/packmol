@@ -15,7 +15,8 @@ contains
 
    elemental double precision function delta_vector(v1,v2,system_length)
       double precision, intent(in) :: v1, v2, system_length
-      delta_vector = v1 - v2 - system_length * nint((v1 - v2)/system_length)
+      delta_vector = v1 - v2
+      delta_vector =  delta_vector - system_length * nint(delta_vector/system_length)
    end function delta_vector
 
    integer function cell_ind(icell, ncells)
