@@ -5,15 +5,14 @@
 !
 ! Subroutine seticell: set cell index for given coordinates
 !
-
 subroutine seticell(x,y,z,ixcell,iycell,izcell)
    use compute_data, only : system_length, ncells, cell_length, sizemin
    implicit none
    double precision :: x, y, z, xtemp, ytemp, ztemp
    integer :: ixcell, iycell, izcell
-   xtemp = x - floor((x - sizemin(1))/ system_length(1)) * system_length(1)
-   ytemp = y - floor((y - sizemin(2))/ system_length(2)) * system_length(2)
-   ztemp = z - floor((z - sizemin(3))/ system_length(3)) * system_length(3)
+   xtemp = mod((x - sizemin(1)) / system_length(1)) * system_length(1)
+   ytemp = mod((y - sizemin(2)) / system_length(2)) * system_length(2)
+   ztemp = mod((z - sizemin(3)) / system_length(3)) * system_length(3)
    ixcell = int(xtemp/cell_length(1)) + 1
    iycell = int(ytemp/cell_length(2)) + 1
    izcell = int(ztemp/cell_length(3)) + 1
