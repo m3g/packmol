@@ -50,7 +50,7 @@ subroutine gparc(icart,firstjcart)
       ! Otherwise, compute distance and evaluate function for this pair
       !
       tol = (radius(icart)+radius(jcart))**2
-      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), using_pbc, pbc_sides)
+      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_sides)
       datom = (vdiff(1))**2 + (vdiff(2))**2 + (vdiff(3))**2
       if( datom < tol ) then
          dtemp = fscale(icart)*fscale(jcart) * 4.d0 * (datom - tol)
