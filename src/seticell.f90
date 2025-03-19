@@ -20,9 +20,9 @@ subroutine seticell(x,y,z,ixcell,iycell,izcell)
    implicit none
    double precision :: x, y, z, xtemp, ytemp, ztemp
    integer :: ixcell, iycell, izcell
-   xtemp = modulo((x - sizemin(1)) , system_length(1))
-   ytemp = modulo((y - sizemin(2)) , system_length(2))
-   ztemp = modulo((z - sizemin(3)) , system_length(3))
+   xtemp = modulo((x - sizemin(1)), system_length(1))
+   ytemp = modulo((y - sizemin(2)), system_length(2))
+   ztemp = modulo((z - sizemin(3)), system_length(3))
    ixcell = int(xtemp/cell_length(1)) + 1
    iycell = int(ytemp/cell_length(2)) + 1
    izcell = int(ztemp/cell_length(3)) + 1

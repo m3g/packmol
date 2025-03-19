@@ -69,8 +69,7 @@ subroutine movebad(n,x,fx,movebadprint)
                fdist_mol = dmax1(fdist_mol,fdist_atom(icart))
                frest_mol = dmax1(frest_mol,frest_atom(icart))
             end do
-            if(fdist_mol > precision .or. &
-               frest_mol > precision ) then
+            if(fdist_mol > precision .or. frest_mol > precision ) then
                hasbad = .true.
                nbad = nbad + 1
                fmol(imol) = fdist_mol + frest_mol
