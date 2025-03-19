@@ -3,12 +3,12 @@
 #
 
 tolerance 2.0
-pbc 70.0 70.0 70.0
+pbc -25 -25 -25 45 45 45
 
 structure ./structure_files/protein.pdb
   resnumbers 0
   number 1 
-  fixed 20. 20. 20. 0. 0. 0.
+  fixed 10. 3. 19. 0. 0. 0.
   centerofmass
 end structure
 

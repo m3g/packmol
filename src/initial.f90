@@ -177,8 +177,11 @@ subroutine initial(n,x)
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3
-                  if (xcart(icart, i) < pbc_box(i) .or. xcart(icart, 1) > pbc_box(i+3)) then
-                     write(*,*) "ERROR: Fixed molecule are outside the PBC box."
+                  if (xcart(icart, i) < pbc_box(i) .or. xcart(icart, i) > pbc_box(i+3)) then
+                     write(*,*) "ERROR: Fixed molecule are outside the PBC box:"
+                     write(*,*) "   Atom: ", ifatom, " of molecule: ", iftype, " - coordinate: ", i
+                     write(*,*) "  ", xcart(icart, i), " not in [", pbc_box(i), ", ", pbc_box(i+3), "]"
+                     write(*,*) "(after translating/rotation the fixed molecule with the given orientation)"
                      stop exit_code_input_error
                   end if
                end do
@@ -260,6 +263,7 @@ subroutine initial(n,x)
    sizemin(1:3) = 1.d20
    sizemax(1:3) = -1.d20
    ! Maximum and minimum coordinates of fixed molecules
+   icart = ntotat - nfixedat
    do itype = ntype + 1, ntype_with_fixed
       do imol = 1, nmols(itype)
          do iatom = 1, natoms(itype)
