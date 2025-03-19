@@ -174,6 +174,15 @@ subroutine initial(n,x)
             xcart(icart,2) = coor(idfatom,2)
             xcart(icart,3) = coor(idfatom,3)
             fixedatom(icart) = .true.
+            ! Check if fixed molecules are compatible with PBC given
+            if (using_pbc) then
+               do i = 1, 3
+                  if (xcart(icart, i) < pbc_box(i) .or. xcart(icart, 1) > pbc_box(i+3)) then
+                     write(*,*) "ERROR: Fixed molecule are outside the PBC box."
+                     stop exit_code_input_error
+                  end if
+               end do
+            end if
          end do
       end do
    end if
@@ -250,8 +259,8 @@ subroutine initial(n,x)
    write(*,*) ' Rescaling maximum and minimum coordinates... '
    sizemin(1:3) = 1.d20
    sizemax(1:3) = -1.d20
-   icart = 0
-   do itype = 1, ntype_with_fixed
+   ! Maximum and minimum coordinates of fixed molecules
+   do itype = ntype + 1, ntype_with_fixed
       do imol = 1, nmols(itype)
          do iatom = 1, natoms(itype)
             icart = icart + 1
@@ -264,6 +273,27 @@ subroutine initial(n,x)
          end do
       end do
    end do
+   if (using_pbc) then
+      do i = 1, 3
+         sizemin(i) = pbc_box(i)
+         sizemax(i) = pbc_box(i+3)
+      end do
+   else
+      icart = 0
+      do itype = 1, ntype
+         do imol = 1, nmols(itype)
+            do iatom = 1, natoms(itype)
+               icart = icart + 1
+               sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
+               sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
+               sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
+               sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
+               sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
+               sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
+            end do
+         end do
+      end do
+   end if
    write(*,*) ' Mininum and maximum coordinates after constraint fitting: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
