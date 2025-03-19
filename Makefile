@@ -18,7 +18,7 @@ FORTRAN=/usr/bin/gfortran
 #
 # Change the flags of the compilation if you want:
 #
-FLAGS= -O3 --fast-math -march=native -funroll-loops
+FLAGS= -O2 -march=native -funroll-loops
 SRCDIR= src
 MAINDIR= app 
 ###################################################################
