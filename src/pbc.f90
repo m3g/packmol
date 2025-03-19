@@ -9,29 +9,19 @@ module pbc
    double precision, public :: pbc_box(6), pbc_sides(3)
    logical, public :: using_pbc = .false.
 
-   public delta_vector, idx_box
+   public delta_vector, cell_ind
 
 contains
 
-   elemental double precision function delta_vector(v1,v2,pbc_sides)
-      double precision, intent(in) :: v1, v2, pbc_sides
-      delta_vector = v1 - v2
-      if (using_pbc) then
-         delta_vector = mod(delta_vector, pbc_sides)
-         if (delta_vector >= pbc_sides / 2) then
-            delta_vector = pbc_sides - delta_vector
-         end if
-      end if
+   elemental double precision function delta_vector(v1,v2,system_length)
+      double precision, intent(in) :: v1, v2, system_length
+      delta_vector = v1 - v2 - system_length * nint((v1 - v2)/system_length)
    end function delta_vector
 
-   integer function idx_box(ibox, nbox)
-      integer :: ibox, nbox
-      if (using_pbc) then
-         idx_box = modulo(ibox - 1 + nbox, nbox) + 1
-      else
-         idx_box = ibox
-      end if
-   end function idx_box
+   integer function cell_ind(icell, ncells)
+      integer :: icell, ncells
+      cell_ind = modulo(icell - 1 + ncells, ncells) + 1
+   end function cell_ind
 
 end module pbc
 

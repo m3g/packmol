@@ -66,10 +66,10 @@ oall = cenmass.o \
        comparegrad.o \
        packmol.o \
        polartocart.o \
-       resetboxes.o \
+       resetcells.o \
        tobar.o \
        setijk.o \
-       setibox.o \
+       seticell.o \
        restmol.o \
        swaptype.o \
        swaptypemod.o \
@@ -173,14 +173,14 @@ packmol.o : app/packmol.f90 $(modules)
 	@$(FORTRAN) $(FLAGS) -c app/packmol.f90
 polartocart.o : $(SRCDIR)/polartocart.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/polartocart.f90
-resetboxes.o : $(SRCDIR)/resetboxes.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/resetboxes.f90
+resetcells.o : $(SRCDIR)/resetcells.f90 $(modules)   
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/resetcells.f90
 tobar.o : $(SRCDIR)/tobar.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/tobar.f90
 setijk.o : $(SRCDIR)/setijk.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/setijk.f90
-setibox.o : $(SRCDIR)/setibox.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/setibox.f90
+seticell.o : $(SRCDIR)/seticell.f90 $(modules)   
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/seticell.f90
 restmol.o : $(SRCDIR)/restmol.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/restmol.f90
 swaptype.o : $(SRCDIR)/swaptype.f90 $(modules)   

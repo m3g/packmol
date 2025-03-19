@@ -171,6 +171,9 @@ subroutine getinp()
                read(keyword(i,6),*,iostat=ioerr) pbc_box(5)
                read(keyword(i,7),*,iostat=ioerr) pbc_box(6)
                if ( ioerr /= 0 ) exit
+            else
+               pbc_box(4:6) = pbc_box(1:3)
+               pbc_box(1:3) = 0.0
             end if
          else 
             pbc_box(4:6) = pbc_box(1:3)
@@ -186,7 +189,7 @@ subroutine getinp()
             write(*,*) '        Upper PBC coordinates read: ', pbc_box(4:6)
             stop exit_code_input_error
          end if
-         write(*,"(a)") '  (Pseudo)-Periodic boundary condition activated: '
+         write(*,"(a)") '  Periodic boundary condition activated: '
          write(*,"(a, 3f8.2)") "    Minimum coordinates: ", pbc_box(1), pbc_box(2), pbc_box(3)
          write(*,"(a, 3f8.2)") "    Maximum coordinates: ", pbc_box(4), pbc_box(5), pbc_box(6)
       else if( keyword(i,1) /= 'tolerance' .and. &
@@ -761,12 +764,12 @@ subroutine getinp()
       irest = irest + 1
       irestline(irest) = -1
       ityperest(irest) = 3
-      restpars(irest,1) = pbc_box(1) - dism/2
-      restpars(irest,2) = pbc_box(2) - dism/2
-      restpars(irest,3) = pbc_box(3) - dism/2
-      restpars(irest,4) = pbc_box(4) + dism/2
-      restpars(irest,5) = pbc_box(5) + dism/2
-      restpars(irest,6) = pbc_box(6) + dism/2
+      restpars(irest,1) = pbc_box(1)
+      restpars(irest,2) = pbc_box(2)
+      restpars(irest,3) = pbc_box(3)
+      restpars(irest,4) = pbc_box(4)
+      restpars(irest,5) = pbc_box(5)
+      restpars(irest,6) = pbc_box(6)
       write(*,*) " PBC on: We automatically add a constraint for non-fixed atoms:"
       write(*,"(a, 6f8.2)") "  -> inside box ", restpars(irest,1), restpars(irest,2), restpars(irest,3),&
          restpars(irest,4), restpars(irest,5), restpars(irest,6)

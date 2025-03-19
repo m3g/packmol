@@ -20,11 +20,11 @@ subroutine initial(n,x)
    use pbc
    implicit none
    integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
-      imol, ntry, nb, iboxx, iboxy, iboxz, ifatom, &
+      imol, ntry, nb, ixcell, iycell, izcell, ifatom, &
       idfatom, iftype, jatom, ioerr
 
    double precision :: x(n), cmx, cmy, beta, gamma, theta, &
-      cmz, fx, xlength, dbox, rnd, &
+      cmz, fx, cell_side, rnd, &
       radmax, v1(3), v2(3), v3(3), xbar, ybar, zbar
    double precision, parameter :: twopi = 8.d0*datan(1.d0)
 
@@ -44,7 +44,7 @@ subroutine initial(n,x)
    ! Default status of the function evaluation
 
    init1 = .false.
-   lboxfirst = 0
+   lcellfirst = 0
 
    ! Initialize the comptype logical array
 
@@ -83,7 +83,6 @@ subroutine initial(n,x)
    ! Maximum size of the system: if you system is very large (about
    ! 80 nm wide), increase the sidemax parameter.
    ! Otherwise, the packing can be slow and unsucesful
-
    cmxmin(1) = -sidemax
    cmymin(1) = -sidemax
    cmzmin(1) = -sidemax
@@ -245,47 +244,42 @@ subroutine initial(n,x)
    end do
    init1 = .false.
 
-   ! Rescaling sizemin and sizemax in order to build the patch of boxes
+   ! Rescaling sizemin and sizemax in order to build the patch of cells
 
    write(*,dash3_line)
    write(*,*) ' Rescaling maximum and minimum coordinates... '
-   if (using_pbc) then
-      sizemin = pbc_box(1:3)
-      sizemax = pbc_box(4:6)
-   else
-      sizemin(1:3) = 1.d20
-      sizemax(1:3) = -1.d20
-      icart = 0
-      do itype = 1, ntfix
-         do imol = 1, nmols(itype)
-            do iatom = 1, natoms(itype)
-               icart = icart + 1
-               sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
-               sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
-               sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
-               sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
-               sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
-               sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
-            end do
+   sizemin(1:3) = 1.d20
+   sizemax(1:3) = -1.d20
+   icart = 0
+   do itype = 1, ntfix
+      do imol = 1, nmols(itype)
+         do iatom = 1, natoms(itype)
+            icart = icart + 1
+            sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
+            sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
+            sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
+            sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
+            sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
+            sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
          end do
       end do
-   end if
+   end do
+   write(*,*) " Minimum coordinates found: ", sizemin(1:3)
+   write(*,*) " Maximum coordinates found: ", sizemax(1:3)
 
    ! Computing the size of the patches
-
    write(*,*) ' Computing size of patches... '
-   dbox = discale * radmax + 0.01d0 * radmax
+   cell_side = discale * radmax + 0.01d0 * radmax
    do i = 1, 3
-      xlength = sizemax(i) - sizemin(i)
-      nb = int(xlength/dbox + 1.d0)
+      system_length(i) = sizemax(i) - sizemin(i)
+      nb = int(system_length(i)/cell_side + 1.d0)
       if(nb.gt.nbp) nb = nbp
-      boxl(i) = dmax1(xlength/dfloat(nb),dbox)
-      nboxes(i) = nb
-      nb2(i) = nboxes(i) + 2
+      cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
+      ncells(i) = nb
+      ncells2(i) = ncells(i) + 2
    end do
 
    ! Reseting latomfix array
-
    do i = 0, nbp + 1
       do j = 0, nbp + 1
          do k = 0, nbp + 1
@@ -307,14 +301,22 @@ subroutine initial(n,x)
          do ifatom = 1, natoms(iftype)
             idfatom = idfatom + 1
             icart = icart + 1
-            call setibox(xcart(icart,1),xcart(icart,2),xcart(icart,3),&
-               sizemin,boxl,nboxes,iboxx,iboxy,iboxz)
-            latomnext(icart) = latomfix(iboxx,iboxy,iboxz)
-            latomfix(iboxx,iboxy,iboxz) = icart
-            latomfirst(iboxx,iboxy,iboxz) = icart
+            if (using_pbc) then
+               if (xcart(icart, 1) < sizemin(1) .or. xcart(icart, 1) > sizemax(1) .or.&
+                   xcart(icart, 2) < sizemin(2) .or. xcart(icart, 2) > sizemax(2) .or.&
+                   xcart(icart, 3) < sizemin(3) .or. xcart(icart, 3) > sizemax(3)) then
+                  write(*,*) ' ERROR: Fixed molecule ', ifatom, ' of type ', iftype, ' is outside of the periodic the box.'
+                  stop exit_code_input_error
+               end if
+            end if
+            call seticell(xcart(icart,1),xcart(icart,2),xcart(icart,3),&
+               sizemin,cell_length,ncells,ixcell,iycell,izcell)
+            latomnext(icart) = latomfix(ixcell,iycell,izcell)
+            latomfix(ixcell,iycell,izcell) = icart
+            latomfirst(ixcell,iycell,izcell) = icart
             ibtype(icart) = iftype
             ibmol(icart) = 1
-            hasfixed(iboxx,iboxy,iboxz) = .true.
+            hasfixed(ixcell,iycell,izcell) = .true.
          end do
       end do
    end if
@@ -417,35 +419,35 @@ subroutine initial(n,x)
                x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
                x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
                if(fix) then
-                  call setibox(x(ilubar+1),x(ilubar+2),x(ilubar+3),&
-                     sizemin,boxl,nboxes,iboxx,iboxy,iboxz)
-                  if(hasfixed(iboxx,  iboxy,  iboxz  ).or.&
-                     hasfixed(iboxx+1,iboxy,  iboxz  ).or.&
-                     hasfixed(iboxx,  iboxy+1,iboxz  ).or.&
-                     hasfixed(iboxx,  iboxy,  iboxz+1).or.&
-                     hasfixed(iboxx-1,iboxy,  iboxz  ).or.&
-                     hasfixed(iboxx,  iboxy-1,iboxz  ).or.&
-                     hasfixed(iboxx,  iboxy,  iboxz-1).or.&
-                     hasfixed(iboxx+1,iboxy+1,iboxz  ).or.&
-                     hasfixed(iboxx+1,iboxy,  iboxz+1).or.&
-                     hasfixed(iboxx+1,iboxy-1,iboxz  ).or.&
-                     hasfixed(iboxx+1,iboxy,  iboxz-1).or.&
-                     hasfixed(iboxx,  iboxy+1,iboxz+1).or.&
-                     hasfixed(iboxx,  iboxy+1,iboxz-1).or.&
-                     hasfixed(iboxx,  iboxy-1,iboxz+1).or.&
-                     hasfixed(iboxx,  iboxy-1,iboxz-1).or.&
-                     hasfixed(iboxx-1,iboxy+1,iboxz  ).or.&
-                     hasfixed(iboxx-1,iboxy,  iboxz+1).or.&
-                     hasfixed(iboxx-1,iboxy-1,iboxz  ).or.&
-                     hasfixed(iboxx-1,iboxy,  iboxz-1).or.&
-                     hasfixed(iboxx+1,iboxy+1,iboxz+1).or.&
-                     hasfixed(iboxx+1,iboxy+1,iboxz-1).or.&
-                     hasfixed(iboxx+1,iboxy-1,iboxz+1).or.&
-                     hasfixed(iboxx+1,iboxy-1,iboxz-1).or.&
-                     hasfixed(iboxx-1,iboxy+1,iboxz+1).or.&
-                     hasfixed(iboxx-1,iboxy+1,iboxz-1).or.&
-                     hasfixed(iboxx-1,iboxy-1,iboxz+1).or.&
-                     hasfixed(iboxx-1,iboxy-1,iboxz-1)) then
+                  call seticell(x(ilubar+1),x(ilubar+2),x(ilubar+3),&
+                     sizemin,cell_length,ncells,ixcell,iycell,izcell)
+                  if(hasfixed(ixcell,  iycell,  izcell  ).or.&
+                     hasfixed(ixcell+1,iycell,  izcell  ).or.&
+                     hasfixed(ixcell,  iycell+1,izcell  ).or.&
+                     hasfixed(ixcell,  iycell,  izcell+1).or.&
+                     hasfixed(ixcell-1,iycell,  izcell  ).or.&
+                     hasfixed(ixcell,  iycell-1,izcell  ).or.&
+                     hasfixed(ixcell,  iycell,  izcell-1).or.&
+                     hasfixed(ixcell+1,iycell+1,izcell  ).or.&
+                     hasfixed(ixcell+1,iycell,  izcell+1).or.&
+                     hasfixed(ixcell+1,iycell-1,izcell  ).or.&
+                     hasfixed(ixcell+1,iycell,  izcell-1).or.&
+                     hasfixed(ixcell,  iycell+1,izcell+1).or.&
+                     hasfixed(ixcell,  iycell+1,izcell-1).or.&
+                     hasfixed(ixcell,  iycell-1,izcell+1).or.&
+                     hasfixed(ixcell,  iycell-1,izcell-1).or.&
+                     hasfixed(ixcell-1,iycell+1,izcell  ).or.&
+                     hasfixed(ixcell-1,iycell,  izcell+1).or.&
+                     hasfixed(ixcell-1,iycell-1,izcell  ).or.&
+                     hasfixed(ixcell-1,iycell,  izcell-1).or.&
+                     hasfixed(ixcell+1,iycell+1,izcell+1).or.&
+                     hasfixed(ixcell+1,iycell+1,izcell-1).or.&
+                     hasfixed(ixcell+1,iycell-1,izcell+1).or.&
+                     hasfixed(ixcell+1,iycell-1,izcell-1).or.&
+                     hasfixed(ixcell-1,iycell+1,izcell+1).or.&
+                     hasfixed(ixcell-1,iycell+1,izcell-1).or.&
+                     hasfixed(ixcell-1,iycell-1,izcell+1).or.&
+                     hasfixed(ixcell-1,iycell-1,izcell-1)) then
                      overlap = .true.
                   else
                      overlap = .false.
@@ -492,14 +494,14 @@ subroutine initial(n,x)
    ! Compare analytical and finite-difference gradients
 
    if(chkgrad) then
-      dbox = discale * radmax + 0.01d0 * radmax
+      cell_side = discale * radmax + 0.01d0 * radmax
       do i = 1, 3
-         xlength = sizemax(i) - sizemin(i)
-         nb = int(xlength/dbox + 1.d0)
+         system_length(i) = sizemax(i) - sizemin(i)
+         nb = int(system_length(i)/cell_side + 1.d0)
          if(nb.gt.nbp) nb = nbp
-         boxl(i) = dmax1(xlength/dfloat(nb),dbox)
-         nboxes(i) = nb
-         nb2(i) = nboxes(i) + 2
+         cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
+         ncells(i) = nb
+         ncells2(i) = ncells(i) + 2
       end do
       call comparegrad(n,x)
       stop

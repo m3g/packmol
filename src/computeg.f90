@@ -17,7 +17,7 @@ subroutine computeg(n,x,g)
    integer :: n
    integer :: idatom, iatom, irest
    integer :: i, j, k, ilubar, ilugan, icart, itype, imol
-   integer :: ibox, iboxx, iboxy, iboxz
+   integer :: icell, ixcell, iycell, izcell
    integer :: k1, k2
    integer :: iratcount
 
@@ -37,9 +37,9 @@ subroutine computeg(n,x,g)
       end do
    end do
 
-   ! Reset boxes
+   ! Reset cells
 
-   if(.not.init1) call resetboxes()
+   if(.not.init1) call resetcells()
 
    ! Transform baricenter and angles into cartesian coordinates
 
@@ -86,39 +86,39 @@ subroutine computeg(n,x,g)
                end do
 
                if(.not.init1) then
-                  call setibox(xcart(icart,1), xcart(icart,2), xcart(icart,3), &
-                     sizemin, boxl, nboxes, iboxx, iboxy, iboxz)
+                  call seticell(xcart(icart,1), xcart(icart,2), xcart(icart,3), &
+                     sizemin, cell_length, ncells, ixcell, iycell, izcell)
 
                   ! Atom linked list
 
-                  latomnext(icart) = latomfirst(iboxx,iboxy,iboxz)
-                  latomfirst(iboxx,iboxy,iboxz) = icart
+                  latomnext(icart) = latomfirst(ixcell,iycell,izcell)
+                  latomfirst(ixcell,iycell,izcell) = icart
 
-                  ! Box with atoms linked list
+                  ! cell with atoms linked list
 
-                  if ( .not. hasfree(iboxx,iboxy,iboxz) ) then
-                     hasfree(iboxx,iboxy,iboxz) = .true.
-                     call ijk_to_ibox(iboxx,iboxy,iboxz,ibox)
-                     lboxnext(ibox) = lboxfirst
-                     lboxfirst = ibox
+                  if ( .not. hasfree(ixcell,iycell,izcell) ) then
+                     hasfree(ixcell,iycell,izcell) = .true.
+                     call ijk_to_icell(ixcell,iycell,izcell,icell)
+                     lcellnext(icell) = lcellfirst
+                     lcellfirst = icell
 
-                     ! Add boxes with fixed atoms which are vicinal to this box, and are behind
+                     ! Add cells with fixed atoms which are vicinal to this cell, and are behind
                      if ( fix ) then
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,iboxz)
-                        call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),iboxz)
-                        call add_box_behind(iboxx,iboxy,idx_box(iboxz-1, nboxes(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,izcell)
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),izcell)
+                        call add_cell_behind(ixcell,iycell,cell_ind(izcell-1, ncells(3)))
 
-                        call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                        call add_box_behind(iboxx,idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),iboxz)
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz+1,nboxes(3)))
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),iboxz)
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),iboxy,idx_box(iboxz-1,nboxes(3)))
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3)))
 
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy+1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz+1,nboxes(3)))
-                        call add_box_behind(idx_box(iboxx-1,nboxes(1)),idx_box(iboxy-1,nboxes(2)),idx_box(iboxz-1,nboxes(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
                      end if
 
                   end if
@@ -140,39 +140,39 @@ subroutine computeg(n,x,g)
       ! Gradient relative to minimum distance
       !
 
-      ibox = lboxfirst
-      do while( ibox > 0 )
+      icell = lcellfirst
+      do while( icell > 0 )
 
-         call ibox_to_ijk(ibox,i,j,k)
+         call icell_to_ijk(icell,i,j,k)
 
          icart = latomfirst(i,j,k)
          do while ( icart .ne. 0 )
 
             if(comptype(ibtype(icart))) then
-               ! Interactions inside box
+               ! Interactions inside cell
                call gparc(icart,latomnext(icart))
-               ! Interactions of boxes that share faces
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,k))
-               call gparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),k))
-               call gparc(icart,latomfirst(i,j,idx_box(k+1, nboxes(3))))
-               ! Interactions of boxes that share axes
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),k))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k+1, nboxes(3))))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),k))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),j,idx_box(k-1, nboxes(3))))
-               call gparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
-               call gparc(icart,latomfirst(i,idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
-               ! Interactions of boxes that share vertices
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k+1, nboxes(3))))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j+1, nboxes(2)),idx_box(k-1, nboxes(3))))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k+1, nboxes(3))))
-               call gparc(icart,latomfirst(idx_box(i+1, nboxes(1)),idx_box(j-1, nboxes(2)),idx_box(k-1, nboxes(3))))
+               ! Interactions of cells that share faces
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k))
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k))
+               call gparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3))))
+               ! Interactions of cells that share axes
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3))))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3))))
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
+               ! Interactions of cells that share vertices
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3))))
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3))))
             end if
 
             icart = latomnext(icart)
          end do
 
-         ibox = lboxnext(ibox)
+         icell = lcellnext(icell)
       end do
 
    end if

@@ -311,7 +311,7 @@ subroutine setsizes()
    allocate(latomfirst(0:nbp+1,0:nbp+1,0:nbp+1),&
       latomfix(0:nbp+1,0:nbp+1,0:nbp+1),&
       hasfree(0:nbp+1,0:nbp+1,0:nbp+1),&
-      lboxnext((nbp+2)**3))
+      lcellnext((nbp+2)**3))
 
    ! Checking the total number of restrictions defined
 
