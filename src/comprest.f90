@@ -20,6 +20,7 @@ subroutine comprest(icart,f)
    double precision :: xmax, ymax, zmax
    double precision :: v1, v2, v3
    double precision :: vnorm
+   double precision :: xmed, ymed, zmed
 
    f = 0.d0
    do iratcount = 1, nratom(icart)
@@ -77,13 +78,25 @@ subroutine comprest(icart,f)
          xmax = restpars(irest,1) + restpars(irest,4)
          ymax = restpars(irest,2) + restpars(irest,4)
          zmax = restpars(irest,3) + restpars(irest,4)
-         a1 = dmax1(xcart(icart,1) - xmin,0.d0)
-         a2 = dmax1(xcart(icart,2) - ymin,0.d0)
-         a3 = dmax1(xcart(icart,3) - zmin,0.d0)
-         a4 = dmax1(xmax - xcart(icart,1),0.d0)
-         a5 = dmax1(ymax - xcart(icart,2),0.d0)
-         a6 = dmax1(zmax - xcart(icart,3),0.d0)
-         f = f + a1*a2*a3*a4*a5*a6
+         a1 = 0.0
+         if (xcart(icart,1) > xmin .and. xcart(icart,1) < (xmin + xmax)/2) then
+            a1 = dmin1(xcart(icart,1) - xmin,0.d0)
+         elseif (xcart(icart,1) < xmax .and. xcart(icart,1) > (xmin + xmax)/2) then
+            a1 = dmin1(xmax - xcart(icart,1),0.d0)
+         end if
+         a2 = 0.0
+         if (xcart(icart,2) > ymin .and. xcart(icart,2) < (ymin + ymax)/2) then
+            a2 = dmin1(xcart(icart,2) - ymin,0.d0)
+         elseif (xcart(icart,2) < ymax .and. xcart(icart,2) > (ymin + ymax)/2) then
+            a2 = dmin1(ymax - xcart(icart,2),0.d0)
+         end if
+         a3 = 0.0
+         if (xcart(icart,3) < zmin .and. xcart(icart,3) < (zmin + zmax)/2) then
+            a3 = dmin1(xcart(icart,3) - zmin,0.d0)
+         elseif (xcart(icart,3) > zmax .and. xcart(icart,3) > (zmin + zmax)/2) then
+            a3 = dmin1(zmax - xcart(icart,3),0.d0)
+         end if
+         f = f + a1 + a2 + a3
       else if(ityperest(irest).eq.7) then
          xmin = restpars(irest,1)
          ymin = restpars(irest,2)
