@@ -6,15 +6,6 @@
 ! Subroutine seticell: set cell index for given coordinates
 !
 
-!elemental integer function icell(x,sizemin,system_length,cell_length,ncells)
-!   double precision, intent(in) :: x, sizemin, system_length, cell_length
-!   double precision :: xtemp
-!   xtemp = x - floor((x - sizemin)/system_length) * system_length
-!   icell = int(xtemp/cell_length) + 1
-!   if (xtemp <= 0) icell = 1
-!   if (icell > ncells) icell = ncells
-!end function delta_vector
-
 subroutine seticell(x,y,z,ixcell,iycell,izcell)
    use compute_data, only : system_length, ncells, cell_length, sizemin
    implicit none
