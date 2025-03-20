@@ -18,6 +18,8 @@ subroutine gwalls(icart,irest)
       clength, b1, b2, b3, c1, c2, w, d, rg(3), &
       vnorm, vv1, vv2, vv3, frab, frac, frbc, &
       dfra(3), dfrb(3), dfrc(3)
+   double precision :: xmed, ymed, zmed
+   double precision :: x, y, z
 
    if(ityperest(irest).eq.2) then
       clength = restpars(irest,4)
@@ -84,56 +86,70 @@ subroutine gwalls(icart,irest)
          gxcar(icart,2) = gxcar(icart,2) + scale2*4.d0*d*b1/b2
          gxcar(icart,3) = gxcar(icart,3) + scale2*4.d0*d*c1/c2
       end if
-   else if(ityperest(irest).eq.6) then
+   else if(ityperest(irest).eq.6) then ! outside cube
       xmin = restpars(irest,1)
       ymin = restpars(irest,2)
       zmin = restpars(irest,3)
       xmax = restpars(irest,1) + restpars(irest,4)
       ymax = restpars(irest,2) + restpars(irest,4)
       zmax = restpars(irest,3) + restpars(irest,4)
+      x = xcart(icart, 1)
+      y = xcart(icart, 2)
+      z = xcart(icart, 3)
       a1 = 0.0
-      a4 = 0.0
-      if (xcart(icart,1) > xmin .and. xcart(icart,1) < (xmin + xmax)/2) then
-         a1 = dmin1(xcart(icart,1) - xmin,0.d0)
-      elseif (xcart(icart,1) < xmax .and. xcart(icart,1) > (xmin + xmax)/2) then
-         a4 = dmin1(xmax - xcart(icart,1),0.d0)
-      end if
       a2 = 0.0
-      a5 = 0.0
-      if (xcart(icart,2) > ymin .and. xcart(icart,2) < (ymin + ymax)/2) then
-         a2 = dmin1(xcart(icart,2) - ymin,0.d0)
-      elseif (xcart(icart,2) < ymax .and. xcart(icart,2) > (ymin + ymax)/2) then
-         a5 = dmin1(ymax - xcart(icart,2),0.d0)
-      end if
       a3 = 0.0
+      a4 = 0.0
+      a5 = 0.0
       a6 = 0.0
-      if (xcart(icart,3) < zmin .and. xcart(icart,3) < (zmin + zmax)/2) then
-         a3 = dmin1(xcart(icart,3) - zmin,0.d0)
-      elseif (xcart(icart,3) > zmax .and. xcart(icart,3) > (zmin + zmax)/2) then
-         a6 = dmin1(zmax - xcart(icart,3),0.d0)
+      if ( ( x > xmin .and. x < xmax ) .and. &
+           ( y > ymin .and. y < ymax ) .and. &
+           ( z > zmin .and. z < zmax ) ) then
+         xmed = (xmax - xmin) / 2
+         ymed = (ymax - ymin) / 2
+         zmed = (zmax - zmin) / 2
+         if ( x <= xmed ) a1 = 1.0
+         if ( x > xmed ) a4 = -1.0
+         if ( y <= ymed ) a2 = 1.0
+         if ( y > ymed ) a5 = -1.0
+         if ( z <= zmed ) a3 = 1.0
+         if ( z > zmed ) a6 = -1.0
       end if
-      gxcar(icart,1) = gxcar(icart,1) + scale * (a1 - a4)
-      gxcar(icart,2) = gxcar(icart,2) + scale * (a2 - a5) 
-      gxcar(icart,3) = gxcar(icart,3) + scale * (a3 - a6)
-   else if(ityperest(irest).eq.7) then
+      gxcar(icart,1) = gxcar(icart,1) + scale * (a1 + a4)
+      gxcar(icart,2) = gxcar(icart,2) + scale * (a2 + a5) 
+      gxcar(icart,3) = gxcar(icart,3) + scale * (a3 + a6)
+   else if(ityperest(irest).eq.7) then ! outside box
       xmin = restpars(irest,1)
       ymin = restpars(irest,2)
       zmin = restpars(irest,3)
       xmax = restpars(irest,4)
       ymax = restpars(irest,5)
       zmax = restpars(irest,6)
-      a1 = dmax1(xcart(icart,1) - xmin,0.d0)
-      a2 = dmax1(xcart(icart,2) - ymin,0.d0)
-      a3 = dmax1(xcart(icart,3) - zmin,0.d0)
-      a4 = dmax1(xmax - xcart(icart,1),0.d0)
-      a5 = dmax1(ymax - xcart(icart,2),0.d0)
-      a6 = dmax1(zmax - xcart(icart,3),0.d0)
-      w = a1*a2*a3*a4*a5*a6
-      if(w.gt.0.d0) then
-         gxcar(icart,1) = gxcar(icart,1) + a2*a3*a5*a6*(a4-a1)
-         gxcar(icart,2) = gxcar(icart,2) + a1*a3*a4*a6*(a5-a2)
-         gxcar(icart,3) = gxcar(icart,3) + a1*a2*a4*a5*(a6-a3)
+      x = xcart(icart, 1)
+      y = xcart(icart, 2)
+      z = xcart(icart, 3)
+      a1 = 0.0
+      a2 = 0.0
+      a3 = 0.0
+      a4 = 0.0
+      a5 = 0.0
+      a6 = 0.0
+      if ( ( x > xmin .and. x < xmax ) .and. &
+           ( y > ymin .and. y < ymax ) .and. &
+           ( z > zmin .and. z < zmax ) ) then
+         xmed = (xmax - xmin) / 2
+         ymed = (ymax - ymin) / 2
+         zmed = (zmax - zmin) / 2
+         if ( x <= xmed ) a1 = 1.0
+         if ( x > xmed ) a4 = -1.0
+         if ( y <= ymed ) a2 = 1.0
+         if ( y > ymed ) a5 = -1.0
+         if ( z <= zmed ) a3 = 1.0
+         if ( z > zmed ) a6 = -1.0
       end if
+      gxcar(icart,1) = gxcar(icart,1) + scale * (a1 + a4)
+      gxcar(icart,2) = gxcar(icart,2) + scale * (a2 + a5)
+      gxcar(icart,3) = gxcar(icart,3) + scale * (a3 + a6)
    else if(ityperest(irest).eq.8) then
       d = (xcart(icart,1)-restpars(irest,1))**2 + &
          (xcart(icart,2)-restpars(irest,2))**2 + &

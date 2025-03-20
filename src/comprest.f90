@@ -15,12 +15,13 @@ subroutine comprest(icart,f)
 
    implicit none
    integer :: iratcount, irest, icart
-   double precision :: xmin, ymin, zmin, clength, a1, a2, a3, a4, w, b1, b2, b3, d, a5, a6
+   double precision :: xmin, ymin, zmin, clength, a1, a2, a3, w, b1, b2, b3, d, a4
    double precision :: f
    double precision :: xmax, ymax, zmax
    double precision :: v1, v2, v3
    double precision :: vnorm
    double precision :: xmed, ymed, zmed
+   double precision :: x, y, z
 
    f = 0.d0
    do iratcount = 1, nratom(icart)
@@ -71,46 +72,60 @@ subroutine comprest(icart,f)
          w = a1 + a2 + a3 - a4
          a1 = dmax1(w,0.d0)
          f = f + scale2*a1*a1
-      else if(ityperest(irest).eq.6) then
+      else if(ityperest(irest).eq.6) then ! outside cube
          xmin = restpars(irest,1)
          ymin = restpars(irest,2)
          zmin = restpars(irest,3)
          xmax = restpars(irest,1) + restpars(irest,4)
          ymax = restpars(irest,2) + restpars(irest,4)
          zmax = restpars(irest,3) + restpars(irest,4)
+         x = xcart(icart, 1)
+         y = xcart(icart, 2)
+         z = xcart(icart, 3)
          a1 = 0.0
-         if (xcart(icart,1) > xmin .and. xcart(icart,1) < (xmin + xmax)/2) then
-            a1 = dmin1(xcart(icart,1) - xmin,0.d0)
-         elseif (xcart(icart,1) < xmax .and. xcart(icart,1) > (xmin + xmax)/2) then
-            a1 = dmin1(xmax - xcart(icart,1),0.d0)
-         end if
          a2 = 0.0
-         if (xcart(icart,2) > ymin .and. xcart(icart,2) < (ymin + ymax)/2) then
-            a2 = dmin1(xcart(icart,2) - ymin,0.d0)
-         elseif (xcart(icart,2) < ymax .and. xcart(icart,2) > (ymin + ymax)/2) then
-            a2 = dmin1(ymax - xcart(icart,2),0.d0)
-         end if
          a3 = 0.0
-         if (xcart(icart,3) < zmin .and. xcart(icart,3) < (zmin + zmax)/2) then
-            a3 = dmin1(xcart(icart,3) - zmin,0.d0)
-         elseif (xcart(icart,3) > zmax .and. xcart(icart,3) > (zmin + zmax)/2) then
-            a3 = dmin1(zmax - xcart(icart,3),0.d0)
+         if ( ( x > xmin .and. x < xmax ) .and. &
+              ( y > ymin .and. y < ymax ) .and. &
+              ( z > zmin .and. z < zmax ) ) then
+            xmed = (xmax - xmin) / 2
+            ymed = (ymax - ymin) / 2
+            zmed = (zmax - zmin) / 2
+            if ( x <= xmed ) a1 = x - xmin 
+            if ( x > xmed ) a1 = xmax - x
+            if ( y <= ymed ) a2 = y - ymin
+            if ( y > ymed ) a2 = ymax - y
+            if ( z <= zmed ) a3 = z - zmin  
+            if ( z > zmed ) a3 = zmax - z
          end if
-         f = f + a1 + a2 + a3
-      else if(ityperest(irest).eq.7) then
+         f = f + scale * (a1 + a2 + a3)
+      else if(ityperest(irest).eq.7) then ! outside box
          xmin = restpars(irest,1)
          ymin = restpars(irest,2)
          zmin = restpars(irest,3)
          xmax = restpars(irest,4)
          ymax = restpars(irest,5)
          zmax = restpars(irest,6)
-         a1 = dmax1(xcart(icart,1) - xmin,0.d0)
-         a2 = dmax1(xcart(icart,2) - ymin,0.d0)
-         a3 = dmax1(xcart(icart,3) - zmin,0.d0)
-         a4 = dmax1(xmax - xcart(icart,1),0.d0)
-         a5 = dmax1(ymax - xcart(icart,2),0.d0)
-         a6 = dmax1(zmax - xcart(icart,3),0.d0)
-         f = f + a1*a2*a3*a4*a5*a6
+         x = xcart(icart, 1)
+         y = xcart(icart, 2)
+         z = xcart(icart, 3)
+         a1 = 0.0
+         a2 = 0.0
+         a3 = 0.0
+         if ( ( x > xmin .and. x < xmax ) .and. &
+              ( y > ymin .and. y < ymax ) .and. &
+              ( z > zmin .and. z < zmax ) ) then
+            xmed = (xmax - xmin) / 2
+            ymed = (ymax - ymin) / 2
+            zmed = (zmax - zmin) / 2
+            if ( x <= xmed ) a1 = x - xmin 
+            if ( x > xmed ) a1 = xmax - x
+            if ( y <= ymed ) a2 = y - ymin
+            if ( y > ymed ) a2 = ymax - y
+            if ( z <= zmed ) a3 = z - zmin  
+            if ( z > zmed ) a3 = zmax - z
+         end if
+         f = f + scale * (a1 + a2 + a3)
       else if(ityperest(irest).eq.8) then
          w = (xcart(icart,1)-restpars(irest,1))**2 + &
             (xcart(icart,2)-restpars(irest,2))**2 + &
