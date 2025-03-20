@@ -9,8 +9,7 @@ pbc 40.0 40.0 40.0
 
 structure ./structure_files/water.pdb
   number 1000
-  outside box 15.0 0.0 0.0 25.0 40.0 40.0
-#  outside sphere 20. 20. 20. 10.0
+  outside sphere 20. 20. 20. 10.0
 end structure
 
 #check
