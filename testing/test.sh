@@ -17,6 +17,7 @@ julia runtests.jl ./input_files/water_box.inp \
                   ./input_files/water_box_pbc2.inp \
                   ./input_files/water_box_pbc_negative_coordinates.inp \
                   ./input_files/water_box_pbc_slab.inp \
+                  ./input_files/water_box_pbc_outside_box.inp \
                   ./input_files/bilayer_pbc.inp \
                   ./input_files/solvprotein_pbc.inp \
                   ./input_files/spherical_pbc.inp \
