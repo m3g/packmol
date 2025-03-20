@@ -7,6 +7,7 @@
 !
 
 subroutine seticell(x,y,z,ixcell,iycell,izcell)
+   use pbc, only : cell_ind
    use compute_data, only : system_length, ncells, cell_length, sizemin
    implicit none
    double precision :: x, y, z, xtemp, ytemp, ztemp
@@ -17,12 +18,9 @@ subroutine seticell(x,y,z,ixcell,iycell,izcell)
    ixcell = int(xtemp/cell_length(1)) + 1
    iycell = int(ytemp/cell_length(2)) + 1
    izcell = int(ztemp/cell_length(3)) + 1
-   if(xtemp <= 0) ixcell = 1
-   if(ytemp <= 0) iycell = 1
-   if(ztemp <= 0) izcell = 1
-   if(ixcell > ncells(1)) ixcell = ncells(1)
-   if(iycell > ncells(2)) iycell = ncells(2)
-   if(izcell > ncells(3)) izcell = ncells(3)
+   ixcell = cell_ind(ixcell, ncells(1))
+   iycell = cell_ind(iycell, ncells(2))
+   izcell = cell_ind(izcell, ncells(3))
    return
 end subroutine seticell
 
