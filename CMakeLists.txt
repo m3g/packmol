@@ -34,10 +34,10 @@ add_executable(packmol
        src/comparegrad.f90
        app/packmol.f90
        src/polartocart.f90
-       src/resetboxes.f90
+       src/resetcells.f90
        src/tobar.f90
        src/setijk.f90
-       src/setibox.f90
+       src/seticell.f90
        src/restmol.f90
        src/swaptype.f90
        src/swaptypemod.f90

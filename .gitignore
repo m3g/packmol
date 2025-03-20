@@ -16,3 +16,4 @@ testing/output.pdb
 testing/output.pdb_FORCED
 testing/input_files/Manifest.toml
 testing/input_files/Project.toml
+testing/chkgrad.log

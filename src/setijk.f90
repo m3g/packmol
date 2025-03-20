@@ -5,42 +5,42 @@
 !
 ! Subroutines that set the indexes of a three-dimensional array
 ! given the undimensional counter of the vector (for an array
-! with dimensions (0:nboxes(1)+1,0:nboxes(2)+1,0:nboxes(3)+1), and
+! with dimensions (0:ncells(1)+1,0:ncells(2)+1,0:ncells(3)+1), and
 ! vice-versa.
 !
 
-subroutine ibox_to_ijk(ibox,i,j,k)
+subroutine icell_to_ijk(icell,i,j,k)
 
-   use compute_data, only : nb2
+   use compute_data, only : ncells2
    implicit none
-   integer :: ibox, i, j, k, iibox
+   integer :: icell, i, j, k, iicell
 
-   k = mod(ibox,nb2(3))
-   if ( k == 0 ) k = nb2(3)
+   k = mod(icell,ncells2(3))
+   if ( k == 0 ) k = ncells2(3)
 
-   iibox = ibox - k
-   iibox = iibox / nb2(3) + 1
-   j = mod(iibox,nb2(2))
-   if ( j == 0 ) j = nb2(2)
+   iicell = icell - k
+   iicell = iicell / ncells2(3) + 1
+   j = mod(iicell,ncells2(2))
+   if ( j == 0 ) j = ncells2(2)
 
-   iibox = iibox - j
-   iibox = iibox / nb2(2) + 1
-   i = mod(iibox,nb2(1))
-   if ( i == 0 ) i = nb2(1)
+   iicell = iicell - j
+   iicell = iicell / ncells2(2) + 1
+   i = mod(iicell,ncells2(1))
+   if ( i == 0 ) i = ncells2(1)
 
    k = k - 1
    j = j - 1
    i = i - 1
 
-end subroutine ibox_to_ijk
+end subroutine icell_to_ijk
 
-subroutine ijk_to_ibox(i,j,k,ibox)
+subroutine ijk_to_icell(i,j,k,icell)
 
-   use compute_data, only : nb2
+   use compute_data, only : ncells2
    implicit none
-   integer :: i, j, k, ibox
+   integer :: i, j, k, icell
 
-   ibox = i*nb2(2)*nb2(3) + j*nb2(3) + k + 1
+   icell = i*ncells2(2)*ncells2(3) + j*ncells2(3) + k + 1
 
-end subroutine ijk_to_ibox
+end subroutine ijk_to_icell
 
