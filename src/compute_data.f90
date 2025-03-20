@@ -7,8 +7,8 @@ module compute_data
 
    use sizes
 
-   integer :: ntotmol, ntype, natfix, ntotat
-   integer :: nboxes(3), nb2(3)
+   integer :: ntotmol, ntype, nfixedat, ntotat
+   integer :: ncells(3), ncells2(3)
 
    integer, allocatable :: nmols(:) ! (ntype)
    integer, allocatable :: natoms(:) ! (ntype)
@@ -22,7 +22,7 @@ module compute_data
    double precision :: scale, scale2
    double precision :: fdist, frest
    double precision :: sizemin(3), sizemax(3)
-   double precision :: boxl(3)
+   double precision :: cell_length(3), system_length(3)
 
    double precision, allocatable :: xcart(:,:) ! (ntotat,3)
    double precision, allocatable :: coor(:,:) ! (ntotat,3)
@@ -55,9 +55,9 @@ module compute_data
    double precision, allocatable :: xmol(:) ! (nn)
    logical, allocatable :: compsafe(:) ! (ntype)
 
-   ! For boxes with atoms linked lists
-   integer :: lboxfirst
-   integer, allocatable :: lboxnext(:) ! ((nbp+2)**3)
+   ! For cells with atoms linked lists
+   integer :: lcellfirst
+   integer, allocatable :: lcellnext(:) ! ((nbp+2)**3)
    logical, allocatable :: hasfree(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1)
 
 end module compute_data

@@ -27,7 +27,7 @@ subroutine checkpoint(n,x)
 
    ! All molecules are important
 
-   do i = 1, ntfix
+   do i = 1, ntype_with_fixed
       comptype(i) = .true.
    end do
 

@@ -107,7 +107,7 @@ subroutine output(n, x, output_file_name)
       icart = 0
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             do imol = 1, nmols(i_not_fixed)
@@ -192,7 +192,7 @@ subroutine output(n, x, output_file_name)
       ilugan = ntotmol*3
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             record = name(i_not_fixed)
@@ -379,9 +379,7 @@ subroutine output(n, x, output_file_name)
       end if
 
       if(add_box_sides .or. using_pbc) then
-         write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,&
-         &t34,f7.2,t41,f7.2,t48,f7.2,&
-         &t56,'P 1           1' )") &
+         write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,t34,f7.2,t41,f7.2,t48,f7.2,t56,'P 1           1' )") &
             sizemax(1)-sizemin(1) + add_sides_fix,&
             sizemax(2)-sizemin(2) + add_sides_fix,&
             sizemax(3)-sizemin(3) + add_sides_fix,&
@@ -397,7 +395,7 @@ subroutine output(n, x, output_file_name)
       i_not_fixed = 0
       i_fixed = ntype
       irescount = 1
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
 
@@ -657,7 +655,7 @@ subroutine output(n, x, output_file_name)
       i_ref_atom = 0
       i_not_fixed = 0
       i_fixed = ntype
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             idatom = idfirst(i_not_fixed) - 1
@@ -711,7 +709,7 @@ subroutine output(n, x, output_file_name)
       i_not_fixed = 0
       i_fixed = ntype
 
-      do itype = 1, ntfix
+      do itype = 1, ntype_with_fixed
 
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
