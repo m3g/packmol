@@ -100,25 +100,37 @@ subroutine computef(n,x,f)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
-                     ! Add cells with fixed atoms which are vicinal to this cell, and
-                     ! are behind
-
+                     ! Add cells with fixed atoms which are vicinal to this cell
                      if ( fix ) then
-                        call add_cell_behind(cell_ind(ixcell-1, ncells(1)),iycell,izcell)
-                        call add_cell_behind(ixcell,cell_ind(iycell-1, ncells(2)),izcell)
-                        call add_cell_behind(ixcell,iycell,cell_ind(izcell-1, ncells(3)))
-
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3)))
-
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
+                        ! cells sharing faces
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,izcell) ! 1 - (-1, 0, 0)
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),izcell) ! 2 - (0, -1, 0)
+                        call add_cell_behind(ixcell,iycell,cell_ind(izcell-1, ncells(3))) ! 3 - (0, 0, -1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,izcell) ! 4 - (1, 0, 0)
+                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),izcell) ! 5 - (0, 1, 0)
+                        call add_cell_behind(ixcell,iycell,cell_ind(izcell+1,ncells(3))) ! 6 - (0, 0, 1)
+                        ! cells sharing edges
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 1 - (0, -1, 1)
+                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 2 - (0, -1, -1)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell) ! 3 - (-1, 1, 0)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3))) ! 4 - (-1, 0, 1)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell) ! 5 - (-1, -1, 0)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3))) ! 6 - (-1, 0, -1)
+                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 7 - (0, 1, 1)
+                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 8 - (0, 1, -1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell) ! 9 - (1, -1, 0)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3))) ! 10 - (1, 0, 1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell) ! 11 - (1, 1, 0)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3))) ! 12 - (1, 0, -1)
+                        ! cells sharing vertices 
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 1 - (-1, 1, 1)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 2 - (-1, 1, -1)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 3 - (-1, -1, 1)
+                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 4 - (-1, -1, -1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 5 - (1, 1, 1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 6 - (1, 1, -1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 7 - (1, -1, 1)
+                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 8 - (1, -1, -1)
                      end if
 
                   end if
@@ -152,22 +164,35 @@ subroutine computef(n,x,f)
          if(comptype(ibtype(icart))) then
             ! Interactions inside cell
             f = f + fparc(icart,latomnext(icart))
-            ! Interactions of cells that share faces
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k))
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k))
-            f = f + fparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3))))
-            ! Interactions of cells that share axes
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3))))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3))))
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
-            ! Interactions of cells that share vertices
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3))))
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3))))
+            ! Interactions of cells that share faces (6 faces)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,k)) ! 1 - (-1, 0, 0)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),k)) ! 2 - (0, -1, 0)
+            f = f + fparc(icart,latomfirst(i,j,cell_ind(k-1, ncells(3)))) ! 3 - (0, 0, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k)) ! 4 - (1, 0, 0)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k)) ! 5 - (0, 1, 0)
+            f = f + fparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3)))) ! 6 - (0, 0, 1)
+            ! Interactions of cells that share axes (12 edges)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 1 - (-1, -1, 0)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 2 - (-1, 0, -1)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 3 - (0, -1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 4 - (1, -1, 0)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 5 - (1, 0, -1)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (0, 1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 7 - (-1, 1, 0)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 8 - (-1, 0, 1)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 9 - (0, 1, 1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 10 - (1, 1, 0)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 11 - (1, 0, 1)
+            f = f + fparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 12 - (0, -1, 1)
+            ! Interactions of cells that share vertices (8 vertices)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 1 - (-1, -1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 2 - (-1, -1, 1)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 3 - (-1, 1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 4 - (-1, 1, 1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 5 - (1, -1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 6 - (1, -1, 1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 7 - (1, 1, -1)
+            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 8 - (1, 1, 1)
          end if
 
          icart = latomnext(icart)

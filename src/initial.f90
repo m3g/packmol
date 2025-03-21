@@ -277,39 +277,37 @@ subroutine initial(n,x)
          end do
       end do
    end do
-   if (using_pbc) then
-      do i = 1, 3
-         sizemin(i) = pbc_box(i)
-         sizemax(i) = pbc_box(i+3)
-      end do
-   else
-      icart = 0
-      do itype = 1, ntype
-         do imol = 1, nmols(itype)
-            do iatom = 1, natoms(itype)
-               icart = icart + 1
-               sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
-               sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
-               sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
-               sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
-               sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
-               sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
-            end do
+   icart = 0
+   do itype = 1, ntype
+      do imol = 1, nmols(itype)
+         do iatom = 1, natoms(itype)
+            icart = icart + 1
+            sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
+            sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
+            sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
+            sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
+            sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
+            sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
          end do
       end do
-   end if
+   end do
    write(*,*) ' Mininum and maximum coordinates after constraint fitting: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
    write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
-   if (.not. using_pbc) then
-      sizemin(1) = sizemin(1) - 1.1d0*radmax
-      sizemin(2) = sizemin(2) - 1.1d0*radmax
-      sizemin(3) = sizemin(3) - 1.1d0*radmax
-      sizemax(1) = sizemax(1) + 1.1d0*radmax
-      sizemax(2) = sizemax(2) + 1.1d0*radmax
-      sizemax(3) = sizemax(3) + 1.1d0*radmax
-   end if
+!   if (using_pbc) then
+!      do i = 1, 3
+!         sizemin(i) = pbc_box(i)
+!         sizemax(i) = pbc_box(i+3)
+!      end do
+!   else
+      sizemin(1) = sizemin(1)! - 1.1d0*radmax
+      sizemin(2) = sizemin(2)! - 1.1d0*radmax
+      sizemin(3) = sizemin(3)! - 1.1d0*radmax
+      sizemax(1) = sizemax(1)! + 1.1d0*radmax
+      sizemax(2) = sizemax(2)! + 1.1d0*radmax
+      sizemax(3) = sizemax(3)! + 1.1d0*radmax
+!   end if
 
    ! Computing the size of the patches
    write(*,*) ' Computing size of patches... '

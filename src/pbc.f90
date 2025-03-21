@@ -8,10 +8,14 @@ module pbc
 
    double precision, public :: pbc_box(6), pbc_sides(3)
    logical, public :: using_pbc = .false.
-
-   public delta_vector, cell_ind
+   public v_in_box, delta_vector, cell_ind
 
 contains
+
+   elemental double precision function v_in_box(v,sizemin,system_length)
+      double precision, intent(in) :: v, system_length, sizemin
+      v_in_box = sizemin + modulo((v - sizemin), system_length)
+   end function v_in_box
 
    elemental double precision function delta_vector(v1,v2,system_length)
       double precision, intent(in) :: v1, v2, system_length
