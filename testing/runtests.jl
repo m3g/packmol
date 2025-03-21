@@ -67,7 +67,15 @@ end
 
 println("Running tests...")
 if !isinteractive()
-    packmol = joinpath(@__DIR__,"..","packmol")
+    packmol_arg = findfirst(==("-packmol"), ARGS)
+    if !isnothing(packmol_arg)
+        packmol = ARGS[packmol_arg + 1]
+        popat!(ARGS, packmol_arg + 1)
+        popat!(ARGS, packmol_arg)
+    else
+        packmol = joinpath(@__DIR__,"..","packmol")
+    end
+    println(" Packmol path: $packmol")
     for input_test in ARGS
         print(" Running test $input_test ...")
         log = IOBuffer()
