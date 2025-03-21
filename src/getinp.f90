@@ -771,8 +771,7 @@ subroutine getinp()
       restpars(irest,5) = pbc_box(5)
       restpars(irest,6) = pbc_box(6)
       write(*,*) " PBC on: We automatically add a constraint for non-fixed atoms:"
-      write(*,"(a, 6f8.2)") "  -> inside box ", restpars(irest,1), restpars(irest,2), restpars(irest,3),&
-         restpars(irest,4), restpars(irest,5), restpars(irest,6)
+      write(*,"(a, 6f8.2)") "  -> inside box ", restpars(irest,1:6)
    end if
 
    nrest = irest
