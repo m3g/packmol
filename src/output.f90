@@ -55,8 +55,7 @@ subroutine output(n, x, output_file_name)
       ilubar = 0
       ilugan = ntotmol*3
       do i = 1, ntotmol
-         write(10,"(6(tr1,es23.16))") x(ilubar+1), x(ilubar+2), x(ilubar+3), &
-            x(ilugan+1), x(ilugan+2), x(ilugan+3)
+         write(10,"(6(tr1,es23.16))") x(ilubar+1:ilubar+3), x(ilugan+1:ilugan+3)
          ilubar = ilubar + 3
          ilugan = ilugan + 3
       end do
@@ -77,8 +76,7 @@ subroutine output(n, x, output_file_name)
             stop exit_code_open_file
          end if
          do i = 1, nmols(itype)
-            write(10,"(6(tr1,es23.16))") x(ilubar+1), x(ilubar+2), x(ilubar+3), &
-               x(ilugan+1), x(ilugan+2), x(ilugan+3)
+            write(10,"(6(tr1,es23.16))") x(ilubar+1:ilubar+3), x(ilugan+1:ilugan+3)
             ilubar = ilubar + 3
             ilugan = ilugan + 3
          end do
@@ -418,9 +416,7 @@ subroutine output(n, x, output_file_name)
                   crdsegi = crdresn
                   if (len(trim(adjustl(segid(i_fixed))))/=0) crdsegi = trim(adjustl(segid(i_fixed)))
                   atmname = adjustl(record(13:16))
-                  write(40,crd_format) i_ref_atom, iires,crdresn, atmname, &
-                     (xcart(icart,k), k = 1, 3), crdsegi,&
-                     crdires, 0.
+                  write(40,crd_format) i_ref_atom, iires,crdresn, atmname, xcart(icart,1:3), crdsegi, crdires, 0.
                end if
 
             end do
@@ -512,9 +508,7 @@ subroutine output(n, x, output_file_name)
                   do k = 2, maxcon(idatom)
                      ntcon(k) = nconnect(idatom,k) + i_ref_atom
                   end do
-                  write(30,tinker_atom_line) i_ref_atom+iatom,&
-                     ele(idatom), (xcart(icart, k), k = 1, 3),&
-                     (ntcon(k), k = 1, maxcon(idatom))
+                  write(30,tinker_atom_line) i_ref_atom+iatom, ele(idatom), xcart(icart, 1:3), ntcon(1:maxcon(idatom))
                end do
                i_ref_atom = i_ref_atom + natoms(i_not_fixed)
 
@@ -533,9 +527,7 @@ subroutine output(n, x, output_file_name)
                do k = 2, maxcon(idatom)
                   ntcon(k) = nconnect(idatom,k) + i_ref_atom
                end do
-               write(30,tinker_atom_line) i_ref_atom+iatom, ele(idatom),&
-                  (coor(idatom,k), k = 1, 3),&
-                  (ntcon(k), k = 1, maxcon(idatom))
+               write(30,tinker_atom_line) i_ref_atom+iatom, ele(idatom), coor(idatom,1:3), ntcon(1:maxcon(idatom))
             end do
             i_ref_atom = i_ref_atom + natoms(i_fixed)
 
