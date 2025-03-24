@@ -17,7 +17,7 @@ subroutine computeg(n,x,g)
    integer :: n
    integer :: idatom, iatom, irest
    integer :: i, j, k, ilubar, ilugan, icart, itype, imol
-   integer :: icell, ixcell, iycell, izcell
+   integer :: icell, cell(3)
    integer :: k1, k2
    integer :: iratcount
 
@@ -82,54 +82,50 @@ subroutine computeg(n,x,g)
                end do
 
                if(.not.init1) then
-                  call seticell(xcart(icart,:), ixcell, iycell, izcell)
-
+                  call setcell(xcart(icart,:),cell)
                   ! Atom linked list
-
-                  latomnext(icart) = latomfirst(ixcell,iycell,izcell)
-                  latomfirst(ixcell,iycell,izcell) = icart
+                  latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
+                  latomfirst(cell(1),cell(2),cell(3)) = icart
 
                   ! cell with atoms linked list
-
-                  if ( .not. hasfree(ixcell,iycell,izcell) ) then
-                     hasfree(ixcell,iycell,izcell) = .true.
-                     call ijk_to_icell(ixcell,iycell,izcell,ncells2,icell)
+                  if ( .not. hasfree(cell(1),cell(2),cell(3))) then
+                     hasfree(cell(1),cell(2),cell(3)) = .true.
+                     call cell_to_icell(cell,ncells2,icell)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
                      ! Add cells with fixed atoms which are vicinal to this cell
                      if ( fix ) then
                         ! cells sharing faces
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,izcell) ! 1 - (-1, 0, 0)
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),izcell) ! 2 - (0, -1, 0)
-                        call add_cell_behind(ixcell,iycell,cell_ind(izcell-1, ncells(3))) ! 3 - (0, 0, -1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,izcell) ! 4 - (1, 0, 0)
-                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),izcell) ! 5 - (0, 1, 0)
-                        call add_cell_behind(ixcell,iycell,cell_ind(izcell+1,ncells(3))) ! 6 - (0, 0, 1)
+                        call add_cell_behind(cell, -1, 0, 0)
+                        call add_cell_behind(cell, 0, -1, 0)
+                        call add_cell_behind(cell, 0, 0, -1)
+                        call add_cell_behind(cell, 1, 0, 0)
+                        call add_cell_behind(cell, 0, 1, 0)
+                        call add_cell_behind(cell, 0, 0, 1)
                         ! cells sharing edges
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 1 - (0, -1, 1)
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 2 - (0, -1, -1)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell) ! 3 - (-1, 1, 0)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3))) ! 4 - (-1, 0, 1)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell) ! 5 - (-1, -1, 0)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3))) ! 6 - (-1, 0, -1)
-                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 7 - (0, 1, 1)
-                        call add_cell_behind(ixcell,cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 8 - (0, 1, -1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell) ! 9 - (1, -1, 0)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3))) ! 10 - (1, 0, 1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell) ! 11 - (1, 1, 0)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3))) ! 12 - (1, 0, -1)
+                        call add_cell_behind(cell, 0, 1, 1)
+                        call add_cell_behind(cell, 0, 1, -1)
+                        call add_cell_behind(cell, 0, -1, 1)
+                        call add_cell_behind(cell, 0, -1, -1)
+                        call add_cell_behind(cell, 1, 0, 1)
+                        call add_cell_behind(cell, 1, 0, -1)
+                        call add_cell_behind(cell, 1, 1, 0)
+                        call add_cell_behind(cell, 1, -1, 0)
+                        call add_cell_behind(cell, -1, 0, 1)
+                        call add_cell_behind(cell, -1, 0, -1)
+                        call add_cell_behind(cell, -1, 1, 0)
+                        call add_cell_behind(cell, -1, -1, 0)
                         ! cells sharing vertices 
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 1 - (-1, 1, 1)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 2 - (-1, 1, -1)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 3 - (-1, -1, 1)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 4 - (-1, -1, -1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 5 - (1, 1, 1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 6 - (1, 1, -1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3))) ! 7 - (1, -1, 1)
-                        call add_cell_behind(cell_ind(ixcell+1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3))) ! 8 - (1, -1, -1)
+                        call add_cell_behind(cell, -1, 1, 1)
+                        call add_cell_behind(cell, -1, 1, -1)
+                        call add_cell_behind(cell, -1, -1, 1)
+                        call add_cell_behind(cell, -1, -1, -1)
+                        call add_cell_behind(cell, 1, 1, 1)
+                        call add_cell_behind(cell, 1, 1, -1)
+                        call add_cell_behind(cell, 1, -1, 1)
+                        call add_cell_behind(cell, 1, -1, -1)
                      end if
-
                   end if
 
                   ibtype(icart) = itype
@@ -152,7 +148,10 @@ subroutine computeg(n,x,g)
       icell = lcellfirst
       do while( icell > 0 )
 
-         call icell_to_ijk(icell,ncells2,i,j,k)
+         call icell_to_cell(icell,ncells2,cell)
+         i = cell(1)
+         j = cell(2)
+         k = cell(3)
 
          icart = latomfirst(i,j,k)
          do while ( icart .ne. 0 )

@@ -9,19 +9,18 @@
 
 subroutine resetcells()
 
-   use sizes
    use compute_data, only : latomfirst, latomfix, &
       lcellfirst, lcellnext, hasfree, ncells2
    implicit none
-   integer :: i, j, k, icell
+   integer :: cell(3), icell
 
    ! Reset data for cells that contain fixed atom
 
    icell = lcellfirst
    do while( icell > 0 )
-      call icell_to_ijk(icell,ncells2,i,j,k)
-      latomfirst(i,j,k) = latomfix(i,j,k)
-      hasfree(i,j,k) = .false.
+      call icell_to_cell(icell,ncells2,cell)
+      latomfirst(cell(1),cell(2),cell(3)) = latomfix(cell(1),cell(2),cell(3))
+      hasfree(cell(1),cell(2),cell(3)) = .false.
       icell = lcellnext(icell)
    end do
    lcellfirst = 0

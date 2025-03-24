@@ -20,7 +20,7 @@ subroutine initial(n,x)
    use pbc
    implicit none
    integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
-      imol, ntry, nb, ixcell, iycell, izcell, ifatom, &
+      imol, ntry, nb, cell(3), ixcell, iycell, izcell, ifatom, &
       idfatom, iftype, jatom, ioerr, max_guess_try
 
    double precision :: x(n), beta, gamma, theta, &
@@ -319,13 +319,13 @@ subroutine initial(n,x)
          do ifatom = 1, natoms(iftype)
             idfatom = idfatom + 1
             icart = icart + 1
-            call seticell(xcart(icart,:),ixcell,iycell,izcell)
-            latomnext(icart) = latomfix(ixcell,iycell,izcell)
-            latomfix(ixcell,iycell,izcell) = icart
-            latomfirst(ixcell,iycell,izcell) = icart
+            call setcell(xcart(icart,:),cell)
+            latomnext(icart) = latomfix(cell(1),cell(2),cell(3))
+            latomfix(cell(1),cell(2),cell(3)) = icart
+            latomfirst(cell(1),cell(2),cell(3)) = icart
             ibtype(icart) = iftype
             ibmol(icart) = 1
-            hasfixed(ixcell,iycell,izcell) = .true.
+            hasfixed(cell(1),cell(2),cell(3)) = .true.
          end do
       end do
    end if
@@ -416,7 +416,10 @@ subroutine initial(n,x)
                x(ilubar+1:ilubar+3) = &
                   cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                if(fix) then
-                  call seticell(x(ilubar+1:ilubar+3),ixcell,iycell,izcell)
+                  call setcell(x(ilubar+1:ilubar+3),cell)
+                  ixcell = cell(1)
+                  iycell = cell(2)
+                  izcell = cell(3)
                   if(hasfixed(ixcell,  iycell,  izcell  ).or.&
                      hasfixed(ixcell+1,iycell,  izcell  ).or.&
                      hasfixed(ixcell,  iycell+1,izcell  ).or.&

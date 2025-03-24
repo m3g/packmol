@@ -68,8 +68,7 @@ oall = cenmass.o \
        polartocart.o \
        resetcells.o \
        tobar.o \
-       setijk.o \
-       seticell.o \
+       cell_indices.o \
        restmol.o \
        swaptype.o \
        swaptypemod.o \
@@ -177,10 +176,8 @@ resetcells.o : $(SRCDIR)/resetcells.f90 $(modules)
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/resetcells.f90
 tobar.o : $(SRCDIR)/tobar.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/tobar.f90
-setijk.o : $(SRCDIR)/setijk.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/setijk.f90
-seticell.o : $(SRCDIR)/seticell.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/seticell.f90
+cell_indices.o : $(SRCDIR)/cell_indices.f90 $(modules)   
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/cell_indices.f90
 restmol.o : $(SRCDIR)/restmol.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/restmol.f90
 swaptype.o : $(SRCDIR)/swaptype.f90 $(modules)   
