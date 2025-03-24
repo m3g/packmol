@@ -107,10 +107,7 @@ program packmol
 
   ! Put fixed molecules in the specified position
 
-  do itype = 1, ntype
-    fixed(itype) = .false.
-  end do
-
+  fixed(1:ntype) = .false.
   do irest = 1, nrest
     if(ityperest(irest).eq.1) then
       do itype = 1, ntype
