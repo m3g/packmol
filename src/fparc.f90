@@ -11,7 +11,7 @@ double precision function fparc(icart,firstjcart)
 
    use sizes
    use compute_data
-   use pbc, only : delta_vector, v_in_box
+   use pbc, only : delta_vector, pbc_length
    implicit none
 
    ! SCALAR ARGUMENTS
@@ -24,7 +24,6 @@ double precision function fparc(icart,firstjcart)
 
    fparc = 0.0d0
    jcart = firstjcart
-   xcart(icart,:) = v_in_box(xcart(icart,:),sizemin,system_length)
    do while ( jcart > 0 )
       if (jcart >= icart) then
          jcart = latomnext(jcart)
@@ -55,8 +54,7 @@ double precision function fparc(icart,firstjcart)
       !
       ! Otherwise, compute distance and evaluate function for this pair
       !
-      xcart(jcart,:) = v_in_box(xcart(jcart,:),sizemin,system_length)
-      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), system_length)
+      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_length)
       datom = ( vdiff(1) )**2 + ( vdiff(2) )**2 + ( vdiff(3) )**2
       tol = (radius(icart)+radius(jcart))**2
       if ( datom < tol ) then

@@ -23,6 +23,7 @@ module compute_data
    double precision :: fdist, frest
    double precision :: sizemin(3), sizemax(3)
    double precision :: cell_length(3), system_length(3)
+   double precision :: radmax
 
    double precision, allocatable :: xcart(:,:) ! (ntotat,3)
    double precision, allocatable :: coor(:,:) ! (ntotat,3)

@@ -12,7 +12,7 @@ subroutine initial(n,x)
    use exit_codes
    use sizes
    use compute_data
-   use input, only : randini, ntype_with_fixed, fix, moldy, chkgrad, avoidoverlap,&
+   use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type
    use usegencan
@@ -24,8 +24,7 @@ subroutine initial(n,x)
       idfatom, iftype, jatom, ioerr
 
    double precision :: x(n), cmx, cmy, beta, gamma, theta, &
-      cmz, fx, cell_side, rnd, &
-      radmax, v1(3), v2(3), v3(3), xbar, ybar, zbar
+      cmz, fx, cell_side, rnd, v1(3), v2(3), v3(3), xcm(3)
    double precision, parameter :: twopi = 8.d0*datan(1.d0)
 
    logical :: overlap, movebadprint, hasbad
@@ -57,9 +56,7 @@ subroutine initial(n,x)
 
    scale = 1.d0
    scale2 = 1.d-2
-
-   ! Move molecules to their center of mass (not for moldy)
-   if(.not.moldy) call tobar()
+   call tobar()
 
    ! Compute maximum internal distance within each type of molecule
 
@@ -145,9 +142,7 @@ subroutine initial(n,x)
    icart = 0
    do itype = 1, ntype
       do imol = 1, nmols(itype)
-         xbar = x(ilubar+1)
-         ybar = x(ilubar+2)
-         zbar = x(ilubar+3)
+         xcm = x(ilubar+1:ilubar+3)
          beta = x(ilugan+1)
          gamma = x(ilugan+2)
          theta = x(ilugan+3)
@@ -156,9 +151,7 @@ subroutine initial(n,x)
          do iatom = 1, natoms(itype)
             icart = icart + 1
             idatom = idatom + 1
-            call compcart(icart,xbar,ybar,zbar,&
-               coor(idatom,1),coor(idatom,2),coor(idatom,3),&
-               v1,v2,v3)
+            call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
             fixedatom(icart) = .false.
          end do
       end do
@@ -177,10 +170,10 @@ subroutine initial(n,x)
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3
-                  if (xcart(icart, i) < pbc_box(i) .or. xcart(icart, i) > pbc_box(i+3)) then
+                  if (xcart(icart, i) < pbc_min(i) .or. xcart(icart, i) > pbc_max(i)) then
                      write(*,*) "ERROR: Fixed molecule are outside the PBC box:"
                      write(*,*) "   Atom: ", ifatom, " of molecule: ", iftype, " - coordinate: ", i
-                     write(*,*) "  ", xcart(icart, i), " not in [", pbc_box(i), ", ", pbc_box(i+3), "]"
+                     write(*,*) "  ", xcart(icart, i), " not in [", pbc_min(i), ", ", pbc_max(i), "]"
                      write(*,*) "(after translating/rotation the fixed molecule with the given orientation)"
                      stop exit_code_input_error
                   end if
@@ -189,13 +182,6 @@ subroutine initial(n,x)
          end do
       end do
    end if
-
-   ! Use the largest radius as the reference for binning the box
-
-   radmax = 0.d0
-   do i = 1, ntotat
-      radmax = dmax1(radmax,2.d0*radius(i))
-   end do
 
    ! Performing some steps of optimization for the restrictions only
 
@@ -295,19 +281,17 @@ subroutine initial(n,x)
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
    write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
-!   if (using_pbc) then
-!      do i = 1, 3
-!         sizemin(i) = pbc_box(i)
-!         sizemax(i) = pbc_box(i+3)
-!      end do
-!   else
-      sizemin(1) = sizemin(1)! - 1.1d0*radmax
-      sizemin(2) = sizemin(2)! - 1.1d0*radmax
-      sizemin(3) = sizemin(3)! - 1.1d0*radmax
-      sizemax(1) = sizemax(1)! + 1.1d0*radmax
-      sizemax(2) = sizemax(2)! + 1.1d0*radmax
-      sizemax(3) = sizemax(3)! + 1.1d0*radmax
-!   end if
+   sizemin = sizemin - 1.1d0 * radmax
+   sizemax = sizemax + 1.1d0 * radmax
+   ! When *not* using PBC, actually PBCs are used, but particles
+   ! wont interact across the PBC because there is an empty layer
+   ! of cells, given by the shift in the sizemin and sizemax dimensions,
+   ! above defined. 
+   if (.not. using_pbc) then
+      pbc_min = sizemin
+      pbc_max = sizemax
+      pbc_length = pbc_max - pbc_min
+   end if 
 
    ! Computing the size of the patches
    write(*,*) ' Computing size of patches... '
@@ -346,7 +330,7 @@ subroutine initial(n,x)
          do ifatom = 1, natoms(iftype)
             idfatom = idfatom + 1
             icart = icart + 1
-            call seticell(xcart(icart,1),xcart(icart,2),xcart(icart,3),ixcell,iycell,izcell)
+            call seticell(xcart(icart,:),ixcell,iycell,izcell)
             latomnext(icart) = latomfix(ixcell,iycell,izcell)
             latomfix(ixcell,iycell,izcell) = icart
             latomfirst(ixcell,iycell,izcell) = icart
@@ -455,7 +439,7 @@ subroutine initial(n,x)
                x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
                x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
                if(fix) then
-                  call seticell(x(ilubar+1),x(ilubar+2),x(ilubar+3),ixcell,iycell,izcell)
+                  call seticell(x(ilubar+1:ilubar+3),ixcell,iycell,izcell)
                   if(hasfixed(ixcell,  iycell,  izcell  ).or.&
                      hasfixed(ixcell+1,iycell,  izcell  ).or.&
                      hasfixed(ixcell,  iycell+1,izcell  ).or.&

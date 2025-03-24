@@ -21,7 +21,7 @@ subroutine computef(n,x,f)
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
    double precision :: f,fparc,fplus
-   double precision :: xbar, ybar, zbar
+   double precision :: xcm(3)
    double precision :: beta, gama, teta
 
    ! Reset function value
@@ -47,9 +47,7 @@ subroutine computef(n,x,f)
       else
          do imol = 1, nmols(itype)
 
-            xbar = x(ilubar+1)
-            ybar = x(ilubar+2)
-            zbar = x(ilubar+3)
+            xcm = x(ilubar+1:ilubar+3)
 
             ! Computing the rotation matrix
 
@@ -69,9 +67,7 @@ subroutine computef(n,x,f)
 
                ! Computing the cartesian coordinates for this atom
 
-               call compcart(icart,xbar,ybar,zbar, &
-                  coor(idatom,1),coor(idatom,2),coor(idatom,3), &
-                  v1,v2,v3)
+               call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
 
                ! Adding to f the value relative to constraints for this atom
 
@@ -85,7 +81,7 @@ subroutine computef(n,x,f)
                if(.not.init1) then
 
                   !
-                  call seticell(xcart(icart,1), xcart(icart,2), xcart(icart,3), ixcell, iycell, izcell)
+                  call seticell(xcart(icart,:), ixcell, iycell, izcell)
 
                   ! Atom linked list
 

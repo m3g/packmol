@@ -19,7 +19,7 @@ subroutine setsizes()
    integer :: i, ival, ilast, iline, itype
    integer :: ioerr
    integer :: strlength
-   character(len=strl) :: record, word, blank, alltospace
+   character(len=strl) :: record, blank, alltospace
    logical :: inside_structure
 
    ! Instructions on how to run packmol
@@ -132,14 +132,12 @@ subroutine setsizes()
    tinker = .false.
    pdb = .false.
    xyz = .false.
-   moldy = .false.
    fbins = dsqrt(3.d0)
    do i = 1, nlines
       if(keyword(i,1).eq.'filetype') then
          if(keyword(i,2).eq.'tinker') tinker = .true.
          if(keyword(i,2).eq.'pdb') pdb = .true.
          if(keyword(i,2).eq.'xyz') xyz = .true.
-         if(keyword(i,2).eq.'moldy') moldy = .true.
          write(*,*)' Types of coordinate files specified: ', trim(keyword(i,2))
       end if
       if(keyword(i,1).eq.'fbins') then
@@ -151,7 +149,7 @@ subroutine setsizes()
          end if
       end if
    end do
-   if(.not.pdb.and..not.tinker.and..not.xyz.and..not.moldy) then
+   if(.not.pdb.and..not.tinker.and..not.xyz) then
       pdb = .true.
       write(*,*)
       write(*,*)' WARNING: File type not (correctly?) specified, using PDB'
@@ -216,10 +214,6 @@ subroutine setsizes()
          end if
          if ( xyz ) then
             read(10,*,iostat=ioerr) i
-            if ( ioerr == 0 ) natoms(itype) = i
-         end if
-         if ( moldy ) then
-            read(10,*,iostat=ioerr) word, i
             if ( ioerr == 0 ) natoms(itype) = i
          end if
          close(10)

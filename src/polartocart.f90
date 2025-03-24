@@ -46,20 +46,14 @@ end subroutine eulerrmat
 !                      and the rotation matrix
 !
 
-subroutine compcart(icart,xbar,ybar,zbar,&
-   xcoor,ycoor,zcoor,v1,v2,v3)
-
-   use compute_data, only : xcart
+subroutine compcart(x,xcm,xref,v1,v2,v3)
    implicit none
-   integer :: icart
-   double precision :: xbar, ybar, zbar
-   double precision :: xcoor, ycoor, zcoor
-   double precision :: v1(3), v2(3), v3(3)
-
-   xcart(icart,1) = xbar + xcoor*v1(1) + ycoor*v2(1) + zcoor*v3(1)
-   xcart(icart,2) = ybar + xcoor*v1(2) + ycoor*v2(2) + zcoor*v3(2)
-   xcart(icart,3) = zbar + xcoor*v1(3) + ycoor*v2(3) + zcoor*v3(3)
-
+   double precision, intent(inout) :: x(3)
+   double precision, intent(in) :: xcm(3), xref(3)
+   double precision, intent(in) :: v1(3), v2(3), v3(3)
+   x(1) = xcm(1) + xref(1)*v1(1) + xref(2)*v2(1) + xref(3)*v3(1)
+   x(2) = xcm(2) + xref(1)*v1(2) + xref(2)*v2(2) + xref(3)*v3(2)
+   x(3) = xcm(3) + xref(1)*v1(3) + xref(2)*v2(3) + xref(3)*v3(3)
    return
 end subroutine compcart
 

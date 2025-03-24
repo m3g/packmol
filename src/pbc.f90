@@ -6,21 +6,21 @@ module pbc
 
    implicit none
 
-   double precision, public :: pbc_box(6), pbc_sides(3)
    logical, public :: using_pbc = .false.
+   double precision, public :: pbc_min(3), pbc_max(3), pbc_length(3)
    public v_in_box, delta_vector, cell_ind
 
 contains
 
-   elemental double precision function v_in_box(v,sizemin,system_length)
-      double precision, intent(in) :: v, system_length, sizemin
-      v_in_box = sizemin + modulo((v - sizemin), system_length)
+   elemental double precision function v_in_box(v, pbc_min, pbc_length)
+      double precision, intent(in) :: v, pbc_min, pbc_length
+      v_in_box = pbc_min + modulo((v - pbc_min), pbc_length)
    end function v_in_box
 
-   elemental double precision function delta_vector(v1,v2,system_length)
-      double precision, intent(in) :: v1, v2, system_length
+   elemental double precision function delta_vector(v1,v2, pbc_length)
+      double precision, intent(in) :: v1, v2, pbc_length
       delta_vector = v1 - v2
-      delta_vector =  delta_vector - system_length * nint(delta_vector/system_length)
+      delta_vector =  delta_vector - pbc_length * nint(delta_vector/pbc_length)
    end function delta_vector
 
    integer function cell_ind(icell, ncells)
