@@ -398,14 +398,14 @@ subroutine output(n, x, output_file_name)
                   write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
                      record(12:21), write_chain, i4hex(iires),&
                      record(27:27),&
-                     (coor(idatom,k), k = 1, 3),&
+                     coor(idatom,1:3),&
                      record(55:80)
                end if
                if(record(1:6).eq.'HETATM') then
                   write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
                      record(12:21), write_chain, i4hex(iires),&
                      record(27:27),&
-                     (coor(idatom,k), k = 1, 3),&
+                     coor(idatom,1:3),&
                      record(55:80)
                end if
 
@@ -505,9 +505,7 @@ subroutine output(n, x, output_file_name)
                   idatom = idatom + 1
                   call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
                   ntcon(1) = nconnect(idatom,1)
-                  do k = 2, maxcon(idatom)
-                     ntcon(k) = nconnect(idatom,k) + i_ref_atom
-                  end do
+                  ntcon(2:maxcon(idatom)) = nconnect(idatom,2:maxcon(idatom)) + i_ref_atom
                   write(30,tinker_atom_line) i_ref_atom+iatom, ele(idatom), xcart(icart, 1:3), ntcon(1:maxcon(idatom))
                end do
                i_ref_atom = i_ref_atom + natoms(i_not_fixed)
