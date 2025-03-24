@@ -402,7 +402,7 @@ subroutine initial(n,x)
             do while((fx > precision) .and. (ntry < max_guess_try))
                ntry = ntry + 1
                call random_number(xrnd)
-               x(ilubar+1:ilubar+3) = 
+               x(ilubar+1:ilubar+3) = &
                   cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                call restmol(itype,ilubar,n,x,fx,.false.)
             end do
@@ -413,7 +413,7 @@ subroutine initial(n,x)
             do while(overlap .or. (fx > precision) .and. (ntry < max_guess_try))
                ntry = ntry + 1
                call random_number(xrnd)
-               x(ilubar+1:ilubar+3) = 
+               x(ilubar+1:ilubar+3) = &
                   cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                if(fix) then
                   call seticell(x(ilubar+1:ilubar+3),ixcell,iycell,izcell)
