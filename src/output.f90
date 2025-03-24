@@ -288,14 +288,14 @@ subroutine output(n, x, output_file_name)
                      write(30,pdb_atom_line) "ATOM  ", i5hex(i_ref_atom),&
                         record(12:21), write_chain, i4hex(iires),&
                         record(27:27),&
-                        (xcart(icart,k), k = 1, 3),&
+                        xcart(icart,1:3),&
                         record(55:80)
                   end if
                   if(record(1:6).eq.'HETATM') then
                      write(30,pdb_atom_line) "HETATM", i5hex(i_ref_atom),&
                         record(12:21), write_chain, i4hex(iires),&
                         record(27:27),&
-                        (xcart(icart,k), k = 1, 3),&
+                        xcart(icart,1:3),&
                         record(55:80)
                   end if
 
