@@ -58,8 +58,8 @@ program packmol
   double precision, allocatable :: x(:), xprint(:) ! (nn)
   double precision :: v1(3),v2(3),v3(3)
   double precision :: radscale, value
-  double precision :: cmx, cmy, cmz, beta, gama, teta
-  double precision :: xtemp, ytemp, ztemp
+  double precision :: xcm(3), beta, gama, teta
+  double precision :: xtemp(3)
   double precision :: fx, bestf, flast, fprint, all_type_fx
   double precision :: fimp, fimprov
   double precision, parameter :: pi=4.d0*datan(1.d0)
@@ -116,9 +116,7 @@ program packmol
       do itype = 1, ntype
         if(irestline(irest).gt.linestrut(itype,1).and.&
            irestline(irest).lt.linestrut(itype,2)) then
-          cmx = restpars(irest,1) 
-          cmy = restpars(irest,2)
-          cmz = restpars(irest,3)    
+          xcm = restpars(irest,1:3)
           beta = restpars(irest,4) 
           gama = restpars(irest,5) 
           teta = restpars(irest,6) 
@@ -130,18 +128,16 @@ program packmol
           idatom = idfirst(itype) - 1
           do iatom = 1, natoms(itype)
             idatom = idatom + 1
-            xtemp =   coor(idatom,1)*v1(1) &
-                    + coor(idatom,2)*v2(1) &
-                    + coor(idatom,3)*v3(1) 
-            ytemp =   coor(idatom,1)*v1(2) &
-                    + coor(idatom,2)*v2(2) &
-                    + coor(idatom,3)*v3(2) 
-            ztemp =   coor(idatom,1)*v1(3) &
-                    + coor(idatom,2)*v2(3) &
-                    + coor(idatom,3)*v3(3) 
-            coor(idatom, 1) = xtemp + cmx
-            coor(idatom, 2) = ytemp + cmy
-            coor(idatom, 3) = ztemp + cmz 
+            xtemp(1) = coor(idatom,1)*v1(1) &
+                     + coor(idatom,2)*v2(1) &
+                     + coor(idatom,3)*v3(1) 
+            xtemp(2) = coor(idatom,1)*v1(2) &
+                     + coor(idatom,2)*v2(2) &
+                     + coor(idatom,3)*v3(2) 
+            xtemp(3) = coor(idatom,1)*v1(3) &
+                     + coor(idatom,2)*v2(3) &
+                     + coor(idatom,3)*v3(3) 
+            coor(idatom, 1:3) = xtemp + xcm
           end do
           record = name(itype)
           write(*,*) ' Molecule ',trim(adjustl(record)),'(',itype,') will be fixed.' 
