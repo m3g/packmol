@@ -9,24 +9,25 @@
 ! vice-versa.
 !
 
-subroutine icell_to_ijk(icell,i,j,k)
+subroutine icell_to_ijk(icell,ncells,i,j,k)
 
-   use compute_data, only : ncells2
    implicit none
-   integer :: icell, i, j, k, iicell
+   integer, intent(in) :: icell, ncells(3)
+   integer, intent(out) :: i, j, k
+   integer :: iicell
 
-   k = mod(icell,ncells2(3))
-   if ( k == 0 ) k = ncells2(3)
+   k = mod(icell,ncells(3))
+   if ( k == 0 ) k = ncells(3)
 
    iicell = icell - k
-   iicell = iicell / ncells2(3) + 1
-   j = mod(iicell,ncells2(2))
-   if ( j == 0 ) j = ncells2(2)
+   iicell = iicell / ncells(3) + 1
+   j = mod(iicell,ncells(2))
+   if ( j == 0 ) j = ncells(2)
 
    iicell = iicell - j
-   iicell = iicell / ncells2(2) + 1
-   i = mod(iicell,ncells2(1))
-   if ( i == 0 ) i = ncells2(1)
+   iicell = iicell / ncells(2) + 1
+   i = mod(iicell,ncells(1))
+   if ( i == 0 ) i = ncells(1)
 
    k = k - 1
    j = j - 1
@@ -34,13 +35,10 @@ subroutine icell_to_ijk(icell,i,j,k)
 
 end subroutine icell_to_ijk
 
-subroutine ijk_to_icell(i,j,k,icell)
-
-   use compute_data, only : ncells2
+subroutine ijk_to_icell(i,j,k,ncells,icell)
    implicit none
-   integer :: i, j, k, icell
-
-   icell = i*ncells2(2)*ncells2(3) + j*ncells2(3) + k + 1
-
+   integer, intent(in) :: i, j, k, ncells(3)
+   integer, intent(out) :: icell
+   icell = i*ncells(2)*ncells(3) + j*ncells(3) + k + 1
 end subroutine ijk_to_icell
 

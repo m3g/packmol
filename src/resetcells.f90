@@ -11,7 +11,7 @@ subroutine resetcells()
 
    use sizes
    use compute_data, only : latomfirst, latomfix, &
-      lcellfirst, lcellnext, hasfree
+      lcellfirst, lcellnext, hasfree, ncells2
    implicit none
    integer :: i, j, k, icell
 
@@ -19,7 +19,7 @@ subroutine resetcells()
 
    icell = lcellfirst
    do while( icell > 0 )
-      call icell_to_ijk(icell,i,j,k)
+      call icell_to_ijk(icell,ncells2,i,j,k)
       latomfirst(i,j,k) = latomfix(i,j,k)
       hasfree(i,j,k) = .false.
       icell = lcellnext(icell)

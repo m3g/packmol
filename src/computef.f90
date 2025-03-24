@@ -96,7 +96,7 @@ subroutine computef(n,x,f)
 
                   if ( .not. hasfree(ixcell,iycell,izcell) ) then
                      hasfree(ixcell,iycell,izcell) = .true.
-                     call ijk_to_icell(ixcell,iycell,izcell,icell)
+                     call ijk_to_icell(ixcell,iycell,izcell,ncells2,icell)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
@@ -156,7 +156,7 @@ subroutine computef(n,x,f)
    icell = lcellfirst
    do while( icell > 0 )
 
-      call icell_to_ijk(icell,i,j,k)
+      call icell_to_ijk(icell,ncells2,i,j,k)
 
       icart = latomfirst(i,j,k)
       do while( icart > 0 )
@@ -213,7 +213,7 @@ subroutine add_cell_behind(i,j,k)
 
    if ( .not. hasfree(i,j,k) .and. latomfix(i,j,k) /= 0 ) then
       hasfree(i,j,k) = .true.
-      call ijk_to_icell(i,j,k,icell)
+      call ijk_to_icell(i,j,k,ncells2,icell)
       lcellnext(icell) = lcellfirst
       lcellfirst = icell
    end if

@@ -97,7 +97,7 @@ subroutine computeg(n,x,g)
 
                   if ( .not. hasfree(ixcell,iycell,izcell) ) then
                      hasfree(ixcell,iycell,izcell) = .true.
-                     call ijk_to_icell(ixcell,iycell,izcell,icell)
+                     call ijk_to_icell(ixcell,iycell,izcell,ncells2,icell)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
@@ -156,7 +156,7 @@ subroutine computeg(n,x,g)
       icell = lcellfirst
       do while( icell > 0 )
 
-         call icell_to_ijk(icell,i,j,k)
+         call icell_to_ijk(icell,ncells2,i,j,k)
 
          icart = latomfirst(i,j,k)
          do while ( icart .ne. 0 )
