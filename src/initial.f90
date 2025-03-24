@@ -21,11 +21,13 @@ subroutine initial(n,x)
    implicit none
    integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
       imol, ntry, nb, ixcell, iycell, izcell, ifatom, &
-      idfatom, iftype, jatom, ioerr
+      idfatom, iftype, jatom, ioerr, max_guess_try
 
-   double precision :: x(n), cmx, cmy, beta, gamma, theta, &
-      cmz, fx, cell_side, rnd, v1(3), v2(3), v3(3), xcm(3)
+   double precision :: x(n), beta, gamma, theta, &
+      fx, cell_side, rnd, xrnd(3), v1(3), v2(3), v3(3), xcm(3)
+   double precision :: scale_rnd_guess
    double precision, parameter :: twopi = 8.d0*datan(1.d0)
+   double precision, allocatable :: cm_min(:,:), cm_max(:,:)
 
    logical :: overlap, movebadprint, hasbad
    logical, allocatable :: hasfixed(:,:,:)
@@ -33,7 +35,6 @@ subroutine initial(n,x)
    character(len=strl) :: record
 
    ! Allocate hasfixed array
-
    allocate(hasfixed(0:nbp+1,0:nbp+1,0:nbp+1))
 
    ! We need to initialize the move logical variable
@@ -80,23 +81,11 @@ subroutine initial(n,x)
    ! Maximum size of the system: if you system is very large (about
    ! 80 nm wide), increase the sidemax parameter.
    ! Otherwise, the packing can be slow and unsucesful
-   cmxmin(1) = -sidemax
-   cmymin(1) = -sidemax
-   cmzmin(1) = -sidemax
-   cmxmax(1) = sidemax
-   cmymax(1) = sidemax
-   cmzmax(1) = sidemax
-   do i = 1, 3
-      x(i) = 0.d0
-      x(i+ntotmol*3) = 0.d0
-   end do
+   allocate(cm_min(ntype,3), cm_max(ntype,3))
+   x(:) = 0.d0
    call restmol(1,0,n,x,fx,.true.)
-   sizemin(1) = x(1) - sidemax
-   sizemax(1) = x(1) + sidemax
-   sizemin(2) = x(2) - sidemax
-   sizemax(2) = x(2) + sidemax
-   sizemin(3) = x(3) - sidemax
-   sizemax(3) = x(3) + sidemax
+   sizemin(1:3) = x(1:3) - sidemax
+   sizemax(1:3) = x(1:3) + sidemax
    write(*,*) ' All atoms must be within these coordinates: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
@@ -344,36 +333,19 @@ subroutine initial(n,x)
    ! Reseting mass centers to be within the regions
 
    write(*,*) ' Reseting center of mass... '
-   do itype = 1, ntype
-      cmxmin(itype) = 1.d20
-      cmymin(itype) = 1.d20
-      cmzmin(itype) = 1.d20
-      cmxmax(itype) = -1.d20
-      cmymax(itype) = -1.d20
-      cmzmax(itype) = -1.d20
-   end do
-
+   cm_min = 1.d20
+   cm_max = -1.d20
    icart = 0
    do itype = 1, ntype
       do imol = 1, nmols(itype)
-         cmx = 0.d0
-         cmy = 0.d0
-         cmz = 0.d0
+         xcm(:) = 0.d0
          do iatom = 1, natoms(itype)
             icart = icart + 1
-            cmx = cmx + xcart(icart,1)
-            cmy = cmy + xcart(icart,2)
-            cmz = cmz + xcart(icart,3)
+            xcm(:) = xcm(:) + xcart(icart,1:3)
          end do
-         cmx = cmx / dfloat(natoms(itype))
-         cmy = cmy / dfloat(natoms(itype))
-         cmz = cmz / dfloat(natoms(itype))
-         cmxmin(itype) = dmin1(cmxmin(itype),cmx)
-         cmymin(itype) = dmin1(cmymin(itype),cmy)
-         cmzmin(itype) = dmin1(cmzmin(itype),cmz)
-         cmxmax(itype) = dmax1(cmxmax(itype),cmx)
-         cmymax(itype) = dmax1(cmymax(itype),cmy)
-         cmzmax(itype) = dmax1(cmzmax(itype),cmz)
+         xcm(:) = xcm(:) / natoms(itype)
+         cm_min(itype,:) = dmin1(cm_min(itype,:),xcm(:))
+         cm_max(itype,:) = dmax1(cm_max(itype,:),xcm(:))
       end do
    end do
 
@@ -408,6 +380,11 @@ subroutine initial(n,x)
    if ( chkgrad ) then
       write(*,*) ' For checking gradient, will set avoidoverlap to false. '
       avoidoverlap = .false.
+      max_guess_try = 1
+      scale_rnd_guess = 1.5d0 ! move guess outside the constraints/box
+   else
+      max_guess_try = 20
+      scale_rnd_guess = 1.d0
    end if
 
    ! Setting random center of mass coordinates, within size limits
@@ -422,22 +399,22 @@ subroutine initial(n,x)
          if ( .not. avoidoverlap ) then
             fx = 1.d0
             ntry = 0
-            do while((fx.gt.precision).and.ntry.le.20)
+            do while((fx > precision) .and. (ntry < max_guess_try))
                ntry = ntry + 1
-               x(ilubar+1) = cmxmin(itype) + rnd()*(cmxmax(itype)-cmxmin(itype))
-               x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
-               x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
+               call random_number(xrnd)
+               x(ilubar+1:ilubar+3) = 
+                  cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                call restmol(itype,ilubar,n,x,fx,.false.)
             end do
          else
             fx = 1.d0
             ntry = 0
             overlap = .false.
-            do while((overlap.or.fx.gt.precision).and.ntry.le.20)
+            do while(overlap .or. (fx > precision) .and. (ntry < max_guess_try))
                ntry = ntry + 1
-               x(ilubar+1) = cmxmin(itype) + rnd()*(cmxmax(itype)-cmxmin(itype))
-               x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
-               x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
+               call random_number(xrnd)
+               x(ilubar+1:ilubar+3) = 
+                  cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                if(fix) then
                   call seticell(x(ilubar+1:ilubar+3),ixcell,iycell,izcell)
                   if(hasfixed(ixcell,  iycell,  izcell  ).or.&
@@ -607,9 +584,8 @@ subroutine initial(n,x)
    init1 = .false.
    write(*,hash3_line)
 
-   ! Deallocate hasfixed array
-
-   deallocate(hasfixed)
+   ! Deallocate allocated arrays
+   deallocate(hasfixed, cm_min, cm_max)
 
    return
 end subroutine initial

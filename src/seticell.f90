@@ -14,9 +14,9 @@ subroutine seticell(x,ixcell,iycell,izcell)
    integer, intent(out) :: ixcell, iycell, izcell
    double precision :: xt(3)
    xt = v_in_box(x, pbc_min, pbc_length)
-   ixcell = int(xt(1)/cell_length(1)) + 1
-   iycell = int(xt(2)/cell_length(2)) + 1
-   izcell = int(xt(3)/cell_length(3)) + 1
+   ixcell = int((xt(1) - pbc_min(1))/cell_length(1)) + 1
+   iycell = int((xt(2) - pbc_min(2))/cell_length(2)) + 1
+   izcell = int((xt(3) - pbc_min(3))/cell_length(3)) + 1
    return
 end subroutine seticell
 

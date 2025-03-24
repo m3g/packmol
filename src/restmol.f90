@@ -83,4 +83,3 @@ subroutine restmol(itype,ilubar,n,x,fx,solve)
 
    return
 end subroutine restmol
-

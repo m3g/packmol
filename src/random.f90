@@ -9,16 +9,13 @@
 !
 
 double precision function rnd()
-
    call random_number(rnd)
-
    return
 end function rnd
 
 !
 ! Subroutine that initializes the random number generator given a seed
 !
-
 subroutine init_random_number(iseed)
    integer :: size
    integer :: i, iseed

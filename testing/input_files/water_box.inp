@@ -8,5 +8,8 @@ output output.pdb
 
 structure ./structure_files/water.pdb
   number 1000
-  inside box 0. 0. 0. 40. 40. 40.
+  #inside box 0. 0. 0. 40. 40. 40.
+  inside box -20. -20. -20. 20. 20. 20.
 end structure
+
+#chkgrad

@@ -35,8 +35,6 @@ module compute_data
 
    double precision, allocatable :: fdist_atom(:), frest_atom(:) ! (ntotat)
    double precision, allocatable :: dmax(:) ! (ntype)
-   double precision, allocatable :: cmxmin(:), cmymin(:), cmzmin(:) ! (ntype)
-   double precision, allocatable :: cmxmax(:), cmymax(:), cmzmax(:) ! (ntype)
 
    logical, allocatable :: constrain_rot(:,:) ! (ntype,3)
    logical, allocatable :: comptype(:) ! (ntype)

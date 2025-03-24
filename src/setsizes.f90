@@ -171,8 +171,6 @@ subroutine setsizes()
 
    allocate(nmols(ntype),natoms(ntype),idfirst(ntype),constrain_rot(ntype,3),&
       rot_bound(ntype,3,2),dmax(ntype),&
-      cmxmin(ntype),cmymin(ntype),cmzmin(ntype),&
-      cmxmax(ntype),cmymax(ntype),cmzmax(ntype),&
       comptype(ntype),compsafe(ntype),&
       restart_from(0:ntype),restart_to(0:ntype),&
       nloop_type(ntype),nloop0_type(ntype))
