@@ -208,9 +208,9 @@ subroutine add_cell_behind(cell,i,j,k)
    implicit none
    integer, intent(in) :: cell(3), i, j, k
    integer :: icell, ic, jc, kc
-   ic = cell_ind(cell(1)-i,ncells(1))
-   jc = cell_ind(cell(2)-j,ncells(2))
-   kc = cell_ind(cell(3)-k,ncells(3))
+   ic = cell_ind(cell(1)+i,ncells(1))
+   jc = cell_ind(cell(2)+j,ncells(2))
+   kc = cell_ind(cell(3)+k,ncells(3))
    if ( .not. hasfree(ic,jc,kc) .and. latomfix(ic,jc,kc) /= 0 ) then
       hasfree(ic,jc,kc) = .true.
       icell = index_cell(cell, ncells)
