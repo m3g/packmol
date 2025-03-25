@@ -21,7 +21,7 @@ subroutine initial(n,x)
    use pbc
    implicit none
    integer :: n, i, j, idatom, iatom, ilubar, ilugan, icart, itype, &
-      imol, ntry, cell(3), ixcell, iycell, izcell, ifatom, &
+      imol, ntry, cell(3), ic, jc, kc, ifatom, &
       idfatom, iftype, jatom, ioerr, max_guess_try
 
    double precision :: x(n), beta, gamma, theta, &
@@ -208,6 +208,7 @@ subroutine initial(n,x)
       write(*,*)
       write(*,*) ' Restraint-only function value: ', fx
       write(*,*) ' Maximum violation of the restraints: ', frest
+
       call swaptype(n,x,itype,2) ! Save current type results
 
       if( hasbad .and. frest > precision ) then
@@ -407,46 +408,27 @@ subroutine initial(n,x)
             ntry = 0
             overlap = .false.
             do while(overlap .or. (fx > precision) .and. (ntry < max_guess_try))
+               overlap = .false.
                ntry = ntry + 1
                call random_number(xrnd)
                x(ilubar+1:ilubar+3) = &
                   cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                if(fix) then
                   call setcell(x(ilubar+1:ilubar+3),cell)
-                  ixcell = cell(1)
-                  iycell = cell(2)
-                  izcell = cell(3)
-                  if(hasfixed(ixcell,  iycell,  izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell  ).or.&
-                     hasfixed(ixcell,  iycell+1,izcell  ).or.&
-                     hasfixed(ixcell,  iycell,  izcell+1).or.&
-                     hasfixed(ixcell-1,iycell,  izcell  ).or.&
-                     hasfixed(ixcell,  iycell-1,izcell  ).or.&
-                     hasfixed(ixcell,  iycell,  izcell-1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell+1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell-1).or.&
-                     hasfixed(ixcell,  iycell+1,izcell+1).or.&
-                     hasfixed(ixcell,  iycell+1,izcell-1).or.&
-                     hasfixed(ixcell,  iycell-1,izcell+1).or.&
-                     hasfixed(ixcell,  iycell-1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell  ).or.&
-                     hasfixed(ixcell-1,iycell,  izcell+1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell  ).or.&
-                     hasfixed(ixcell-1,iycell,  izcell-1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell+1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell-1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell+1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell+1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell+1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell-1)) then
-                     overlap = .true.
-                  else
-                     overlap = .false.
-                  end if
+                  icell: do ic = -1, 1 
+                     do jc = -1, 1
+                        do kc = -1, 1
+                           if(hasfixed( &
+                                 cell_ind(cell(1)+ic,ncells(1)),&
+                                 cell_ind(cell(2)+jc,ncells(2)),&
+                                 cell_ind(cell(3)+kc,ncells(3)) &
+                           )) then
+                              overlap = .true.
+                              exit icell
+                           end if
+                        end do
+                     end do
+                  end do icell
                end if
                if(.not.overlap) call restmol(itype,ilubar,n,x,fx,.false.)
             end do
