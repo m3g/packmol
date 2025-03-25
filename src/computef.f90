@@ -87,46 +87,11 @@ subroutine computef(n,x,f)
                   latomfirst(cell(1),cell(2),cell(3)) = icart
 
                   ! cell with atoms linked list
-
                   if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
                      hasfree(cell(1),cell(2),cell(3)) = .true.
                      icell = index_cell(cell,ncells)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
-
-                     ! Add cells with fixed atoms which are vicinal to this cell
-                     if ( fix ) then
-                        ! cells sharing faces
-                        call add_cell_behind(cell, -1, 0, 0)
-                        call add_cell_behind(cell, 0, -1, 0)
-                        call add_cell_behind(cell, 0, 0, -1)
-                        call add_cell_behind(cell, 1, 0, 0)
-                        call add_cell_behind(cell, 0, 1, 0)
-                        call add_cell_behind(cell, 0, 0, 1)
-                        ! cells sharing edges
-                        call add_cell_behind(cell, 0, 1, 1)
-                        call add_cell_behind(cell, 0, 1, -1)
-                        call add_cell_behind(cell, 0, -1, 1)
-                        call add_cell_behind(cell, 0, -1, -1)
-                        call add_cell_behind(cell, 1, 0, 1)
-                        call add_cell_behind(cell, 1, 0, -1)
-                        call add_cell_behind(cell, 1, 1, 0)
-                        call add_cell_behind(cell, 1, -1, 0)
-                        call add_cell_behind(cell, -1, 0, 1)
-                        call add_cell_behind(cell, -1, 0, -1)
-                        call add_cell_behind(cell, -1, 1, 0)
-                        call add_cell_behind(cell, -1, -1, 0)
-                        ! cells sharing vertices 
-                        call add_cell_behind(cell, -1, 1, 1)
-                        call add_cell_behind(cell, -1, 1, -1)
-                        call add_cell_behind(cell, -1, -1, 1)
-                        call add_cell_behind(cell, -1, -1, -1)
-                        call add_cell_behind(cell, 1, 1, 1)
-                        call add_cell_behind(cell, 1, 1, -1)
-                        call add_cell_behind(cell, 1, -1, 1)
-                        call add_cell_behind(cell, 1, -1, -1)
-                     end if
-
                   end if
 
                   ibtype(icart) = itype
@@ -200,22 +165,3 @@ subroutine computef(n,x,f)
 
    return
 end subroutine computef
-
-subroutine add_cell_behind(cell,i,j,k)
-   use cell_indexing, only: index_cell
-   use compute_data, only: hasfree, ncells, latomfix, lcellnext, lcellfirst, ncells
-   use pbc, only: cell_ind
-   implicit none
-   integer, intent(in) :: cell(3), i, j, k
-   integer :: icell, ic, jc, kc
-   ic = cell_ind(cell(1)+i,ncells(1))
-   jc = cell_ind(cell(2)+j,ncells(2))
-   kc = cell_ind(cell(3)+k,ncells(3))
-   if ( .not. hasfree(ic,jc,kc) .and. latomfix(ic,jc,kc) /= 0 ) then
-      hasfree(ic,jc,kc) = .true.
-      icell = index_cell(cell, ncells)
-      lcellnext(icell) = lcellfirst
-      lcellfirst = icell
-   end if
-end subroutine add_cell_behind
-

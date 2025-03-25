@@ -94,39 +94,6 @@ subroutine computeg(n,x,g)
                      icell = index_cell(cell,ncells)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
-
-                     ! Add cells with fixed atoms which are vicinal to this cell
-                     if ( fix ) then
-                        ! cells sharing faces
-                        call add_cell_behind(cell, -1, 0, 0)
-                        call add_cell_behind(cell, 0, -1, 0)
-                        call add_cell_behind(cell, 0, 0, -1)
-                        call add_cell_behind(cell, 1, 0, 0)
-                        call add_cell_behind(cell, 0, 1, 0)
-                        call add_cell_behind(cell, 0, 0, 1)
-                        ! cells sharing edges
-                        call add_cell_behind(cell, 0, 1, 1)
-                        call add_cell_behind(cell, 0, 1, -1)
-                        call add_cell_behind(cell, 0, -1, 1)
-                        call add_cell_behind(cell, 0, -1, -1)
-                        call add_cell_behind(cell, 1, 0, 1)
-                        call add_cell_behind(cell, 1, 0, -1)
-                        call add_cell_behind(cell, 1, 1, 0)
-                        call add_cell_behind(cell, 1, -1, 0)
-                        call add_cell_behind(cell, -1, 0, 1)
-                        call add_cell_behind(cell, -1, 0, -1)
-                        call add_cell_behind(cell, -1, 1, 0)
-                        call add_cell_behind(cell, -1, -1, 0)
-                        ! cells sharing vertices 
-                        call add_cell_behind(cell, -1, 1, 1)
-                        call add_cell_behind(cell, -1, 1, -1)
-                        call add_cell_behind(cell, -1, -1, 1)
-                        call add_cell_behind(cell, -1, -1, -1)
-                        call add_cell_behind(cell, 1, 1, 1)
-                        call add_cell_behind(cell, 1, 1, -1)
-                        call add_cell_behind(cell, 1, -1, 1)
-                        call add_cell_behind(cell, 1, -1, -1)
-                     end if
                   end if
 
                   ibtype(icart) = itype
