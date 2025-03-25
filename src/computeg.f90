@@ -55,27 +55,20 @@ subroutine computeg(n,x,g)
          icart = icart + nmols(itype)*natoms(itype)
       else
          do imol = 1, nmols(itype)
-
             xcm = x(ilubar+1:ilubar+3)
-
             ! Compute the rotation matrix
-
             beta = x(ilugan + 1)
             gama = x(ilugan + 2)
             teta = x(ilugan + 3)
-
             call eulerrmat(beta,gama,teta,v1,v2,v3)
-
             idatom = idfirst(itype) - 1
-            do iatom = 1, natoms(itype)
 
+            do iatom = 1, natoms(itype)
                icart = icart + 1
                idatom = idatom + 1
-
                call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
 
                ! Gradient relative to the wall distace
-
                do iratcount = 1, nratom(icart)
                   irest = iratom(icart,iratcount)
                   call gwalls(icart,irest)
@@ -167,13 +160,9 @@ subroutine computeg(n,x,g)
 
    ! Computing the gradient using chain rule
 
-   do i = 1, n
-      g(i) = 0.d0
-   end do
-
+   g(1:n) = 0.d0
    k1 = 0
    k2 = ntotmol * 3
-
    icart = 0
    do itype = 1, ntype
 
