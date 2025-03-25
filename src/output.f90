@@ -164,9 +164,7 @@ subroutine output(n, x, output_file_name)
 
       if(add_box_sides .or. using_pbc) then
          write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,t34,f7.2,t41,f7.2,t48,f7.2,t56,'P 1           1' )") &
-            sizemax(1)-sizemin(1) + add_sides_fix,&
-            sizemax(2)-sizemin(2) + add_sides_fix,&
-            sizemax(3)-sizemin(3) + add_sides_fix,&
+            pbc_max-pbc_min,&
             90., 90., 90.
       end if
 
