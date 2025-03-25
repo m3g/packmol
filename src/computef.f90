@@ -11,7 +11,6 @@ subroutine computef(n,x,f)
    use sizes
    use cell_indexing, only: index_cell, icell_to_cell, setcell
    use compute_data
-   use input, only : fix
    use pbc
    implicit none
 
