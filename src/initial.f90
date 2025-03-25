@@ -11,6 +11,7 @@ subroutine initial(n,x)
 
    use exit_codes
    use sizes
+   use cell_indexing, only: setcell
    use compute_data
    use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&

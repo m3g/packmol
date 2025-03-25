@@ -1,3 +1,9 @@
+module cell_indexing
+
+implicit none
+public :: setcell, icell_to_cell, cell_to_icell, index_cell
+
+contains 
 !
 !  Written by Leandro Martínez, 2009-2011.
 !  Copyright (c) 2009-2018, Leandro Martínez, Jose Mario Martinez,
@@ -8,7 +14,6 @@
 subroutine setcell(x,cell)
    use pbc, only : v_in_box, pbc_min, pbc_length, cell_ind
    use compute_data, only : cell_length
-   implicit none
    double precision, intent(in) :: x(3)
    integer, intent(out) :: cell(3)
    double precision :: xt(3)
@@ -29,7 +34,6 @@ end subroutine setcell
 !
 
 subroutine icell_to_cell(icell,ncells,cell)
-   implicit none
    integer, intent(in) :: icell, ncells(3)
    integer, intent(out) :: cell(3)
    integer :: iicell
@@ -50,10 +54,16 @@ subroutine icell_to_cell(icell,ncells,cell)
    cell(:) = cell(:) - 1
 end subroutine icell_to_cell
 
+integer function index_cell(cell, ncells)
+   integer, intent(in) :: ncells(3), cell(3)
+   index_cell = cell(1)*ncells(2)*ncells(3) + cell(2)*ncells(3) + cell(3) + 1
+end
+
 subroutine cell_to_icell(cell,ncells,icell)
-   implicit none
    integer, intent(in) :: ncells(3), cell(3)
    integer, intent(out) :: icell
    icell = cell(1)*ncells(2)*ncells(3) + cell(2)*ncells(3) + cell(3) + 1
 end subroutine cell_to_icell
+
+end
 

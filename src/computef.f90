@@ -9,6 +9,7 @@
 subroutine computef(n,x,f)
 
    use sizes
+   use cell_indexing, only: index_cell, icell_to_cell, setcell
    use compute_data
    use input, only : fix
    use pbc
@@ -89,7 +90,7 @@ subroutine computef(n,x,f)
 
                   if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
                      hasfree(cell(1),cell(2),cell(3)) = .true.
-                     call cell_to_icell(cell,ncells2,icell)
+                     icell = index_cell(cell,ncells2)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
@@ -201,6 +202,7 @@ subroutine computef(n,x,f)
 end subroutine computef
 
 subroutine add_cell_behind(cell,i,j,k)
+   use cell_indexing, only: index_cell
    use compute_data, only: hasfree, ncells, latomfix, lcellnext, lcellfirst, ncells2
    use pbc, only: cell_ind
    implicit none
@@ -211,7 +213,7 @@ subroutine add_cell_behind(cell,i,j,k)
    kc = cell_ind(cell(3)-k,ncells(3))
    if ( .not. hasfree(ic,jc,kc) .and. latomfix(ic,jc,kc) /= 0 ) then
       hasfree(ic,jc,kc) = .true.
-      call cell_to_icell(cell,ncells2,icell)
+      icell = index_cell(cell, ncells2)
       lcellnext(icell) = lcellfirst
       lcellfirst = icell
    end if

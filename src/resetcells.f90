@@ -9,8 +9,8 @@
 
 subroutine resetcells()
 
-   use compute_data, only : latomfirst, latomfix, &
-      lcellfirst, lcellnext, hasfree, ncells2
+   use cell_indexing, only: icell_to_cell 
+   use compute_data, only: latomfirst, latomfix, lcellfirst, lcellnext, hasfree, ncells2
    implicit none
    integer :: cell(3), icell
 

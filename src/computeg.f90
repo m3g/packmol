@@ -9,6 +9,7 @@
 subroutine computeg(n,x,g)
 
    use sizes
+   use cell_indexing, only: index_cell, icell_to_cell, setcell
    use compute_data
    use input, only : fix
    use pbc
@@ -90,7 +91,7 @@ subroutine computeg(n,x,g)
                   ! cell with atoms linked list
                   if ( .not. hasfree(cell(1),cell(2),cell(3))) then
                      hasfree(cell(1),cell(2),cell(3)) = .true.
-                     call cell_to_icell(cell,ncells2,icell)
+                     icell = index_cell(cell,ncells2)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
