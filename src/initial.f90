@@ -20,7 +20,7 @@ subroutine initial(n,x)
    use ahestetic
    use pbc
    implicit none
-   integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
+   integer :: n, i, j, idatom, iatom, ilubar, ilugan, icart, itype, &
       imol, ntry, cell(3), ixcell, iycell, izcell, ifatom, &
       idfatom, iftype, jatom, ioerr, max_guess_try
 
