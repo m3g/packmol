@@ -8,7 +8,7 @@ module compute_data
    use sizes
 
    integer :: ntotmol, ntype, nfixedat, ntotat
-   integer :: ncells(3), ncells2(3)
+   integer :: ncells(3)
 
    integer, allocatable :: nmols(:) ! (ntype)
    integer, allocatable :: natoms(:) ! (ntype)
@@ -44,8 +44,8 @@ module compute_data
 
    ! For linked lists
    integer, allocatable :: latomnext(:) ! (ntotat)
-   integer, allocatable :: latomfirst(:,:,:) !  (0:nbp+1,0:nbp+1,0:nbp+1)
-   integer, allocatable :: latomfix(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1)
+   integer, allocatable :: latomfirst(:,:,:) !  (ncells(1),ncells(2),ncells3))
+   integer, allocatable :: latomfix(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
    ! For movebad
    double precision, allocatable :: fmol(:), radiuswork(:) ! (ntotat)
@@ -56,7 +56,7 @@ module compute_data
 
    ! For cells with atoms linked lists
    integer :: lcellfirst
-   integer, allocatable :: lcellnext(:) ! ((nbp+2)**3)
-   logical, allocatable :: hasfree(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1)
+   integer, allocatable :: lcellnext(:) ! (ncells(1)*ncells(2)*ncells(3))
+   logical, allocatable :: hasfree(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
 end module compute_data

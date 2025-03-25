@@ -90,7 +90,7 @@ subroutine computef(n,x,f)
 
                   if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
                      hasfree(cell(1),cell(2),cell(3)) = .true.
-                     icell = index_cell(cell,ncells2)
+                     icell = index_cell(cell,ncells)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
@@ -150,7 +150,7 @@ subroutine computef(n,x,f)
    icell = lcellfirst
    do while( icell > 0 )
 
-      call icell_to_cell(icell,ncells2,cell)
+      call icell_to_cell(icell,ncells,cell)
       i = cell(1)
       j = cell(2)
       k = cell(3)
@@ -203,7 +203,7 @@ end subroutine computef
 
 subroutine add_cell_behind(cell,i,j,k)
    use cell_indexing, only: index_cell
-   use compute_data, only: hasfree, ncells, latomfix, lcellnext, lcellfirst, ncells2
+   use compute_data, only: hasfree, ncells, latomfix, lcellnext, lcellfirst, ncells
    use pbc, only: cell_ind
    implicit none
    integer, intent(in) :: cell(3), i, j, k
@@ -213,7 +213,7 @@ subroutine add_cell_behind(cell,i,j,k)
    kc = cell_ind(cell(3)-k,ncells(3))
    if ( .not. hasfree(ic,jc,kc) .and. latomfix(ic,jc,kc) /= 0 ) then
       hasfree(ic,jc,kc) = .true.
-      icell = index_cell(cell, ncells2)
+      icell = index_cell(cell, ncells)
       lcellnext(icell) = lcellfirst
       lcellfirst = icell
    end if

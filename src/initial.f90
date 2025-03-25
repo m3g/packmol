@@ -21,7 +21,7 @@ subroutine initial(n,x)
    use pbc
    implicit none
    integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
-      imol, ntry, nb, cell(3), ixcell, iycell, izcell, ifatom, &
+      imol, ntry, cell(3), ixcell, iycell, izcell, ifatom, &
       idfatom, iftype, jatom, ioerr, max_guess_try
 
    double precision :: x(n), beta, gamma, theta, &
@@ -34,9 +34,6 @@ subroutine initial(n,x)
    logical, allocatable :: hasfixed(:,:,:)
 
    character(len=strl) :: record
-
-   ! Allocate hasfixed array
-   allocate(hasfixed(0:nbp+1,0:nbp+1,0:nbp+1))
 
    ! We need to initialize the move logical variable
 
@@ -285,31 +282,29 @@ subroutine initial(n,x)
 
    ! Computing the size of the patches
    write(*,*) ' Computing size of patches... '
-   cell_side = discale * radmax + 0.01d0 * radmax
+   cell_side = discale * (1.01d0 * radmax)
    do i = 1, 3
-      system_length(i) = sizemax(i) - sizemin(i)
-      nb = int(system_length(i)/cell_side + 1.d0)
-      if(nb.gt.nbp) nb = nbp
-      cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
-      ncells(i) = nb
-      ncells2(i) = ncells(i) + 2
+      ncells(i) = max(1,floor(pbc_length(i)/cell_side))
+      cell_length(i) = pbc_length(i) / ncells(i)
    end do
    write(*,*) ' Number of cells in each direction and cell sides: '
    write(*,*) '  x: ', ncells(1), ' cells of size ', cell_length(1)
    write(*,*) '  y: ', ncells(2), ' cells of size ', cell_length(2)
    write(*,*) '  z: ', ncells(3), ' cells of size ', cell_length(3)
-   write(*,"(a, 3(f10.5))") '  Cell-system length: ', system_length(1:3) 
-   ! Reseting latomfix array
-   do i = 0, nbp + 1
-      do j = 0, nbp + 1
-         do k = 0, nbp + 1
-            latomfix(i,j,k) = 0
-            latomfirst(i,j,k) = 0
-            hasfixed(i,j,k) = .false.
-            hasfree(i,j,k) = .false.
-         end do
-      end do
-   end do
+   write(*,"(a, 3(f10.5))") '  Cell-system length: ', pbc_length(1:3) 
+
+   ! Allocate arrays depending on the number of cells
+   allocate(latomfirst(ncells(1),ncells(2),ncells(3)))
+   allocate(latomfix(ncells(1),ncells(2),ncells(3)))
+   allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
+   allocate(hasfree(ncells(1),ncells(2),ncells(3)))
+   allocate(hasfixed(ncells(1),ncells(2),ncells(3)))
+
+   ! Reseting linked lists arrays
+   latomfix(:,:,:) = 0
+   latomfirst(:,:,:) = 0
+   hasfixed(:,:,:) = .false.
+   hasfree(:,:,:) = .false.
 
    ! If there are fixed molecules, add them permanently to the latomfix array
    if(fix) then
@@ -494,14 +489,10 @@ subroutine initial(n,x)
    ! Compare analytical and finite-difference gradients
 
    if(chkgrad) then
-      cell_side = discale * radmax + 0.01d0 * radmax
+      cell_side = discale * (1.01d0 * radmax)
       do i = 1, 3
-         system_length(i) = sizemax(i) - sizemin(i)
-         nb = int(system_length(i)/cell_side + 1.d0)
-         if(nb.gt.nbp) nb = nbp
-         cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
-         ncells(i) = nb
-         ncells2(i) = ncells(i) + 2
+         ncells(i) = max(1,floor(pbc_length(i)/cell_side))
+         cell_length(i) = pbc_length(i) / ncells(i)
       end do
       call comparegrad(n,x)
       stop

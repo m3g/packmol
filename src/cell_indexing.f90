@@ -1,7 +1,7 @@
 module cell_indexing
 
 implicit none
-public :: setcell, icell_to_cell, cell_to_icell, index_cell
+public :: setcell, icell_to_cell, index_cell
 
 contains 
 !
@@ -51,19 +51,12 @@ subroutine icell_to_cell(icell,ncells,cell)
    cell(1) = mod(iicell,ncells(1))
    if ( cell(1) == 0 ) cell(1) = ncells(1)
 
-   cell(:) = cell(:) - 1
 end subroutine icell_to_cell
 
 integer function index_cell(cell, ncells)
    integer, intent(in) :: ncells(3), cell(3)
-   index_cell = cell(1)*ncells(2)*ncells(3) + cell(2)*ncells(3) + cell(3) + 1
+   index_cell = (cell(1)-1)*ncells(2)*ncells(3) + (cell(2)-1)*ncells(3) + (cell(3)-1) + 1
 end
-
-subroutine cell_to_icell(cell,ncells,icell)
-   integer, intent(in) :: ncells(3), cell(3)
-   integer, intent(out) :: icell
-   icell = cell(1)*ncells(2)*ncells(3) + cell(2)*ncells(3) + cell(3) + 1
-end subroutine cell_to_icell
 
 end
 

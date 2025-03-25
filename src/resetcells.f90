@@ -10,7 +10,7 @@
 subroutine resetcells()
 
    use cell_indexing, only: icell_to_cell 
-   use compute_data, only: latomfirst, latomfix, lcellfirst, lcellnext, hasfree, ncells2
+   use compute_data, only: latomfirst, latomfix, lcellfirst, lcellnext, hasfree, ncells
    implicit none
    integer :: cell(3), icell
 
@@ -18,7 +18,7 @@ subroutine resetcells()
 
    icell = lcellfirst
    do while( icell > 0 )
-      call icell_to_cell(icell,ncells2,cell)
+      call icell_to_cell(icell,ncells,cell)
       latomfirst(cell(1),cell(2),cell(3)) = latomfix(cell(1),cell(2),cell(3))
       hasfree(cell(1),cell(2),cell(3)) = .false.
       icell = lcellnext(icell)

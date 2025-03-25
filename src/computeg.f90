@@ -91,7 +91,7 @@ subroutine computeg(n,x,g)
                   ! cell with atoms linked list
                   if ( .not. hasfree(cell(1),cell(2),cell(3))) then
                      hasfree(cell(1),cell(2),cell(3)) = .true.
-                     icell = index_cell(cell,ncells2)
+                     icell = index_cell(cell,ncells)
                      lcellnext(icell) = lcellfirst
                      lcellfirst = icell
 
@@ -149,7 +149,7 @@ subroutine computeg(n,x,g)
       icell = lcellfirst
       do while( icell > 0 )
 
-         call icell_to_cell(icell,ncells2,cell)
+         call icell_to_cell(icell,ncells,cell)
          i = cell(1)
          j = cell(2)
          k = cell(3)

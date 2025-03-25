@@ -291,22 +291,9 @@ subroutine setsizes()
    end do
 
    ! The number of variables of the problem
-
    nn = ntotmol*6
 
-   ! The number of bins of the linked cell method in each direction
-
-   nbp = int((fbins*dble(ntotat))**(1.d0/3.d0)) + 1
-
-   ! Allocate arrays depending on nbp parameter
-
-   allocate(latomfirst(0:nbp+1,0:nbp+1,0:nbp+1),&
-      latomfix(0:nbp+1,0:nbp+1,0:nbp+1),&
-      hasfree(0:nbp+1,0:nbp+1,0:nbp+1),&
-      lcellnext((nbp+2)**3))
-
    ! Checking the total number of restrictions defined
-
    i = 0
    do iline = 1, nlines
       if ( keyword(iline,1) == 'fixed' .or. &
