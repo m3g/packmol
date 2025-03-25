@@ -25,22 +25,15 @@ subroutine restmol(itype,ilubar,n,x,fx,solve)
    nsafe = n
    ntotsafe = ntotmol
    nmoltype = nmols(itype)
-   do i = 1, ntype
-      compsafe(i) = comptype(i)
-   end do
+   compsafe(1:ntype) = comptype(1:ntype)
    initsafe = init1
 
    ! Preparing system to solve for this molecule
-
    n = 6
    ntotmol = 1
    nmols(itype) = 1
-   xmol(1) = x(ilubar+1)
-   xmol(2) = x(ilubar+2)
-   xmol(3) = x(ilubar+3)
-   xmol(4) = x(ilubar+ntotsafe*3+1)
-   xmol(5) = x(ilubar+ntotsafe*3+2)
-   xmol(6) = x(ilubar+ntotsafe*3+3)
+   xmol(1:3) = x(ilubar+1:ilubar+3)
+   xmol(4:6) = x(ilubar+ntotsafe*3+1:ilubar+ntotsafe*3+3)
    do i = 1, ntype
       if(i.eq.itype) then
          comptype(i) = .true.
@@ -51,7 +44,6 @@ subroutine restmol(itype,ilubar,n,x,fx,solve)
    init1 = .true.
 
    ! If not going to solve the problem, compute energy and return
-
    if(.not.solve) then
       call computef(n,xmol,fx)
       ! Otherwise, put this molecule in its constraints
@@ -66,19 +58,12 @@ subroutine restmol(itype,ilubar,n,x,fx,solve)
    end if
 
    ! Restoring original problem data
-
    ntotmol = ntotsafe
    n = nsafe
    nmols(itype) = nmoltype
-   x(ilubar+1) = xmol(1)
-   x(ilubar+2) = xmol(2)
-   x(ilubar+3) = xmol(3)
-   x(ilubar+ntotmol*3+1) = xmol(4)
-   x(ilubar+ntotmol*3+2) = xmol(5)
-   x(ilubar+ntotmol*3+3) = xmol(6)
-   do i = 1, ntype
-      comptype(i) = compsafe(i)
-   end do
+   x(ilubar+1:ilubar+3) = xmol(1:3)
+   x(ilubar+ntotmol+1:ilubar+ntotmol*3) = xmol(4:6)
+   comptype(1:ntype) = compsafe(1:ntype)
    init1 = initsafe
 
    return
