@@ -103,7 +103,7 @@ subroutine output(n, x, output_file_name)
          if ( .not. fixedoninput(itype) ) then
             i_not_fixed = i_not_fixed + 1
             do imol = 1, nmols(i_not_fixed)
-               xcm = v_in_box(x(ilubar+1:ilubar+3), pbc_min, pbc_length)
+               xcm = x(ilubar+1:ilubar+3)
                beta = x(ilugan+1)
                gama = x(ilugan+2)
                teta = x(ilugan+3)
@@ -233,7 +233,7 @@ subroutine output(n, x, output_file_name)
                   write_chain = chain(i_not_fixed)
                end if
 
-               xcm = v_in_box(x(ilubar+1:ilubar+3), pbc_min, pbc_length)
+               xcm = x(ilubar+1:ilubar+3)
                beta = x(ilugan+1)
                gama = x(ilugan+2)
                teta = x(ilugan+3)
@@ -489,7 +489,7 @@ subroutine output(n, x, output_file_name)
 
             do imol = 1, nmols(i_not_fixed)
 
-               xcm = v_in_box(x(ilubar+1:ilubar+3), pbc_min, pbc_length)
+               xcm = x(ilubar+1:ilubar+3)
                beta = x(ilugan+1)
                gama = x(ilugan+2)
                teta = x(ilugan+3)
