@@ -305,9 +305,7 @@ subroutine initial(n,x)
       write(*,*) ' Add fixed molecules to permanent arrays... '
       icart = ntotat - nfixedat
       do iftype = ntype + 1, ntype_with_fixed
-         idfatom = idfirst(iftype) - 1
          do ifatom = 1, natoms(iftype)
-            idfatom = idfatom + 1
             icart = icart + 1
             call setcell(xcart(icart,:),cell)
             latomnext(icart) = latomfix(cell(1),cell(2),cell(3))

@@ -30,12 +30,7 @@ subroutine computeg(n,x,g)
    double precision :: beta, gama, teta, cb, sb, cg, sg, ct, st
 
    ! Reset gradients
-
-   do i = 1, ntotat
-      do j = 1, 3
-         gxcar(i,j) = 0.d0
-      end do
-   end do
+   gxcar(:,:) = 0.d0
 
    ! Reset cells
 
