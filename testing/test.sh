@@ -1,6 +1,8 @@
 #!/bin/bash
 #
+# Raise error in case of failure
 set -e
+#
 # Install Julia
 if [[ $(which juliaup) ]]; then
     echo "juliaup found"
