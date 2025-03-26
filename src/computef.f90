@@ -125,7 +125,7 @@ subroutine computef(n,x,f)
 
          if(comptype(ibtype(icart))) then
             ! Interactions inside cell
-            f = f + fparc(icart,latomnext(icart))
+            f = f + fparc(icart,icart)
             ! Interactions of cells that share faces (6 faces)
             f = f + fparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,k)) ! 1 - (-1, 0, 0)
             f = f + fparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),k)) ! 2 - (0, -1, 0)

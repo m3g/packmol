@@ -31,4 +31,4 @@ end structure
 
 output output.pdb
 avoid_overlap no
-seed 1
+seed -1

@@ -115,7 +115,7 @@ subroutine computeg(n,x,g)
 
             if(comptype(ibtype(icart))) then
                ! Interactions inside cell
-               call gparc(icart,latomnext(icart))
+               call gparc(icart,icart)
                ! Interactions of cells that share faces (6 faces)
                call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,k)) ! 1 - (-1, 0, 0)
                call gparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),k)) ! 2 - (0, -1, 0)

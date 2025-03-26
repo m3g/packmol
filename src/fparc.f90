@@ -21,11 +21,20 @@ double precision function fparc(icart,firstjcart)
    integer :: jcart
    double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
    double precision :: vdiff(3)
+   logical :: same_cell
+
+   ! if the same cell
+   if (icart == firstjcart) then
+      same_cell = .true.
+      jcart = latomnext(firstjcart)
+   else
+      same_cell = .false.
+      jcart = firstjcart
+   end if
 
    fparc = 0.0d0
-   jcart = firstjcart
    do while ( jcart > 0 )
-      if (jcart >= icart) then
+      if (.not. same_cell .and. jcart > icart) then 
          jcart = latomnext(jcart)
          cycle
       end if

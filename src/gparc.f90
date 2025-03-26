@@ -21,10 +21,19 @@ subroutine gparc(icart,firstjcart)
    double precision :: datom, dtemp, xdiff, tol, &
       short_tol, short_tol_scale
    double precision :: vdiff(3)
+   logical :: same_cell
 
-   jcart = firstjcart
-   do while ( jcart .ne. 0 )
-      if (jcart >= icart) then
+   ! if the same cell
+   if (icart == firstjcart) then
+      same_cell = .true.
+      jcart = latomnext(firstjcart)
+   else
+      same_cell = .false.
+      jcart = firstjcart
+   end if
+
+   do while ( jcart > 0 )
+      if (.not. same_cell .and. jcart > icart) then 
          jcart = latomnext(jcart)
          cycle
       end if
