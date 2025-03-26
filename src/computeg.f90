@@ -48,50 +48,52 @@ subroutine computeg(n,x,g)
 
       if(.not.comptype(itype)) then
          icart = icart + nmols(itype)*natoms(itype)
-      else
-         do imol = 1, nmols(itype)
-            xcm = x(ilubar+1:ilubar+3)
-            ! Compute the rotation matrix
-            beta = x(ilugan + 1)
-            gama = x(ilugan + 2)
-            teta = x(ilugan + 3)
-            call eulerrmat(beta,gama,teta,v1,v2,v3)
-            idatom = idfirst(itype) - 1
+         cycle
+      end if
 
-            do iatom = 1, natoms(itype)
-               icart = icart + 1
-               idatom = idatom + 1
-               call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
+      do imol = 1, nmols(itype)
+         xcm = x(ilubar+1:ilubar+3)
+         ! Compute the rotation matrix
+         beta = x(ilugan + 1)
+         gama = x(ilugan + 2)
+         teta = x(ilugan + 3)
+         call eulerrmat(beta,gama,teta,v1,v2,v3)
+         idatom = idfirst(itype) - 1
 
-               ! Gradient relative to the wall distace
-               do iratcount = 1, nratom(icart)
-                  irest = iratom(icart,iratcount)
-                  call gwalls(icart,irest)
-               end do
+         do iatom = 1, natoms(itype)
+            icart = icart + 1
+            idatom = idatom + 1
+            call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
 
-               if(.not.init1) then
-                  call setcell(xcart(icart,:),cell)
-                  ! Atom linked list
-                  latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
-                  latomfirst(cell(1),cell(2),cell(3)) = icart
+            ! Gradient relative to the wall distace
+            do iratcount = 1, nratom(icart)
+               irest = iratom(icart,iratcount)
+               call gwalls(icart,irest)
+            end do
 
-                  ! cell with atoms linked list
-                  if ( .not. hasfree(cell(1),cell(2),cell(3))) then
-                     hasfree(cell(1),cell(2),cell(3)) = .true.
-                     icell = index_cell(cell,ncells)
-                     lcellnext(icell) = lcellfirst
-                     lcellfirst = icell
-                  end if
+            if(.not.init1) then
+               call setcell(xcart(icart,:),cell)
+               ! Atom linked list
+               latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
+               latomfirst(cell(1),cell(2),cell(3)) = icart
 
-                  ibtype(icart) = itype
-                  ibmol(icart) = imol
+               ! cell with atoms linked list
+               if ( .not. hasfree(cell(1),cell(2),cell(3))) then
+                  hasfree(cell(1),cell(2),cell(3)) = .true.
+                  icell = index_cell(cell,ncells)
+                  lcellnext(icell) = lcellfirst
+                  lcellfirst = icell
                end if
 
-            end do
-            ilugan = ilugan + 3
-            ilubar = ilubar + 3
+               ibtype(icart) = itype
+               ibmol(icart) = imol
+            end if
+
          end do
-      end if
+         ilugan = ilugan + 3
+         ilubar = ilubar + 3
+      end do
+
    end do
 
    if( .not. init1 ) then

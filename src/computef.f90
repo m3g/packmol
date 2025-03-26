@@ -44,67 +44,68 @@ subroutine computef(n,x,f)
    do itype = 1, ntype
       if(.not.comptype(itype)) then
          icart = icart + nmols(itype)*natoms(itype)
-      else
-         do imol = 1, nmols(itype)
+         cycle
+      end if
 
-            xcm = x(ilubar+1:ilubar+3)
+      do imol = 1, nmols(itype)
 
-            ! Computing the rotation matrix
+         xcm = x(ilubar+1:ilubar+3)
 
-            beta = x(ilugan+1)
-            gama = x(ilugan+2)
-            teta = x(ilugan+3)
+         ! Computing the rotation matrix
 
-            call eulerrmat(beta,gama,teta,v1,v2,v3)
+         beta = x(ilugan+1)
+         gama = x(ilugan+2)
+         teta = x(ilugan+3)
 
-            ! Looping over the atoms of this molecule
+         call eulerrmat(beta,gama,teta,v1,v2,v3)
 
-            idatom = idfirst(itype) - 1
-            do iatom = 1, natoms(itype)
+         ! Looping over the atoms of this molecule
 
-               icart = icart + 1
-               idatom = idatom + 1
+         idatom = idfirst(itype) - 1
+         do iatom = 1, natoms(itype)
 
-               ! Computing the cartesian coordinates for this atom
+            icart = icart + 1
+            idatom = idatom + 1
 
-               call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
+            ! Computing the cartesian coordinates for this atom
 
-               ! Adding to f the value relative to constraints for this atom
+            call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
 
-               call comprest(icart,fplus)
-               f = f + fplus
-               frest = dmax1(frest,fplus)
-               if(move) frest_atom(icart) = frest_atom(icart) + fplus
+            ! Adding to f the value relative to constraints for this atom
 
-               ! Putting atoms in their cells
+            call comprest(icart,fplus)
+            f = f + fplus
+            frest = dmax1(frest,fplus)
+            if(move) frest_atom(icart) = frest_atom(icart) + fplus
 
-               if(.not.init1) then
-                  call setcell(xcart(icart,:), cell)
+            ! Putting atoms in their cells
 
-                  ! Atom linked list
-                  latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
-                  latomfirst(cell(1),cell(2),cell(3)) = icart
+            if(.not.init1) then
+               call setcell(xcart(icart,:), cell)
 
-                  ! cell with atoms linked list
-                  if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
-                     hasfree(cell(1),cell(2),cell(3)) = .true.
-                     icell = index_cell(cell,ncells)
-                     lcellnext(icell) = lcellfirst
-                     lcellfirst = icell
-                  end if
+               ! Atom linked list
+               latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
+               latomfirst(cell(1),cell(2),cell(3)) = icart
 
-                  ibtype(icart) = itype
-                  ibmol(icart) = imol
-
+               ! cell with atoms linked list
+               if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
+                  hasfree(cell(1),cell(2),cell(3)) = .true.
+                  icell = index_cell(cell,ncells)
+                  lcellnext(icell) = lcellfirst
+                  lcellfirst = icell
                end if
 
-            end do
+               ibtype(icart) = itype
+               ibmol(icart) = imol
 
-            ilugan = ilugan + 3
-            ilubar = ilubar + 3
+            end if
 
          end do
-      end if
+
+         ilugan = ilugan + 3
+         ilubar = ilubar + 3
+
+      end do
    end do
 
    if(init1) return
