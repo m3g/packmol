@@ -9,11 +9,13 @@ pbc -20 -20 -20 20 20 20
 
 structure ./structure_files/water.pdb 
   number 500
-  below plane 0. 0. 1.0 0.0
+  below plane 0. 0. 1.0 0.
 end structure
 
 structure ./structure_files/urea.pdb
   number 300
-  over plane 0. 0. 1.0 1.0
+  over plane 0. 0. 1.0 0.
 end structure
+
+precision 0.01
 
