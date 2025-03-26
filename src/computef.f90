@@ -88,8 +88,8 @@ subroutine computef(n,x,f)
                latomfirst(cell(1),cell(2),cell(3)) = icart
 
                ! cell with atoms linked list
-               if ( .not. hasfree(cell(1),cell(2),cell(3)) ) then
-                  hasfree(cell(1),cell(2),cell(3)) = .true.
+               if ( empty_cell(cell(1),cell(2),cell(3)) ) then
+                  empty_cell(cell(1),cell(2),cell(3)) = .false.
                   icell = index_cell(cell,ncells)
                   lcellnext(icell) = lcellfirst
                   lcellfirst = icell

@@ -292,13 +292,13 @@ subroutine initial(n,x)
    allocate(latomfirst(ncells(1),ncells(2),ncells(3)))
    allocate(latomfix(ncells(1),ncells(2),ncells(3)))
    allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
-   allocate(hasfree(ncells(1),ncells(2),ncells(3)))
+   allocate(empty_cell(ncells(1),ncells(2),ncells(3)))
 
    ! Reseting linked lists arrays
    latomfix(:,:,:) = 0
    latomfirst(:,:,:) = 0
    latomnext(:) = 0
-   hasfree(:,:,:) = .false.
+   empty_cell(:,:,:) = .true.
 
    ! If there are fixed molecules, add them permanently to the latomfix array
    if(fix) then

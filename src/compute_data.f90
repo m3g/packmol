@@ -57,6 +57,6 @@ module compute_data
    ! For cells with atoms linked lists
    integer :: lcellfirst
    integer, allocatable :: lcellnext(:) ! (ncells(1)*ncells(2)*ncells(3))
-   logical, allocatable :: hasfree(:,:,:) ! (ncells(1),ncells(2),ncells(3))
+   logical, allocatable :: empty_cell(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
 end module compute_data
