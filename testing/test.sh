@@ -11,6 +11,7 @@ julia runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
                   ./input_files/mixture.inp \
                   ./input_files/mixture_pbc.inp \
+                  ./input_files/toy_with_fixed.inp \
                   ./input_files/spherical.inp \
                   ./input_files/bilayer.inp \
                   ./input_files/solvprotein.inp \
