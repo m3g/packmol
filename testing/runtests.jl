@@ -63,7 +63,7 @@ function check_mind(input_file::String)
 
             Packing reported success, but minimum distance is not correct for $input_file
             Obtained minimum-distance = $(mind.d) for tolerance $tolerance and precision $precision.
-            Atoms: $(mind.i) and $(mind.j)
+            Atoms: $(mind.i) and $(mind.j) - VMD: index $(mind.i-1) $(mind.j-1)
             
         """)
     end
