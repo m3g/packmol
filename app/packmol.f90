@@ -532,9 +532,9 @@ program packmol
     nrest = nrest + 1
     irestline(nrest) = -1
     ityperest(nrest) = 3
-    restpars(nrest,1:3) = pbc_min - radmax
-    restpars(nrest,4:6) = pbc_max + radmax
-    write(*,*) " PBC on: We automatically add a constraint for non-fixed atoms:"
+    restpars(nrest,1:3) = pbc_min
+    restpars(nrest,4:6) = pbc_max
+    write(*,*) " PBC on: Constraint automatically added to non-fixed atoms:"
     write(*,"(a, 6f8.2)") "  -> inside box ", restpars(nrest,1:6)
     write(*,*) ' Updated total number of restrictions: ', nrest
   end if

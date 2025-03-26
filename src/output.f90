@@ -131,7 +131,6 @@ subroutine output(n, x, output_file_name)
    end if
 
    ! write the output as pdb file
-
    if(pdb) then
       pdb_atom_line = "( t1,a6,t7,a5,t12,a10,t22,a1,t23,&
       &a4,t27,a1,t31,f8.3,t39,f8.3,t47,&

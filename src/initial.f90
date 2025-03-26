@@ -36,19 +36,14 @@ subroutine initial(n,x)
    character(len=strl) :: record
 
    ! We need to initialize the move logical variable
-
    move = .false.
 
    ! Default status of the function evaluation
-
    init1 = .false.
    lcellfirst = 0
 
    ! Initialize the comptype logical array
-
-   do i = 1, ntype_with_fixed
-      comptype(i) = .true.
-   end do
+   comptype(1:ntype_with_fixed) = .true.
 
    ! Penalty factors for the objective function relative to restrictions
    ! Default values: scale = 1.d2, scale2 = 1.d1
