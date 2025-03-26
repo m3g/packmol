@@ -1,14 +1,13 @@
 #!/bin/bash
 #
-# Raise error in case of failure
-set -e
-#
 # Install Julia
 if [[ $(which juliaup) ]]; then
     echo "juliaup found"
 else
     curl -fsSL https://install.julialang.org | sh
 fi
+# Raise error in case of failure
+set -e
 # Run the tests
 julia runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
