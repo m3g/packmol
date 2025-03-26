@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+set -e
 # Install Julia
 if [[ $(which juliaup) ]]; then
     echo "juliaup found"
