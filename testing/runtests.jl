@@ -31,7 +31,7 @@ function check_mind(input_file::String)
         keyword, values... = split(line)
         keyword == "tolerance" && (tolerance = parse(Float64, values[1]))
         keyword == "output" && (output_name = values[1])
-        keyword == "precision" && (precision = values[1])
+        keyword == "precision" && (precision = parse(Float64,values[1]))
         if keyword == "pbc" 
             if length(values) == 3
                 unitcell = parse.(Float64,values[1:3])
@@ -79,11 +79,16 @@ if !isinteractive()
     for input_test in ARGS
         print(" Running test $input_test ...")
         log = IOBuffer()
-        run(pipeline(`$packmol`; stdin=input_test, stdout=log))
-        if occursin("Success!", String(take!(log)))
-            check_mind(input_test)
+        if packmol != "nothing"
+            run(pipeline(`$packmol`; stdin=input_test, stdout=log))
+            if occursin("Success!", String(take!(log)))
+                check_mind(input_test)
+            else
+                error("Failed packing for $input_test")
+            end
         else
-            error("Failed packing for $input_test")
+            println("\n Skipping packmol run. Using available output file.")
+            check_mind(input_test)
         end
     end
 end
