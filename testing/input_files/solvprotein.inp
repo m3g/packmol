@@ -30,3 +30,5 @@ structure ./structure_files/SOD.pdb
 end structure
 
 output output.pdb
+avoid_overlap no
+seed -1
