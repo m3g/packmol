@@ -31,7 +31,6 @@ subroutine initial(n,x)
    double precision, allocatable :: cm_min(:,:), cm_max(:,:)
 
    logical :: overlap, movebadprint, hasbad
-   logical, allocatable :: hasfixed(:,:,:)
 
    character(len=strl) :: record
 
@@ -294,12 +293,11 @@ subroutine initial(n,x)
    allocate(latomfix(ncells(1),ncells(2),ncells(3)))
    allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
    allocate(hasfree(ncells(1),ncells(2),ncells(3)))
-   allocate(hasfixed(ncells(1),ncells(2),ncells(3)))
 
    ! Reseting linked lists arrays
    latomfix(:,:,:) = 0
    latomfirst(:,:,:) = 0
-   hasfixed(:,:,:) = .false.
+   latomnext(:) = 0
    hasfree(:,:,:) = .false.
 
    ! If there are fixed molecules, add them permanently to the latomfix array
@@ -317,7 +315,6 @@ subroutine initial(n,x)
             latomfirst(cell(1),cell(2),cell(3)) = icart
             ibtype(icart) = iftype
             ibmol(icart) = 1
-            hasfixed(cell(1),cell(2),cell(3)) = .true.
          end do
       end do
    end if
@@ -413,11 +410,10 @@ subroutine initial(n,x)
                   icell: do ic = -1, 1 
                      do jc = -1, 1
                         do kc = -1, 1
-                           if(hasfixed( &
-                                 cell_ind(cell(1)+ic,ncells(1)),&
-                                 cell_ind(cell(2)+jc,ncells(2)),&
-                                 cell_ind(cell(3)+kc,ncells(3)) &
-                           )) then
+                           if(latomfix(cell_ind(cell(1)+ic,ncells(1)),&
+                                       cell_ind(cell(2)+jc,ncells(2)),&
+                                       cell_ind(cell(3)+kc,ncells(3)) &
+                                      ) /= 0) then
                               overlap = .true.
                               exit icell
                            end if
@@ -557,7 +553,7 @@ subroutine initial(n,x)
    write(*,hash3_line)
 
    ! Deallocate allocated arrays
-   deallocate(hasfixed, cm_min, cm_max)
+   deallocate(cm_min, cm_max)
 
    return
 end subroutine initial
