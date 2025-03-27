@@ -3,7 +3,7 @@
 #
 # How to release the software:
 #
-# run ./release. 20.14.1 (for example)
+# run ./release. 21.0.1 (for example)
 #
 # go to the github site and release the version corresponding to the new tag.
 #

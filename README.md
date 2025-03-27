@@ -37,13 +37,13 @@ below.
 
 2. Unpack the files, for example with: 
    ```bash
-   tar -xzvf packmol-20.13.0.tar.gz
+   tar -xzvf packmol-21.0.0.tar.gz
    ```
    or
    ```bash
-   unzip -xzvf packmol-20.13.0.zip
+   unzip -xzvf packmol-21.0.0.zip
    ```
-   substituting the `20.13.0` with the correct version number.
+   substituting the `21.0.0` with the correct version number.
 
 ### Using `make`
 
