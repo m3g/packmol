@@ -15,29 +15,16 @@ double precision function fparc(icart,firstjcart)
    implicit none
 
    ! SCALAR ARGUMENTS
-   integer :: icart,firstjcart
+   integer, intent(in) :: icart,firstjcart
 
    ! LOCAL SCALARS
    integer :: jcart
    double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
    double precision :: vdiff(3)
-   logical :: same_cell
-
-   ! if the same cell
-   if (icart == firstjcart) then
-      same_cell = .true.
-      jcart = latomnext(firstjcart)
-   else
-      same_cell = .false.
-      jcart = firstjcart
-   end if
 
    fparc = 0.0d0
+   jcart = firstjcart
    do while ( jcart > 0 )
-      if (.not. same_cell .and. jcart > icart) then 
-         jcart = latomnext(jcart)
-         cycle
-      end if
       !
       ! Cycle if this type is not to be computed
       !
