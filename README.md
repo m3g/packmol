@@ -12,7 +12,7 @@ The great variety of types of spatial constraints that can be attributed to the 
 
 The user must provide only the coordinates of one molecule of each type, the number of molecules of each type and the spatial constraints that each type of molecule must satisfy.
 
-The package is compatible with input files of PDB, TINKER, XYZ and MOLDY formats.
+The package is compatible with input files of PDB, TINKER, and XYZ.
 
 ## Usage
 
