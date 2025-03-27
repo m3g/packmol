@@ -11,7 +11,7 @@ double precision function fparc(icart,firstjcart)
 
    use sizes
    use compute_data
-   use pbc, only : delta_vector
+   use pbc, only : delta_vector, pbc_length
    implicit none
 
    ! SCALAR ARGUMENTS
@@ -21,10 +21,23 @@ double precision function fparc(icart,firstjcart)
    integer :: jcart
    double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
    double precision :: vdiff(3)
+   logical :: same_cell
+
+   ! if the same cell
+   if (icart == firstjcart) then
+      same_cell = .true.
+      jcart = latomnext(firstjcart)
+   else
+      same_cell = .false.
+      jcart = firstjcart
+   end if
 
    fparc = 0.0d0
-   jcart = firstjcart
    do while ( jcart > 0 )
+      if (.not. same_cell .and. jcart > icart) then 
+         jcart = latomnext(jcart)
+         cycle
+      end if
       !
       ! Cycle if this type is not to be computed
       !
@@ -50,7 +63,7 @@ double precision function fparc(icart,firstjcart)
       !
       ! Otherwise, compute distance and evaluate function for this pair
       !
-      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), system_length)
+      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_length)
       datom = ( vdiff(1) )**2 + ( vdiff(2) )**2 + ( vdiff(3) )**2
       tol = (radius(icart)+radius(jcart))**2
       if ( datom < tol ) then

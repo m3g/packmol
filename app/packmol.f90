@@ -58,8 +58,8 @@ program packmol
   double precision, allocatable :: x(:), xprint(:) ! (nn)
   double precision :: v1(3),v2(3),v3(3)
   double precision :: radscale, value
-  double precision :: cmx, cmy, cmz, beta, gama, teta
-  double precision :: xtemp, ytemp, ztemp
+  double precision :: xcm(3), beta, gama, teta
+  double precision :: xtemp(3)
   double precision :: fx, bestf, flast, fprint, all_type_fx
   double precision :: fimp, fimprov
   double precision, parameter :: pi=4.d0*datan(1.d0)
@@ -107,18 +107,13 @@ program packmol
 
   ! Put fixed molecules in the specified position
 
-  do itype = 1, ntype
-    fixed(itype) = .false.
-  end do
-
+  fixed(1:ntype) = .false.
   do irest = 1, nrest
     if(ityperest(irest).eq.1) then
       do itype = 1, ntype
         if(irestline(irest).gt.linestrut(itype,1).and.&
            irestline(irest).lt.linestrut(itype,2)) then
-          cmx = restpars(irest,1) 
-          cmy = restpars(irest,2)
-          cmz = restpars(irest,3)    
+          xcm = restpars(irest,1:3)
           beta = restpars(irest,4) 
           gama = restpars(irest,5) 
           teta = restpars(irest,6) 
@@ -130,18 +125,16 @@ program packmol
           idatom = idfirst(itype) - 1
           do iatom = 1, natoms(itype)
             idatom = idatom + 1
-            xtemp =   coor(idatom,1)*v1(1) &
-                    + coor(idatom,2)*v2(1) &
-                    + coor(idatom,3)*v3(1) 
-            ytemp =   coor(idatom,1)*v1(2) &
-                    + coor(idatom,2)*v2(2) &
-                    + coor(idatom,3)*v3(2) 
-            ztemp =   coor(idatom,1)*v1(3) &
-                    + coor(idatom,2)*v2(3) &
-                    + coor(idatom,3)*v3(3) 
-            coor(idatom, 1) = xtemp + cmx
-            coor(idatom, 2) = ytemp + cmy
-            coor(idatom, 3) = ztemp + cmz 
+            xtemp(1) = coor(idatom,1)*v1(1) &
+                     + coor(idatom,2)*v2(1) &
+                     + coor(idatom,3)*v3(1) 
+            xtemp(2) = coor(idatom,1)*v1(2) &
+                     + coor(idatom,2)*v2(2) &
+                     + coor(idatom,3)*v3(2) 
+            xtemp(3) = coor(idatom,1)*v1(3) &
+                     + coor(idatom,2)*v2(3) &
+                     + coor(idatom,3)*v3(3) 
+            coor(idatom, 1:3) = xtemp + xcm
           end do
           record = name(itype)
           write(*,*) ' Molecule ',trim(adjustl(record)),'(',itype,') will be fixed.' 
@@ -278,151 +271,6 @@ program packmol
   end if       
   write(*,*) ' Total number of fixed atoms: ', nfixedat
 
-  ! Setting the array that contains the restrictions per atom
-
-  icart = 0
-  do itype = 1, ntype
-    rests = .false.
-    do imol = 1, nmols(itype)
-      idatom = idfirst(itype) - 1      
-      do iatom = 1, natoms(itype) 
-        icart = icart + 1
-        idatom = idatom + 1
-        nratom(icart) = 0
-        iratcount = 0
-        do i = 1, mrperatom
-          iratom(icart,i) = 0
-        end do
-        iline = linestrut(itype,1)
-        do while(iline.lt.linestrut(itype,2))
-          iline = iline + 1
-          if(keyword(iline,1).eq.'atoms') then
-            iiatom = -1
-            do iat = 2, maxkeywords
-              read(keyword(iline,iat),*,iostat=ioerr) iiatom
-              if ( ioerr /= 0 ) then
-                if ( iiatom == -1 ) then 
-                  write(*,*) ' ERROR: Could not read atom selection for type: ', itype
-                  stop exit_code_input_error
-                else
-                  exit
-                end if
-              end if
-              if ( iiatom > natoms(itype) ) then
-                write(*,*) ' ERROR: atom selection with index greater than number of '
-                write(*,*) '        atoms in structure ', itype
-                stop exit_code_input_error
-              end if
-              if(iatom.eq.iiatom) exit
-            end do
-            do while(keyword(iline,1).ne.'end'.and.&
-                     keyword(iline,2).ne.'atoms')
-              iline = iline + 1
-              if(iatom.eq.iiatom) then
-                if(keyword(iline,1).eq.'inside'.or.&
-                   keyword(iline,1).eq.'outside'.or.&
-                   keyword(iline,1).eq.'over'.or.&
-                   keyword(iline,1).eq.'above'.or.&
-                   keyword(iline,1).eq.'below') then
-                  nratom(icart) = nratom(icart) + 1
-                  iratcount = iratcount + 1
-                  do irest = 1, nrest
-                    if(irestline(irest).eq.iline) iirest = irest
-                  end do
-                  iratom(icart,iratcount) = iirest
-                end if
-              end if
-            end do
-            iline = iline - 1
-          else if(keyword(iline,1).eq.'inside'.or.&
-                  keyword(iline,1).eq.'outside'.or.&
-                  keyword(iline,1).eq.'over'.or.&
-                  keyword(iline,1).eq.'above'.or.&
-                  keyword(iline,1).eq.'below') then
-            nratom(icart) = nratom(icart) + 1    
-            iratcount = iratcount + 1
-            do irest = 1, nrest
-              if(irestline(irest).eq.iline) iirest = irest
-            end do
-            iratom(icart,iratcount) = iirest
-          end if
-        end do
-        if (using_pbc) then
-          nratom(icart) = nratom(icart) + 1
-          iratcount = iratcount + 1
-          do irest = 1, nrest
-            if (irestline(irest).eq.-1) iratom(icart,iratcount) = irest
-          end do
-        end if
-        if(nratom(icart).gt.0) rests = .true.
-      end do 
-      if(.not.rests) then
-        write(*,*) ' ERROR: Some molecule has no geometrical',&
-                   ' restriction defined: nothing to do.'
-        stop exit_code_input_error
-      end if
-    end do
-  end do
-
-  ! Read the constraints to rotations about axis, if set
-
-  do itype = 1, ntype
-    constrain_rot(itype,1) = .false.
-    constrain_rot(itype,2) = .false.
-    constrain_rot(itype,3) = .false.
-    iline = linestrut(itype,1)
-    do while(iline.lt.linestrut(itype,2))
-      iline = iline + 1
-      if(keyword(iline,1).eq.'constrain_rotation') then
-        if(iline.gt.linestrut(itype,1).and.&
-           iline.lt.linestrut(itype,2)) then
-
-           ! Note that for movable molecules, teta is a rotation on the x-axis,
-           !                                  gama is a rotation on the z-axis,
-           !                                  beta is a rotation on the y-axis
-           !                                  (see eulerrmat routine)
-
-          if(keyword(iline,2).eq.'x') then
-            constrain_rot(itype,3) = .true.
-            read(keyword(iline,3),*) rot_bound(itype,3,1)
-            read(keyword(iline,4),*) rot_bound(itype,3,2)
-            rot_bound(itype,3,1) = rot_bound(itype,3,1)*pi/180.d0
-            rot_bound(itype,3,2) = rot_bound(itype,3,2)*pi/180.d0
-  
-            write(*,*) ' Rotations about x axis of molecules of ',&
-                       ' type ', itype, ' will be constrained. '
-          end if
-          if(keyword(iline,2).eq.'y') then
-            constrain_rot(itype,1) = .true.
-            read(keyword(iline,3),*) rot_bound(itype,1,1)
-            read(keyword(iline,4),*) rot_bound(itype,1,2)
-            rot_bound(itype,1,1) = rot_bound(itype,1,1)*pi/180.d0
-            rot_bound(itype,1,2) = rot_bound(itype,1,2)*pi/180.d0
-
-            write(*,*) ' Rotations about y axis of molecules of ',&
-                       ' type ', itype, ' will be constrained. '
-          end if
-          if(keyword(iline,2).eq.'z') then
-            constrain_rot(itype,2) = .true.
-            read(keyword(iline,3),*) rot_bound(itype,2,1)
-            read(keyword(iline,4),*) rot_bound(itype,2,2)
-            rot_bound(itype,2,1) = rot_bound(itype,2,1)*pi/180.d0
-            rot_bound(itype,2,2) = rot_bound(itype,2,2)*pi/180.d0
-
-            write(*,*) ' Rotations about z axis of molecules of ',&
-                       ' type ', itype, ' will be constrained. '
-          end if
-          if ( keyword(iline,2) /= 'x' .and. &
-               keyword(iline,2) /= 'y' .and. &
-               keyword(iline,2) /= 'z' ) then
-            write(*,*) ' ERROR: constrain_rotation option not properly defined (not x, y, or z) '
-            stop exit_code_input_error
-          end if
-        end if
-      end if
-    end do
-  end do
- 
   ! Setting the vector that contains the default tolerances
 
   do i = 1, ntotat
@@ -673,6 +521,169 @@ program packmol
    end if
   end do
 
+  ! If using PBC, add the extra constraint
+
+  radmax = 0.d0
+  do i = 1, ntotat
+    radmax = dmax1(radmax,2.d0*radius(i))
+  end do
+
+  if (using_pbc) then
+    nrest = nrest + 1
+    irestline(nrest) = -1
+    ityperest(nrest) = 3
+    restpars(nrest,1:3) = pbc_min
+    restpars(nrest,4:6) = pbc_max
+    write(*,*) " PBC on: Constraint automatically added to non-fixed atoms:"
+    write(*,"(a, 6f8.2)") "  -> inside box ", restpars(nrest,1:6)
+    write(*,*) ' Updated total number of restrictions: ', nrest
+  end if
+
+  ! Setting the array that contains the restrictions per atom
+
+  icart = 0
+  do itype = 1, ntype
+    rests = .false.
+    do imol = 1, nmols(itype)
+      idatom = idfirst(itype) - 1      
+      do iatom = 1, natoms(itype) 
+        icart = icart + 1
+        idatom = idatom + 1
+        nratom(icart) = 0
+        iratcount = 0
+        do i = 1, mrperatom
+          iratom(icart,i) = 0
+        end do
+        iline = linestrut(itype,1)
+        do while(iline.lt.linestrut(itype,2))
+          iline = iline + 1
+          if(keyword(iline,1).eq.'atoms') then
+            iiatom = -1
+            do iat = 2, maxkeywords
+              read(keyword(iline,iat),*,iostat=ioerr) iiatom
+              if ( ioerr /= 0 ) then
+                if ( iiatom == -1 ) then 
+                  write(*,*) ' ERROR: Could not read atom selection for type: ', itype
+                  stop exit_code_input_error
+                else
+                  exit
+                end if
+              end if
+              if ( iiatom > natoms(itype) ) then
+                write(*,*) ' ERROR: atom selection with index greater than number of '
+                write(*,*) '        atoms in structure ', itype
+                stop exit_code_input_error
+              end if
+              if(iatom.eq.iiatom) exit
+            end do
+            do while(keyword(iline,1).ne.'end'.and.&
+                     keyword(iline,2).ne.'atoms')
+              iline = iline + 1
+              if(iatom.eq.iiatom) then
+                if(keyword(iline,1).eq.'inside'.or.&
+                   keyword(iline,1).eq.'outside'.or.&
+                   keyword(iline,1).eq.'over'.or.&
+                   keyword(iline,1).eq.'above'.or.&
+                   keyword(iline,1).eq.'below') then
+                  nratom(icart) = nratom(icart) + 1
+                  iratcount = iratcount + 1
+                  do irest = 1, nrest
+                    if(irestline(irest).eq.iline) iirest = irest
+                  end do
+                  iratom(icart,iratcount) = iirest
+                end if
+              end if
+            end do
+            iline = iline - 1
+          else if(keyword(iline,1).eq.'inside'.or.&
+                  keyword(iline,1).eq.'outside'.or.&
+                  keyword(iline,1).eq.'over'.or.&
+                  keyword(iline,1).eq.'above'.or.&
+                  keyword(iline,1).eq.'below') then
+            nratom(icart) = nratom(icart) + 1    
+            iratcount = iratcount + 1
+            do irest = 1, nrest
+              if(irestline(irest).eq.iline) iirest = irest
+            end do
+            iratom(icart,iratcount) = iirest
+          end if
+        end do
+        if (using_pbc) then
+          nratom(icart) = nratom(icart) + 1
+          iratcount = iratcount + 1
+          do irest = 1, nrest
+            if (irestline(irest).eq.-1) iratom(icart,iratcount) = irest
+          end do
+        end if
+        if(nratom(icart).gt.0) rests = .true.
+      end do 
+      if(.not.rests) then
+        write(*,*) ' ERROR: Some molecule has no geometrical',&
+                   ' restriction defined: nothing to do.'
+        stop exit_code_input_error
+      end if
+    end do
+  end do
+
+  ! Read the constraints to rotations about axis, if set
+
+  do itype = 1, ntype
+    constrain_rot(itype,1) = .false.
+    constrain_rot(itype,2) = .false.
+    constrain_rot(itype,3) = .false.
+    iline = linestrut(itype,1)
+    do while(iline.lt.linestrut(itype,2))
+      iline = iline + 1
+      if(keyword(iline,1).eq.'constrain_rotation') then
+        if(iline.gt.linestrut(itype,1).and.&
+           iline.lt.linestrut(itype,2)) then
+
+           ! Note that for movable molecules, teta is a rotation on the x-axis,
+           !                                  gama is a rotation on the z-axis,
+           !                                  beta is a rotation on the y-axis
+           !                                  (see eulerrmat routine)
+
+          if(keyword(iline,2).eq.'x') then
+            constrain_rot(itype,3) = .true.
+            read(keyword(iline,3),*) rot_bound(itype,3,1)
+            read(keyword(iline,4),*) rot_bound(itype,3,2)
+            rot_bound(itype,3,1) = rot_bound(itype,3,1)*pi/180.d0
+            rot_bound(itype,3,2) = rot_bound(itype,3,2)*pi/180.d0
+  
+            write(*,*) ' Rotations about x axis of molecules of ',&
+                       ' type ', itype, ' will be constrained. '
+          end if
+          if(keyword(iline,2).eq.'y') then
+            constrain_rot(itype,1) = .true.
+            read(keyword(iline,3),*) rot_bound(itype,1,1)
+            read(keyword(iline,4),*) rot_bound(itype,1,2)
+            rot_bound(itype,1,1) = rot_bound(itype,1,1)*pi/180.d0
+            rot_bound(itype,1,2) = rot_bound(itype,1,2)*pi/180.d0
+
+            write(*,*) ' Rotations about y axis of molecules of ',&
+                       ' type ', itype, ' will be constrained. '
+          end if
+          if(keyword(iline,2).eq.'z') then
+            constrain_rot(itype,2) = .true.
+            read(keyword(iline,3),*) rot_bound(itype,2,1)
+            read(keyword(iline,4),*) rot_bound(itype,2,2)
+            rot_bound(itype,2,1) = rot_bound(itype,2,1)*pi/180.d0
+            rot_bound(itype,2,2) = rot_bound(itype,2,2)*pi/180.d0
+
+            write(*,*) ' Rotations about z axis of molecules of ',&
+                       ' type ', itype, ' will be constrained. '
+          end if
+          if ( keyword(iline,2) /= 'x' .and. &
+               keyword(iline,2) /= 'y' .and. &
+               keyword(iline,2) /= 'z' ) then
+            write(*,*) ' ERROR: constrain_rotation option not properly defined (not x, y, or z) '
+            stop exit_code_input_error
+          end if
+        end if
+      end if
+    end do
+  end do
+ 
   ! If there are no variables (only fixed molecules, stop)
 
   if(n.eq.0) then

@@ -1,0 +1,26 @@
+#
+# toy problem
+#
+tolerance 2.0
+
+structure ./structure_files/SOD.pdb
+  number 1 
+  fixed 0. 0. -1. 0. 0. 0.
+  centerofmass
+end structure
+
+structure ./structure_files/SOD.pdb
+  number 1 
+  fixed 0. 0. 1. 0. 0. 0.
+  centerofmass
+end structure
+
+structure ./structure_files/CLA.pdb
+  number 1
+  inside box -1.0 -1.0 -2.0 1.0 1.0 3.0
+end structure
+
+output output.pdb
+avoid_overlap no
+seed 17504
+#check

@@ -11,14 +11,19 @@ using CellListMap
 # packmol files .
 #
 
-struct MinimumDistance d::Float64 end
+struct MinimumDistance 
+    i::Int
+    j::Int
+    d::Float64 
+end
 function update_mind(i, j, d2, pdb, md::MinimumDistance)
     residue(pdb[i]) == residue(pdb[j]) && return md
-    MinimumDistance(min(sqrt(d2), md.d))
+    d = sqrt(d2)
+    return d < md.d ?  MinimumDistance(i, j, d) : md
 end
-CellListMap.reducer(md1::MinimumDistance, md2::MinimumDistance) = MinimumDistance(min(md1.d,md2.d))
+CellListMap.reducer(md1::MinimumDistance, md2::MinimumDistance) = md1.d < md2.d ? md1 : md2
 CellListMap.copy_output(md::MinimumDistance) = md
-CellListMap.reset_output(::MinimumDistance) = MinimumDistance(+Inf)
+CellListMap.reset_output(::MinimumDistance) = MinimumDistance(0, 0, +Inf)
 
 function check_mind(input_file::String)
     tolerance = nothing
@@ -31,7 +36,7 @@ function check_mind(input_file::String)
         keyword, values... = split(line)
         keyword == "tolerance" && (tolerance = parse(Float64, values[1]))
         keyword == "output" && (output_name = values[1])
-        keyword == "precision" && (precision = values[1])
+        keyword == "precision" && (precision = parse(Float64,values[1]))
         if keyword == "pbc" 
             if length(values) == 3
                 unitcell = parse.(Float64,values[1:3])
@@ -50,7 +55,7 @@ function check_mind(input_file::String)
         positions = coor.(pdb),
         unitcell = unitcell,
         cutoff = tolerance * 1.5,
-        output = MinimumDistance(+Inf),
+        output = MinimumDistance(0, 0, +Inf),
     )
     mind = map_pairwise((x,y,i,j,d2,md) -> update_mind(i, j, d2, pdb, md), sys)
     if (mind.d < (1 - precision) * tolerance)
@@ -58,6 +63,7 @@ function check_mind(input_file::String)
 
             Packing reported success, but minimum distance is not correct for $input_file
             Obtained minimum-distance = $(mind.d) for tolerance $tolerance and precision $precision.
+            Atoms: $(mind.i) and $(mind.j) - VMD: index $(mind.i-1) $(mind.j-1)
             
         """)
     end
@@ -67,15 +73,28 @@ end
 
 println("Running tests...")
 if !isinteractive()
-    packmol = joinpath(@__DIR__,"..","packmol")
+    packmol_arg = findfirst(==("-packmol"), ARGS)
+    if !isnothing(packmol_arg)
+        packmol = ARGS[packmol_arg + 1]
+        popat!(ARGS, packmol_arg + 1)
+        popat!(ARGS, packmol_arg)
+    else
+        packmol = joinpath(@__DIR__,"..","packmol")
+    end
+    println(" Packmol path: $packmol")
     for input_test in ARGS
         print(" Running test $input_test ...")
         log = IOBuffer()
-        run(pipeline(`$packmol`; stdin=input_test, stdout=log))
-        if occursin("Success!", String(take!(log)))
-            check_mind(input_test)
+        if packmol != "nothing"
+            run(pipeline(`$packmol`; stdin=input_test, stdout=log))
+            if occursin("Success!", String(take!(log)))
+                check_mind(input_test)
+            else
+                error("Failed packing for $input_test")
+            end
         else
-            error("Failed packing for $input_test")
+            println("\n Skipping packmol run. Using available output file.")
+            check_mind(input_test)
         end
     end
 end

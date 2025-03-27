@@ -16,7 +16,7 @@ subroutine getinp()
    use pbc
 
    implicit none
-   integer :: i, k, ii, iarg, iline, idatom, iatom, in, lixo, irest, itype, itest,&
+   integer :: i, k, ii, iarg, iline, idatom, iatom, in, irest, itype, itest,&
       imark, ioerr, nloop0, iread, idfirstatom
    double precision :: clen
    character(len=strl) :: record, blank
@@ -161,37 +161,37 @@ subroutine getinp()
          if ( ioerr /= 0 ) exit
          write(*,*) ' Optional printvalue 2 set: ', iprint2
       else if(keyword(i,1).eq.'pbc') then
-         read(keyword(i,2),*,iostat=ioerr) pbc_box(1)
-         read(keyword(i,3),*,iostat=ioerr) pbc_box(2)
-         read(keyword(i,4),*,iostat=ioerr) pbc_box(3)
+         read(keyword(i,2),*,iostat=ioerr) pbc_min(1)
+         read(keyword(i,3),*,iostat=ioerr) pbc_min(2)
+         read(keyword(i,4),*,iostat=ioerr) pbc_min(3)
          if ( ioerr /= 0 ) exit
          if (maxkeywords > 4)  then
             if (trim(adjustl(keyword(i,5))) /= "none") then 
-               read(keyword(i,5),*,iostat=ioerr) pbc_box(4)
-               read(keyword(i,6),*,iostat=ioerr) pbc_box(5)
-               read(keyword(i,7),*,iostat=ioerr) pbc_box(6)
+               read(keyword(i,5),*,iostat=ioerr) pbc_max(1)
+               read(keyword(i,6),*,iostat=ioerr) pbc_max(2)
+               read(keyword(i,7),*,iostat=ioerr) pbc_max(3)
                if ( ioerr /= 0 ) exit
             else
-               pbc_box(4:6) = pbc_box(1:3)
-               pbc_box(1:3) = 0.0
+               pbc_max = pbc_min
+               pbc_min = 0.0
             end if
          else 
-            pbc_box(4:6) = pbc_box(1:3)
-            pbc_box(1:3) = 0.0
+            pbc_max = pbc_min
+            pbc_min = 0.0
          end if
          if ( ioerr /= 0 ) exit
          using_pbc = .true.
-         pbc_sides(1:3) = pbc_box(4:6) - pbc_box(1:3)
-         if ( any(pbc_sides <= 0.0) ) then
+         pbc_length = pbc_max - pbc_min
+         if ( any(pbc_length <= 0.0) ) then
             write(*,*) ' ERROR: Length of PBC box must be positive in all directions, got: ', &
-              pbc_sides
-            write(*,*) '        Lower PBC coordinates read: ', pbc_box(1:3)
-            write(*,*) '        Upper PBC coordinates read: ', pbc_box(4:6)
+              pbc_length
+            write(*,*) '        Lower PBC coordinates read: ', pbc_min
+            write(*,*) '        Upper PBC coordinates read: ', pbc_max
             stop exit_code_input_error
          end if
          write(*,"(a)") '  Periodic boundary condition activated: '
-         write(*,"(a, 3f8.2)") "    Minimum coordinates: ", pbc_box(1), pbc_box(2), pbc_box(3)
-         write(*,"(a, 3f8.2)") "    Maximum coordinates: ", pbc_box(4), pbc_box(5), pbc_box(6)
+         write(*,"(a, 3f8.2)") "    Minimum coordinates: ", pbc_min
+         write(*,"(a, 3f8.2)") "    Maximum coordinates: ", pbc_max
       else if( keyword(i,1) /= 'tolerance' .and. &
          keyword(i,1) /= 'short_tol_dist' .and. &
          keyword(i,1) /= 'short_tol_scale' .and. &
@@ -462,7 +462,6 @@ subroutine getinp()
          end if
 
          ! Reading xyz input files
-
          if(xyz) then
             open(10,file=keyword(iline,2),status='old',iostat=ioerr)
             if ( ioerr /= 0 ) call failopen(keyword(iline,2))
@@ -484,35 +483,7 @@ subroutine getinp()
             close(10)
          end if
 
-         ! Reading moldy input files
 
-         if(moldy) then
-            open(10,file=keyword(iline,2), status ='old',iostat=ioerr)
-            if ( ioerr /= 0 ) call failopen(keyword(iline,2))
-            read(10,*) name(itype), nmols(itype)
-            natoms(itype) = 0
-            do while(.true.)
-               read(10,str_format,iostat=ioerr) record
-               if ( ioerr /= 0 ) exit
-               if(record.gt.' '.and.record(1:3).ne.'end') &
-                  natoms(itype) = natoms(itype) + 1
-            end do
-            close(10)
-            idfirst(itype) = 1
-            do ii = itype - 1, 1, -1
-               idfirst(itype) = idfirst(itype) + natoms(ii)
-            end do
-            open(10,file=keyword(iline,2),status='old')
-            read(10,str_format) record
-            idatom = idfirst(itype) - 1
-            do iatom = 1, natoms(itype)
-               idatom = idatom + 1
-               read(10,str_format) record
-               read(record,*) lixo, (coor(idatom,k), k = 1, 3),&
-                  amass(idatom), charge(idatom), ele(idatom)
-            end do
-            close(10)
-         end if
       end if
 
    end do
@@ -760,25 +731,6 @@ subroutine getinp()
 
    end do
 
-   if (using_pbc) then
-      irest = irest + 1
-      irestline(irest) = -1
-      ityperest(irest) = 3
-      restpars(irest,1) = pbc_box(1)
-      restpars(irest,2) = pbc_box(2)
-      restpars(irest,3) = pbc_box(3)
-      restpars(irest,4) = pbc_box(4)
-      restpars(irest,5) = pbc_box(5)
-      restpars(irest,6) = pbc_box(6)
-      write(*,*) " PBC on: We automatically add a constraint for non-fixed atoms:"
-      write(*,"(a, 6f8.2)") "  -> inside box ", restpars(irest,1), restpars(irest,2), restpars(irest,3),&
-         restpars(irest,4), restpars(irest,5), restpars(irest,6)
-   end if
-
-   nrest = irest
-   write(*,*) ' Total number of restrictions: ', nrest
-
-
    ! Reading, if defined, the short distance penalty parameters
 
    ioerr = 1
@@ -965,6 +917,10 @@ subroutine getinp()
          end if
       end if
    end do lines
+
+   ! total number of restrictions
+   nrest = irest
+   write(*,*) ' Total number of restrictions: ', nrest
 
    return
 end subroutine getinp

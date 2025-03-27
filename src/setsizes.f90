@@ -19,7 +19,7 @@ subroutine setsizes()
    integer :: i, ival, ilast, iline, itype
    integer :: ioerr
    integer :: strlength
-   character(len=strl) :: record, word, blank, alltospace
+   character(len=strl) :: record, blank, alltospace
    logical :: inside_structure
 
    ! Instructions on how to run packmol
@@ -132,14 +132,12 @@ subroutine setsizes()
    tinker = .false.
    pdb = .false.
    xyz = .false.
-   moldy = .false.
    fbins = dsqrt(3.d0)
    do i = 1, nlines
       if(keyword(i,1).eq.'filetype') then
          if(keyword(i,2).eq.'tinker') tinker = .true.
          if(keyword(i,2).eq.'pdb') pdb = .true.
          if(keyword(i,2).eq.'xyz') xyz = .true.
-         if(keyword(i,2).eq.'moldy') moldy = .true.
          write(*,*)' Types of coordinate files specified: ', trim(keyword(i,2))
       end if
       if(keyword(i,1).eq.'fbins') then
@@ -151,7 +149,7 @@ subroutine setsizes()
          end if
       end if
    end do
-   if(.not.pdb.and..not.tinker.and..not.xyz.and..not.moldy) then
+   if(.not.pdb.and..not.tinker.and..not.xyz) then
       pdb = .true.
       write(*,*)
       write(*,*)' WARNING: File type not (correctly?) specified, using PDB'
@@ -173,8 +171,6 @@ subroutine setsizes()
 
    allocate(nmols(ntype),natoms(ntype),idfirst(ntype),constrain_rot(ntype,3),&
       rot_bound(ntype,3,2),dmax(ntype),&
-      cmxmin(ntype),cmymin(ntype),cmzmin(ntype),&
-      cmxmax(ntype),cmymax(ntype),cmzmax(ntype),&
       comptype(ntype),compsafe(ntype),&
       restart_from(0:ntype),restart_to(0:ntype),&
       nloop_type(ntype),nloop0_type(ntype))
@@ -216,10 +212,6 @@ subroutine setsizes()
          end if
          if ( xyz ) then
             read(10,*,iostat=ioerr) i
-            if ( ioerr == 0 ) natoms(itype) = i
-         end if
-         if ( moldy ) then
-            read(10,*,iostat=ioerr) word, i
             if ( ioerr == 0 ) natoms(itype) = i
          end if
          close(10)
@@ -299,22 +291,9 @@ subroutine setsizes()
    end do
 
    ! The number of variables of the problem
-
    nn = ntotmol*6
 
-   ! The number of bins of the linked cell method in each direction
-
-   nbp = int((fbins*dble(ntotat))**(1.d0/3.d0)) + 1
-
-   ! Allocate arrays depending on nbp parameter
-
-   allocate(latomfirst(0:nbp+1,0:nbp+1,0:nbp+1),&
-      latomfix(0:nbp+1,0:nbp+1,0:nbp+1),&
-      hasfree(0:nbp+1,0:nbp+1,0:nbp+1),&
-      lcellnext((nbp+2)**3))
-
    ! Checking the total number of restrictions defined
-
    i = 0
    do iline = 1, nlines
       if ( keyword(iline,1) == 'fixed' .or. &

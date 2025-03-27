@@ -9,15 +9,15 @@
 subroutine computeg(n,x,g)
 
    use sizes
+   use cell_indexing, only: index_cell, icell_to_cell, setcell
    use compute_data
-   use input, only : fix
    use pbc
    implicit none
 
    integer :: n
    integer :: idatom, iatom, irest
    integer :: i, j, k, ilubar, ilugan, icart, itype, imol
-   integer :: icell, ixcell, iycell, izcell
+   integer :: icell, cell(3)
    integer :: k1, k2
    integer :: iratcount
 
@@ -26,16 +26,11 @@ subroutine computeg(n,x,g)
       dv2beta(3), dv2gama(3), dv2teta(3),&
       dv3beta(3), dv3gama(3), dv3teta(3)
    double precision :: v1(3), v2(3), v3(3)
-   double precision :: xbar, ybar, zbar
+   double precision :: xcm(3)
    double precision :: beta, gama, teta, cb, sb, cg, sg, ct, st
 
    ! Reset gradients
-
-   do i = 1, ntotat
-      do j = 1, 3
-         gxcar(i,j) = 0.d0
-      end do
-   end do
+   gxcar(:,:) = 0.d0
 
    ! Reset cells
 
@@ -53,84 +48,52 @@ subroutine computeg(n,x,g)
 
       if(.not.comptype(itype)) then
          icart = icart + nmols(itype)*natoms(itype)
-      else
-         do imol = 1, nmols(itype)
+         cycle
+      end if
 
-            xbar = x(ilubar + 1)
-            ybar = x(ilubar + 2)
-            zbar = x(ilubar + 3)
+      do imol = 1, nmols(itype)
+         xcm = x(ilubar+1:ilubar+3)
+         ! Compute the rotation matrix
+         beta = x(ilugan + 1)
+         gama = x(ilugan + 2)
+         teta = x(ilugan + 3)
+         call eulerrmat(beta,gama,teta,v1,v2,v3)
+         idatom = idfirst(itype) - 1
 
-            ! Compute the rotation matrix
+         do iatom = 1, natoms(itype)
+            icart = icart + 1
+            idatom = idatom + 1
+            call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
 
-            beta = x(ilugan + 1)
-            gama = x(ilugan + 2)
-            teta = x(ilugan + 3)
+            ! Gradient relative to the wall distace
+            do iratcount = 1, nratom(icart)
+               irest = iratom(icart,iratcount)
+               call gwalls(icart,irest)
+            end do
 
-            call eulerrmat(beta,gama,teta,v1,v2,v3)
+            if(.not.init1) then
+               call setcell(xcart(icart,:),cell)
+               ! Atom linked list
+               latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
+               latomfirst(cell(1),cell(2),cell(3)) = icart
 
-            idatom = idfirst(itype) - 1
-            do iatom = 1, natoms(itype)
-
-               icart = icart + 1
-               idatom = idatom + 1
-
-               call compcart(icart,xbar,ybar,zbar, &
-                  coor(idatom,1),coor(idatom,2),coor(idatom,3), &
-                  v1,v2,v3)
-
-               ! Gradient relative to the wall distace
-
-               do iratcount = 1, nratom(icart)
-                  irest = iratom(icart,iratcount)
-                  call gwalls(icart,irest)
-               end do
-
-               if(.not.init1) then
-                  call seticell(xcart(icart,1), xcart(icart,2), xcart(icart,3), ixcell, iycell, izcell)
-
-                  ! Atom linked list
-
-                  latomnext(icart) = latomfirst(ixcell,iycell,izcell)
-                  latomfirst(ixcell,iycell,izcell) = icart
-
-                  ! cell with atoms linked list
-
-                  if ( .not. hasfree(ixcell,iycell,izcell) ) then
-                     hasfree(ixcell,iycell,izcell) = .true.
-                     call ijk_to_icell(ixcell,iycell,izcell,icell)
-                     lcellnext(icell) = lcellfirst
-                     lcellfirst = icell
-
-                     ! Add cells with fixed atoms which are vicinal to this cell, and are behind
-                     if ( fix ) then
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,izcell)
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),izcell)
-                        call add_cell_behind(ixcell,iycell,cell_ind(izcell-1, ncells(3)))
-
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(ixcell,cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),izcell)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),izcell)
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),iycell,cell_ind(izcell-1,ncells(3)))
-
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell+1,ncells(2)),cell_ind(izcell-1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell+1,ncells(3)))
-                        call add_cell_behind(cell_ind(ixcell-1,ncells(1)),cell_ind(iycell-1,ncells(2)),cell_ind(izcell-1,ncells(3)))
-                     end if
-
-                  end if
-
-                  ibtype(icart) = itype
-                  ibmol(icart) = imol
+               ! cell with atoms linked list
+               if ( empty_cell(cell(1),cell(2),cell(3))) then
+                  empty_cell(cell(1),cell(2),cell(3)) = .false.
+                  icell = index_cell(cell,ncells)
+                  lcellnext(icell) = lcellfirst
+                  lcellfirst = icell
                end if
 
-            end do
-            ilugan = ilugan + 3
-            ilubar = ilubar + 3
+               ibtype(icart) = itype
+               ibmol(icart) = imol
+            end if
+
          end do
-      end if
+         ilugan = ilugan + 3
+         ilubar = ilubar + 3
+      end do
+
    end do
 
    if( .not. init1 ) then
@@ -142,30 +105,46 @@ subroutine computeg(n,x,g)
       icell = lcellfirst
       do while( icell > 0 )
 
-         call icell_to_ijk(icell,i,j,k)
+         call icell_to_cell(icell,ncells,cell)
+         i = cell(1)
+         j = cell(2)
+         k = cell(3)
 
          icart = latomfirst(i,j,k)
-         do while ( icart .ne. 0 )
+         do while( icart > 0 )
 
             if(comptype(ibtype(icart))) then
                ! Interactions inside cell
-               call gparc(icart,latomnext(icart))
-               ! Interactions of cells that share faces
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k))
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k))
-               call gparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3))))
-               ! Interactions of cells that share axes
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3))))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3))))
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
-               ! Interactions of cells that share vertices
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3))))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3))))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3))))
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3))))
+               call gparc(icart,icart)
+               ! Interactions of cells that share faces (6 faces)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,k)) ! 1 - (-1, 0, 0)
+               call gparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),k)) ! 2 - (0, -1, 0)
+               call gparc(icart,latomfirst(i,j,cell_ind(k-1, ncells(3)))) ! 3 - (0, 0, -1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k)) ! 4 - (1, 0, 0)
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k)) ! 5 - (0, 1, 0)
+               call gparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3)))) ! 6 - (0, 0, 1)
+               ! Interactions of cells that share axes (12 edges)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 1 - (-1, 1, 0)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 2 - (-1, 0, 1)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 3 - (-1, -1, 0)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 4 - (-1, 0, -1)
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 5 - (0, 1, 1)
+               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (0, 1, -1)
+               call gparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 7 - (0, -1, 1)
+               call gparc(icart,latomfirst(i,cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 8 - (0, -1, -1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 9 - (1, 1, 0)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 10 - (1, 0, 1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 11 - (1, -1, 0)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 12 - (1, 0, -1)
+               ! Interactions of cells that share vertices (8 vertices)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 1 - (1, 1, 1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 2 - (1, 1, -1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 3 - (1, -1, 1)
+               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 4 - (1, -1, -1)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 5 - (-1, 1, 1)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (-1, 1, -1)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 7 - (-1, -1, 1)
+               call gparc(icart,latomfirst(cell_ind(i-1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 8 - (-1, -1, -1)
             end if
 
             icart = latomnext(icart)
@@ -178,13 +157,9 @@ subroutine computeg(n,x,g)
 
    ! Computing the gradient using chain rule
 
-   do i = 1, n
-      g(i) = 0.d0
-   end do
-
+   g(1:n) = 0.d0
    k1 = 0
    k2 = ntotmol * 3
-
    icart = 0
    do itype = 1, ntype
 

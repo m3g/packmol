@@ -9,7 +9,6 @@
 !   maxrest:     Maximum number of restrictions
 !   mrperatom:   Maximum number of restrictions per atom
 !   maxtry:      Number of tries for building the initial point
-!   nbp:         Maximum number of cells for fast function evaluation (nbp**3)
 !   nn:          Maximum number of variables
 !                (at least the number of molecules*6)
 !   maxkeywords: Maximum number of keywords in input file
@@ -20,7 +19,6 @@ module sizes
    integer :: maxrest
    integer :: mrperatom
    integer :: maxtry
-   integer :: nbp
    integer :: nn
    integer :: maxkeywords
 

@@ -1,15 +1,15 @@
 #!/bin/bash
 #
-# Install Julia
-if [[ $(which juliaup) ]]; then
-    echo "juliaup found"
-else
-    curl -fsSL https://install.julialang.org | sh
-fi
+# Raise error in case of failure
+set -e
+# Julia executable path:
+julia_exe=~/.juliaup/bin/julia
 # Run the tests
-julia runtests.jl ./input_files/water_box.inp \
+$julia_exe runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
                   ./input_files/mixture.inp \
+                  ./input_files/mixture_pbc.inp \
+                  ./input_files/toy_with_fixed.inp \
                   ./input_files/spherical.inp \
                   ./input_files/bilayer.inp \
                   ./input_files/solvprotein.inp \
@@ -17,6 +17,7 @@ julia runtests.jl ./input_files/water_box.inp \
                   ./input_files/water_box_pbc2.inp \
                   ./input_files/water_box_pbc_negative_coordinates.inp \
                   ./input_files/water_box_pbc_slab.inp \
+                  ./input_files/water_box_pbc_outside_box.inp \
                   ./input_files/bilayer_pbc.inp \
                   ./input_files/solvprotein_pbc.inp \
                   ./input_files/spherical_pbc.inp \

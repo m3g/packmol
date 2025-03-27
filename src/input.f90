@@ -48,7 +48,6 @@ module input
    logical :: pdb
    logical :: crd
    logical :: xyz
-   logical :: moldy
    logical :: check
    logical :: chkgrad
    logical :: randini

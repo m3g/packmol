@@ -40,5 +40,6 @@ jobs:
     - name: Run
       run: |
           cd testing
+          ./install_julia.sh
           ./test.sh
       shell: bash

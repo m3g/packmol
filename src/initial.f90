@@ -11,55 +11,45 @@ subroutine initial(n,x)
 
    use exit_codes
    use sizes
+   use cell_indexing, only: setcell
    use compute_data
-   use input, only : randini, ntype_with_fixed, fix, moldy, chkgrad, avoidoverlap,&
+   use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type
    use usegencan
    use ahestetic
    use pbc
    implicit none
-   integer :: n, i, j, k, idatom, iatom, ilubar, ilugan, icart, itype, &
-      imol, ntry, nb, ixcell, iycell, izcell, ifatom, &
-      idfatom, iftype, jatom, ioerr
+   integer :: n, i, j, idatom, iatom, ilubar, ilugan, icart, itype, &
+      imol, ntry, cell(3), ic, jc, kc, ifatom, &
+      idfatom, iftype, jatom, ioerr, max_guess_try
 
-   double precision :: x(n), cmx, cmy, beta, gamma, theta, &
-      cmz, fx, cell_side, rnd, &
-      radmax, v1(3), v2(3), v3(3), xbar, ybar, zbar
+   double precision :: x(n), beta, gamma, theta, &
+      fx, cell_side, rnd, xrnd(3), v1(3), v2(3), v3(3), xcm(3)
+   double precision :: scale_rnd_guess
    double precision, parameter :: twopi = 8.d0*datan(1.d0)
+   double precision, allocatable :: cm_min(:,:), cm_max(:,:)
 
    logical :: overlap, movebadprint, hasbad
-   logical, allocatable :: hasfixed(:,:,:)
 
    character(len=strl) :: record
 
-   ! Allocate hasfixed array
-
-   allocate(hasfixed(0:nbp+1,0:nbp+1,0:nbp+1))
-
    ! We need to initialize the move logical variable
-
    move = .false.
 
    ! Default status of the function evaluation
-
    init1 = .false.
    lcellfirst = 0
 
    ! Initialize the comptype logical array
-
-   do i = 1, ntype_with_fixed
-      comptype(i) = .true.
-   end do
+   comptype(1:ntype_with_fixed) = .true.
 
    ! Penalty factors for the objective function relative to restrictions
    ! Default values: scale = 1.d2, scale2 = 1.d1
 
    scale = 1.d0
    scale2 = 1.d-2
-
-   ! Move molecules to their center of mass (not for moldy)
-   if(.not.moldy) call tobar()
+   call tobar()
 
    ! Compute maximum internal distance within each type of molecule
 
@@ -83,23 +73,11 @@ subroutine initial(n,x)
    ! Maximum size of the system: if you system is very large (about
    ! 80 nm wide), increase the sidemax parameter.
    ! Otherwise, the packing can be slow and unsucesful
-   cmxmin(1) = -sidemax
-   cmymin(1) = -sidemax
-   cmzmin(1) = -sidemax
-   cmxmax(1) = sidemax
-   cmymax(1) = sidemax
-   cmzmax(1) = sidemax
-   do i = 1, 3
-      x(i) = 0.d0
-      x(i+ntotmol*3) = 0.d0
-   end do
+   allocate(cm_min(ntype,3), cm_max(ntype,3))
+   x(:) = 0.d0
    call restmol(1,0,n,x,fx,.true.)
-   sizemin(1) = x(1) - sidemax
-   sizemax(1) = x(1) + sidemax
-   sizemin(2) = x(2) - sidemax
-   sizemax(2) = x(2) + sidemax
-   sizemin(3) = x(3) - sidemax
-   sizemax(3) = x(3) + sidemax
+   sizemin(1:3) = x(1:3) - sidemax
+   sizemax(1:3) = x(1:3) + sidemax
    write(*,*) ' All atoms must be within these coordinates: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
@@ -145,9 +123,7 @@ subroutine initial(n,x)
    icart = 0
    do itype = 1, ntype
       do imol = 1, nmols(itype)
-         xbar = x(ilubar+1)
-         ybar = x(ilubar+2)
-         zbar = x(ilubar+3)
+         xcm = x(ilubar+1:ilubar+3)
          beta = x(ilugan+1)
          gamma = x(ilugan+2)
          theta = x(ilugan+3)
@@ -156,9 +132,7 @@ subroutine initial(n,x)
          do iatom = 1, natoms(itype)
             icart = icart + 1
             idatom = idatom + 1
-            call compcart(icart,xbar,ybar,zbar,&
-               coor(idatom,1),coor(idatom,2),coor(idatom,3),&
-               v1,v2,v3)
+            call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
             fixedatom(icart) = .false.
          end do
       end do
@@ -177,10 +151,10 @@ subroutine initial(n,x)
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3
-                  if (xcart(icart, i) < pbc_box(i) .or. xcart(icart, i) > pbc_box(i+3)) then
+                  if (xcart(icart, i) < pbc_min(i) .or. xcart(icart, i) > pbc_max(i)) then
                      write(*,*) "ERROR: Fixed molecule are outside the PBC box:"
                      write(*,*) "   Atom: ", ifatom, " of molecule: ", iftype, " - coordinate: ", i
-                     write(*,*) "  ", xcart(icart, i), " not in [", pbc_box(i), ", ", pbc_box(i+3), "]"
+                     write(*,*) "  ", xcart(icart, i), " not in [", pbc_min(i), ", ", pbc_max(i), "]"
                      write(*,*) "(after translating/rotation the fixed molecule with the given orientation)"
                      stop exit_code_input_error
                   end if
@@ -189,13 +163,6 @@ subroutine initial(n,x)
          end do
       end do
    end if
-
-   ! Use the largest radius as the reference for binning the box
-
-   radmax = 0.d0
-   do i = 1, ntotat
-      radmax = dmax1(radmax,2.d0*radius(i))
-   end do
 
    ! Performing some steps of optimization for the restrictions only
 
@@ -235,6 +202,7 @@ subroutine initial(n,x)
       write(*,*)
       write(*,*) ' Restraint-only function value: ', fx
       write(*,*) ' Maximum violation of the restraints: ', frest
+
       call swaptype(n,x,itype,2) ! Save current type results
 
       if( hasbad .and. frest > precision ) then
@@ -277,84 +245,74 @@ subroutine initial(n,x)
          end do
       end do
    end do
-   if (using_pbc) then
-      do i = 1, 3
-         sizemin(i) = pbc_box(i)
-         sizemax(i) = pbc_box(i+3)
-      end do
-   else
-      icart = 0
-      do itype = 1, ntype
-         do imol = 1, nmols(itype)
-            do iatom = 1, natoms(itype)
-               icart = icart + 1
-               sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
-               sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
-               sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
-               sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
-               sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
-               sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
-            end do
+   icart = 0
+   do itype = 1, ntype
+      do imol = 1, nmols(itype)
+         do iatom = 1, natoms(itype)
+            icart = icart + 1
+            sizemin(1) = dmin1(sizemin(1),xcart(icart,1))
+            sizemin(2) = dmin1(sizemin(2),xcart(icart,2))
+            sizemin(3) = dmin1(sizemin(3),xcart(icart,3))
+            sizemax(1) = dmax1(sizemax(1),xcart(icart,1))
+            sizemax(2) = dmax1(sizemax(2),xcart(icart,2))
+            sizemax(3) = dmax1(sizemax(3),xcart(icart,3))
          end do
       end do
-   end if
+   end do
    write(*,*) ' Mininum and maximum coordinates after constraint fitting: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
    write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
+   sizemin = sizemin - 1.1d0 * radmax
+   sizemax = sizemax + 1.1d0 * radmax
+   ! When *not* using PBC, actually PBCs are used, but particles
+   ! wont interact across the PBC because there is an empty layer
+   ! of cells, given by the shift in the sizemin and sizemax dimensions,
+   ! above defined. 
    if (.not. using_pbc) then
-      sizemin(1) = sizemin(1) - 1.1d0*radmax
-      sizemin(2) = sizemin(2) - 1.1d0*radmax
-      sizemin(3) = sizemin(3) - 1.1d0*radmax
-      sizemax(1) = sizemax(1) + 1.1d0*radmax
-      sizemax(2) = sizemax(2) + 1.1d0*radmax
-      sizemax(3) = sizemax(3) + 1.1d0*radmax
-   end if
+      pbc_min = sizemin
+      pbc_max = sizemax
+      pbc_length = pbc_max - pbc_min
+   end if 
 
    ! Computing the size of the patches
    write(*,*) ' Computing size of patches... '
-   cell_side = discale * radmax + 0.01d0 * radmax
+   cell_side = discale * (1.01d0 * radmax)
    do i = 1, 3
-      system_length(i) = sizemax(i) - sizemin(i)
-      nb = int(system_length(i)/cell_side + 1.d0)
-      if(nb.gt.nbp) nb = nbp
-      cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
-      ncells(i) = nb
-      ncells2(i) = ncells(i) + 2
+      ncells(i) = max(1,floor(pbc_length(i)/cell_side))
+      cell_length(i) = pbc_length(i) / ncells(i)
    end do
    write(*,*) ' Number of cells in each direction and cell sides: '
    write(*,*) '  x: ', ncells(1), ' cells of size ', cell_length(1)
    write(*,*) '  y: ', ncells(2), ' cells of size ', cell_length(2)
    write(*,*) '  z: ', ncells(3), ' cells of size ', cell_length(3)
-   write(*,"(a, 3(f10.5))") '  Cell-system length: ', system_length(1:3) 
-   ! Reseting latomfix array
-   do i = 0, nbp + 1
-      do j = 0, nbp + 1
-         do k = 0, nbp + 1
-            latomfix(i,j,k) = 0
-            latomfirst(i,j,k) = 0
-            hasfixed(i,j,k) = .false.
-            hasfree(i,j,k) = .false.
-         end do
-      end do
-   end do
+   write(*,"(a, 3(f10.5))") '  Cell-system length: ', pbc_length(1:3) 
+
+   ! Allocate arrays depending on the number of cells
+   allocate(latomfirst(ncells(1),ncells(2),ncells(3)))
+   allocate(latomfix(ncells(1),ncells(2),ncells(3)))
+   allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
+   allocate(empty_cell(ncells(1),ncells(2),ncells(3)))
+
+   ! Reseting linked lists arrays
+   latomfix(:,:,:) = 0
+   latomfirst(:,:,:) = 0
+   latomnext(:) = 0
+   empty_cell(:,:,:) = .true.
 
    ! If there are fixed molecules, add them permanently to the latomfix array
    if(fix) then
       write(*,*) ' Add fixed molecules to permanent arrays... '
       icart = ntotat - nfixedat
       do iftype = ntype + 1, ntype_with_fixed
-         idfatom = idfirst(iftype) - 1
          do ifatom = 1, natoms(iftype)
-            idfatom = idfatom + 1
             icart = icart + 1
-            call seticell(xcart(icart,1),xcart(icart,2),xcart(icart,3),ixcell,iycell,izcell)
-            latomnext(icart) = latomfix(ixcell,iycell,izcell)
-            latomfix(ixcell,iycell,izcell) = icart
-            latomfirst(ixcell,iycell,izcell) = icart
+            call setcell(xcart(icart,:),cell)
+            latomnext(icart) = latomfix(cell(1),cell(2),cell(3))
+            latomfix(cell(1),cell(2),cell(3)) = icart
+            latomfirst(cell(1),cell(2),cell(3)) = icart
             ibtype(icart) = iftype
             ibmol(icart) = 1
-            hasfixed(ixcell,iycell,izcell) = .true.
          end do
       end do
    end if
@@ -362,36 +320,19 @@ subroutine initial(n,x)
    ! Reseting mass centers to be within the regions
 
    write(*,*) ' Reseting center of mass... '
-   do itype = 1, ntype
-      cmxmin(itype) = 1.d20
-      cmymin(itype) = 1.d20
-      cmzmin(itype) = 1.d20
-      cmxmax(itype) = -1.d20
-      cmymax(itype) = -1.d20
-      cmzmax(itype) = -1.d20
-   end do
-
+   cm_min = 1.d20
+   cm_max = -1.d20
    icart = 0
    do itype = 1, ntype
       do imol = 1, nmols(itype)
-         cmx = 0.d0
-         cmy = 0.d0
-         cmz = 0.d0
+         xcm(:) = 0.d0
          do iatom = 1, natoms(itype)
             icart = icart + 1
-            cmx = cmx + xcart(icart,1)
-            cmy = cmy + xcart(icart,2)
-            cmz = cmz + xcart(icart,3)
+            xcm(:) = xcm(:) + xcart(icart,1:3)
          end do
-         cmx = cmx / dfloat(natoms(itype))
-         cmy = cmy / dfloat(natoms(itype))
-         cmz = cmz / dfloat(natoms(itype))
-         cmxmin(itype) = dmin1(cmxmin(itype),cmx)
-         cmymin(itype) = dmin1(cmymin(itype),cmy)
-         cmzmin(itype) = dmin1(cmzmin(itype),cmz)
-         cmxmax(itype) = dmax1(cmxmax(itype),cmx)
-         cmymax(itype) = dmax1(cmymax(itype),cmy)
-         cmzmax(itype) = dmax1(cmzmax(itype),cmz)
+         xcm(:) = xcm(:) / natoms(itype)
+         cm_min(itype,:) = dmin1(cm_min(itype,:),xcm(:))
+         cm_max(itype,:) = dmax1(cm_max(itype,:),xcm(:))
       end do
    end do
 
@@ -426,6 +367,11 @@ subroutine initial(n,x)
    if ( chkgrad ) then
       write(*,*) ' For checking gradient, will set avoidoverlap to false. '
       avoidoverlap = .false.
+      max_guess_try = 1
+      scale_rnd_guess = 1.5d0 ! move guess outside the constraints/box
+   else
+      max_guess_try = 20
+      scale_rnd_guess = 1.d0
    end if
 
    ! Setting random center of mass coordinates, within size limits
@@ -440,55 +386,38 @@ subroutine initial(n,x)
          if ( .not. avoidoverlap ) then
             fx = 1.d0
             ntry = 0
-            do while((fx.gt.precision).and.ntry.le.20)
+            do while((fx > precision) .and. (ntry < max_guess_try))
                ntry = ntry + 1
-               x(ilubar+1) = cmxmin(itype) + rnd()*(cmxmax(itype)-cmxmin(itype))
-               x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
-               x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
+               call random_number(xrnd)
+               x(ilubar+1:ilubar+3) = &
+                  cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                call restmol(itype,ilubar,n,x,fx,.false.)
             end do
          else
             fx = 1.d0
             ntry = 0
             overlap = .false.
-            do while((overlap.or.fx.gt.precision).and.ntry.le.20)
+            do while(overlap .or. (fx > precision) .and. (ntry < max_guess_try))
+               overlap = .false.
                ntry = ntry + 1
-               x(ilubar+1) = cmxmin(itype) + rnd()*(cmxmax(itype)-cmxmin(itype))
-               x(ilubar+2) = cmymin(itype) + rnd()*(cmymax(itype)-cmymin(itype))
-               x(ilubar+3) = cmzmin(itype) + rnd()*(cmzmax(itype)-cmzmin(itype))
+               call random_number(xrnd)
+               x(ilubar+1:ilubar+3) = &
+                  cm_min(itype,:) + xrnd(:)*(cm_max(itype,:)-cm_min(itype,:)) * scale_rnd_guess
                if(fix) then
-                  call seticell(x(ilubar+1),x(ilubar+2),x(ilubar+3),ixcell,iycell,izcell)
-                  if(hasfixed(ixcell,  iycell,  izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell  ).or.&
-                     hasfixed(ixcell,  iycell+1,izcell  ).or.&
-                     hasfixed(ixcell,  iycell,  izcell+1).or.&
-                     hasfixed(ixcell-1,iycell,  izcell  ).or.&
-                     hasfixed(ixcell,  iycell-1,izcell  ).or.&
-                     hasfixed(ixcell,  iycell,  izcell-1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell+1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell  ).or.&
-                     hasfixed(ixcell+1,iycell,  izcell-1).or.&
-                     hasfixed(ixcell,  iycell+1,izcell+1).or.&
-                     hasfixed(ixcell,  iycell+1,izcell-1).or.&
-                     hasfixed(ixcell,  iycell-1,izcell+1).or.&
-                     hasfixed(ixcell,  iycell-1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell  ).or.&
-                     hasfixed(ixcell-1,iycell,  izcell+1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell  ).or.&
-                     hasfixed(ixcell-1,iycell,  izcell-1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell+1).or.&
-                     hasfixed(ixcell+1,iycell+1,izcell-1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell+1).or.&
-                     hasfixed(ixcell+1,iycell-1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell+1).or.&
-                     hasfixed(ixcell-1,iycell+1,izcell-1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell+1).or.&
-                     hasfixed(ixcell-1,iycell-1,izcell-1)) then
-                     overlap = .true.
-                  else
-                     overlap = .false.
-                  end if
+                  call setcell(x(ilubar+1:ilubar+3),cell)
+                  icell: do ic = -1, 1 
+                     do jc = -1, 1
+                        do kc = -1, 1
+                           if(latomfix(cell_ind(cell(1)+ic,ncells(1)),&
+                                       cell_ind(cell(2)+jc,ncells(2)),&
+                                       cell_ind(cell(3)+kc,ncells(3)) &
+                                      ) /= 0) then
+                              overlap = .true.
+                              exit icell
+                           end if
+                        end do
+                     end do
+                  end do icell
                end if
                if(.not.overlap) call restmol(itype,ilubar,n,x,fx,.false.)
             end do
@@ -531,14 +460,10 @@ subroutine initial(n,x)
    ! Compare analytical and finite-difference gradients
 
    if(chkgrad) then
-      cell_side = discale * radmax + 0.01d0 * radmax
+      cell_side = discale * (1.01d0 * radmax)
       do i = 1, 3
-         system_length(i) = sizemax(i) - sizemin(i)
-         nb = int(system_length(i)/cell_side + 1.d0)
-         if(nb.gt.nbp) nb = nbp
-         cell_length(i) = dmax1(system_length(i)/dfloat(nb),cell_side)
-         ncells(i) = nb
-         ncells2(i) = ncells(i) + 2
+         ncells(i) = max(1,floor(pbc_length(i)/cell_side))
+         cell_length(i) = pbc_length(i) / ncells(i)
       end do
       call comparegrad(n,x)
       stop
@@ -625,9 +550,8 @@ subroutine initial(n,x)
    init1 = .false.
    write(*,hash3_line)
 
-   ! Deallocate hasfixed array
-
-   deallocate(hasfixed)
+   ! Deallocate allocated arrays
+   deallocate(cm_min, cm_max)
 
    return
 end subroutine initial

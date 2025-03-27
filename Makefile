@@ -68,8 +68,7 @@ oall = cenmass.o \
        polartocart.o \
        resetcells.o \
        tobar.o \
-       setijk.o \
-       seticell.o \
+       cell_indexing.o \
        restmol.o \
        swaptype.o \
        swaptypemod.o \
@@ -118,7 +117,7 @@ devel : $(oall)
 # Modules
 #
 modules = exit_codes.o sizes.o pbc.o compute_data.o usegencan.o input.o flashmod.o \
-          swaptypemod.o ahestetic.o 
+          swaptypemod.o ahestetic.o cell_indexing.o
 exit_codes.o : $(SRCDIR)/exit_codes.f90
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/exit_codes.f90
 sizes.o : $(SRCDIR)/sizes.f90 
@@ -137,6 +136,8 @@ swaptypemod.o : $(SRCDIR)/swaptypemod.f90
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/swaptypemod.f90
 ahestetic.o : $(SRCDIR)/ahestetic.f90 
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/ahestetic.f90
+cell_indexing.o : $(SRCDIR)/cell_indexing.f90
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/cell_indexing.f90
 
 #
 # Code compiled only for all versions
@@ -177,10 +178,6 @@ resetcells.o : $(SRCDIR)/resetcells.f90 $(modules)
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/resetcells.f90
 tobar.o : $(SRCDIR)/tobar.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/tobar.f90
-setijk.o : $(SRCDIR)/setijk.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/setijk.f90
-seticell.o : $(SRCDIR)/seticell.f90 $(modules)   
-	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/seticell.f90
 restmol.o : $(SRCDIR)/restmol.f90 $(modules)   
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/restmol.f90
 swaptype.o : $(SRCDIR)/swaptype.f90 $(modules)   

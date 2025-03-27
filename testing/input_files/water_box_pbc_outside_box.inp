@@ -5,14 +5,15 @@
 tolerance 2.0
 filetype pdb
 output output.pdb
-pbc 40. 40. 40.
+#pbc -40 -20 -20 40.0 20 20
+pbc 40 40 40
 
 structure ./structure_files/water.pdb
-  number 1150
-#  inside box 0. 0. 0. 40. 40. 40.
-#  number 3000
+  number 1600
+#  outside box 10 -20 -20 20 20 10
+#  outside cube -20 -20 -20 20
 end structure
 
+#check
 #chkgrad
-
-seed 1 
+#seed -1 

@@ -18,3 +18,4 @@ structure ./structure_files/water.pdb
 end structure
 
 output output.pdb
+avoid_overlap no

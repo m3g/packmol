@@ -10,7 +10,7 @@ subroutine gparc(icart,firstjcart)
 
    use sizes
    use compute_data
-   use pbc, only : delta_vector
+   use pbc, only : delta_vector, pbc_length
    implicit none
 
    ! SCALAR ARGUMENTS
@@ -21,9 +21,23 @@ subroutine gparc(icart,firstjcart)
    double precision :: datom, dtemp, xdiff, tol, &
       short_tol, short_tol_scale
    double precision :: vdiff(3)
+   logical :: same_cell
 
-   jcart = firstjcart
-   do while ( jcart .ne. 0 )
+   ! if the same cell
+   if (icart == firstjcart) then
+      same_cell = .true.
+      jcart = latomnext(firstjcart)
+   else
+      same_cell = .false.
+      jcart = firstjcart
+   end if
+
+   do while ( jcart > 0 )
+      if (.not. same_cell .and. jcart > icart) then 
+         jcart = latomnext(jcart)
+         cycle
+      end if
+
       !
       ! Cycle if this type is not to be computed
       !
@@ -50,7 +64,7 @@ subroutine gparc(icart,firstjcart)
       ! Otherwise, compute distance and evaluate function for this pair
       !
       tol = (radius(icart)+radius(jcart))**2
-      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), system_length)
+      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_length)
       datom = (vdiff(1))**2 + (vdiff(2))**2 + (vdiff(3))**2
       if( datom < tol ) then
          dtemp = fscale(icart)*fscale(jcart) * 4.d0 * (datom - tol)

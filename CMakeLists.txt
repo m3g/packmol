@@ -36,8 +36,7 @@ add_executable(packmol
        src/polartocart.f90
        src/resetcells.f90
        src/tobar.f90
-       src/setijk.f90
-       src/seticell.f90
+       src/cell_indexing.f90
        src/restmol.f90
        src/swaptype.f90
        src/swaptypemod.f90

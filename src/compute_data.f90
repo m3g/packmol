@@ -8,7 +8,7 @@ module compute_data
    use sizes
 
    integer :: ntotmol, ntype, nfixedat, ntotat
-   integer :: ncells(3), ncells2(3)
+   integer :: ncells(3)
 
    integer, allocatable :: nmols(:) ! (ntype)
    integer, allocatable :: natoms(:) ! (ntype)
@@ -23,6 +23,7 @@ module compute_data
    double precision :: fdist, frest
    double precision :: sizemin(3), sizemax(3)
    double precision :: cell_length(3), system_length(3)
+   double precision :: radmax
 
    double precision, allocatable :: xcart(:,:) ! (ntotat,3)
    double precision, allocatable :: coor(:,:) ! (ntotat,3)
@@ -34,8 +35,6 @@ module compute_data
 
    double precision, allocatable :: fdist_atom(:), frest_atom(:) ! (ntotat)
    double precision, allocatable :: dmax(:) ! (ntype)
-   double precision, allocatable :: cmxmin(:), cmymin(:), cmzmin(:) ! (ntype)
-   double precision, allocatable :: cmxmax(:), cmymax(:), cmzmax(:) ! (ntype)
 
    logical, allocatable :: constrain_rot(:,:) ! (ntype,3)
    logical, allocatable :: comptype(:) ! (ntype)
@@ -45,8 +44,8 @@ module compute_data
 
    ! For linked lists
    integer, allocatable :: latomnext(:) ! (ntotat)
-   integer, allocatable :: latomfirst(:,:,:) !  (0:nbp+1,0:nbp+1,0:nbp+1)
-   integer, allocatable :: latomfix(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1)
+   integer, allocatable :: latomfirst(:,:,:) !  (ncells(1),ncells(2),ncells3))
+   integer, allocatable :: latomfix(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
    ! For movebad
    double precision, allocatable :: fmol(:), radiuswork(:) ! (ntotat)
@@ -57,7 +56,7 @@ module compute_data
 
    ! For cells with atoms linked lists
    integer :: lcellfirst
-   integer, allocatable :: lcellnext(:) ! ((nbp+2)**3)
-   logical, allocatable :: hasfree(:,:,:) ! (0:nbp+1,0:nbp+1,0:nbp+1)
+   integer, allocatable :: lcellnext(:) ! (ncells(1)*ncells(2)*ncells(3))
+   logical, allocatable :: empty_cell(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
 end module compute_data
