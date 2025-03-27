@@ -21,8 +21,7 @@ the number of molecules of each type and the spatial constraints that
 each type of molecule must satisfy.
 <br><br>
 
-The package is compatible with input files of PDB, TINKER, XYZ and MOLDY
-formats. 
+The package is compatible with input files of PDB, TINKER, and XYZ formats. 
 
     </td>
     <td valign=top width=200px class="tdclean">

@@ -8,7 +8,7 @@
 tolerance 2.0 
 
 # Coordinate file types will be in pdb format (keyword not required for
-# pdb file format, but required for tinker, xyz or moldy).
+# pdb file format, but required for tinker, or xyz).
 
 filetype pdb
 

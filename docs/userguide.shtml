@@ -40,7 +40,7 @@ You need coordinate files for each type of molecule you want your
 simulation to have. For example, if you are going to simulate a solution
 of water and ions, you will need a coordinate file for <i>one</i>  water
 molecule, and independent coordinates files for each of the ions. This
-coordinate files may be in the PDB, TINKER, MOLDEN or MOLDY format. The
+coordinate files may be in the PDB, TINKER, or XYZ (MOLDEN) formats. The
 simplest and best molecular structure builder we have used is 
 <a href=http://biomodel.uah.es/en/DIY/JSME/draw.en.htm>this one</a>.
 <br><br>
@@ -59,9 +59,6 @@ relative to this example.
 Windows users: We suggest trying to use the Julia-based distribution
 available at <a href="https://github.com/m3g/Packmol.jl">[Packmol.jl]</a>,
 which works on all platforms and doesn't need compilation.
-<br><br>
-If you plan to use MOLDY as your MD package, read 
-<a href=./read-MOLDY.shtml onClick="return popup(this, 'Help')">THIS</a>.
 <br><br>
 
 <!-- END SECTION -->
@@ -175,7 +172,7 @@ specified with
 <br><br>
 <tt>output test.pdb</tt>
 <br><br>
-and the file type (pdb, tinker, xyz or moldy, pdb is the default value),
+and the file type (pdb, tinker, or xyz, pdb is the default value),
 <br><br>
 <tt>filetype pdb</tt>
 <br><br>
