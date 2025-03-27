@@ -7,3 +7,7 @@ testing/water_box.pdb_FORCED
 testing/packmol.log
 testing/output.pdb_FORCED
 testing/output.pdb
+CMakeFiles/*
+cmake_install.cmake
+CMakeCache.txt
+testing/chkgrad.log
