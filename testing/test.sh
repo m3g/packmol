@@ -1,11 +1,5 @@
 #!/bin/bash
 #
-# Install Julia
-if [[ $(which juliaup) ]]; then
-    echo "juliaup found"
-else
-    curl -fsSL https://install.julialang.org | sh
-fi
 # Raise error in case of failure
 set -e
 # Run the tests
