@@ -740,7 +740,7 @@ pbc 30.0 30.0 60.0
 <br><br>
 In this case, all molecules will be set to stay in the box defined by minimum and maximum
 coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
-conditions at the boundaries. 
+conditions at the boundaries for the computation of the inter-atomic distances. 
 <br><br>
 And if six parameters are provided, the periodic boundaries will be applied at
 the minimum and maximum coordinates provided:
@@ -779,7 +779,9 @@ end structure<br>
 </code>
 <br><br>
 Importantly, the positions of the constraints refer to the periodic reference box,
-which is defined by the minimum and maximum coordinates provided.
+which is defined by the minimum and maximum coordinates provided. Fixed molecules 
+(proteins, or other macromolecules) must fit inside the the periodic box after
+positioning. 
 <br><br>
 <!-- END SECTION -->
 
