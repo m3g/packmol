@@ -94,7 +94,7 @@ subroutine getinp()
          if ( ioerr /= 0 ) exit
       else if(keyword(i,1).eq.'maxmove_total') then
          read(keyword(i,2),*,iostat=ioerr) maxmove_total
-         write(*,*) ' maxmove_total set to ', move_bad_constraint_scale
+         write(*,*) ' maxmove_total set to ', maxmove_total
          if ( ioerr /= 0 ) exit
          write(*,*) ' Optional printvalue 1 set: ', iprint1
       else if(keyword(i,1).eq.'chkgrad') then
