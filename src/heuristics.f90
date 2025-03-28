@@ -18,7 +18,8 @@ subroutine movebad(n,x,fx,movebadprint)
 
    ! Internal variables
    integer :: n, i, j, icart, itype, iatom, imol, ilubar, ilugan, &
-      ilubar2, ilugan2, nbad, igood, ibad, nmove, nmove_total, itype_tmp
+      ilubar2, ilugan2, nbad, igood, ibad, nmove, nmove_total,&
+      itype_tmp, iitype_tmp
    double precision :: x(n), fx, rnd, frac
    double precision :: fdist_mol, frest_mol
    logical :: movebadprint, hasbad
@@ -60,12 +61,15 @@ subroutine movebad(n,x,fx,movebadprint)
    end if
    nmove_total = 0
    hasbad = .false.
-   icart = 0
    move_itype : do itype_tmp = 1, ntype
       itype = rand_type(itype_tmp)
       if(.not.comptype(itype)) then
-         icart = icart + nmols(itype)*natoms(itype)
+         cycle move_itype
       else
+         icart = 0
+         do iitype_tmp = 1, itype - 1
+            icart = icart + nmols(iitype_tmp)*natoms(iitype_tmp)
+         end do
 
          ! Checking the function value for each molecule
 
