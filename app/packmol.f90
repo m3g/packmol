@@ -177,6 +177,8 @@ program packmol
   ntype_with_fixed = ntype
   ntype = ntemp     
 
+  allocate(rand_type(ntype))
+
   do i = 1, ntype_with_fixed - ntype 
     do itype = 1, ntype_with_fixed - 1
       if(fixed(itype)) then

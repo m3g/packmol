@@ -76,7 +76,7 @@ subroutine computef(n,x,f)
             call comprest(icart,fplus)
             f = f + fplus
             frest = dmax1(frest,fplus)
-            if(move) frest_atom(icart) = frest_atom(icart) + fplus
+            if(move) frest_atom(icart) = frest_atom(icart) + move_bad_constraint_scale * fplus
 
             ! Putting atoms in their cells
 

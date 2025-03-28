@@ -10,7 +10,7 @@ subroutine movebad(n,x,fx,movebadprint)
 
    use sizes
    use compute_data
-   use input, only : movefrac, movebadrandom, precision, maxmove
+   use input, only : movefrac, movebadrandom, precision, maxmove, maxmove_total
    use usegencan
    use flashsort
    use ahestetic
@@ -18,7 +18,7 @@ subroutine movebad(n,x,fx,movebadprint)
 
    ! Internal variables
    integer :: n, i, j, icart, itype, iatom, imol, ilubar, ilugan, &
-      ilubar2, ilugan2, nbad, igood, ibad, nmove
+      ilubar2, ilugan2, nbad, igood, ibad, nmove, nmove_total, itype_tmp
    double precision :: x(n), fx, rnd, frac
    double precision :: fdist_mol, frest_mol
    logical :: movebadprint, hasbad
@@ -49,11 +49,20 @@ subroutine movebad(n,x,fx,movebadprint)
    call computef(n,x,fx)
    move = .false.
 
-   ! Moving the worst molecules
 
+   ! Moving the worst molecules
+   if (init1) then
+      do i = 1, ntype
+         rand_type(i) = i
+      end do
+   else
+      call shuffle_types(ntype, rand_type)
+   end if
+   nmove_total = 0
    hasbad = .false.
    icart = 0
-   do itype = 1, ntype
+   move_itype : do itype_tmp = 1, ntype
+      itype = rand_type(itype_tmp)
       if(.not.comptype(itype)) then
          icart = icart + nmols(itype)*natoms(itype)
       else
@@ -78,12 +87,13 @@ subroutine movebad(n,x,fx,movebadprint)
             end if
          end do
          frac = dfloat(nbad)/dfloat(nmols(itype))
-         if(movebadprint) write(*,"( a,i9,a,f8.2,a )") &
+         if(movebadprint) write(*,"( a,i9,a,f8.2,a,$ )") &
             '  Type ',itype,' molecules with non-zero contributions:', &
             100.d0*frac,'%'
 
-         if(nbad.gt.0) then
-
+         if(nbad == 0) then
+            write(*,*)
+         else
             frac = dmin1(movefrac,frac)
 
             ! Ordering molecules from best to worst
@@ -93,13 +103,18 @@ subroutine movebad(n,x,fx,movebadprint)
 
             ! Moving molecules
 
-            nmove = min0(maxmove(itype),max0(int(nmols(itype)*frac),1))
+            nmove = min0(min0(maxmove(itype),maxmove_total-nmove_total),max0(int(nmols(itype)*frac),1))
+            nmove_total = nmove_total + nmove
             if(movebadprint) then
-               write(*,"( a,i9,a,i9 )") '  Moving ',nmove,' molecules of type ',itype
-               if ( movebadrandom ) then
-                  write(*,*) ' New positions will be aleatory (movebadrandom is set) '
+               write(*,"( a,i9,a )") '  Moving ',nmove,' molecule(s).'
+               if (nmove > 0) then
+                  if ( movebadrandom ) then
+                     write(*,*) ' New positions will be aleatory (movebadrandom is set) '
+                  else
+                     write(*,*) ' New positions will be based on good molecules (movebadrandom is not set) '
+                  end if
                else
-                  write(*,*) ' New positions will be based on good molecules (movebadrandom is not set) '
+                  cycle move_itype
                end if
             end if
             imol = 0
@@ -137,7 +152,7 @@ subroutine movebad(n,x,fx,movebadprint)
             write(*,"('|')")
          end if
       end if
-   end do
+   end do move_itype
 
    call computef(n,x,fx)
    if(movebadprint) write(*,*) ' Function value after moving molecules:', fx
@@ -148,3 +163,25 @@ subroutine movebad(n,x,fx,movebadprint)
    return
 end subroutine movebad
 
+subroutine shuffle_types(ntype, sequence)
+    implicit none
+    integer, intent(in) :: ntype
+    integer, intent(inout) :: sequence(ntype)
+    integer :: i, j, temp
+    double precision :: rand_real
+
+    ! Initialize the sequence with numbers 1 to N
+    do i = 1, ntype
+      sequence(i) = i
+    end do
+
+    ! Fisher-Yates shuffle
+    do i = ntype, 2, -1
+       call random_number(rand_real)
+       j = int(rand_real * i) + 1  ! Generate a random index in [1, i]
+       ! Swap sequence(i) and sequence(j)
+       temp = sequence(i)
+       sequence(i) = sequence(j)
+       sequence(j) = temp
+    end do
+end subroutine shuffle_types

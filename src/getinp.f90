@@ -10,7 +10,8 @@ subroutine getinp()
 
    use exit_codes
    use sizes
-   use compute_data, only : ntype, natoms, idfirst, nmols, ityperest, coor, restpars
+   use compute_data, only : ntype, natoms, idfirst, nmols, ityperest, coor, restpars,&
+                            move_bad_constraint_scale
    use input
    use usegencan
    use pbc
@@ -43,6 +44,8 @@ subroutine getinp()
    nloop0 = 0
    movefrac = 0.05
    movebadrandom = .false.
+   move_bad_constraint_scale = 10.d0
+   maxmove_total = 10
    precision = 1.d-2
    writebad = .false.
    add_amber_ter = .false.
@@ -85,6 +88,15 @@ subroutine getinp()
       else if(keyword(i,1).eq.'movebadrandom') then
          movebadrandom = .true.
          write(*,*) ' Will move randomly bad molecues (movebadrandom) '
+      else if(keyword(i,1).eq.'move_bad_constraint_scale') then
+         read(keyword(i,2),*,iostat=ioerr) move_bad_constraint_scale
+         write(*,*) ' move_bad_constraint_scale set to ', move_bad_constraint_scale
+         if ( ioerr /= 0 ) exit
+      else if(keyword(i,1).eq.'maxmove_total') then
+         read(keyword(i,2),*,iostat=ioerr) maxmove_total
+         write(*,*) ' maxmove_total set to ', move_bad_constraint_scale
+         if ( ioerr /= 0 ) exit
+         write(*,*) ' Optional printvalue 1 set: ', iprint1
       else if(keyword(i,1).eq.'chkgrad') then
          chkgrad = .true.
       else if(keyword(i,1).eq.'writeout') then
@@ -221,6 +233,7 @@ subroutine getinp()
          keyword(i,1) /= 'discale' .and. &
          keyword(i,1) /= 'maxit' .and. &
          keyword(i,1) /= 'movebadrandom' .and. &
+         keyword(i,1) /= 'move_bad_constraint_scale' .and. &
          keyword(i,1) /= 'maxmove' .and. &
          keyword(i,1) /= 'add_amber_ter' .and. &
          keyword(i,1) /= 'amber_ter_preserve' .and. &

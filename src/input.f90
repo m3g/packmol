@@ -18,6 +18,7 @@ module input
    integer :: writeout
    integer :: ntype_with_fixed
    integer :: ntcon(9)
+   integer :: maxmove_total
 
    integer, allocatable :: nconnect(:,:)  ! (ntotat,9)
    integer, allocatable :: irestline(:) ! (maxrest)
