@@ -64,7 +64,7 @@ program packmol
   double precision :: fimp, fimprov
   double precision, parameter :: pi=4.d0*datan(1.d0)
 
-  real :: etime, tarray(2), time0
+  real :: etime, tarray(2), time0, time_writeout
   
   character(len=strl) :: record, restart_from_temp, restart_to_temp
   character(len=strl) :: xyzfile
@@ -92,6 +92,7 @@ program packmol
   ! Start time computation
 
   time0 = etime(tarray)
+  time_writeout = time0
 
   ! Reading input file
 
@@ -806,7 +807,7 @@ program packmol
         loop = loop + 1
 
         ! Moving bad molecules
-        if(radscale == 1.d0 .and. fimp.le.10.d0) then
+        if(.not. disable_movebad .and. radscale == 1.d0 .and. fimp.le.10.d0) then
           movebadprint = .true.
           call movebad(n,x,fx,movebadprint)
           flast = fx
@@ -900,20 +901,22 @@ program packmol
         write(*,dash3_line)
 
         ! If this is the best structure so far
-        if( mod(loop+1,writeout) == 0 .and. all_type_fx < fprint ) then
-          call output(n,x,xyzout)
-          write(*,*) ' Current solution written to file: ', trim(adjustl(xyzout))
-          if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
-          fprint = all_type_fx
-          do i = 1, n
-            xprint(i) = x(i)
-          end do
-
-        ! If the user required printing even bad structures
-        else if ( mod(loop+1,writeout) == 0 .and. writebad ) then
-          call output(n,x,xyzout)
-          write(*,*) ' Writing current (perhaps bad) structure to file: ', trim(adjustl(xyzout))
-          if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
+        if(etime(tarray) - time_writeout > writeout) then
+          time_writeout = etime(tarray)
+          if(all_type_fx < fprint ) then
+            call output(n,x,xyzout)
+            write(*,*) ' Current solution written to file: ', trim(adjustl(xyzout))
+            if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
+            fprint = all_type_fx
+            do i = 1, n
+              xprint(i) = x(i)
+            end do
+          ! If the user required printing even bad structures
+          else if (writebad) then
+            call output(n,x,xyzout)
+            write(*,*) ' Writing current (perhaps bad) structure to file: ', trim(adjustl(xyzout))
+            if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
+          end if
         end if
 
         ! Restore vector for packing this type of molecule, if the case

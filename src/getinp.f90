@@ -43,6 +43,7 @@ subroutine getinp()
    nloop0 = 0
    movefrac = 0.05
    movebadrandom = .false.
+   disable_movebad = .false.
    precision = 1.d-2
    writebad = .false.
    add_amber_ter = .false.
@@ -85,6 +86,9 @@ subroutine getinp()
       else if(keyword(i,1).eq.'movebadrandom') then
          movebadrandom = .true.
          write(*,*) ' Will move randomly bad molecues (movebadrandom) '
+      else if(keyword(i,1).eq.'disable_movebad') then
+         disable_movebad = .true.
+         write(*,*) ' Move-bad heursitic is dsabled. '
       else if(keyword(i,1).eq.'chkgrad') then
          chkgrad = .true.
       else if(keyword(i,1).eq.'writeout') then
@@ -220,7 +224,6 @@ subroutine getinp()
          keyword(i,1) /= 'chain' .and. &
          keyword(i,1) /= 'discale' .and. &
          keyword(i,1) /= 'maxit' .and. &
-         keyword(i,1) /= 'movebadrandom' .and. &
          keyword(i,1) /= 'maxmove' .and. &
          keyword(i,1) /= 'add_amber_ter' .and. &
          keyword(i,1) /= 'amber_ter_preserve' .and. &
