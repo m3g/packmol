@@ -62,7 +62,7 @@ subroutine restmol(itype,ilubar,n,x,fx,solve)
    n = nsafe
    nmols(itype) = nmoltype
    x(ilubar+1:ilubar+3) = xmol(1:3)
-   x(ilubar+ntotmol+1:ilubar+ntotmol+3) = xmol(4:6)
+   x(ilubar+ntotmol*3+1:ilubar+ntotmol*3+3) = xmol(4:6)
    comptype(1:ntype) = compsafe(1:ntype)
    init1 = initsafe
 
