@@ -1073,8 +1073,8 @@ worse) the convergence.
 
 <tr><td class=tdclean0 valign=top>3.</td>
 <td class=tdclean0><tt>movebadrandom</tt><br>
- One of the convergence heuristics of Packmol consists in moving
- molecules that are badly placed. If this option is set, the molecules
+One of the convergence heuristics of Packmol consists in moving
+molecules that are badly placed. If this option is set, the molecules
 will be placed in new random position in the box. If not (default), the
 molecules are moved to positions nearby molecules that are well packed.
 Using this option can help when the restraints are complex, but will
@@ -1093,6 +1093,12 @@ At the same time, <tt>maxmove</tt> defines a maximum absolute number of molecule
 displaced for each type of molecule. it must be set within
 a <tt>structure ... end structure</tt> section, and defaults to the number of molecules 
 of each type.
+</td></tr>                                  
+
+<tr><td class=tdclean0 valign=top>4.</td>
+<td class=tdclean0><tt>disable_movebad</tt><br>
+Global option, disables the <tt>movebad</tt> heuristic. The packing has good chances of
+being trapped in local minima, but it may be useful for some systems (available since v21.0.1).
 </td></tr>                                  
 
 </table>
