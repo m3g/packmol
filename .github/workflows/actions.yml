@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: awvwgk/setup-fortran@main
+    - uses: fortran-lang/setup-fortran@main
       id: setup-fortran
       with:
         compiler: gcc
