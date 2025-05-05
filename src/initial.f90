@@ -153,7 +153,7 @@ subroutine initial(n,x)
                do i = 1, 3
                   if (xcart(icart, i) < pbc_min(i) .or. xcart(icart, i) > pbc_max(i)) then
                      write(*,*) "ERROR: Fixed molecule are outside the PBC box:"
-                     write(*,*) "   Atom: ", ifatom, " of molecule: ", iftype, " - coordinate: ", i
+                     write(*,*) "   Atom: ", ifatom, " of molecule: ", input_itype(iftype), " - coordinate: ", i
                      write(*,*) "  ", xcart(icart, i), " not in [", pbc_min(i), ", ", pbc_max(i), "]"
                      write(*,*) "(after translating/rotation the fixed molecule with the given orientation)"
                      stop exit_code_input_error
