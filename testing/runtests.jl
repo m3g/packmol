@@ -10,7 +10,6 @@ using CellListMap
 # The residue numbers are overwritten by the `resnumbers` option of the input
 # packmol files .
 #
-#
 # run with:
 #
 # julia runtests.jl -packmol ../packmol ./input_files/water_box.inp ./input_files/water_box_pbc.inp
