@@ -10,7 +10,14 @@ using CellListMap
 # The residue numbers are overwritten by the `resnumbers` option of the input
 # packmol files .
 #
-
+#
+# run with:
+#
+# julia runtests.jl -packmol ../packmol ./input_files/water_box.inp ./input_files/water_box_pbc.inp
+#
+# where providing  -packmol /path/to/packmol is optional. Not using it will try to run ../packmol
+# a list of input files is provided as last arguments. 
+#
 struct MinimumDistance 
     i::Int
     j::Int
