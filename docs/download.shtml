@@ -56,11 +56,16 @@ This is the repository of the source-code of the latest release of Packmol.
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
 Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
 package.
+<br>
+Current version: <img src=https://img.shields.io/github/release/m3g/packmol.svg?label="latest" alt="Packmol latest release version">
+<img src=https://img.shields.io/github/release-date/m3g/packmol.svg?label="release" alt="Packmol latest release date">
 
 <br><br>
 <b>3. </b><a href=https://github.com/conda-forge/packmol-feedstock><span class="blink"><b>[conda-forge/packmol-feedstock]:</b></span></a>
 Packmol is also available through conda and mamba package managers.
 We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
+<br>
+Current version: <img src=https://anaconda.org/conda-forge/packmol/badges/version.svg>
 
 <br><br>
 If you experience any problem while downloading, please write to leandromartinez98@gmail.com <br><br>
