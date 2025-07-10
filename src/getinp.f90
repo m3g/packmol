@@ -773,8 +773,13 @@ subroutine getinp()
       end if
    end do
 
-   ! Assigning the input lines that correspond to each structure
 
+   ! Default to all non-fixed molecules may be moved.
+   do itype = 1, ntype
+     maxmove(itype) = nmols(itype)
+   end do
+
+   ! Assigning the input lines that correspond to each structure
    itype = 0
    iline = 0
    do while(iline < nlines)
@@ -785,6 +790,9 @@ subroutine getinp()
          iline = iline + 1
          do while(keyword(iline,1).ne.'end'.or.&
             keyword(iline,2).ne.'structure')
+            if(keyword(iline,1).eq.'maxmove') then
+               read(keyword(iline,2),*) maxmove(itype)
+            end if
             if(keyword(iline,1) == 'structure'.or.&
                iline == nlines) then
                write(*,*) ' ERROR: Structure specification not ending with "end structure"'
@@ -806,15 +814,11 @@ subroutine getinp()
          changechains(itype) = .false.
          chain(itype) = "#"
          segid(itype) = ""
-         maxmove(itype) = nmols(itype)
          do iline = 1, nlines
             if(iline.gt.linestrut(itype,1).and.&
                iline.lt.linestrut(itype,2)) then
                if(keyword(iline,1).eq.'changechains') then
                   changechains(itype) = .true.
-               end if
-               if(keyword(iline,1).eq.'maxmove') then
-                  read(keyword(iline,2),*) maxmove(itype)
                end if
                if(keyword(iline,1).eq.'resnumbers') then
                   read(keyword(iline,2),*) resnumbers(itype)
