@@ -397,7 +397,7 @@ subroutine initial(n,x)
             fx = 1.d0
             ntry = 0
             overlap = .false.
-            do while(overlap .or. (fx > precision) .and. (ntry < max_guess_try))
+            do while((overlap .or. fx > precision) .and. (ntry < max_guess_try))
                overlap = .false.
                ntry = ntry + 1
                call random_number(xrnd)
