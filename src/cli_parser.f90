@@ -99,7 +99,7 @@ subroutine parse_command_line_args
 
         idx = index(cmd, "packmol")
         if (idx == 0) then
-            write (*, *) "WARN: packmol detected non-standard command-line handling"
+            write(*, *) "WARN: packmol detected non-standard command-line handling"
         end if
 
         ! NOTE: Packmol expects these to be initialized to empty strings

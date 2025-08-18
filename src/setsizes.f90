@@ -40,7 +40,7 @@ subroutine setsizes()
       un = 100
       open(unit=un, file=trim(input_file_name), status="unknown", iostat=ioerr)
       if (ioerr /= 0) then
-         write (*, *) "ERROR: file-open error with file: " // trim(input_file_name)
+         write(*, *) "ERROR: file-open error with file: " // trim(input_file_name)
          stop exit_code_open_file
       end if
    end if
