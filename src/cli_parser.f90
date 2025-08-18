@@ -111,6 +111,32 @@ subroutine parse_command_line_args
             stop exit_code_command_line_error
         end if
 
+    else if (argc == 2) then ! user must specify the input file
+
+        cmdno = 1
+        call get_command_argument(cmdno, value=cmd, length=length, status=stat)
+        if (stat == -1) then
+            error stop "ERROR: truncation error"
+        else if (stat > 0) then
+            error stop "ERROR: command-line retrieval error"
+        end if
+
+        if (parse_command(cmd) == INPUT_FLAG) then
+            call get_filename(cmdno, input_file_name)
+            specified_input_file = .true.
+        else
+            error stop "ERROR: packmol show command-line usage"
+        end if
+
+        if (.not. specified_input_file) then
+            error stop "ERROR: packmol received invalid command-line arguments"
+        end if
+
+        if (len(trim(input_file_name)) == 0) then
+            write (*,*) "ERROR: invalid input filename"
+            stop exit_code_command_line_error
+        end if
+
     else if (argc == 4) then ! user has specified both the input and output files
 
         cmdno = 1
