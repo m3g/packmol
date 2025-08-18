@@ -174,9 +174,6 @@ subroutine parse_command_line_args
         error stop errmsg
     end if
 
-    ! NOTE: for now we stop here until we update the rest of the source files
-    STOP
-
     return
 end subroutine parse_command_line_args
 
