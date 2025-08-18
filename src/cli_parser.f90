@@ -167,9 +167,6 @@ subroutine parse_command_line_args
             error stop errcmp
         end if
 
-        write (*, *) "input: ", trim(input_file_name)
-        write (*, *) "output: ", trim(output_file_name)
-
     else ! user provided invalid command-line arguments
         error stop errmsg
     end if
