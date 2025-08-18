@@ -90,9 +90,11 @@ subroutine parse_command_line_args
         cmdno = 0
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
-            error stop "ERROR: truncation error"
+            write(*,*) "ERROR: truncation error"
+            stop exit_code_command_line_error
         else if (stat > 0) then
-            error stop "ERROR: command-line retrieval error"
+            write(*,*) "ERROR: command-line retrieval error"
+            stop exit_code_command_line_error
         end if
 
         idx = index(cmd, "packmol")
@@ -102,12 +104,12 @@ subroutine parse_command_line_args
 
         ! NOTE: Packmol expects these to be initialized to empty strings
         if (len(trim(input_file_name)) /= 0) then
-            write (*,*) "ERROR: packmol internal error"
+            write(*,*) "ERROR: packmol internal error"
             stop exit_code_command_line_error
         end if
 
         if (len(trim(output_file_name)) /= 0) then
-            write (*,*) "ERROR: packmol internal error"
+            write(*,*) "ERROR: packmol internal error"
             stop exit_code_command_line_error
         end if
 
@@ -116,24 +118,28 @@ subroutine parse_command_line_args
         cmdno = 1
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
-            error stop "ERROR: truncation error"
+            write(*,*) "ERROR: truncation error"
+            stop exit_code_command_line_error
         else if (stat > 0) then
-            error stop "ERROR: command-line retrieval error"
+            write(*,*) "ERROR: command-line retrieval error"
+            stop exit_code_command_line_error
         end if
 
         if (parse_command(cmd) == INPUT_FLAG) then
             call get_filename(cmdno, input_file_name)
             specified_input_file = .true.
         else
-            error stop "ERROR: packmol show command-line usage"
+            write(*,*) "ERROR: packmol show command-line usage"
+            stop exit_code_command_line_error
         end if
 
         if (.not. specified_input_file) then
-            error stop "ERROR: packmol received invalid command-line arguments"
+            write(*,*) "ERROR: packmol received invalid command-line arguments"
+            stop exit_code_command_line_error
         end if
 
         if (len(trim(input_file_name)) == 0) then
-            write (*,*) "ERROR: invalid input filename"
+            write(*,*) "ERROR: invalid input filename"
             stop exit_code_command_line_error
         end if
 
@@ -142,9 +148,11 @@ subroutine parse_command_line_args
         cmdno = 1
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
-            error stop "ERROR: truncation error"
+            write(*,*) "ERROR: truncation error"
+            stop exit_code_command_line_error
         else if (stat > 0) then
-            error stop "ERROR: command-line retrieval error"
+            write(*,*) "ERROR: command-line retrieval error"
+            stop exit_code_command_line_error
         end if
 
         if (parse_command(cmd) == INPUT_FLAG) then
@@ -154,7 +162,8 @@ subroutine parse_command_line_args
             call get_filename(cmdno, output_file_name)
             specified_output_file = .true.
         else
-            error stop "ERROR: packmol received invalid command-line arguments"
+            write(*,*) "ERROR: packmol received invalid command-line arguments"
+            stop exit_code_command_line_error
         end if
 
         cmdno = 3
@@ -169,32 +178,36 @@ subroutine parse_command_line_args
                 call get_filename(cmdno, input_file_name)
                 specified_input_file = .true.
             else
-                error stop "ERROR: packmol received invalid command-line arguments"
+                write(*,*) "ERROR: packmol received invalid command-line arguments"
+                stop exit_code_command_line_error
             end if
         end if
 
         ! assertion: both must be true if not we have a logic error in the code
         if (.not. specified_input_file .or. .not. specified_output_file) then
-            error stop "ERROR: packmol received invalid command-line arguments"
+            write(*,*) "ERROR: packmol received invalid command-line arguments"
+            stop exit_code_command_line_error
         end if
 
         ! NOTE: we want to catch implementation errors in development
         if (len(trim(input_file_name)) == 0) then
-            write (*,*) "ERROR: invalid input filename"
+            write(*,*) "ERROR: invalid input filename"
             stop exit_code_command_line_error
         end if
 
         if (len(trim(output_file_name)) == 0) then
-            write (*,*) "ERROR: invalid output filename"
+            write(*,*) "ERROR: invalid output filename"
             stop exit_code_command_line_error
         end if
 
         if (trim(input_file_name) == trim(output_file_name)) then
-            error stop errcmp
+            write(*,*) errcmp
+            stop exit_code_command_line_error
         end if
 
     else ! user provided invalid command-line arguments
-        error stop errmsg
+        write(*,*) errmsg
+        stop exit_code_command_line_error
     end if
 
     return
