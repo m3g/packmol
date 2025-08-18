@@ -14,5 +14,6 @@ module exit_codes
    integer, parameter :: exit_code_input_error = 171
    integer, parameter :: exit_code_open_file = 172
    integer, parameter :: exit_code_failed_to_converge = 173
+   integer, parameter :: exit_code_command_line_error = 174
 
 end module exit_codes
