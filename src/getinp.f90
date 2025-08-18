@@ -270,8 +270,6 @@ subroutine getinp()
       end if
    end if
    write(*,*)' Output file: ', trim(adjustl(xyzout))
-   ! for now we stop here
-   STOP
 
    ! Reading structure files
 
