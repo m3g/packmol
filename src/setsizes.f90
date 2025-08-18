@@ -358,7 +358,5 @@ subroutine setsizes()
       close(un)
    end if
 
-   ! for now we stop here until we update other source files accordingly
-   STOP
 end subroutine setsizes
 

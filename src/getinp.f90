@@ -256,6 +256,7 @@ subroutine getinp()
 
    ! Checking for the name of the output file to be created
 
+   if (len(trim(xyzout)) == 0) then
    xyzout = '####'
    do iline = 1, nlines
       if(keyword(iline,1).eq.'output') then
@@ -267,7 +268,10 @@ subroutine getinp()
       write(*,*)' ERROR: Output file not (correctly?) specified. '
       stop exit_code_input_error
    end if
+   end if
    write(*,*)' Output file: ', trim(adjustl(xyzout))
+   ! for now we stop here
+   STOP
 
    ! Reading structure files
 
