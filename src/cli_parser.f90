@@ -25,11 +25,11 @@ function parse_command(cmd) result(res)
     integer :: res
     integer :: idx
     character(*), intent(in) :: cmd
-    character(*), parameter :: cmdin = "-in"
-    character(*), parameter :: cmdout = "-out"
+    character(*), parameter :: cmdin = "-i"
+    character(*), parameter :: cmdout = "-o"
     character(*), parameter :: errmsg = "ERROR: unrecognized command-line argument: "
 
-    idx = index(cmd, "-in")
+    idx = index(cmd, "-i")
     if (idx /= 0) then
 
         if (len(trim(cmd)) /= len(cmdin)) then
@@ -40,7 +40,7 @@ function parse_command(cmd) result(res)
 
     else
 
-        idx = index(cmd, "-out")
+        idx = index(cmd, "-o")
         if (idx == 0) then
                 write(*,*) errmsg // trim(cmd)
                 stop exit_code_command_line_error
