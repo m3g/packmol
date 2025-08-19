@@ -111,7 +111,7 @@ fi
 pass=0
 "$ls" input_files/*.inp | while read input_file
 do
-	sw=$(echo "$input_file" | "$grep" -v "error" | "$grep" -v "fail" | "$wc" --chars)
+	sw=$(echo "$input_file" | "$grep" -v "error" | "$grep" -v "fail" | "$wc" -c)
 	if [ "$sw" -eq 0 ] ; then
 		if [ "$verbose" -eq 1 ] ; then
 			echo "Skipping test $input_file because it is designed to fail"
@@ -182,8 +182,8 @@ do
 		continue
 	fi
 
-	res1=$("$diff" --normal "$output_pdb" "$output_txt" | "$wc" --chars)
-	res2=$("$diff" --normal "$output_pdb" "$output_tmp" | "$wc" --chars)
+	res1=$("$diff" --normal "$output_pdb" "$output_txt" | "$wc" -c)
+	res2=$("$diff" --normal "$output_pdb" "$output_tmp" | "$wc" -c)
 	if [ "$res1" -eq 0 ] && [ "$res2" -eq 0 ] ; then
 		echo "OK"
 	else
