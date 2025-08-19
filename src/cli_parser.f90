@@ -15,6 +15,15 @@ module cli_parser
 
     integer, parameter :: INPUT_FLAG = 0
     integer, parameter :: OUTPUT_FLAG = 1
+    character(len=*), parameter :: errmsg = &
+        "ERROR: packmol command-line error" // new_line('a') // &
+        "Command-line execution examples (you may use any): " // new_line('a') // &
+        "" // new_line('a') // &
+        "packmol < input.inp" // new_line('a') // &
+        "" // new_line('a') // &
+        "packmol -i input.inp" // new_line('a') // &
+        "" // new_line('a') // &
+        "packmol -i input.inp -o output.pdb" // new_line('a')
 
     private
     public :: parse_command_line_args
@@ -27,13 +36,14 @@ function parse_command(cmd) result(res)
     character(*), intent(in) :: cmd
     character(*), parameter :: cmdin = "-i"
     character(*), parameter :: cmdout = "-o"
-    character(*), parameter :: errmsg = "ERROR: unrecognized command-line argument: "
+    character(*), parameter :: err = "ERROR: unrecognized command-line argument: "
 
     idx = index(cmd, "-i")
     if (idx /= 0) then
 
         if (len(trim(cmd)) /= len(cmdin)) then
-                write(*,*) errmsg // trim(cmd)
+                write(*,*) err // trim(cmd)
+                write(*,*) errmsg
                 stop exit_code_command_line_error
         end if
         res = INPUT_FLAG
@@ -42,11 +52,13 @@ function parse_command(cmd) result(res)
 
         idx = index(cmd, "-o")
         if (idx == 0) then
-                write(*,*) errmsg // trim(cmd)
+                write(*,*) err // trim(cmd)
+                write(*,*) errmsg
                 stop exit_code_command_line_error
         end if
         if (len(trim(cmd)) /= len(cmdout)) then
-                write(*,*) errmsg // trim(cmd)
+                write(*,*) err // trim(cmd)
+                write(*,*) errmsg
                 stop exit_code_command_line_error
         end if
         res = OUTPUT_FLAG
@@ -74,7 +86,6 @@ subroutine parse_command_line_args
     logical :: specified_input_file
     logical :: specified_output_file
     character(len=strl) :: cmd
-    character(len=*), parameter :: errmsg = "ERROR: packmol command-line error show help"
     character(len=*), parameter :: errcmp = "ERROR: packmol expects different " // &
         "for the input and output files"
 
@@ -91,9 +102,11 @@ subroutine parse_command_line_args
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
             write(*,*) "ERROR: truncation error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         else if (stat > 0) then
             write(*,*) "ERROR: command-line retrieval error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
@@ -104,12 +117,12 @@ subroutine parse_command_line_args
 
         ! NOTE: Packmol expects these to be initialized to empty strings
         if (len(trim(input_file_name)) /= 0) then
-            write(*,*) "ERROR: packmol internal error"
+            write(*,*) "ERROR: packmol command-line implementation error"
             stop exit_code_command_line_error
         end if
 
         if (len(trim(output_file_name)) /= 0) then
-            write(*,*) "ERROR: packmol internal error"
+            write(*,*) "ERROR: packmol command-line implementation error"
             stop exit_code_command_line_error
         end if
 
@@ -119,9 +132,11 @@ subroutine parse_command_line_args
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
             write(*,*) "ERROR: truncation error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         else if (stat > 0) then
             write(*,*) "ERROR: command-line retrieval error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
@@ -129,17 +144,19 @@ subroutine parse_command_line_args
             call get_filename(cmdno, input_file_name)
             specified_input_file = .true.
         else
-            write(*,*) "ERROR: packmol show command-line usage"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
         if (.not. specified_input_file) then
             write(*,*) "ERROR: packmol received invalid command-line arguments"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
         if (len(trim(input_file_name)) == 0) then
             write(*,*) "ERROR: invalid input filename"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
@@ -149,9 +166,11 @@ subroutine parse_command_line_args
         call get_command_argument(cmdno, value=cmd, length=length, status=stat)
         if (stat == -1) then
             write(*,*) "ERROR: truncation error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         else if (stat > 0) then
             write(*,*) "ERROR: command-line retrieval error"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
@@ -163,6 +182,7 @@ subroutine parse_command_line_args
             specified_output_file = .true.
         else
             write(*,*) "ERROR: packmol received invalid command-line arguments"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
@@ -179,6 +199,7 @@ subroutine parse_command_line_args
                 specified_input_file = .true.
             else
                 write(*,*) "ERROR: packmol received invalid command-line arguments"
+                write(*,*) errmsg
                 stop exit_code_command_line_error
             end if
         end if
@@ -186,22 +207,26 @@ subroutine parse_command_line_args
         ! assertion: both must be true if not we have a logic error in the code
         if (.not. specified_input_file .or. .not. specified_output_file) then
             write(*,*) "ERROR: packmol received invalid command-line arguments"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
         ! NOTE: we want to catch implementation errors in development
         if (len(trim(input_file_name)) == 0) then
             write(*,*) "ERROR: invalid input filename"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
         if (len(trim(output_file_name)) == 0) then
             write(*,*) "ERROR: invalid output filename"
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
         if (trim(input_file_name) == trim(output_file_name)) then
             write(*,*) errcmp
+            write(*,*) errmsg
             stop exit_code_command_line_error
         end if
 
