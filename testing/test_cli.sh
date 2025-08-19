@@ -48,6 +48,12 @@ if ! [ -x "$ls" ] ; then
 	exit 1
 fi
 
+mv=$(which mv)
+if ! [ -x "$mv" ] ; then
+	echo "Error: mv command not found"
+	exit 1
+fi
+
 cp=$(which cp)
 if ! [ -x "$cp" ] ; then
 	echo "Error: cp command not found"
@@ -132,7 +138,7 @@ do
 	"$cp" "$input_file" "$input_txt"
 	"$sed" -e 's/seed\s\+-1/seed 1024/g' -i'.tmp' "$input_txt"
 	"$cp" "$input_txt" "$input_tmp"
-	"$sed" -e 's/\.pdb/.tmp/g' -i'.tmp' "$input_tmp"
+	"$sed" -e 's/output\.pdb/output.tmp/g' -i'.tmp' "$input_tmp"
 
 	output_pdb=$(\
 		"$cat" "$input_txt" | \
