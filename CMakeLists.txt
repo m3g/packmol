@@ -25,6 +25,7 @@ add_executable(packmol
        src/getinp.f90
        src/strlength.f90
        src/output.f90
+       src/cli_parser.f90
        src/checkpoint.f90
        src/writesuccess.f90
        src/fparc.f90
