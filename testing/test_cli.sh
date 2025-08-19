@@ -96,7 +96,7 @@ if ! [ -x "$uname" ] ; then
 	exit 1
 fi
 
-os="$uname"
+os=$("$uname")
 if [ "Darwin" == "$os" ] ; then
 	gawk=$(which awk)
 else
