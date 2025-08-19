@@ -90,7 +90,19 @@ if ! [ -x "$grep" ] ; then
 	exit 1
 fi
 
-gawk=$(which gawk)
+uname=$(which uname)
+if ! [ -x "$uname" ] ; then
+	echo "Error: uname command not found"
+	exit 1
+fi
+
+os="$uname"
+if [ "Darwin" == "$os" ] ; then
+	gawk=$(which awk)
+else
+	gawk=$(which gawk)
+fi
+
 if ! [ -x "$gawk" ] ; then
 	echo "Error: gawk command not found"
 	exit 1
