@@ -48,12 +48,6 @@ if ! [ -x "$ls" ] ; then
 	exit 1
 fi
 
-mv=$(which mv)
-if ! [ -x "$mv" ] ; then
-	echo "Error: mv command not found"
-	exit 1
-fi
-
 cp=$(which cp)
 if ! [ -x "$cp" ] ; then
 	echo "Error: cp command not found"
