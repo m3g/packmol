@@ -108,7 +108,6 @@ if ! [ -x "$gawk" ] ; then
 	exit 1
 fi
 
-pass=0
 "$ls" input_files/*.inp | while read input_file
 do
 	sw=$(echo "$input_file" | "$grep" -v "error" | "$grep" -v "fail" | "$wc" -c)
@@ -161,7 +160,7 @@ do
 		"$rm" -f "$output_txt"
 		"$rm" -f "$output_pdb"
 		"$rm" -f "$output_tmp"
-		continue
+		exit 1
 	fi
 
 	if ! "$packmol" -i "$input_tmp" 1>/dev/null 2>/dev/null ; then
@@ -171,7 +170,7 @@ do
 		"$rm" -f "$output_txt"
 		"$rm" -f "$output_pdb"
 		"$rm" -f "$output_tmp"
-		continue
+		exit 1
 	fi
 
 	if ! "$packmol" -i "$input_txt" -o "$output_txt" 1>/dev/null 2>/dev/null ; then
@@ -181,7 +180,7 @@ do
 		"$rm" -f "$output_txt"
 		"$rm" -f "$output_pdb"
 		"$rm" -f "$output_tmp"
-		continue
+		exit 1
 	fi
 
 	res1=$("$diff" --normal "$output_pdb" "$output_txt" | "$wc" -c)
@@ -190,7 +189,12 @@ do
 		echo "OK"
 	else
 		echo "FAIL"
-		pass=1
+		"$rm" -f "$input_tmp"
+		"$rm" -f "$input_txt"
+		"$rm" -f "$output_txt"
+		"$rm" -f "$output_pdb"
+		"$rm" -f "$output_tmp"
+		exit 1
 	fi
 
 	"$rm" -f "$input_tmp"
@@ -200,8 +204,4 @@ do
 	"$rm" -f "$output_tmp"
 done
 
-if [ "$pass" -eq 0 ] ; then
-	exit 0
-else
-	exit 1
-fi
+exit 0
