@@ -130,9 +130,9 @@ do
 	)
 
 	"$cp" "$input_file" "$input_txt"
-	"$sed" -i 's/seed\s\+-1/seed 1024/g' "$input_txt"
+	"$sed" -i'' 's/seed\s\+-1/seed 1024/g' "$input_txt"
 	"$cp" "$input_txt" "$input_tmp"
-	"$sed" -i 's/output\s\+\(\w\+\)\.pdb/output \1.tmp/g' "$input_tmp"
+	"$sed" -i'' 's/output\s\+\(\w\+\)\.pdb/output \1.tmp/g' "$input_tmp"
 
 	output_pdb=$(\
 		"$cat" "$input_txt" | \
