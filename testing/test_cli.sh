@@ -133,6 +133,8 @@ do
 	"$sed" -e 's/seed -1/seed 1024/g' -i'.tmp' "$input_txt"
 	"$cp" "$input_txt" "$input_tmp"
 	"$sed" -e 's/output\.pdb/output.tmp/g' -i'.tmp' "$input_tmp"
+	"$rm" "$input_txt.tmp"
+	"$rm" "$input_tmp.tmp"
 
 	output_pdb=$(\
 		"$cat" "$input_txt" | \
