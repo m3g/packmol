@@ -132,7 +132,7 @@ do
 	"$cp" "$input_file" "$input_txt"
 	"$sed" -e 's/seed\s\+-1/seed 1024/g' -i'.tmp' "$input_txt"
 	"$cp" "$input_txt" "$input_tmp"
-	"$sed" -e 's/output\s\+\(\w\+\)\.pdb/output \1.tmp/g' -i'.tmp' "$input_tmp"
+	"$sed" -e 's/\.pdb/.tmp/g' -i'.tmp' "$input_tmp"
 
 	output_pdb=$(\
 		"$cat" "$input_txt" | \
