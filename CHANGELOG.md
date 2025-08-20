@@ -15,7 +15,7 @@ Version 21.1.1-DEV
 
 Version 21.1.0
 -------------
-- ![FEATURE][badge-feature] Support CLI input and output file specifications [PR](https://github.com/m3g/packmol/pull/101).
+- ![FEATURE][badge-feature] Support CLI input and output file specifications (i. e. `-i input.inp -o output.pdb`) ([PR](https://github.com/m3g/packmol/pull/101)).
 
 Version 21.0.4
 -------------
