@@ -121,7 +121,7 @@ packmol < packmol.inp
 <br><br><tt>
 packmol -i packmol.inp -o output.pdb
 <br><br></tt>
-The `-o output.pdb`  is optional, and will overwrite the definition of the output file in the input file.
+The <tt>-o output.pdb</tt>  is optional, and will overwrite the definition of the output file in the input file.
 <br><br>
 The <code>packmol.inp</code> file is the input file (you can obtain example files by
 clicking at the 'Input examples' link on the left). <br><br> 
