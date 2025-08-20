@@ -111,10 +111,19 @@ detected, an executable called packmol is now ready.
 <br><br>
 Follow the instructions on running Packmol using the Julia wrapper, which is the easiest way to run Packmol on any platform.
 
-Alternatively, from the command-line, run Packmol with:<br><br><tt>
+From the command-line, there are two alternatives to run Packmol:
+<br><br>
+- Using input file redirection:
+<br><br><tt>
 packmol < packmol.inp
 <br><br></tt>
-Where <code>packmol.inp</code> is the input file (you can obtain example files by
+- Using command line arguments to specify the input and, optionally, the output file (from v21.1.0 onwards):
+<br><br><tt>
+packmol -i packmol.inp -o output.pdb
+<br><br></tt>
+The `-o output.pdb`  is optional, and will overwrite the definition of the output file in the input file.
+<br><br>
+The <code>packmol.inp</code> file is the input file (you can obtain example files by
 clicking at the 'Input examples' link on the left). <br><br> 
 A successful packing will end with something like
 <tt><br><br>
