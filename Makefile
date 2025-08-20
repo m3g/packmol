@@ -57,6 +57,7 @@ oall = cenmass.o \
        getinp.o \
        strlength.o \
        output.o \
+       cli_parser.o \
        checkpoint.o \
        writesuccess.o \
        fparc.o \
@@ -156,6 +157,8 @@ strlength.o : $(SRCDIR)/strlength.f90  $(modules)
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/strlength.f90
 output.o : $(SRCDIR)/output.f90  $(modules)
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/output.f90
+cli_parser.o : $(SRCDIR)/cli_parser.f90 $(modules)
+	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/cli_parser.f90
 checkpoint.o : $(SRCDIR)/checkpoint.f90  $(modules)
 	@$(FORTRAN) $(FLAGS) -c $(SRCDIR)/checkpoint.f90
 writesuccess.o : $(SRCDIR)/writesuccess.f90  $(modules)

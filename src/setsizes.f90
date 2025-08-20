@@ -18,6 +18,7 @@ subroutine setsizes()
    implicit none
    integer :: i, ival, ilast, iline, itype
    integer :: ioerr
+   integer :: un
    integer :: strlength
    character(len=strl) :: record, blank, alltospace
    logical :: inside_structure
@@ -33,6 +34,17 @@ subroutine setsizes()
 
    write(*,*) ' Reading input file... (Control-C aborts)'
 
+   if (len(trim(input_file_name)) == 0) then
+      un = 5
+   else
+      un = 100
+      open(unit=un, file=trim(input_file_name), status="unknown", iostat=ioerr)
+      if (ioerr /= 0) then
+         write(*, *) "ERROR: file-open error with file: " // trim(input_file_name)
+         stop exit_code_open_file
+      end if
+   end if
+
    do i = 1, strl
       blank(i:i) = ' '
    end do
@@ -40,7 +52,7 @@ subroutine setsizes()
    maxkeywords = 0
    ntype = 0
    do
-      read(5,str_format,iostat=ioerr) record
+      read(un,str_format,iostat=ioerr) record
 
       ! Replace any strange blank character by spaces
       record = alltospace(record)
@@ -88,7 +100,7 @@ subroutine setsizes()
          end if
       end do
    end do
-   rewind(5)
+   rewind(un)
 
    allocate(inputfile(nlines),keyword(nlines,maxkeywords))
 
@@ -96,7 +108,7 @@ subroutine setsizes()
 
    iline = 0
    do
-      read(5,str_format,iostat=ioerr) record
+      read(un,str_format,iostat=ioerr) record
       if ( ioerr /= 0 ) exit
 
       ! Convert all strange blank characters to spaces
@@ -341,6 +353,10 @@ subroutine setsizes()
    ! Allocate arrays for GENCAN
 
    allocate(l(nn),u(nn),wd(8*nn),wi(nn),g(nn))
+
+   if (un /= 5) then
+      close(un)
+   end if
 
 end subroutine setsizes
 

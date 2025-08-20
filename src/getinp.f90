@@ -256,16 +256,18 @@ subroutine getinp()
 
    ! Checking for the name of the output file to be created
 
-   xyzout = '####'
-   do iline = 1, nlines
-      if(keyword(iline,1).eq.'output') then
-         xyzout = keyword(iline,2)
-         xyzout = trim(adjustl(xyzout))
+   if (len(trim(xyzout)) == 0) then
+      xyzout = '####'
+      do iline = 1, nlines
+         if(keyword(iline,1).eq.'output') then
+            xyzout = keyword(iline,2)
+            xyzout = trim(adjustl(xyzout))
+         end if
+      end do
+      if(xyzout(1:4) == '####') then
+         write(*,*)' ERROR: Output file not (correctly?) specified. '
+         stop exit_code_input_error
       end if
-   end do
-   if(xyzout(1:4) == '####') then
-      write(*,*)' ERROR: Output file not (correctly?) specified. '
-      stop exit_code_input_error
    end if
    write(*,*)' Output file: ', trim(adjustl(xyzout))
 

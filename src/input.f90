@@ -66,6 +66,7 @@ module input
    logical, allocatable :: connect(:) ! (ntype)
 
    character(len=1), parameter :: forbidden_char = '~'
+   character(len=strl) :: input_file_name
    character(len=strl) :: xyzout
    character(len=strl) :: crdfile
 

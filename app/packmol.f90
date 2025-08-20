@@ -36,6 +36,7 @@ program packmol
   use exit_codes
   use sizes
   use compute_data
+  use cli_parser
   use input
   use usegencan
   use flashsort
@@ -80,6 +81,10 @@ program packmol
   ! Printing title
 
   call title()
+
+  ! Parse command-line arguments
+
+  call parse_command_line_args()
       
   ! Set dimensions of all arrays
 

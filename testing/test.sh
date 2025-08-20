@@ -30,3 +30,5 @@ $julia_exe runtests.jl ./input_files/water_box.inp \
 # Test connectivity
 ./test_connectivity.sh 
 
+# Test command-line interface
+./test_cli.sh ../packmol
