@@ -1139,13 +1139,12 @@ Usage: <tt> amber_ter_preserve </tt><br>
 
 
 <li>Add box side information to output PDB File (GROMACS uses this): <br>
-Usage: <tt> add_box_sides 1.0 </tt> <br>
-Where the "1.0" is an optional real number that will be added to
-the length of each side, if the actual sides of your simulation box
-will not be exactly the same as the maximum and minimum coordinates
-of the molecules of the system (usually, if you are using periodic
-boundary conditions, you may want to add "1.0" to avoid clashes
-at the boundary).
+Usage: <tt> add_box_sides </tt> <br>
+If no PBCs are used, this keyword adds a CRYST1 field to the output PDB file,
+where the length of the unitcell in each direction will be the maximum and 
+minimum coordinates of the atoms in the solution added by 1.1*tolerance.
+This can be used to prevent clashes at the boundaries. Nevertheless, it is 
+recommended to explicit use PBCs with the <tt>pbc</tt> keyword.
 <br><br>
 
 <li>Display, or not, connectivity of molecules in output PDB files: <br>
