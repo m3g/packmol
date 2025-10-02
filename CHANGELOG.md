@@ -10,7 +10,7 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
-Version 21.1.1-DEV
+Version 21.1.1
 -------------
 - ![INFO][badge-info] Update minimum CMake compatibility to 3.5.0.
 - ![INFO][badge-info] Add a remark to what is written as `CRYST1` information when no-PBCs are used. Suggest using PBCs Fixes [103](https://github.com/m3g/packmol/issues/103). Update the documentation accordingly.
