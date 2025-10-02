@@ -12,6 +12,7 @@ packmol changelog
 
 Version 21.1.1-DEV
 -------------
+- ![INFO][badge-info] Update minimum CMake compatibility to 3.5.0.
 - ![INFO][badge-info] Add a remark to what is written as `CRYST1` information when no-PBCs are used. Suggest using PBCs Fixes [103](https://github.com/m3g/packmol/issues/103).
 
 Version 21.1.0
