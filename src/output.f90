@@ -162,9 +162,12 @@ subroutine output(n, x, output_file_name)
       end if
 
       if(add_box_sides .or. using_pbc) then
+         if(.not.using_pbc) then
+            write(30,"('REMARK  CRYST1 info below is (extrema(coordinates) +/- 1.1*tolerance) because no explicit')")
+            write(30,"('REMARK  PBCs were defined. To apply PBCs, use the `pbc` keyword.')")
+         end if
          write(30,"( 'CRYST1',t7,f9.2,t16,f9.2,t25,f9.2,t34,f7.2,t41,f7.2,t48,f7.2,t56,'P 1           1' )") &
-            pbc_max-pbc_min,&
-            90., 90., 90.
+            pbc_max-pbc_min, 90., 90., 90.
       end if
 
       ilubar = 0
