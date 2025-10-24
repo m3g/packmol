@@ -76,10 +76,10 @@ below.
 
 Please always cite one of the following references in publications for which Packmol was useful:
 
-L Martinez, R Andrade, EG Birgin, JM Martinez, Packmol: A package for building initial configurations for molecular dynamics simulations. Journal of Computational Chemistry, 30, 2157-2164, 2009. (http://www3.interscience.wiley.com/journal/122210103/abstract)
+L Martinez, R Andrade, EG Birgin, JM Martinez, Packmol: A package for building initial configurations for molecular dynamics simulations. Journal of Computational Chemistry, 30, 2157-2164, 2009. (https://doi.org/10.1002/jcc.21224)
 
 JM Martinez, L Martinez, Packing optimization for the automated generation of complex system's initial configurations for molecular dynamics and docking. Journal of Computational Chemistry, 24, 819-825, 2003.
-(http://www3.interscience.wiley.com/journal/104086246/abstract)
+(https://doi.org/10.1002/jcc.10216)
 
 
 
