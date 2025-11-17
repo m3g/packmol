@@ -10,6 +10,7 @@ authors = [
     { name = "Leandro Martinez", email = "lmartine@unicamp.br" },
     { name = "Ernesto G. Birgin"},
     { name = "José Mario Martínez" },
+    { name = "Packmol Contributors" },
 ]
 classifiers = [
     "Intended Audience :: Science/Research",
