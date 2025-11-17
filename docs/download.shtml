@@ -53,8 +53,7 @@ Current versions:
 
 <h3> Other installation alternatives: </h3> 
 
-<br><br>
-<b>2.</b>Packmol is also available through the Python Package Index (PyPI).
+<b>2. Python Package Index (PyPI)</b>.
 You can install it using pip:
 <pre><code>pip install packmol</code></pre>
 or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:
