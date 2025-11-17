@@ -31,7 +31,20 @@ these follow simple instructions which are described in the link above.
 Compilation of the package, particularly on Linux platforms is, nevertheless, easy, following the instructions
 below.
 
-### Downloading
+### Installation from the Python Package Index
+
+Packmol is available for most platforms as a pre-build wheel from the Python Package Index.
+
+```bash
+pip install packmol
+```
+or direclty as CLI command using [uv](https://docs.astral.sh/uv/)
+
+```bash
+uvx packmol < inp.pack
+```
+
+### Manual compilation
 
 1. Download the `.tar.gz` or `.zip` files of the latest version from: https://github.com/m3g/packmol/releases
 
@@ -45,7 +58,7 @@ below.
    ```
    substituting the `21.0.0` with the correct version number.
 
-### Using `make`
+#### Using `make`
 
 3. Go into the `packmol` directory, and compile the package (we assume `gfortran` or other compiler is available):
     ```bash
@@ -56,7 +69,7 @@ below.
 
 4. An executable called `packmol` will be created in the main directory. Add that directory to your path.
 
-### Using the Fortran Package Manager (`fpm`)
+#### Using the Fortran Package Manager (`fpm`)
 
 3. Install the Fortran Package Manager from: https://fpm.fortran-lang.org/en/install/index.html#install
 
@@ -72,18 +85,6 @@ below.
    as default. To use another compiler modify the environment variable
    `FPM_FC=compiler`, for example for `ifort`, use in bash, `export FPM_FC=ifort`.
 
-
-### Installation from the Python Package Index
-Packmol is available for most platforms as a pre-build wheel from the Python Package Index.
-
-```bash
-pip install packmol
-```
-or direclty as CLI command using [uv](https://docs.astral.sh/uv/)
-
-```bash
-uvx packmol < inp.pack
-```
 
 ## References
 

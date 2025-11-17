@@ -10,6 +10,9 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
+Version 21.1.3-DEV
+--------------
+
 Version 21.1.2
 --------------
 - ![INFO][badge-info] add pip install packmol installation option.
