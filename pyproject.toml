@@ -1,0 +1,44 @@
+[project]
+name = "packmol"
+version = "0.1.0"
+description = "Packmol - A package for creating initial configurations for molecular dynamics simulations"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+license = { text = "MIT" }
+authors = [
+    { name = "Packmol Developers" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Fortran",
+    "Topic :: Scientific/Engineering :: Chemistry",
+]
+
+[project.scripts]
+packmol = "packmol.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/m3g/packmol"
+Repository = "https://github.com/m3g/packmol"
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.hooks.custom]
+path = "python/hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/packmol"]
+
+[dependency-groups]
+dev = [
+    "hatchling>=1.27.0",
+    "pytest>=8.0.0",
+]

@@ -3,7 +3,7 @@ CMakeFiles/
 *.mod
 *.o
 *.swp
-packmol
+/packmol
 CMakeCache.txt
 cmake_install.cmake
 tmpfile.txt
@@ -18,3 +18,4 @@ testing/input_files/Manifest.toml
 testing/input_files/Project.toml
 testing/chkgrad.log
 .vscode/settings.json
+__pycache__/
