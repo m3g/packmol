@@ -20,7 +20,6 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.3.0
         env:
-          # Set macOS deployment target dynamically based on runner
           CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=15.0
 
       - name: Upload wheels
