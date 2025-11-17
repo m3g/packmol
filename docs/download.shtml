@@ -26,7 +26,7 @@ dynamics simulations.</b>
 
 <h3>How to download and install Packmol:</h3>
 
-1. The easiest way to get Packmol running on any platform (Windows, MacOS, Linux) 
+1. The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
 is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>. To use it:
 <br><br>
 
@@ -51,7 +51,7 @@ Current versions:
 <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
 <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
 
-<h3> Advanced download alternatives: </h3> 
+<h3> Other installation alternatives: </h3> 
 
 <b>2.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <span class="blink"><b>[LATEST RELEASE REPOSITORY]:</b></span></a>
