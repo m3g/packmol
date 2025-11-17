@@ -53,7 +53,15 @@ Current versions:
 
 <h3> Other installation alternatives: </h3> 
 
-<b>2.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
+<br><br>
+<b>2.</b>Packmol is also available through the Python Package Index (PyPI).
+You can install it using pip:
+<pre><code>pip install packmol</code></pre>
+or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:
+<pre><code>uvx packmol</code></pre>
+Current version: <img src="https://img.shields.io/pypi/v/packmol.svg">
+
+<b>3.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <span class="blink"><b>[LATEST RELEASE REPOSITORY]:</b></span></a>
 This is the repository of the source-code of the latest release of Packmol.
 Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
@@ -62,16 +70,8 @@ package.
 Current version: <img src=https://img.shields.io/github/release/m3g/packmol.svg?label="latest" alt="Packmol latest release version">
 
 <br><br>
-Packmol is also available through the Python Package Index (PyPI).
-You can install it using pip:
-<pre><code>pip install packmol</code></pre>
-or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:
-<pre><code>uvx packmol</code></pre>
-Current version: <img src="https://img.shields.io/pypi/v/packmol.svg">
-
-<br><br>
-<b>3. </b><a href=https://github.com/conda-forge/packmol-feedstock><span class="blink"><b>[conda-forge/packmol-feedstock]:</b></span></a>
-Packmol is also available through conda and mamba package managers.
+<b>4. </b><a href=https://github.com/conda-forge/packmol-feedstock><span class="blink"><b>[conda-forge/packmol-feedstock]:</b></span></a>
+Conda and mamba package managers:
 We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
 Current version: <img src=https://anaconda.org/conda-forge/packmol/badges/version.svg>
 
