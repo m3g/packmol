@@ -28,9 +28,6 @@ If you are not familiar with compiling packages, you may find it easier to get t
 Installation of the Julia programming language and of the Julia `Packmol` package are necessary, but
 these follow simple instructions which are described in the link above.
 
-Compilation of the package, particularly on Linux platforms is, nevertheless, easy, following the instructions
-below.
-
 ### Installation from the Python Package Index
 
 Packmol is available for most platforms as a pre-build wheel from the Python Package Index.
