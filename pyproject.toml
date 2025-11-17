@@ -1,23 +1,19 @@
 [project]
 name = "packmol"
 version = "0.1.0"
-description = "Packmol - A package for creating initial configurations for molecular dynamics simulations"
+description = "Packmol - Creates Initial Configurations for Molecular Dynamics Simulations"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = []
 license = { text = "MIT" }
 authors = [
     { name = "Packmol Developers" }
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Fortran",
-    "Topic :: Scientific/Engineering :: Chemistry",
 ]
 
 [project.scripts]
