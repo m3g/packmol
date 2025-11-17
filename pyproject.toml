@@ -1,0 +1,43 @@
+[project]
+name = "packmol"
+version = "0.1.0"
+description = "Packmol - Creates Initial Configurations for Molecular Dynamics Simulations"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+license = { file = "LICENSE" }
+authors = [
+    { name = "Leandro Martinez", email = "lmartine@unicamp.br" },
+    { name = "Ernesto G. Birgin"},
+    { name = "José Mario Martínez" },
+    { name = "Packmol Contributors" },
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Fortran",
+]
+
+[project.scripts]
+packmol = "packmol.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/m3g/packmol"
+Repository = "https://github.com/m3g/packmol"
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.hooks.custom]
+path = "python/hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/packmol"]
+
+[dependency-groups]
+dev = [
+    "hatchling>=1.27.0",
+    "pytest>=8.0.0",
+]

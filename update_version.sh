@@ -16,6 +16,7 @@ version="$1"
 
 versionfile=./src/title.f90
 fpmfile=./fpm.toml
+pyprojfile=./pyproject.toml
 
 ####################################################################################################
 if [[ $version < " " ]]; then
@@ -30,6 +31,9 @@ cat $versionfile | sed -e "s/Version.*/Version\ $version \')\")/" > tmpfile.txt
 
 cat $fpmfile | sed -e "s/version.*/version = \"$version\"/" > tmpfile.txt
 \mv -f tmpfile.txt $fpmfile
+
+cat $pyprojfile | sed -e "s/version.*/version = \"$version\"/" > tmpfile.txt
+\mv -f tmpfile.txt $pyprojfile
 
 echo "----------------------"
 echo "Please update the CHANGELOG.md file. Commits:"

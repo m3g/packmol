@@ -72,6 +72,19 @@ below.
    as default. To use another compiler modify the environment variable
    `FPM_FC=compiler`, for example for `ifort`, use in bash, `export FPM_FC=ifort`.
 
+
+### Installation from the Python Package Index
+Packmol is available for most platforms as a pre-build wheel from the Python Package Index.
+
+```bash
+pip install packmol
+```
+or direclty as CLI command using [uv](https://docs.astral.sh/uv/)
+
+```bash
+uvx packmol < inp.pack
+```
+
 ## References
 
 Please always cite one of the following references in publications for which Packmol was useful:
