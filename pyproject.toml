@@ -5,7 +5,7 @@ description = "Packmol - Creates Initial Configurations for Molecular Dynamics S
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 authors = [
     { name = "Leandro Martinez", email = "lmartine@unicamp.br" },
     { name = "Ernesto G. Birgin"},
