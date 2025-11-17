@@ -1,4 +1,4 @@
-"""Packmol - A package for creating initial configurations for molecular dynamics simulations."""
+"""Packmol - Creates Initial Configurations for Molecular Dynamics Simulations."""
 
 import importlib.metadata
 

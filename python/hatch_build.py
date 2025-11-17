@@ -106,8 +106,5 @@ class CustomBuildHook(BuildHookInterface):
 
         # Not found
         raise RuntimeError(
-            "gfortran compiler not found. Please install gfortran:\n"
-            "  macOS: brew install gcc\n"
-            "  Ubuntu/Debian: sudo apt-get install gfortran\n"
-            "  RHEL/CentOS: sudo yum install gcc-gfortran"
+            "gfortran compiler not found."
         )
