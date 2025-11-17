@@ -21,7 +21,7 @@ def get_binary_path() -> Path:
 
     # Check for platform-specific binary names
     binary_candidates = [
-        binaries_dir / "packmol",      # Unix/Linux/macOS
+        binaries_dir / "packmol",  # Unix/Linux/macOS
         binaries_dir / "packmol.exe",  # Windows
     ]
 
