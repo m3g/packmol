@@ -7,7 +7,9 @@ requires-python = ">=3.10"
 dependencies = []
 license = { text = "MIT" }
 authors = [
-    { name = "Packmol Developers" }
+    { name = "Leandro Martinez", email = "lmartine@unicamp.br" },
+    { name = "Ernesto G. Birgin"},
+    { name = "José Mario Martínez" },
 ]
 classifiers = [
     "Intended Audience :: Science/Research",
