@@ -10,8 +10,9 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
-Version 21.1.2-DEV
+Version 21.1.2
 --------------
+- ![INFO][badge-info] add pip install packmol installation option.
 - ![INFO][badge-info] The `release.sh` script was renamed to `update_version.sh` and just updates version numbers in the files, without tagging a release.
 
 Version 21.1.1
