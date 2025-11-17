@@ -7,7 +7,7 @@ requires-python = ">=3.10"
 dependencies = []
 license = { file = "LICENSE" }
 authors = [
-    { name = "Leandro Martinez", email = "lmartine@unicamp.br" },
+    { name = "Leandro Martínez" },
     { name = "Ernesto G. Birgin"},
     { name = "José Mario Martínez" },
     { name = "Packmol Contributors" },
