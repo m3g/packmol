@@ -61,6 +61,7 @@ or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:
 <pre><code>uvx packmol</code></pre>
 Current version: <img src="https://img.shields.io/pypi/v/packmol.svg">
 
+<br><br>
 <b>3.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
 <span class="blink"><b>[LATEST RELEASE REPOSITORY]:</b></span></a>
 This is the repository of the source-code of the latest release of Packmol.
