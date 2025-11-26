@@ -105,6 +105,4 @@ class CustomBuildHook(BuildHookInterface):
                 return path
 
         # Not found
-        raise RuntimeError(
-            "gfortran compiler not found."
-        )
+        raise RuntimeError("gfortran compiler not found.")
