@@ -10,9 +10,9 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
-Version 21.1.3
+Version 21.1.4
 --------------
-- ![INFO][badge-info] update authors on pip distribution.
+- ![INFO][badge-info] add test to pipy distribution.
 
 Version 21.1.2
 --------------
