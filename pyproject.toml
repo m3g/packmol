@@ -41,3 +41,11 @@ dev = [
     "hatchling>=1.27.0",
     "pytest>=8.0.0",
 ]
+
+[tool.cibuildwheel]
+build-frontend = "build[uv]"
+test-requires = "pytest"
+test-command = "pytest {project}/python/tests"
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "15.0"
