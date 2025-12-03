@@ -63,10 +63,10 @@ Current versions:
 <h3> Installation alternatives: </h3> 
 
 <b>2. Python Package Index (PyPI)</b><br>
-You can install it using pip:
-<pre><code>pip install packmol</code></pre>
-or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:
-<pre><code>uvx packmol</code></pre>
+You can install it using pip: <code>pip install packmol</code>
+<br>
+or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>: <code>uvx packmol</code>
+<br>
 Current version: <img src="https://img.shields.io/pypi/v/packmol.svg">
 
 <br><br>
