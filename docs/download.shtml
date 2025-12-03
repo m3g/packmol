@@ -26,40 +26,32 @@ dynamics simulations.</b>
 
 <h3>How to download and install Packmol:</h3>
 
-<h4>
-The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
+<b>1. </b>The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
 is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>:
-</h4> 
 
 <br><br>
-<b>a) Install the Julia programming language:</b>
-<table align="center">
-<tr>
-    <td class="tdclean0"> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td>
-    <td class="tdclean0"></td>
-</tr>
-</table>
+<b>a) Install the Julia programming language from:</b> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
 <br>
 
 <b> b) For interactive usage: </b>
-<table align="center">
+<table align="left">
 <tr>
   <td class="tdclean0">b.1) Install Packmol: open Julia and type:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code>julia> import Pkg; Pkg.add("Packmol")</code></td>
+  <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> import Pkg; Pkg.add("Packmol")</code></td>
 </tr>
 <tr>
   <td class="tdclean0">b.2) Running Packmol: inside the Julia REPL, type:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code>julia> using Packmol; run_packmol()</code></td>
+  <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> using Packmol; run_packmol()</code></td>
 </tr>
 </table>
 <br>
 This will open a GUI from which you will be able to select the input file to be used by Packmol.
 <br>
 
-<b> c) Command-line interface: </b>
-<table align="center">
+<b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
+<table align="left">
 <tr>
-  <td class="tdclean0">c.1) Install the Packmol app with:</td>
+  <td class="tdclean0">c.1) Install the Packmol by executing:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></td>
 </tr>
 <tr>
