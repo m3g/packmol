@@ -53,6 +53,7 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
 
 <br>
 <br>
+<br>
 
 <b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
 <br>
@@ -78,6 +79,8 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
     </td>
 </tr>
 </table>
+
+<br>
 <br>
 <br>
 
