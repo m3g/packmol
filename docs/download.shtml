@@ -26,21 +26,22 @@ dynamics simulations.</b>
 
 <h3>How to download and install Packmol:</h3>
 
-<b>1. </b>The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
-is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>:
+<b>The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
+is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>:</b>
 
 <br><br>
 <b>a) Install the Julia programming language from:</b> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
-<br>
+<br><br>
 
 <b> b) For interactive usage: </b>
+<br>
 <table align="left">
 <tr>
-  <td class="tdclean0">b.1) Install Packmol: open Julia and type:</td>
+  <td class="tdclean0"><b>b.1)</b> Install Packmol: open Julia and type:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> import Pkg; Pkg.add("Packmol")</code></td>
 </tr>
 <tr>
-  <td class="tdclean0">b.2) Running Packmol: inside the Julia REPL, type:</td>
+  <td class="tdclean0"><b>b.2)</b> Running Packmol: inside the Julia REPL, type:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> using Packmol; run_packmol()</code></td>
 </tr>
 </table>
@@ -49,13 +50,14 @@ This will open a GUI from which you will be able to select the input file to be 
 <br>
 
 <b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
+<br>
 <table align="left">
 <tr>
-  <td class="tdclean0">c.1) Install the Packmol by executing:</td>
+  <td class="tdclean0"><b>c.1)</b> Install the Packmol by executing:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></td>
 </tr>
 <tr>
-  <td class="tdclean0">c.2) Running Packmol, as standalone app from the shell:</td>
+  <td class="tdclean0"><b>c.2)</b> Running Packmol, as standalone app from the shell:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code>packmol -i input.inp</code></td>
 </tr>
 </table>
