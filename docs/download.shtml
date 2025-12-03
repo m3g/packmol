@@ -38,11 +38,11 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
 <table align="left">
 <tr>
   <td class="tdclean0"><b>b.1)</b> Install Packmol: open Julia and type:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> import Pkg; Pkg.add("Packmol")</code></td>
+  <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code><b>julia></b> import Pkg; Pkg.add("Packmol")</code></td>
 </tr>
 <tr>
   <td class="tdclean0"><b>b.2)</b> Running Packmol: inside the Julia REPL, type:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> using Packmol; run_packmol()</code></td>
+  <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code><b>julia></b> using Packmol; run_packmol()</code></td>
 </tr>
 <tr>
     <td colspan="2">
