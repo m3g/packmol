@@ -45,11 +45,13 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
   <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code><b>julia></b> using Packmol; run_packmol()</code></td>
 </tr>
 <tr>
-    <td colspan="2">
+    <td class="tdclean0" colspan="2">
     This will open a GUI from which you will be able to select the input file to be used by Packmol.
     </td>
 </tr>
 </table>
+
+<br>
 <br>
 
 <b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
@@ -64,10 +66,12 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
   <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code>packmol -i input.inp</code></td>
 </tr>
 <tr>
-    <td colspan="2">
+    <td class="tdclean0" colspan="2">
     Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
     </td>
-    <td colspan="2">
+</tr>
+<tr>
+    <td class="tdclean0" colspan="2">
     Current versions: 
     <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
     <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
