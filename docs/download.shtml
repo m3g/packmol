@@ -26,32 +26,47 @@ dynamics simulations.</b>
 
 <h3>How to download and install Packmol:</h3>
 
-1. The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
-is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>. To use it:
-<br><br>
+<h4>
+The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
+is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>:
+</h4> 
 
+<br><br>
+<b>a) Install the Julia programming language:</b>
 <table align="center">
-<tr><td class="tdclean0">a) Install Julia from:</td>
+<tr>
     <td class="tdclean0"> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a></td>
-    <td class="tdclean0"></td></tr>
-<tr><td class="tdclean0">b) Open Julia and type:</td>
+    <td class="tdclean0"></td>
+</tr>
+</table>
+<br>
+
+<b> b) For interactive usage: </b>
+<table align="center">
+<tr><td class="tdclean0">b.1) Install Packmol: open Julia and type:</td>
     <td class="tdclean0" bgcolor="lightgrey"><code>julia> import Pkg; Pkg.add("Packmol") </code> </td>
-    <td class="tdclean0">(this will install the Packmol.jl package)</td></tr>
-<tr><td class="tdclean0">c) Inside the Julia REPL, type: </td>
+<tr><td class="tdclean0">b.2) Running Packmol: inside the Julia REPL, type: </td>
     <td class="tdclean0" bgcolor="lightgrey"><code>julia> using Packmol; run_packmol() </code>
-    <td class="tdclean0">(running Packmol)</td></tr>
 </table>
 <br>
 This will open a GUI from which you will be able to select the input file to be used by Packmol.
 <br>
-Steps a) and b) need to be done only once. Step c) is needed every time you want to run Packmol.
+
+<b> c) Command-line interface: </b>
+<table align="center">
+<tr><td class="tdclean0">c.1) Install the Packmol app with:</td>
+    <td class="tdclean0" bgcolor="lightgrey"><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code> </td>
+<tr><td class="tdclean0">c.2) Running Packmol, as standalone app from the shell: </td>
+    <td class="tdclean0" bgcolor="lightgrey"><code>packmol -i input.inp</code>
+</table>
 <br>
-Additional details, like command-line execution and scripting alternatives, can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
+<br>
+Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
 Current versions: 
 <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
 <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
 
-<h3> Other installation alternatives: </h3> 
+<h3> Installation alternatives: </h3> 
 
 <b>2. Python Package Index (PyPI)</b><br>
 You can install it using pip:
