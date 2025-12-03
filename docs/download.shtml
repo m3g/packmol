@@ -35,9 +35,9 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
 
 <b> b) For interactive usage: </b>
 <br>
-<b>b.1)</b> Install Packmol: open Julia and type: &nbsp;<code><b>julia></b> import Pkg; Pkg.add("Packmol")</code>
+<b>b.1)</b> Install Packmol: open Julia and type: &nbsp;&nbsp;<code><b>julia></b> import Pkg; Pkg.add("Packmol")</code>
 <br>
-<b>b.2)</b> Running Packmol: inside the Julia REPL, type: &nbsp;<code><b>julia></b> using Packmol; run_packmol()</code>
+<b>b.2)</b> Running Packmol: inside the Julia REPL, type: &nbsp;&nbsp;<code><b>julia></b> using Packmol; run_packmol()</code>
 <br>
 This will open a GUI from which you will be able to select the input file to be used by Packmol.
 
@@ -46,9 +46,9 @@ This will open a GUI from which you will be able to select the input file to be 
 
 <b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
 <br>
-<b>c.1)</b> Install the Packmol by executing: &nbsp;<code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code>
+<b>c.1)</b> Install the <code>Packmol</code> app by executing: &nbsp;&nbsp;<code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code>
 <br>
-<b>c.2)</b> Running Packmol, as standalone app from the shell: &nbsp;<code>packmol -i input.inp</code>
+<b>c.2)</b> Running Packmol, as standalone app from the shell: &nbsp;&nbsp;<code>packmol -i input.inp</code>
 <br><br>
 Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
 
