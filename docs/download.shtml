@@ -44,9 +44,12 @@ is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper 
   <td class="tdclean0"><b>b.2)</b> Running Packmol: inside the Julia REPL, type:</td>
   <td class="tdclean0" bgcolor="lightgrey"><code><b>julia></b> using Packmol; run_packmol()</code></td>
 </tr>
+<tr>
+    <td colspan="2">
+    This will open a GUI from which you will be able to select the input file to be used by Packmol.
+    </td>
+</tr>
 </table>
-<br>
-This will open a GUI from which you will be able to select the input file to be used by Packmol.
 <br>
 
 <b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
@@ -54,19 +57,25 @@ This will open a GUI from which you will be able to select the input file to be 
 <table align="left">
 <tr>
   <td class="tdclean0"><b>c.1)</b> Install the Packmol by executing:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></td>
+  <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></td>
 </tr>
 <tr>
   <td class="tdclean0"><b>c.2)</b> Running Packmol, as standalone app from the shell:</td>
-  <td class="tdclean0" bgcolor="lightgrey"><code>packmol -i input.inp</code></td>
+  <td class="tdclean0" bgcolor="lightgrey">&nbsp;<code>packmol -i input.inp</code></td>
+</tr>
+<tr>
+    <td colspan="2">
+    Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
+    </td>
+    <td colspan="2">
+    Current versions: 
+    <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
+    <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
+    </td>
 </tr>
 </table>
 <br>
 <br>
-Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
-Current versions: 
-<img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
-<img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
 
 <h3> Installation alternatives: </h3> 
 
