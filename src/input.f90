@@ -61,7 +61,7 @@ module input
    logical :: hexadecimal_indices
    logical :: disable_movebad
    logical :: ignore_conect
-   logical :: standard_conect
+   logical :: non_standard_conect
 
    logical, allocatable :: changechains(:) ! (ntype)
    logical, allocatable :: fixedoninput(:) ! (ntype)
