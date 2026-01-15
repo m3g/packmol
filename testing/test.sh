@@ -1,10 +1,18 @@
 #!/bin/bash
 #
+echo "Starting to run test.sh script... "
+# Julia executable path:
+julia_exe=`which julia`
+echo "Output of which_julia: $julia_exe"
 # Raise error in case of failure
 set -e
-# Julia executable path:
-julia_exe=~/.juliaup/bin/julia
+if [[ -z "$julia_exe" ]]; then
+    echo "julia executable not found in path, setting to ~/.juliaup/bin/julia - this might be wrong."
+    julia_exe=~/.juliaup/bin/julia
+fi
+echo "Julia executable: $julia_exe"
 # Run the tests
+echo "Running runtests.jl script."
 $julia_exe runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
                   ./input_files/mixture.inp \

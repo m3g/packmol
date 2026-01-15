@@ -58,6 +58,8 @@ subroutine getinp()
    crd = .false.
    hexadecimal_indices = .false.
    inside_structure = .false.
+   ignore_conect = .false.
+   non_standard_conect = .true.
 
    do i = 1, nlines
 
@@ -75,6 +77,10 @@ subroutine getinp()
          check = .true.
       else if(keyword(i,1).eq.'writebad') then
          writebad = .true.
+      else if(keyword(i,1).eq.'ignore_conect') then
+         ignore_conect = .true.
+      else if(keyword(i,1).eq.'non_standard_conect') then
+         non_standard_conect = .true.
       else if(keyword(i,1).eq.'precision') then
          read(keyword(i,2),*,iostat=ioerr) precision
          if ( ioerr /= 0 ) exit
@@ -242,6 +248,8 @@ subroutine getinp()
          keyword(i,1) /= 'iprint2' .and. &
          keyword(i,1) /= 'writecrd' .and. &
          keyword(i,1) /= 'segid' .and. &
+         keyword(i,1) /= 'non_standard_conect' .and. &
+         keyword(i,1) /= 'ignore_conect' .and. &
          keyword(i,1) /= 'chkgrad' ) then
          write(*,*) ' ERROR: Keyword not recognized: ', trim(keyword(i,1))
          stop exit_code_input_error
@@ -344,25 +352,46 @@ subroutine getinp()
             !
             ! Read connectivity, if there is any specified
             !
-            do while(.true.)
-               if ( ioerr /= 0 ) exit
-               if(record(1:6).eq.'CONECT') then
-                  iread = 7
-                  read(record(7:len(record)),*,iostat=ioerr) iatom
-                  if(ioerr /= 0) then
-                     write(*,*) " ERROR: Could not read atom index from CONECT line: "
-                     write(*,*) trim(adjustl(record))
-                     stop exit_code_input_error
-                  end if
-                  iatom = iatom - idfirstatom + 1
-                  idatom = idfirst(itype) - 1 + iatom
-                  ! count the number of connections
-                  read(record(7:len(record)), *, iostat=ioerr)  iatom, &
-                      (nconnect(idatom, i), i=maxcon(idatom)+1, 9)
-                  if(ioerr > 0) then
-                     write(*,*) " ERROR: Error reading CONECT line: "
-                     write(*,*) trim(adjustl(record))
-                     stop exit_code_input_error
+            if( .not. ignore_conect ) then
+               do while(.true.)
+                  if ( ioerr /= 0 ) exit
+                  if(record(1:6).eq.'CONECT') then
+                     ! fixed width connectivity: standard PDB
+                     if ( non_standard_conect ) then
+                        read(record(7:11),*,iostat=ioerr) iatom
+                        if(ioerr /= 0) then
+                           write(*,*) " ERROR: Could not read atom index from CONECT line: "
+                           write(*,*) trim(adjustl(record))
+                           stop exit_code_input_error
+                        end if
+                        iatom = iatom - idfirstatom + 1
+                        idatom = idfirst(itype) - 1 + iatom
+                        iread=12
+                        do i = 1, 5
+                           read(record(iread:iread+4),*,iostat=ioerr) nconnect(idatom,maxcon(idatom) + i)
+                           if ( ioerr /= 0 ) exit 
+                           iread = iread + 5
+                        end do
+                     ! reading connectivity expecting indices to be separated by spaces
+                     else
+                        iread = 7
+                        read(record(7:len(record)),*,iostat=ioerr) iatom
+                        if(ioerr /= 0) then
+                           write(*,*) " ERROR: Could not read atom index from CONECT line: "
+                           write(*,*) trim(adjustl(record))
+                           stop exit_code_input_error
+                        end if
+                        iatom = iatom - idfirstatom + 1
+                        idatom = idfirst(itype) - 1 + iatom
+                        ! count the number of connections
+                        read(record(7:len(record)), *, iostat=ioerr)  iatom, &
+                           (nconnect(idatom, i), i=maxcon(idatom)+1, 9)
+                        if(ioerr > 0) then
+                           write(*,*) " ERROR: Error reading CONECT line: "
+                           write(*,*) trim(adjustl(record))
+                           stop exit_code_input_error
+                        end if
+                     end if
                   end if
                   do i = maxcon(idatom)+1, 9
                      if (nconnect(idatom,i) /= 0) then
@@ -374,9 +403,9 @@ subroutine getinp()
                         maxcon(idatom) = i
                      end if
                   end do
-               end if
-               read(10,str_format,iostat=ioerr) record
-            end do
+                  read(10,str_format,iostat=ioerr) record
+               end do
+            end if
             close(10)
          end if
 

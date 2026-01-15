@@ -441,7 +441,7 @@ subroutine output(n, x, output_file_name)
                do while(iatom.lt.natoms(i_not_fixed))
                   iatom = iatom + 1
                   i_ref_atom = i_ref_atom + 1
-                  if(connect(itype)) then
+                  if(.not. ignore_conect .and. connect(itype)) then
                      call write_connect(30,idatom,iatom,ifirst_mol)
                   end if
                end do
@@ -457,7 +457,7 @@ subroutine output(n, x, output_file_name)
             do while(iatom.lt.natoms(i_fixed))
                iatom = iatom + 1
                i_ref_atom = i_ref_atom + 1
-               if(connect(itype)) then
+               if(.not. ignore_conect .and. connect(itype)) then
                   call write_connect(30,idatom,iatom,ifirst_mol)
                end if
             end do
