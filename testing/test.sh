@@ -7,6 +7,7 @@ set -e
 julia_exe=`which julia`
 echo "Output of which_julia: $julia_exe"
 if [[ -z "$julia_exe" ]]; then
+    echo "julia executable not found in path, setting to ~/.juliaup/bin/julia - this might be wrong."
     julia_exe=~/.juliaup/bin/julia
 fi
 echo "Julia executable: $julia_exe"
