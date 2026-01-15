@@ -60,6 +60,8 @@ module input
    logical :: use_short_tol
    logical :: hexadecimal_indices
    logical :: disable_movebad
+   logical :: ignore_conect
+   logical :: standard_conect
 
    logical, allocatable :: changechains(:) ! (ntype)
    logical, allocatable :: fixedoninput(:) ! (ntype)

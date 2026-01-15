@@ -3,7 +3,10 @@
 # Raise error in case of failure
 set -e
 # Julia executable path:
-julia_exe=~/.juliaup/bin/julia
+julia_exe=`which julia`
+if [[ -z "$julia_exe" ]]; then
+    julia_exe=~/.juliaup/bin/julia
+fi
 # Run the tests
 $julia_exe runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
