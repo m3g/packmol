@@ -59,7 +59,7 @@ subroutine getinp()
    hexadecimal_indices = .false.
    inside_structure = .false.
    ignore_conect = .false.
-   standard_conect = .true.
+   non_standard_conect = .true.
 
    do i = 1, nlines
 
@@ -77,6 +77,10 @@ subroutine getinp()
          check = .true.
       else if(keyword(i,1).eq.'writebad') then
          writebad = .true.
+      else if(keyword(i,1).eq.'ignore_conect') then
+         ignore_conect = .true.
+      else if(keyword(i,1).eq.'non_standard_conect') then
+         non_standard_conect = .true.
       else if(keyword(i,1).eq.'precision') then
          read(keyword(i,2),*,iostat=ioerr) precision
          if ( ioerr /= 0 ) exit
@@ -244,6 +248,8 @@ subroutine getinp()
          keyword(i,1) /= 'iprint2' .and. &
          keyword(i,1) /= 'writecrd' .and. &
          keyword(i,1) /= 'segid' .and. &
+         keyword(i,1) /= 'non_standard_conect' .and. &
+         keyword(i,1) /= 'ignore_conect' .and. &
          keyword(i,1) /= 'chkgrad' ) then
          write(*,*) ' ERROR: Keyword not recognized: ', trim(keyword(i,1))
          stop exit_code_input_error
@@ -351,7 +357,7 @@ subroutine getinp()
                   if ( ioerr /= 0 ) exit
                   if(record(1:6).eq.'CONECT') then
                      ! fixed width connectivity: standard PDB
-                     if ( standard_conect ) then
+                     if ( non_standard_conect ) then
                         read(record(7:11),*,iostat=ioerr) iatom
                         if(ioerr /= 0) then
                            write(*,*) " ERROR: Could not read atom index from CONECT line: "
