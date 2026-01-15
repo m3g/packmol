@@ -1,11 +1,11 @@
 #!/bin/bash
 #
 echo "Starting to run test.sh script... "
-# Raise error in case of failure
-set -e
 # Julia executable path:
 julia_exe=`which julia`
 echo "Output of which_julia: $julia_exe"
+# Raise error in case of failure
+set -e
 if [[ -z "$julia_exe" ]]; then
     echo "julia executable not found in path, setting to ~/.juliaup/bin/julia - this might be wrong."
     julia_exe=~/.juliaup/bin/julia
