@@ -1124,6 +1124,25 @@ There are some input options which are probably not of interest of the
 general user, but may be useful in specific contexts. These keywords may
 be added in the input file in any position.<br><br>
 
+<li>Control of PDB CONECT lines parsing:</li>
+<br>
+Two keywords control what should be done with the information in CONECT lines of PDB files:
+<br>
+Usage: <tt> ignore_conect </tt> <br> 
+Most times the connectivity of PDB files should be ignored, because
+the correct connectivity is defined with topology files that are specific for the simulation
+package to be used. Use this keyword if the parsing of the CONECT lines is causing any issue.
+<br>
+Usage: <tt> non_standard_conect </tt><br>
+By default the CONECT fields of PDB files are fixed-width, and support only atom indices as 
+large as 99999. If this keyword is used, then the indices are expected to be separated by
+spaces, and there is no limit for the printed integers. But this does not conform with the
+standard PDB file format.
+<br>
+By default, both <tt>ignore_conect</tt> and <tt>non_standard_conect</tt> are set to false,
+thus packmol will expect properly formatted CONECT lines.
+<br><br>
+
 <li>Write a <tt>CHARMM CRD</tt> file as output:<br>
 Usage: <tt> writecrd output.crd</tt> <br>
 The segment identifier for each type of molecule can be set by adding,
