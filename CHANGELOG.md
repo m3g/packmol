@@ -10,7 +10,10 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
-Version 21.2.0-DEV
+Version 21.2.1-DEV
+--------------
+
+Version 21.2.0
 --------------
 - ![ENHANCEMENT][badge-enhancement]: Add `ignore_conect` and `non_standard_conect` options. The first
 will just make packmol ignore all CONECT lines. The second will use a non-standard reading of the 
