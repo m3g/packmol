@@ -1,6 +1,6 @@
 [project]
 name = "packmol"
-version = "21.1.4"
+version = "21.2.0"
 description = "Packmol - Creates Initial Configurations for Molecular Dynamics Simulations"
 readme = "README.md"
 requires-python = ">=3.10"
