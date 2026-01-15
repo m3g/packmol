@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+echo "Starting to run test.sh script... "
 # Raise error in case of failure
 set -e
 # Julia executable path:
@@ -7,7 +8,9 @@ julia_exe=`which julia`
 if [[ -z "$julia_exe" ]]; then
     julia_exe=~/.juliaup/bin/julia
 fi
+echo "Julia executable: $julia_exe"
 # Run the tests
+echo "Running runtests.jl script."
 $julia_exe runtests.jl ./input_files/water_box.inp \
                   ./input_files/ieee_signaling.inp \
                   ./input_files/mixture.inp \
