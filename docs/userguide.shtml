@@ -1124,8 +1124,7 @@ There are some input options which are probably not of interest of the
 general user, but may be useful in specific contexts. These keywords may
 be added in the input file in any position.<br><br>
 
-<li>Control of PDB CONECT lines parsing:</li>
-<br>
+<li>Control of PDB CONECT lines parsing: <br>
 Two keywords control what should be done with the information in CONECT lines of PDB files:
 <br>
 Usage: <tt> ignore_conect </tt> <br> 
