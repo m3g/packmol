@@ -362,7 +362,7 @@ subroutine getinp()
                         idatom = idfirst(itype) - 1 + iatom
                         iread=12
                         do i = 1, 5
-                           read(record(iread:iread+4),*,iostat=ioerr) nconnect(idatom,i)
+                           read(record(iread:iread+4),*,iostat=ioerr) nconnect(idatom,maxcon(idatom) + i)
                            if ( ioerr /= 0 ) exit 
                            iread = iread + 5
                         end do
