@@ -5,6 +5,7 @@ echo "Starting to run test.sh script... "
 set -e
 # Julia executable path:
 julia_exe=`which julia`
+echo "Output of which_julia: $julia_exe"
 if [[ -z "$julia_exe" ]]; then
     julia_exe=~/.juliaup/bin/julia
 fi
