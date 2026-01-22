@@ -31,7 +31,7 @@
 
 <div class="install-steps">
   <div class="install-step">
-    <h4><span class="step-number">a</span>Install Julia</h4>
+    <h4 style="margin-top: 3rem;"><span class="step-number">a</span>Install Julia</h4>
     <p>
       Download and install the Julia programming language from: 
       <a target="_julia_" href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
@@ -39,7 +39,7 @@
   </div>
 
   <div class="install-step">
-    <h4><span class="step-number">b</span>Interactive Usage</h4>
+    <h4 style="margin-top: 3rem;"><span class="step-number">b</span>Interactive Usage</h4>
     
     <p><strong>b.1) Install Packmol:</strong></p>
     <p>Open Julia and type:</p>
@@ -53,7 +53,7 @@
   </div>
 
   <div class="install-step">
-    <h4><span class="step-number">c</span>Command-line Interface</h4>
+    <h4 style="margin-top: 3rem;"><span class="step-number">c</span>Command-line Interface</h4>
     
     <p>
       The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.
@@ -79,7 +79,9 @@
 
 <hr>
 
-<h  <h4><span class="step-number">2</span>Python Package Index (PyPI)</h4>
+<div class="install-steps">
+  <div class="install-step">
+    <h4 style="margin-top: 3rem;"><span class="step-number">2</span>Python Package Index (PyPI)</h4>
     
     <p>Install using pip:</p>
     <pre><code>pip install packmol</code></pre>
@@ -94,7 +96,7 @@
   </div>
 
   <div class="install-step">
-    <h4><span class="step-number">3</span>Source Code from GitHub</h4>
+    <h4 style="margin-top: 3rem;"><span class="step-number">3</span>Source Code from GitHub</h4>
     
     <p>
       <a href="https://github.com/m3g/packmol/releases/latest" target="_blank">
@@ -115,7 +117,7 @@
   </div>
 
   <div class="install-step">
-    <h4><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
+    <h4 style="margin-top: 3rem;"><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
     
     <p>
       <a href="https://github.com/conda-forge/packmol-feedstock">
@@ -132,8 +134,6 @@
       <strong>Current version:</strong>
       <img src="https://anaconda.org/conda-forge/packmol/badges/version.svg" alt="Conda version">
     </div>
-      <strong>Current version:</strong>
-    <img src="https://anaconda.org/conda-forge/packmol/badges/version.svg" alt="Conda version">
   </div>
 </div>
 
