@@ -75,7 +75,6 @@
         <div class="sidebar-header">Reference:</div>
         <div class="sidebar-content">
           <a href="./citation.shtml">Citation</a>
-          <a href="./features.shtml">Features</a>
           <a target="_blank" href="https://github.com/m3g/packmol/releases">Version history</a>
         </div>
       </div>
