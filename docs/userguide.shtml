@@ -126,6 +126,7 @@ make</code></pre>
 
 <p>From the command line, there are two alternatives to run Packmol:</p>
 
+<h4>Option 1: Using input file redirection</h4>
 
 <pre><code>packmol < packmol.inp</code></pre>
 
@@ -313,501 +314,381 @@ keyword <tt>center</tt>. If this keyword is present the first three numbers
 are the position of the baricenter (not really the center of mass,
 because we suppose that all atoms have the same mass). Therefore this
 keyword must be used in the following context:
-<br><br>
-<tt>
-structure molecule.pdb   <br>
-&nbsp;&nbsp;number 1                 <br>
-&nbsp;&nbsp;center            <br>
-&nbsp;&nbsp;fixed 0. 0. 0. 0. 0. 0.  <br>
-end structure
-</tt>
-<br><br>
-In this example, the molecule will be fixed with its center 
+</p>
+
+<pre><code>structure molecule.pdb
+  number 1
+  center
+  fixed 0. 0. 0. 0. 0. 0.
+end structure</code></pre>
+
+<p>
+In this example, the molecule will be fixed with its center at
 the origin and no rotation.
+</p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">2</div>
+    <div class="constraint-name">inside cube</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>inside cube <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> d</em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub></i> and <i>d</i>
+    are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
+    by this option will satisfy, at the solution:
+  </p>
+  <center>
+    <i>x<sub>min</sub></i> &lt; <i>x</i> &lt; <i>x<sub>min</sub></i> + <i>d</i><br>
+    <i>y<sub>min</sub></i> &lt; <i>y</i> &lt; <i>y<sub>min</sub></i> + <i>d</i><br>
+    <i>z<sub>min</sub></i> &lt; <i>z</i> &lt; <i>z<sub>min</sub></i> + <i>d</i>
+  </center>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">3</div>
+    <div class="constraint-name">outside cube</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>outside cube <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> d</em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub></i> and <i>d</i>
+    are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
+    by this option will satisfy, at the solution:
+  </p>
+  <center>
+    <i>x</i> &lt; <i>x<sub>min</sub></i> or <i>x</i> &gt; <i>x<sub>min</sub></i> + <i>d</i><br>
+    <i>y</i> &lt; <i>y<sub>min</sub></i> or <i>y</i> &gt; <i>y<sub>min</sub></i> + <i>d</i><br>
+    <i>z</i> &lt; <i>z<sub>min</sub></i> or <i>z</i> &gt; <i>z<sub>min</sub></i> + <i>d</i>
+  </center>
+</div>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-2. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside cube
-</tt></td>
-</tr>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">4</div>
+    <div class="constraint-name">inside box</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>inside box <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> x<sub>max</sub> y<sub>max</sub> z<sub>max</sub></em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub>, x<sub>max</sub>, y<sub>max</sub></i> and <i>z<sub>max</sub></i>
+    are six real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
+    solution:
+  </p>
+  <center>
+    <i>x<sub>min</sub></i> &lt; <i>x</i> &lt; <i>x<sub>max</sub></i><br>
+    <i>y<sub>min</sub></i> &lt; <i>y</i> &lt; <i>y<sub>max</sub></i><br>
+    <i>z<sub>min</sub></i> &lt; <i>z</i> &lt; <i>z<sub>max</sub></i>
+  </center>
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>inside cube </tt><i>x<sub>min</sub>&nbsp; y<sub>min</sub>&nbsp; z<sub>min</sub>&nbsp;    d</i><br><br>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">5</div>
+    <div class="constraint-name">outside box</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>outside box <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> x<sub>max</sub> y<sub>max</sub> z<sub>max</sub></em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub>, x<sub>max</sub>, y<sub>max</sub></i> and <i>z<sub>max</sub></i>
+    are six real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
+    solution:
+  </p>
+  <center>
+    <i>x</i> &lt; <i>x<sub>min</sub></i> or <i>x</i> &gt; <i>x<sub>max</sub></i><br>
+    <i>y</i> &lt; <i>y<sub>min</sub></i> or <i>y</i> &gt; <i>y<sub>max</sub></i><br>
+    <i>z</i> &lt; <i>z<sub>min</sub></i> or <i>z</i> &gt; <i>z<sub>max</sub></i>
+  </center>
+</div>
 
-<i>x<sub>min</sub> ,  y<sub>min</sub> ,  z<sub>min</sub></i> and <i>d</i>
-are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
-by this option will satisfy, at the solution:
-<center>
-<br><br>
-<i>x<sub>min</sub></i> < <i>x</i> < <i>x<sub>min</sub></i> + <i>d</i><br>
-<i>y<sub>min</sub></i> < <i>y</i> < <i>y<sub>min</sub></i> + <i>d</i><br>
-<i>z<sub>min</sub></i> < <i>z</i> < <i>z<sub>min</sub></i> + <i>d</i>
-</center>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">6</div>
+    <div class="constraint-name">inside (or outside) sphere</div>
+  </div>
+  <p>
+    Spheres are defined by equations of the general form
+  </p>
+  $$
+  (x - a)^2 + (y - b)^2 + (z - c)^2 - d^2 = 0
+  $$
+  <p>
+    and, therefore, you must provide four real parameters <i>a</i>,
+    <i>b</i>, <i>c</i> and <i>d</i> in
+    order to define it. The input syntax is, for example:
+  </p>
+  <pre><code>inside sphere 2.30 3.40 4.50 8.0</code></pre>
+  <p>
+    and therefore the coordinates of the atoms will satisfy the equation
+  </p>
+  $$
+  (x - 2.30)^2 + (y - 3.40)^2 + (z - 4.50)^2 - 8.0^2 \leq 0.0
+  $$
+  <p>
+    Other input alternative would be:
+  </p>
+  <pre><code>outside sphere 2.30 3.40 4.50 8.0</code></pre>
+  <p>
+    The <code>outside</code> parameter is similar to the <code>inside</code> parameter, but the
+    equation above uses $\geq$ instead of $\leq$ and, therefore, the
+    atoms will be placed outside the defined sphere.
+  </p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">7</div>
+    <div class="constraint-name">inside (or outside) ellipsoid</div>
+  </div>
+  <p>
+    Ellipsoids are defined by the general equation
+  </p>
+  $$
+  \frac{(x-a_1)^2}{a_2^2} +
+  \frac{(y-b_1)^2}{b_2^2} + 
+  \frac{(z-c_1)^2}{c_2^2} -
+  d^2 = 0
+  $$
+  <p>
+    The parameters must be given as in the sphere example, but now they are
+    7, and must be entered in the following order:
+  </p>
+  <div class="constraint-usage">
+    <code>inside ellipsoid <em>a<sub>1</sub> b<sub>1</sub> c<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c<sub>2</sub> d</em></code>
+  </div>
+  <p>
+    The coordinates (<i>a<sub>1</sub></i>,<i>b<sub>1</sub></i>,<i>c<sub>1</sub></i>) 
+    will define the center of the ellipsoid, the
+    coordinates (<i>a<sub>2</sub></i>,<i>b<sub>2</sub></i>,<i>c<sub>2</sub></i>) 
+    will define the relative size of the axes and <i>d</i>
+    will define the volume of the ellipsoid. Of course, the command:
+  </p>
+  <div class="constraint-usage">
+    <code>outside ellipsoid <em>a<sub>1</sub> b<sub>1</sub> c<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c<sub>2</sub> d</em></code>
+  </div>
+  <p>
+    can also be used in the same manner as the parameters for spheres. Note
+    that the case <i>a<sub>2</sub></i> = <i>b<sub>2</sub></i> = <i>c<sub>2</sub></i> = 1.0 
+    provides exactly the same as the sphere parameter. The parameters for the ellipsoid are not normalized.
+    Therefore, if <i>a<sub>2</sub></i>, <i>b<sub>2</sub></i> and <i>c<sub>2</sub></i> are large, 
+    the ellipsoid will be large, even for a small <i>d</i>.
+  </p>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">8</div>
+    <div class="constraint-name">above (or below) plane</div>
+  </div>
+  <p>
+    The planes are defined by the general equation
+  </p>
+  $$
+  ax + by + cz - d = 0
+  $$
+  <p>
+    And it is possible to restrict atoms to be above or below the plane. The syntax is:
+  </p>
+  <pre><code>above plane 2.5 3.2 1.2 6.2
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-3. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-outside cube
-</tt></td>
-</tr>
+below plane 2.5 3.2 1.2 6.2</code></pre>
+  <p>
+    where the <code>above</code> keyword will make the atoms satisfy the condition
+  </p>
+  $$
+  2.5x + 3.2y + 1.2z - 6.2 \geq 0
+  $$
+  <p>
+    and the <code>below</code> keyword will make the atoms satisfy
+  </p>
+  $$
+  2.5x + 3.2y + 1.2z - 6.2 \leq 0
+  $$
+  <p>
+    <em>Note: the <code>above</code> notation was introduced in version 20.1.1 (Sept. 5, 2020)</em>
+  </p>
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>outside cube </tt><i>x<sub>min</sub>&nbsp; y<sub>min</sub>&nbsp; z<sub>min</sub>&nbsp;    d</i><br><br>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">9</div>
+    <div class="constraint-name">inside (or outside) cylinder</div>
+  </div>
+  <p>
+    In order to define a cylinder, it is necessary first to define a
+    line oriented in space. This line is defined in Packmol by the
+    parametric equation
+  </p>
+  $$
+  p = (a_1, b_1, c_1) + t \times (a_2, b_2, c_2)
+  $$
+  <p>
+    where $t$ is the independent parameter. The vector $(a_2, b_2, c_2)$ defines the
+    direction of the line. The cylinder is therefore defined by the distance
+    to this line, $d$, and a length $l$. Therefore, the usage must be:
+  </p>
+  <pre><code>inside cylinder a₁ b₁ c₁ a₂ b₂ c₂ d l
 
-<i>x<sub>min</sub> ,  y<sub>min</sub> ,  z<sub>min</sub></i> and <i>d</i>
-are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
-by this option will satisfy, at the solution:
-<center>
-<br><br>
-<i>x</i> < <i>x<sub>min</sub></i> or <i>x</i> > <i>x<sub>min</sub></i> + <i>d</i><br>
-<i>y</i> < <i>y<sub>min</sub></i> or <i>y</i> > <i>y<sub>min</sub></i> + <i>d</i><br>
-<i>z</i> < <i>z<sub>min</sub></i> or <i>z</i> > <i>z<sub>min</sub></i> + <i>d</i>
-</center>
+outside cylinder a₁ b₁ c₁ a₂ b₂ c₂ d l</code></pre>
+  <p>
+    Here, the first three parameters define the point where the cylinder
+    starts, and <i>l</i> defines the length of the cylinder. <i>d</i> defines the
+    radius of the cylinder. The simpler example is a cylinder oriented in
+    the <i>x</i> axis and starting at the origin, such as:
+  </p>
+  <pre><code>inside cylinder 0. 0. 0. 1. 0. 0. 10. 20.</code></pre>
+  <p>
+    This cylinder is specified by the points that have a distance of 10. to
+    the <i>x</i> axis (the cylinder has a radius of 10.). Furthermore, it starts at
+    the origin, therefore no atom restricted by this cylinder will have an <i>x</i>
+    coordinate less than 0. Furthermore, it has a length of 20. and, as
+    such, no atom will have an <i>x</i> coordinate greater than 20. The orientation
+    of the cylinder, parallel to the <i>x</i> axis is defined by the director
+    vector (1,0,0), the fourth, fifth and sixth parameters. Cylinders can be
+    oriented in space in anyway.
+  </p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">10</div>
+    <div class="constraint-name">Constrain rotations</div>
+  </div>
+  <p>
+    It is possible to constrain rotations of all molecules of each type, so
+    that they have some average orientation in space.
+  </p>
+  <p>
+    The keywords to be used are, within a structure...end structure section:
+  </p>
+  <pre><code>constrain_rotation x 180. 20.
+constrain_rotation y 180. 20.
+constrain_rotation z 180. 20.</code></pre>
+  <p>
+    Each of these keywords restricts the possible rotation angles around
+    each axis to be within 180±20 degrees (or any other value). For a
+    technical reason the rotation around the <code>z</code> axis will, alone, be
+    identical to the rotation around the <code>y</code> axis (we hope to fix
+    this some day). Constraining the three rotations will constrain
+    completely the rotations. Note that to have your molecules oriented
+    parallel to an axis, you need to constrain the rotations relative to the
+    other two.
+  </p>
+  <p>
+    For example, to constrain the rotation of your molecule along the
+    <code>z</code> axis, use something like:
+  </p>
+  <pre><code>constrain_rotation x 0. 20.
+constrain_rotation y 0. 20.</code></pre>
+  <p>
+    Note that these rotations are defined relative to the molecule in the
+    orientation which was provided by the user, in the input PDB file.
+    Therefore, it is a good idea to orient the molecule in a reasonable way
+    in order to understand the rotations. For example, if the molecule is
+    elongated in one direction, a good idea is to provide the molecule with
+    the larger dimension oriented along the <code>z</code> axis.
+  </p>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">11</div>
+    <div class="constraint-name">over (or below) xygauss</div>
+  </div>
+  <p>
+    <em>(gaussian surface)</em>
+  </p>
+  <p>
+    Gaussian surfaces are defined by the equation
+  </p>
+  $$
+  h \times exp\left[−\frac{(x-a_1)^2}{2a_2^2}−\frac{(y-b_1)^2}{(2b_2^2)}\right]-(z-c)=0
+  $$
+  <p>
+    Parameters $(a_1, b_1)$ define center of the gaussian, while $c$ specifies the height in the $z$ dimension. 
+    $a_2$ and $b_2$ set the width of the gaussian in $x$ and $y$, respectively, while $h$ specifies its height. 
+    It is possible to restrict atoms to be over or below the gaussian plane. The gaussian surface 
+    as implemented is restricted to be over the $xy$ plane. The syntax is:
+  </p>
+  <pre><code>over xygauss a₁ b₁ a₂ b₂ c h
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-4. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside box
-</tt></td>
-</tr>
+below xygauss a₁ b₁ a₂ b₂ c h</code></pre>
+  <p>
+    For example, using:
+  </p>
+  <pre><code>over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0</code></pre>
+  <p>
+    the atoms satisfy the condition
+  </p>
+  $$
+  15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{2(20.0)^2}\right]-(z+23.0) \geq 0.0
+  $$
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>inside box</tt>&nbsp; 
-<i>x<sub>min</sub>&nbsp;
-y<sub>min</sub>&nbsp;
-z<sub>min</sub>&nbsp;
-x<sub>max</sub>&nbsp;   
-y<sub>max</sub>&nbsp; 
-z<sub>max</sub></i><br><br>
+<div class="section-header">
+  <a name="pbc"></a><b>8. Periodic Boundary Conditions</b>
+</div>
 
-<i>x<sub>min</sub>&nbsp;,
-y<sub>min</sub>&nbsp;,
-z<sub>min</sub>&nbsp;,
-x<sub>max</sub>&nbsp;,   
-y<sub>max</sub>&nbsp;</i> and <i> 
-z<sub>max</sub></i>
-are six real numbers. The coordinates
-(<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
-solution:
-<br><br>
-<center>
-<i>x<sub>min</sub></i> < <i>x</i> < <i>x<sub>max</sub></i><br>
-<i>y<sub>min</sub></i> < <i>y</i> < <i>y<sub>max</sub></i><br>
-<i>z<sub>min</sub></i> < <i>z</i> < <i>z<sub>max</sub></i>
-</center>
+<p>
+  As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
+  conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
+  contribution).
+</p>
 
+<h4>Usage:</h4>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<p>For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:</p>
 
+<pre><code>pbc 30.0 30.0 60.0</code></pre>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-5. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-outside box
-</tt></td>
-</tr>
+<p>
+  In this case, all molecules will be set to stay in the box defined by minimum and maximum
+  coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
+  conditions at the boundaries for the computation of the inter-atomic distances.
+</p>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>outside box</tt>&nbsp; 
-<i>x<sub>min</sub>&nbsp;
-y<sub>min</sub>&nbsp;
-z<sub>min</sub>&nbsp;
-x<sub>max</sub>&nbsp;   
-y<sub>max</sub>&nbsp; 
-z<sub>max</sub></i><br><br>
+<p>
+  And if six parameters are provided, the periodic boundaries will be applied at
+  the minimum and maximum coordinates provided:
+</p>
 
-<i>x<sub>min</sub>&nbsp;,
-y<sub>min</sub>&nbsp;,
-z<sub>min</sub>&nbsp;,
-x<sub>max</sub>&nbsp;,   
-y<sub>max</sub>&nbsp;</i> and <i> 
-z<sub>max</sub></i>
-are six real numbers. The coordinates
-(<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
-solution:
-<br><br>
-<center>
-<i>x</i> < <i>x<sub>min</sub></i> or <i>x</i> > <i>x<sub>max</sub></i><br>
-<i>y</i> < <i>y<sub>min</sub></i> or <i>y</i> > <i>y<sub>max</sub></i><br>
-<i>z</i> < <i>z<sub>min</sub></i> or <i>z</i> > <i>z<sub>max</sub></i>
-</center>
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<pre><code>pbc -15.0 -15.0 -30.0 15.0 15.0 60.0</code></pre>
 
+<p>
+  This keyword is a global keyword, and will affect all but fixed molecules. 
+  For example, this creates a periodic box of water:
+</p>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-6. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) sphere
-</tt></td>
-</tr>
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Spheres are defined by equations of the general form <br><br>
-$$
-(x - a)^2 + (y - b)^2 + (z - c)^2 - d^2 = 0
-$$
-<br>
-and, therefore, you must provide four real parameters <i>a</i>,
-<i>b</i>, <i>c</i> and <i>d</i>  in
-order to define it. The input syntax is, for example,
-<br><br><tt>
-inside sphere 2.30 3.40 4.50 8.0
-</tt><br><br>
-and therefore the coordinates of the atoms will satisfy the equation
-<br><br>
-$$
-(x - 2.30)^2 + (y - 3.40)^2 + (z - 4.50)^2 - 8.0^2 \leq 0.0
-$$
-Other input alternative would be:
-<br><br><tt>
-outside sphere 2.30 3.40 4.50 8.0
-</tt><br><br>
-The <tt>outside</tt> parameter is similar to the <tt>inside</tt> parameter, but the
-equation above uses $\geq$ instead of $\leq$  and, therefore, the
-atoms will be placed outside the defined sphere.
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-7. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) ellipsoid 
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Ellipsoids are defined by the general equation
-<br><br>
-$$
-\frac{(x-a_1)^2}{a_2^2} +
-\frac{(y-b_1)^2}{b_2^2} + 
-\frac{(z-c_1)^2}{c_2^2} -
-d² = 0
-$$
-The parameters must be given as in the sphere example, but now they are
-7, and must be entered in the following order:
-<br><br><tt>
-inside ellipsoid</tt> <i>&nbsp;
-a<sub>1</sub>&nbsp;  
-b<sub>1</sub>&nbsp;  
-c<sub>1</sub>&nbsp;  
-a<sub>2</sub>&nbsp;  
-b<sub>2</sub>&nbsp;
-c<sub>2</sub>&nbsp;  
-d</i>
-<br><br>
-The coordinates
-(<i>a<sub>1</sub></i>,<i>b<sub>1</sub></i>,<i>c<sub>1</sub></i>) 
-will define the center of the ellipsoid, the
-coordinates 
-(<i>a<sub>2</sub></i>,<i>b<sub>2</sub></i>,<i>c<sub>2</sub></i>) 
-will define the relative size of the axes and <i>d</i>
-will define the volume of the ellipsoid. Of course, the commands
-<br><br><tt>
-outside ellipsoid</tt> <i>&nbsp;
-a<sub>1</sub>&nbsp;  
-b<sub>1</sub>&nbsp;  
-c<sub>1</sub>&nbsp;  
-a<sub>2</sub>&nbsp;  
-b<sub>2</sub>&nbsp;
-c<sub>2</sub>&nbsp;  
-d</i>
-<br><br>
-can also be used in the same manner as the parameters for spheres. Note
-that the case 
-<i>a<sub>2</sub></i> = 
-<i>b<sub>2</sub></i> = 
-<i>c<sub>2</sub></i> = 1.0 provides the exactly the same as the
-sphere parameter. The parameters for the ellipsoid are not normalized.
-Therefore, if 
-<i>a<sub>2</sub></i>, 
-<i>b<sub>2</sub></i> and 
-<i>c<sub>2</sub></i> are large, the ellipsoid will be large, even
-for a small <i>d</i>.
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-8. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-above (or below) plane 
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-The planes are defined by the general equation
-<br><br>
-$$
-ax + by + cz - d = 0
-$$
-And it is possible to restrict atoms to be above or below the plane. The syntax is
-<br><br><tt>
-above plane 2.5 3.2 1.2 6.2
-<br><br>
-below plane 2.5 3.2 1.2 6.2
-<br><br></tt>
-where the <tt>above</tt> keyword will make the atoms satisfy the condition
-$$
-2.5x + 3.2y + 1.2z - 6.2 \geq 0
-$$
-and the <tt>below</tt> keyword will make the atoms satisfy
-$$
-2.5x + 3.2y + 1.2z - 6.2 \leq 0
-$$
-*Note: the <tt>above</tt> notation was introduced in version 20.1.1 (Sept. 5, 2020)
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-9. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) cylinder
-</tt></td>
-</tr>
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-
-In order to define a cylinder, it is necessary first to define a
-line oriented in space. This line is defined in <tt>Packmol</tt> by the
-parametric equation
-$$
-p = (a_1, b_1, c_1) + t \times (a_2, b_2, c_2)
-$$
-where $t$ is the independent parameter. The vector 
-$(a_2, b_2, c_2)$ defines the
-direction of the line. The cylinder is therefore defined by the distance
-to this line, $d$, and a length $l$. Therefore, the usage must be:
-<br><br>
-inside cylinder 
-&nbsp;<i>a<sub>1</sub></i>  
-&nbsp;<i>b<sub>1</sub></i>  
-&nbsp;<i>c<sub>1</sub></i>  
-&nbsp;<i>a<sub>2</sub></i>  
-&nbsp;<i>b<sub>2</sub></i>  
-&nbsp;<i>c<sub>2</sub></i>  
-&nbsp;<i>d </i> 
-&nbsp;<i>l </i>
-<br><br>
-outside cylinder 
-&nbsp;<i>a<sub>1</sub></i>  
-&nbsp;<i>b<sub>1</sub></i>  
-&nbsp;<i>c<sub>1</sub></i>  
-&nbsp;<i>a<sub>2</sub></i>  
-&nbsp;<i>b<sub>2</sub></i>  
-&nbsp;<i>c<sub>2</sub></i>  
-&nbsp;<i>d </i> 
-&nbsp;<i>l </i>
-<br><br>
-
-Here, the first three parameters define the point where the cylinder
-starts, and <i>l</i> defines the length of the cylinder. <i>d</i> defines de
-radius of the cylinder. The simpler example is a cylinder oriented in
-the <i>x</i> axis and starting at the origin, such as
-<br><br><tt>
-inside cylinder 0. 0. 0. 1. 0. 0. 10. 20.
-<br><br></tt>
-This cylinder is specified by the points that have a distance of 10. to
-the <i>x</i> axis (the cylinder has a radius of 10.). Furthermore, it starts at
-the origin, therefore no atom restricted by this cylinder will have an
-<i>x</i>
-coordinate less than 0. Furthermore, it has a length of 20. and, as
-such, no atom will have an <i>x</i> coordinate greater than 20. The orientation
-of the cylinder, parallel to the <i>x</i> axis is defined by the director
-vector (1,0,0), the fourth, fifth and sixth parameters. Cylinders can be
-oriented in space in anyway.
-
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-10. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-Constrain rotations
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-It is possible to constrain rotations of all molecules of each type, so
-that they have some average orientation in space.
-<br><br>
-The keywords to be used are, within a structure...end structure section:
-<br><br><tt>
-constrain_rotation x 180. 20. <br>
-constrain_rotation y 180. 20. <br>
-constrain_rotation z 180. 20. </tt> 
-<br><br>
-Each of these keywords restricts the possible rotation angles around
-each axis to be within 180&plusmn;20 degrees (or any other value). For a
-technical reason the rotation around the <tt>z</tt> axis will, alone, be
-identical to the rotation around the <tt>y</tt> axis (we hope to fix
-this some day). Constraining the three rotations will constrain
-completely the rotations. Note that to have your molecules oriented
-parallel to an axis, you need to constrain the rotations relative to the
-other two.
-<br><br>
-For example, to constrain the rotation of your molecule along the
-<tt>z</tt> axis, use something like:
-<br><br><tt>
-constrain_rotation x 0. 20. <br>
-constrain_rotation y 0. 20. <br>
-<br></tt>
-Note that these rotations are defined relative to the molecule in the
-orientation which was provided by the user, in the input PDB file.
-Therefore, it is a good idea to orient the molecule in a reasonable way
-in order to understand the rotations. For example, if the molecule is
-elongated in one direction, a good idea is to provide the molecule with
-the larger dimension oriented along the <tt>z</tt> axis.<br><br>
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-11. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-over (or below) xygauss </tt>
-<it>(gaussian surface)</it>
-</td>
-</tr>
-<tr><td class="tdclean0"></td>
-<td class="tdclean0">
-Gaussian surfaces are defined by the equation 
-$$
-h \times exp\left[−\frac{(x-a_1)^2}{2a_2^2}−\frac{(y-b_1)^2}{(2b_2^2)}\right]-(z-c)=0 
-$$
-Parameters $(a_1, b_1)$ define center of the gaussian, while $c$ specifies the height in the $z$ dimension. 
-$a_2$ and $b_2$ set the width of the gaussian in $x$ and $y$, respectively, while $h$ specifies its height. 
-It is possible to restrict atoms to be over or below the gaussian plane. The gaussian surface 
-as implemented is restricted to be over the $xy$ plane. The syntax is
-<br><br>
-<br><br><tt>
-over xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
-</tt><br><br><tt>
-below xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
-<br><br></tt>
-For example, using 
-<br><br><tt>
-over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0
-</tt><br><br>
-the atoms satisfy the condition
-$$
-15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{2(20.0)^2}\right]-(z+23.0) \geq 0.0 
-$$
-</td></tr>
-<!-- END CONSTRAINT -->
-
-
-</table>
-<br><br>
-<!-- END SECTION -->
-
-<!-- START SECTION -->
-<a name="pbc"></a><b>Periodic Boundary Conditions </b>
-<br><br>
-As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
-conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
-contribution). 
-<br><br>
-Usage:
-<br><br>
-For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:
-<br><br>
-<code>
+<pre><code>tolerance 2.0
+output water_box.pdb
 pbc 30.0 30.0 60.0
-</code>
-<br><br>
-In this case, all molecules will be set to stay in the box defined by minimum and maximum
-coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
-conditions at the boundaries for the computation of the inter-atomic distances. 
-<br><br>
-And if six parameters are provided, the periodic boundaries will be applied at
-the minimum and maximum coordinates provided:
-<br><br>
-<code>
-pbc -15.0 -15.0 -30.0 15.0 15.0 60.0
-</code>
-<br><br>
-This keyword is a global keyword, and will affect all but fixed molecules. 
-For example, this creates a periodic box of water:
-<br><br>
-<code>
-tolerance 2.0<br>
-output water_box.pdb<br>
-pbc 30.0 30.0 60.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 1000<br>
-end<br>
-</code>
-<br><br>
-And this will create an interface of water and carbon tetrachloride, with
-the interface at the (z=0) plane:
-<br><br>
-<code>
-tolerance 2.0<br>
-output interface.pdb<br>
-pbc -20.0 -20.0 -30.0 20.0 20.0 30.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 1000<br>
-&nbsp;&nbsp;below plane 0.0 0.0 1.0 0.0<br>
-end structure<br>
-structure ccl4.pdb<br>
-&nbsp;&nbsp;number 200<br>
-&nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0<br>
-end structure<br>
-</code>
+structure water.pdb
+  number 1000
+end</code></pre>
+
+<p>
+  And this will create an interface of water and carbon tetrachloride, with
+  the interface at the (z=0) plane:
+</p>
+
+<pre><code>tolerance 2.0
+output interface.pdb
+pbc -20.0 -20.0 -30.0 20.0 20.0 30.0
+structure water.pdb
+  number 1000
+  below plane 0.0 0.0 1.0 0.0
+end structure
+structure ccl4.pdb
+  number 200
+  above plane 0.0 0.0 1.0 0.0
+end structure</code></pre>
 <br><br>
 Importantly, the positions of the constraints refer to the periodic reference box,
 which is defined by the minimum and maximum coordinates provided. Fixed molecules 

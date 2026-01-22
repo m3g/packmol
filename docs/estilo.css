@@ -325,7 +325,7 @@ a:hover {
 /* Content Formatting */
 h3 {
   color: var(--cp5);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   margin: 2.5rem 0 1.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 3px solid var(--cp1);
@@ -333,7 +333,7 @@ h3 {
 
 h4 {
   color: var(--cp5);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   margin: 2rem 0 1rem 0;
 }
 
@@ -351,7 +351,7 @@ p {
 }
 
 .section-header b {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--cp5);
 }
 
