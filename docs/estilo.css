@@ -98,7 +98,7 @@ body {
 
 .top-nav li {
   flex: 1;
-  min-width: 150px;
+  min-width: 100px;
   text-align: center;
   border-right: 1px solid rgba(0,0,0,0.1);
 }
