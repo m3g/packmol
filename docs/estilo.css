@@ -204,6 +204,20 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
+/* Hide sidebar on user guide page */
+.table-contents ~ .sidebar {
+  display: none;
+}
+
+body:has(.table-contents) .sidebar {
+  display: none;
+}
+
+body:has(.table-contents) .main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 /* Responsive Design */
 @media (max-width: 900px) {
   .main-layout {
