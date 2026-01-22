@@ -590,3 +590,12 @@ center {
   to { opacity: 1.0; }
 }
 
+/* Debug (temporary): visualize main layout children to locate phantom column */
+.main-layout > * {
+  outline: 1px dashed rgba(0, 0, 255, 0.25);
+}
+
+.main-content > * {
+  outline: 1px dotted rgba(255, 0, 0, 0.2);
+}
+
