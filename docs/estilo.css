@@ -322,6 +322,248 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Content Formatting */
+h3 {
+  color: var(--cp5);
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--cp1);
+}
+
+h4 {
+  color: var(--cp5);
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+.section-header {
+  background: linear-gradient(to right, var(--cp1), transparent);
+  padding: 1rem;
+  margin: 2rem 0 1rem 0;
+  border-left: 4px solid var(--cp3);
+  border-radius: 4px;
+}
+
+.section-header b {
+  font-size: 1.4rem;
+  color: var(--cp5);
+}
+
+.table-contents {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0 2rem 0;
+  border-left: 4px solid var(--cp2);
+}
+
+.table-contents b {
+  font-size: 1.2rem;
+  color: var(--cp5);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.table-contents a {
+  display: block;
+  padding: 0.4rem 0;
+  color: var(--cp6);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.table-contents a:hover {
+  color: var(--cp3);
+  padding-left: 0.5rem;
+}
+
+/* Code blocks and pre formatting */
+pre, code {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  line-height: 1.4;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+tt {
+  background: #f4f4f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+/* Info boxes */
+.info-box {
+  background: #e8f4f8;
+  border-left: 4px solid #2196F3;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.warning-box {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.success-box {
+  background: #d4edda;
+  border-left: 4px solid #28a745;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+/* Step-by-step instructions */
+.install-steps {
+  margin: 1.5rem 0;
+}
+
+.install-step {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.install-step h4 {
+  margin-top: 0;
+  color: var(--cp3);
+}
+
+.step-number {
+  display: inline-block;
+  background: var(--cp3);
+  color: white;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+/* Tables in content */
+.constraint-table {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.constraint-item {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.constraint-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--cp2);
+}
+
+.constraint-number {
+  background: var(--cp1);
+  color: var(--cp5);
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.constraint-name {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--cp5);
+}
+
+.constraint-usage {
+  background: #f9f9f9;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Version badges */
+.version-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.version-badges img {
+  box-shadow: none;
+}
+
+/* HR styling */
+hr {
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 2rem 0;
+}
+
+/* Lists */
+ul, ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Emphasis */
+i, em {
+  color: var(--cp7);
+}
+
+b, strong {
+  color: var(--cp5);
+}
+
+/* Center content */
+center {
+  text-align: center;
+}
+
 /* Blink Animation */
 .blink {
   animation: blinker 1s infinite;

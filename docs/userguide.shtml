@@ -3,284 +3,303 @@
 {% include_relative head.shtml %}
 {% include_relative mathjax.html %}
 
-<h3>User guide</h3>
-<i>Important:</i> always download the latest version of Packmol
-in order that all features are available.
-<br><br>
+<h3>User Guide</h3>
 
-<!-- START SECTION -->
-<b> Contents</b>
+<div class="info-box">
+  <strong>Important:</strong> Always download the latest version of Packmol to ensure all features are available.
+</div>
 
-<br>
-<a href="./userguide.shtml#need">1. What do you need?</a><br>
-<a href="./userguide.shtml#comp">2. How to compile Packmol.</a><br>
-<a href="./userguide.shtml#run">3. Running Packmol.</a><br>
-<a href="./userguide.shtml#basic">4. Basic input structure.</a><br>
-<a href="./userguide.shtml#more">5. More types of molecules.</a><br>
-<a href="./userguide.shtml#atom">6. Atom selections.</a><br>
-<a href="./userguide.shtml#types">7. Types of constraints.</a><br>
-<a href="./userguide.shtml#pbc">8. Periodic boundary conditions.</a><br>
-<a href="./userguide.shtml#radii">9. Different radii for different atoms.</a><br>
-<a href="./userguide.shtml#solvate.tcl">10. Solvating a large molecule automatically.</a><br>
-<a href="./userguide.shtml#numb">11. Controlling residue numbering in PDB files.</a><br>
-<a href="./userguide.shtml#restart">12. Building very large systems: using restart files.</a><br>
-<a href="./userguide.shtml#conv">13. Convergence problems: what to try.</a><br>
-<a href="./userguide.shtml#add">14. Additional input options and keywords.</a><br>
-<a href="./userguide.shtml#tutorials">15. Some tutorials available online.</a>
-<br><br>
+<div class="table-contents">
+  <b>Contents</b>
+  <a href="./userguide.shtml#need">1. What do you need?</a>
+  <a href="./userguide.shtml#comp">2. How to compile Packmol</a>
+  <a href="./userguide.shtml#run">3. Running Packmol</a>
+  <a href="./userguide.shtml#basic">4. Basic input structure</a>
+  <a href="./userguide.shtml#more">5. More types of molecules</a>
+  <a href="./userguide.shtml#atom">6. Atom selections</a>
+  <a href="./userguide.shtml#types">7. Types of constraints</a>
+  <a href="./userguide.shtml#pbc">8. Periodic boundary conditions</a>
+  <a href="./userguide.shtml#radii">9. Different radii for different atoms</a>
+  <a href="./userguide.shtml#solvate.tcl">10. Solvating a large molecule automatically</a>
+  <a href="./userguide.shtml#numb">11. Controlling residue numbering in PDB files</a>
+  <a href="./userguide.shtml#restart">12. Building very large systems: using restart files</a>
+  <a href="./userguide.shtml#conv">13. Convergence problems: what to try</a>
+  <a href="./userguide.shtml#add">14. Additional input options and keywords</a>
+  <a href="./userguide.shtml#tutorials">15. Some tutorials available online</a>
+</div>
 
-<!-- END SECTION -->
+<div class="section-header">
+  <a name="need"></a><b>1. What do you need?</b>
+</div>
 
+<p>
+  You need coordinate files for each type of molecule you want your
+  simulation to have. For example, if you are going to simulate a solution
+  of water and ions, you will need a coordinate file for <em>one</em> water
+  molecule, and independent coordinate files for each of the ions. These
+  coordinate files may be in the PDB, TINKER, or XYZ (MOLDEN) formats.
+</p>
 
-<!-- START SECTION -->
-<a name="need"></a><b>What do you need? </b>
-<br><br>
+<div class="info-box">
+  <strong>Tip:</strong> The simplest and best molecular structure builder we have used is 
+  <a href="http://biomodel.uah.es/en/DIY/JSME/draw.en.htm">this one</a>.
+</div>
 
-You need coordinate files for each type of molecule you want your
-simulation to have. For example, if you are going to simulate a solution
-of water and ions, you will need a coordinate file for <i>one</i>  water
-molecule, and independent coordinates files for each of the ions. This
-coordinate files may be in the PDB, TINKER, or XYZ (MOLDEN) formats. The
-simplest and best molecular structure builder we have used is 
-<a href=http://biomodel.uah.es/en/DIY/JSME/draw.en.htm>this one</a>.
-<br><br>
-Of course, you also need the <tt>Packmol</tt> package, which you can get from
-<pre><tt>  http://m3g.iqm.unicamp.br/packmol
-</tt></pre>
-by clicking on the <a target="contents" href="./download.shtml">
-Download </a> link. 
+<p>
+  Of course, you also need the <tt>Packmol</tt> package, which you can get from:
+</p>
+<pre><code>http://m3g.iqm.unicamp.br/packmol</code></pre>
 
+<p>
+  by clicking on the <a href="./download.shtml">Download</a> link. 
+  You can download the file <tt>packmol-21.0.0.tar.gz</tt> which contains the 
+  whole source code of Packmol. The <tt>21.0.0</tt> is the version number, which 
+  might change relative to this example.
+</p>
 
-You can download the file
-<tt>packmol-21.0.0.tar.gz</tt> which contains the whole source code of
-Packmol. The <tt>21.0.0</tt> is the version number, which might change
-relative to this example.
-<br><br>
-Windows users: We suggest trying to use the Julia-based distribution
-available at <a href="https://github.com/m3g/Packmol.jl">[Packmol.jl]</a>,
-which works on all platforms and doesn't need compilation.
-<br><br>
+<div class="success-box">
+  <strong>Windows users:</strong> We suggest trying to use the Julia-based distribution
+  available at <a href="https://github.com/m3g/Packmol.jl">Packmol.jl</a>,
+  which works on all platforms and doesn't need compilation.
+</div>
 
-<!-- END SECTION -->
+<div class="section-header">
+  <a name="comp"></a><b>2. How to compile Packmol</b>
+</div>
 
-<!-- START SECTION -->
-<a name="comp"></a><b>How to compile Packmol </b>
-<br>
-<br>
-<b>Follow these instructions if you have downloaded the Packmol source code.
-Most users should have downloaded the Julia wrapper, which doesn't need compilation.</b>
-<br><br>
-Once you have downloaded the <tt>packmol-21.0.0.tar.gz</tt> file from the home-page,
-you need to expand the files and compile the package. This is done by:
-<br><br>
-Expanding the files:
-<pre><tt>  tar -xvzf packmol-21.0.0.tar.gz</tt></pre>
-This will create a directory called <tt>packmol</tt> inside which you can find
-the source code. You can build the executable by:
-<pre><tt>  cd packmol
-  make
-</tt></pre>
-That's it, if no error was reported the packmol executable was 
-built. Note that <tt>21.0.0</tt> is the version number, which may differ
-relative to this example.
-<br><br>
------
-<br><br>
-If you have problems, let the configure script find a suitable
-compiler for you:<br><br>
-<tt>chmod +x ./configure </tt>  (this makes the script executable)
-<br><br>
-<tt>./configure </tt> (this executes the script)
-<br><br>
-If the script was not able to find a suitable compiler, then
-you can manually set the compiler by:
-<br><br>
-<tt>./configure /path/to/your/compiler/yourcompiler</tt>
-<br><br>
-Then, run the "make" command again:
-<br><br>
-<tt>make</tt>
-<br><br>
-If no error was
-detected, an executable called packmol is now ready.
-<br><br>
-<!-- END SECTION -->
+<div class="warning-box">
+  <strong>Note:</strong> Follow these instructions if you have downloaded the Packmol source code.
+  Most users should have downloaded the Julia wrapper, which doesn't need compilation.
+</div>
 
-<!-- START SECTION -->
-<a name="run"></a><b>Running Packmol </b>
-<br><br>
-Follow the instructions on running Packmol using the Julia wrapper, which is the easiest way to run Packmol on any platform.
+<p>
+  Once you have downloaded the <tt>packmol-21.0.0.tar.gz</tt> file from the home page,
+  you need to expand the files and compile the package. This is done by:
+</p>
 
-From the command-line, there are two alternatives to run Packmol:
-<br><br>
-- Using input file redirection:
-<br><br><tt>
-packmol < packmol.inp
-<br><br></tt>
-- Using command line arguments to specify the input and, optionally, the output file (from v21.1.0 onwards):
-<br><br><tt>
-packmol -i packmol.inp -o output.pdb
-<br><br></tt>
-The <tt>-o output.pdb</tt>  is optional, and will overwrite the definition of the output file in the input file.
-<br><br>
-The <code>packmol.inp</code> file is the input file (you can obtain example files by
-clicking at the 'Input examples' link on the left). <br><br> 
-A successful packing will end with something like
-<tt><br><br>
-<center>
-------------------------------
-<br>
-Success!<br>
-Final objective function value: .22503E-01<br>
-Maximum violation of target distance:   0.000000<br>
-Maximum violation of the constraints: .78985E-02<br>
-<br>
-------------------------------
-</center>
-<br><br></tt>
-Where the maximum violation of the target distance indicates the
-difference between the minimum distance between atoms required by
-the user and that of the solution. It will not be greater than 10<sup>-2</sup> 
-The maximum violation of the constrains must not be greater than 10<sup>-2</sup>.
-<br><br>
-A good idea is to check if your constraints are correct by using
-the "check" keyword in the input file. With this option a rough
-initial approximation will be built but no actual packing will
-be performed. You can look at the output to see if the molecules
-are within the desired regions (but do not expect a good structure
-at this point!). Just add the word "check" to any line of your
-input file (available since 28 Feb 2008).
-<br><br>
-<hr><br>
-<u>Common issues:</u> <br><br>
- - If you get "Command not found" when running Packmol, use <br>
-<tt>./packmol < packmol.inp</tt><br>
-(with a "./" before "packmol") 
-or add the directory where the packmol executable is located to your path.
-<br><br>
- - If you run packmol and get the message "Killed", this is because the
-package is trying to allocate more memory than available for static                          
-storage. Open the "sizes.i" file and decrease the "maxatom" parameter to
-the number of atoms of your system, compile the package again, and try
-again.
-<br><br>
-<!-- END SECTION -->
+<h4>Expanding the files:</h4>
+<pre><code>tar -xvzf packmol-21.0.0.tar.gz</code></pre>
 
-<!-- START SECTION -->
-<a name="basic"></a><b>Basic input structure </b>
-<br><br>
+<p>
+  This will create a directory called <tt>packmol</tt> inside which you can find
+  the source code. You can build the executable by:
+</p>
 
-The minimal input file must contain the distance tolerance required (for
-systems at room temperature and pressure and coordinates in Angstroms,
-2.0 Å is a good value <a href=./tolerance-note.shtml onClick="return popup(this, 'Help')">[note]</a>). This is specified with
-<br><br>
-<tt>tolerance 2.0</tt>
-<br><br>
-The file must contain also the name of the output file to be created,
-specified with
-<br><br>
-<tt>output test.pdb</tt>
-<br><br>
-and the file type (pdb, tinker, or xyz, pdb is the default value),
-<br><br>
-<tt>filetype pdb</tt>
-<br><br>
-At least one type of molecule must be present. This is set by the
-<tt>structure ... end structure</tt> section, for example, if
-<tt>water.pdb</tt> is the
-file containing the coordinates of a single water molecule, you could
-add to your input file something like
-<br><br>
-<tt>
-structure water.pdb     <br>
-&nbsp;&nbsp;number 2000   <br>
-&nbsp;&nbsp;inside cube 0. 0. 0. 40.  <br>
-end structure
-</tt>
-<br><br>
-This section specifies that 2000 molecules of the <tt>water.pdb</tt> type, will
-be placed inside a cube with minimum coordinates
-$(x,y,z) = (0,0,0)$
-and
-maximum coordinates $(40,40,40)$. Therefore, this minimum input file must
-be:
-<br><br>
-<tt>
-tolerance 2.0 <br>
-output test.pdb <br>
-filetype pdb <br>
-structure water.pdb <br>
-&nbsp;&nbsp;number 2000 <br>
-&nbsp;&nbsp;inside cube 0. 0. 0. 40.  <br>
-end structure
-</tt>
-<br><br>
-Running Packmol with this input file will fill a cube of side 40.0 Å
-with 2000 water molecules. Every pair of atoms of different molecules
-will be separated by, at least, 2.0 Å and the molecules will be
-randomly distributed inside de cube.
-<br><br>
-<!-- END SECTION -->
+<pre><code>cd packmol
+make</code></pre>
 
-<!-- START SECTION -->
-<a name="more"></a><b>More types of molecules </b>
-<br><br>
+<p>
+  That's it! If no error was reported, the packmol executable was built. 
+  Note that <tt>21.0.0</tt> is the version number, which may differ relative to this example.
+</p>
 
-You can add more types of molecules to the same region, or to different
-regions of the space, simply adding other <tt>structure ... end
-structure</tt>
-section to the input file.
-<br><br>
-<!-- END SECTION -->
+<hr>
 
-<!-- START SECTION -->
-<a name="atom"></a><b>Atom selections </b>
-<br><br>
+<h4>If you have problems:</h4>
 
-The coordinate file of a single molecule contains, for example, 10
-atoms. You can restrain a part of the molecule to be in a specified
-region of the space. This is useful for building vesicles where the
-hydrophilic  part of the surfactants must be pointing to the aqueous
-environment, for example. For the 10 atoms molecule, this is done by
-using the keyword atoms, as in
-<br><br>
-<tt>
-structure molecule.pdb           <br> 
-&nbsp;&nbsp;inside cube 0. 0. 0. 20.         <br> 
-&nbsp;&nbsp;atoms 9 10                       <br> 
-&nbsp;&nbsp;&nbsp;&nbsp;inside box 0. 0. 15. 20. 20. 20. <br> 
-&nbsp;&nbsp;end atoms                        <br> 
-end structure                     
-</tt>
-<br><br>
-In this case, all the atoms of the molecule will be put inside the
-defined cube, but atoms 9 and 10 will be restrained to be inside the
-box.
-<br><br>
-<!-- END SECTION -->
+<p>Let the configure script find a suitable compiler for you:</p>
 
-<!-- START SECTION -->
-<a name="types"></a><b>Types  of constraints </b>
-<br><br>
+<pre><code>chmod +x ./configure    # Makes the script executable
+./configure             # Executes the script</code></pre>
 
-There are several types of constraints that can be applied both to whole
-molecules or to parts of the molecule. These constraints define the
-region of the space in which the molecules must be at the solution. Very
-ordered systems can be built in such a way. The constraints  are:
-<br><br>
+<p>
+  If the script was not able to find a suitable compiler, then you can manually set the compiler by:
+</p>
 
-<table align="center" width="80%">
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 1. </td>
-<td class=tdclean0 valign="bottom"><tt>
-fixed
-</tt></td>
-</tr>
+<pre><code>./configure /path/to/your/compiler/yourcompiler</code></pre>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>fixed </tt><i>x   y   z  a   b   g</i><br><br>
+<p>Then, run the "make" command again:</p>
+
+<pre><code>make</code></pre>
+
+<p>If no error was detected, an executable called <tt>packmol</tt> is now ready.</p>
+
+<div class="section-header">
+  <a name="run"></a><b>3. Running Packmol</b>
+</div>
+
+<div class="info-box">
+  Follow the instructions on running Packmol using the Julia wrapper, which is the easiest way 
+  to run Packmol on any platform.
+</div>
+
+<p>From the command line, there are two alternatives to run Packmol:</p>
+
+<h4>Option 1: Using input file redirection</h4>
+<pre><code>packmol < packmol.inp</code></pre>
+
+<h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
+<pre><code>packmol -i packmol.inp -o output.pdb</code></pre>
+
+<p>
+  The <tt>-o output.pdb</tt> is optional, and will overwrite the definition of the 
+  output file in the input file.
+</p>
+
+<p>
+  The <code>packmol.inp</code> file is the input file (you can obtain example files by
+  clicking at the 'Input examples' link on the left).
+</p>
+
+<h4>A successful packing will end with something like:</h4>
+
+<div class="success-box">
+  <center>
+    <pre style="background: none; border: none;"><code>------------------------------
+Success!
+Final objective function value: .22503E-01
+Maximum violation of target distance:   0.000000
+Maximum violation of the constraints: .78985E-02
+------------------------------</code></pre>
+  </center>
+</div>
+
+<p>
+  Where the maximum violation of the target distance indicates the
+  difference between the minimum distance between atoms required by
+  the user and that of the solution. It will not be greater than 10<sup>-2</sup>. 
+  The maximum violation of the constraints must not be greater than 10<sup>-2</sup>.
+</p>
+
+<div class="info-box">
+  <strong>Tip:</strong> A good idea is to check if your constraints are correct by using
+  the "check" keyword in the input file. With this option, a rough
+  initial approximation will be built but no actual packing will
+  be performed. You can look at the output to see if the molecules
+  are within the desired regions (but do not expect a good structure
+  at this point!). Just add the word "check" to any line of your
+  input file (available since 28 Feb 2008).
+</div>
+
+<h4>Common issues:</h4>
+
+<div class="warning-box">
+  <ul>
+    <li>
+      <strong>If you get "Command not found"</strong> when running Packmol, use:
+      <pre><code>./packmol < packmol.inp</code></pre>
+      (with a "./" before "packmol") or add the directory where the packmol 
+      executable is located to your path.
+    </li>
+    <li>
+      <strong>If you run packmol and get the message "Killed"</strong>, this is because the
+      package is trying to allocate more memory than available for static storage. 
+      Open the "sizes.i" file and decrease the "maxatom" parameter to
+      the number of atoms of your system, compile the package again, and try again.
+    </li>
+  </ul>
+</div>
+
+<div class="section-header">
+  <a name="basic"></a><b>4. Basic input structure</b>
+</div>
+
+<p>
+  The minimal input file must contain the distance tolerance required (for
+  systems at room temperature and pressure and coordinates in Angstroms,
+  2.0 Å is a good value 
+  <a href="./tolerance-note.shtml" onClick="return popup(this, 'Help')">[note]</a>). 
+  This is specified with:
+</p>
+
+<pre><code>tolerance 2.0</code></pre>
+
+<p>The file must also contain the name of the output file to be created:</p>
+
+<pre><code>output test.pdb</code></pre>
+
+<p>and the file type (pdb, tinker, or xyz; pdb is the default value):</p>
+
+<pre><code>filetype pdb</code></pre>
+
+<p>
+  At least one type of molecule must be present. This is set by the
+  <tt>structure ... end structure</tt> section. For example, if
+  <tt>water.pdb</tt> is the file containing the coordinates of a single water molecule, 
+  you could add to your input file something like:
+</p>
+
+<pre><code>structure water.pdb
+  number 2000
+  inside cube 0. 0. 0. 40.
+end structure</code></pre>
+
+<p>
+  This section specifies that 2000 molecules of the <tt>water.pdb</tt> type will
+  be placed inside a cube with minimum coordinates $(x,y,z) = (0,0,0)$ and
+  maximum coordinates $(40,40,40)$. Therefore, this minimum input file must be:
+</p>
+
+<pre><code>tolerance 2.0
+output test.pdb
+filetype pdb
+structure water.pdb
+  number 2000
+  inside cube 0. 0. 0. 40.
+end structure</code></pre>
+
+<p>
+  Running Packmol with this input file will fill a cube of side 40.0 Å
+  with 2000 water molecules. Every pair of atoms of different molecules
+  will be separated by at least 2.0 Å and the molecules will be
+  randomly distributed inside the cube.
+</p>
+
+<div class="section-header">
+  <a name="more"></a><b>5. More types of molecules</b>
+</div>
+
+<p>
+  You can add more types of molecules to the same region, or to different
+  regions of the space, simply by adding other <tt>structure ... end structure</tt>
+  sections to the input file.
+</p>
+
+<div class="section-header">
+  <a name="atom"></a><b>6. Atom selections</b>
+</div>
+
+<p>
+  The coordinate file of a single molecule contains, for example, 10
+  atoms. You can restrain a part of the molecule to be in a specified
+  region of the space. This is useful for building vesicles where the
+  hydrophilic part of the surfactants must be pointing to the aqueous
+  environment, for example. For the 10 atoms molecule, this is done by
+  using the keyword <tt>atoms</tt>, as in:
+</p>
+
+<pre><code>structure molecule.pdb
+  inside cube 0. 0. 0. 20.
+  atoms 9 10
+    inside box 0. 0. 15. 20. 20. 20.
+  end atoms
+end structure</code></pre>
+
+<p>
+  In this case, all the atoms of the molecule will be put inside the
+  defined cube, but atoms 9 and 10 will be restrained to be inside the box.
+</p>
+
+<div class="section-header">
+  <a name="types"></a><b>7. Types of constraints</b>
+</div>
+
+<p>
+  There are several types of constraints that can be applied both to whole
+  molecules or to parts of the molecule. These constraints define the
+  region of the space in which the molecules must be at the solution. Very
+  ordered systems can be built in such a way. The constraints are:
+</p>
+
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">1</div>
+    <div class="constraint-name">fixed</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>fixed <em>x y z a b g</em></code>
+  </div>
+  <p>
 This options holds the molecule
 fixed in the position specified by the parameters. <i>x, y, z, a, b, g,</i>
 which are six real numbers. The first three determine the translation of
