@@ -981,6 +981,8 @@ example:
   restart_from water1.pack
 end structure
 </tt></pre>
+
+<p>
 The new input file might contain other molecules, as a regular Packmol
 input file, and these water molecules will be packed together with the
 new molecules, but starting from the previous runs. This can be used,
