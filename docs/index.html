@@ -2,52 +2,47 @@
 ---
 {% include_relative head.shtml %}
 
-<table class="tabnoborder">
-  <tr>
-    <td valign=top class="tdclean">
+<div class="content-grid">
+  <div class="text-content">
+    <p>
+      <strong>PACKMOL</strong> creates an initial point for molecular dynamics
+      simulations by packing molecules in defined regions of space. The
+      packing guarantees that short range repulsive interactions do not
+      disrupt the simulations.
+    </p>
+    
+    <p>
+      The great variety of types of spatial constraints that can be attributed
+      to the molecules, or atoms within the molecules, makes it easy to create
+      ordered systems, such as lamellar, spherical or tubular lipid layers.
+    </p>
+    
+    <p>
+      The user must provide only the coordinates of one molecule of each type,
+      the number of molecules of each type and the spatial constraints that
+      each type of molecule must satisfy.
+    </p>
+    
+    <p>
+      The package is compatible with input files of PDB, TINKER, and XYZ formats.
+    </p>
+    
+    <p>
+      <strong>See also:</strong><br>
+      <a href="https://m3g.github.io/ComplexMixtures.jl">ComplexMixtures.jl:</a> A powerful
+      package to understand solvation structures in complex solutions.<br>
+      <a href="https://m3g.github.io/CellListMap.jl">CellListMap.jl:</a> Efficient and
+      customizable cell list data structure for molecular simulations and customizable
+      simulation analysis.
+    </p>
+  </div>
 
-<b>PACKMOL</b> creates an initial point for molecular dynamics
-simulations by packing molecules in defined regions of space. The
-packing guarantees that short range repulsive interactions do not
-disrupt the simulations.
-<br><br>
-The great variety of types of spatial constraints that can be attributed
-to the molecules, or atoms within the molecules, makes it easy to create
-ordered systems, such as lamellar, spherical or tubular lipid layers.
-<br><br>
+  <div class="image-gallery">
+    <img src="./examples/spherical.gif" alt="Spherical packing example">
+    <img src="./examples/interface.jpg" alt="Interface packing example">
+  </div>
+</div>
 
-The user must provide only the coordinates of one molecule of each type,
-the number of molecules of each type and the spatial constraints that
-each type of molecule must satisfy.
-<br><br>
+{% include_relative picks.shtml %}
 
-The package is compatible with input files of PDB, TINKER, and XYZ formats. 
-<br><br>
-
-<b>See also:</b> 
-<br>
-<a href="https://m3g.github.io/ComplexMixtures.jl">ComplexMixtures.jl:</a> A powerful
-package to understand solvation structures in complex solutions.
-<br>
-<a href="https://m3g.github.io/CellListMap.jl">CellListMap.jl:</a> Efficient and
-customizable cell list data structure for molecular simulations and customizable
-simulation analysis.
-<br>
-  </td>
-
-  <td valign=top width=200px class="tdclean">
-      <img src=./examples/spherical.gif><br><br>
-      <img src=./examples/interface.jpg><br>
-  </td>
-
-  <td align=center valign=top width=30% class="tdclean0">
-
-       {% include_relative picks.shtml %}
-
-  </td>
-
-  </tr>
-</table>
-
-{% include_relative tail.shtml %}
 {% include_relative tail.shtml %}
