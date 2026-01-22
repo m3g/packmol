@@ -697,9 +697,11 @@ positioning.
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="radii"></a><b>Different radii for different atoms </b>
-<br><br>
+<div class="section-header">
+  <a name="radii"></a><b>9. Different radii for different atoms</b>
+</div>
 
+<p>
 It is possible (from version 15.133 on) to attribute different radii to
 different atoms during the packing procedure. The default behavior is
 that all atoms will be distant to each other at the final structure at least
@@ -707,17 +709,24 @@ the distance defined by the <code>tolerance</code> parameter. In this
 case it is possible to think that the radius of every atom is half the
 distance tolerance. A tolerance of 2.0 Angs is usually fine for
 simulation of molecular systems using all-atom models.  
-<br><br>
+</p>
+
+<p>
 Most times, therefore, you won't need this option. This was requested by
 users that want to pack multiscale models, in which all-atom and
 coarse-grained representations are combined in the same system.
-<br><br>
+</p>
+
+<p>
 It is easy to define different radii to different molecules, or to atoms
 within a molecule. Just add the "<code>radius</code>" keyword within the
 <code>structure ... end structure</code> section of a molecule type, or
 within <code>atoms ... end atoms</code> section of an atom selection.
-<br><br>
+</p>
+
+<p>
 For example, in this case:
+</p>
 
 <pre><code>tolerance 2.0
 structure water.pdb
@@ -756,41 +765,50 @@ each pair of atoms, and that the greatest the radii the harder the
 packing. Also, keep in mind that your minimization and equilibration
 will take care of the actual atom radii, and Packmol is designed only to
 give a first coordinate file.  
-<br><br>
+</p>
+
+<p>
 Finally, currently the restrictions are set to be fulfilled by the
 <b>center</b> of the atoms. Therefore, if you are using large radii, you
 might want to adjust the sizes of the boxes, spheres, etc., so that the
 whole atoms are within the desired regions. For standard all-atom
 simulations this is not usually an issue because the radii are small.
-<br><br>
+</p>
+
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="solvate.tcl"></a><b>Solvating large molecules automatically </b>
-<br><br>
+<div class="section-header">
+  <a name="solvate.tcl"></a><b>10. Solvating large molecules automatically</b>
+</div>
 
+<p>
 The Packmol distribution includes the <code>solvate.tcl</code> script,
 which is used to solvate large molecules, usually proteins, with water
 and ions (Na<sup>+</sup> and Cl<sup>-</sup>). Given the PDB file of the
-biomolecule, just run the script with: <br><br>
-<code>
-solvate.tcl PROTEIN.pdb
-</code><br><br>
+biomolecule, just run the script with:
+</p>
+
+<pre><code>solvate.tcl PROTEIN.pdb</code></pre>
+
+<p>
 And the script will create a input file for packmol called
-<code>packmol_input.inp</code>. With this file, run Packmol with<br><br
-<code>
-packmol < packmol_input.inp
-</code><br><br>
+<code>packmol_input.inp</code>. With this file, run Packmol with
+</p>
+
+<pre><code>packmol < packmol_input.inp</code></pre>
+
+<p>
 And your large molecule will be solvated by a shell of 15. Angs. of
 water, and ions to keep the system neutral and a physiological NaCl
 concentration of 0.16M. The script usually makes reasonable choices for
 every parameter (number of water molecules, number of ions, etc.), but
 these may be controlled manually with additional options, as described
-below:<br><br>
-<code>
-solvate.tcl structure.pdb -shell 15. -charge +5 -density 1.0 -i pack.inp
--o solvated.pdb
-</code>
+below:
+</p>
+
+<pre><code>solvate.tcl structure.pdb -shell 15. -charge +5 -density 1.0 -i pack.inp
+-o solvated.pdb</code></pre>
 <br><br>
 <table>
 <tr><td class=tdclean0 valign=top>
@@ -829,9 +847,11 @@ the suggested periodic boundary condition dimensions to be used.
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="numb"></a><b>Controlling residue numbering in PDB files.</b>
-<br><br>
+<div class="section-header">
+  <a name="numb"></a><b>11. Controlling residue numbering in PDB files</b>
+</div>
 
+<p>
 Since Packmol will create one or more copies of your molecules in a
 new PDB file, there are some options on how residue numbers are set to
 these new molecules. There are four options, which are set with the
@@ -920,8 +940,11 @@ where "D" is the desired identifier (Do not use "#").
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="restart"></a><b>Building very large systems: using restart files </b>
-<br><br>
+<div class="section-header">
+  <a name="restart"></a><b>12. Building very large systems: using restart files</b>
+</div>
+
+<p>
 From version 16.143 on, it is possible to build the system from multiple
 and independent executions of Packmol by the use of restart files. In
 order to write a restart file, the following keyword must be used:
@@ -983,10 +1006,15 @@ positions of 800 molecules.
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="conv"></a><b>Convergence problems: what to try </b>
-<br><br>
+<div class="section-header">
+  <a name="conv"></a><b>13. Convergence problems: what to try</b>
+</div>
+
+<p>
 Sometimes Packmol is not able to find an adequate packing solution. Here
-are some tips to try to overcome these difficulties:<br><br>
+are some tips to try to overcome these difficulties:
+</p>
+
 <table>
 <tr><td class=tdclean0>&bull; Look at the best solution obtained, many times it is good enough to
 be used. </td></tr>
@@ -1052,8 +1080,9 @@ being trapped in local minima, but it may be useful for some systems (available 
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="add"></a><b>Additional input options and keywords</b>
-<br><br>
+<div class="section-header">
+  <a name="add"></a><b>14. Additional input options and keywords</b>
+</div>
 
 <p>
 There are some input options which are probably not of interest of the
@@ -1274,46 +1303,36 @@ scale_short=short_tol_scale\times
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="tutorials"></a><b>Third party tutorials:</b>
-<br><br>
+<div class="section-header">
+  <a name="tutorials"></a><b>15. Third party tutorials</b>
+</div>
+
+<p>
 Here are some tutorials developed by third-parties which might be useful:
+</p>
 
-<br><br>
-<a href=https://youtu.be/yCoNBvDK9w0>
-Install and Run Packmol on Window 10
-</a>
-<br>
-by: Vinay Thakur
-
-<br><br>
-<a href=https://youtu.be/Xfbdb1P_Yus>
-Packmol Software Using in Windows 10
-</a>
-<br>
-by: LAMMPS Tube
-
-<br><br>
-<a href=https://www.youtube.com/watch?v=VfYsCpkvLLA>
-Windows: Tutorial - Using Packmol to generate solvation shell around molecules.
-</a>
-<br>
-by: Filipe Camargo Dalmatti Alves Lima
-
-<br><br>
-<a href=https://www.youtube.com/watch?v=FWC6yy04NLY>
-PACKMOL tutorial- Solvation of proteins in non-standard solvents
-</a>
-<br>
-by: Mohamed Shehata 
-
-<br><br>
-<a href=https://drwongssolutions.ca/initial.html>
-Preparation of initial configuration of polymers for MD simulation 
-</a>
-<br>
-by: Jeremy Wong
-
-<br><br>
+<ul>
+  <li>
+    <a href=https://youtu.be/yCoNBvDK9w0>Install and Run Packmol on Window 10</a>
+    <br>by: Vinay Thakur
+  </li>
+  <li>
+    <a href=https://youtu.be/Xfbdb1P_Yus>Packmol Software Using in Windows 10</a>
+    <br>by: LAMMPS Tube
+  </li>
+  <li>
+    <a href=https://www.youtube.com/watch?v=VfYsCpkvLLA>Windows: Tutorial - Using Packmol to generate solvation shell around molecules</a>
+    <br>by: Filipe Camargo Dalmatti Alves Lima
+  </li>
+  <li>
+    <a href=https://www.youtube.com/watch?v=FWC6yy04NLY>PACKMOL tutorial- Solvation of proteins in non-standard solvents</a>
+    <br>by: Mohamed Shehata
+  </li>
+  <li>
+    <a href=https://drwongssolutions.ca/initial.html>Preparation of initial configuration of polymers for MD simulation</a>
+    <br>by: Jeremy Wong
+  </li>
+</ul>
 
 <!-- END SECTION -->
 
