@@ -2,97 +2,135 @@
 ---
 {% include_relative head.shtml %}
 
-<table width="80%" align="center">
-<tr><td class="tdclean0">
-
 <h3>Download</h3>
 
-Packmol is free software. You can redistribute it and/or modify it under
-the terms of the 
-<a target="_blank" href=https://opensource.org/licenses/MIT>
-MIT License.
-</a>
-<br><br>
-In order to keep our motivation in developing the software, we kindly
-ask that you to cite the reference below
-in your publications if the software was useful:   
-<br><br>
-        L. Mart&iacute;nez, R. Andrade, E. G. Birgin, J. M.
-Mart&iacute;nez.
-<b>Packmol: A package for building initial configurations for molecular
-dynamics simulations.</b>
-<em> Journal of Computational Chemistry</em>, 30(13):2157-2164, 2009.
-<br><br>
+<div class="info-box">
+  <p>
+    Packmol is free software. You can redistribute it and/or modify it under
+    the terms of the 
+    <a target="_blank" href="https://opensource.org/licenses/MIT">MIT License</a>.
+  </p>
+  <p>
+    In order to keep our motivation in developing the software, we kindly
+    ask that you cite the reference below in your publications if the software was useful:
+  </p>
+  <p>
+    <strong>L. Martínez, R. Andrade, E. G. Birgin, J. M. Martínez.</strong>
+    <em>Packmol: A package for building initial configurations for molecular
+    dynamics simulations.</em>
+    Journal of Computational Chemistry, 30(13):2157-2164, 2009.
+  </p>
+</div>
 
-<h3>How to download and install Packmol:</h3>
+<div class="install-steps">
+  <div class="install-step">
+    <h4><span class="step-number">1</span>Julia Wrapper (recommended)</h4>
 
-<b>The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
-is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>:</b>
+    <h4><span class="step-number">a</span>Install Julia</h4>
+    <p>
+      Download and install the Julia programming language from:
+      <a target="_julia_" href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
+    </p>
 
-<br><br>
-<b>a) Install the Julia programming language from:</b> <a target=_julia_ href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
-<br><br>
+    <h4><span class="step-number">b</span>Interactive Usage</h4>
+    <p><strong>b.1) Install Packmol:</strong></p>
+    <p>Open Julia and type:</p>
+    <pre><code>julia> import Pkg; Pkg.add("Packmol")</code></pre>
+    <p><strong>b.2) Running Packmol:</strong></p>
+    <p>Inside the Julia REPL, type:</p>
+    <pre><code>julia> using Packmol; run_packmol()</code></pre>
+    <p>This will open a GUI from which you will be able to select the input file to be used by Packmol.</p>
 
-<b> b) For interactive usage: </b>
-<br>
-<b>b.1)</b> Install Packmol: open Julia and type: &nbsp;&nbsp;<code><b>julia></b> import Pkg; Pkg.add("Packmol")</code>
-<br>
-<b>b.2)</b> Running Packmol: inside the Julia REPL, type: &nbsp;&nbsp;<code><b>julia></b> using Packmol; run_packmol()</code>
-<br>
-This will open a GUI from which you will be able to select the input file to be used by Packmol.
+    <h4><span class="step-number">c</span>Command-line Interface</h4>
+    <div class="info-box">
+      <p>The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.</p>
+    </div>
+    <p><strong>c.1) Install the Packmol app:</strong></p>
+    <pre><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></pre>
+    <p><strong>c.2) Run Packmol as standalone app from the shell:</strong></p>
+    <pre><code>packmol -i input.inp</code></pre>
+    <p>Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.</p>
 
-<br>
-<br>
+    <div class="version-badges">
+      <strong>Current versions:</strong><br>
+      <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol" alt="Packmol version">
+      <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl" alt="Packmol.jl version">
+    </div>
+  </div>
+</div>
 
-<b> c) Command-line interface (<code>.julia/bin/packmol</code> executable must be in the path after installation): </b>
-<br>
-<b>c.1)</b> Install the <code>Packmol</code> app by executing: &nbsp;&nbsp;<code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code>
-<br>
-<b>c.2)</b> Running Packmol, as standalone app from the shell: &nbsp;&nbsp;<code>packmol -i input.inp</code>
-<br><br>
-Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
+<hr>
 
-<br><br>
-Current versions: 
-<img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol">
-<img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl">
+<div class="install-steps">
+  <div class="install-step">
+    <h4><span class="step-number">2</span>Python Package Index (PyPI)</h4>
+    
+    <p>Install using pip:</p>
+    <pre><code>pip install packmol</code></pre>
+    
+    <p>Or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:</p>
+    <pre><code>uvx packmol</code></pre>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://img.shields.io/pypi/v/packmol.svg" alt="PyPI version">
+    </div>
+  </div>
 
-<br>
-<br>
+  <div class="install-step">
+    <h4><span class="step-number">3</span>Source Code from GitHub</h4>
+    
+    <p>
+      <a href="https://github.com/m3g/packmol/releases/latest" target="_blank">
+        <strong class="blink">[LATEST RELEASE REPOSITORY]</strong>
+      </a>
+    </p>
+    
+    <p>
+      This is the repository of the source code of the latest release of Packmol.
+      Download the <tt>zip</tt> or <tt>tar.gz</tt> files, which contain the source code. 
+      Next, follow the <a href="./userguide.shtml">installation instructions</a> to compile the package.
+    </p>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://img.shields.io/github/release/m3g/packmol.svg?label=latest" alt="Latest release version">
+    </div>
+  </div>
 
-<h3> Installation alternatives: </h3> 
+  <div class="install-step">
+    <h4><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
+    
+    <p>
+      <a href="https://github.com/conda-forge/packmol-feedstock">
+        <strong class="blink">[conda-forge/packmol-feedstock]</strong>
+      </a>
+    </p>
+    
+    <div class="warning-box">
+      <strong>Note:</strong> We do <em>not</em> maintain these packages. Please report any issues 
+      to the maintainers of the conda-forge feedstock.
+    </div>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://anaconda.org/conda-forge/packmol/badges/version.svg" alt="Conda version">
+    </div>
+  </div>
+</div>
 
-<b>2. Python Package Index (PyPI)</b><br>
-You can install it using pip: <code>pip install packmol</code>
-<br>
-or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>: <code>uvx packmol</code>
-<br>
-Current version: <img src="https://img.shields.io/pypi/v/packmol.svg">
+<hr>
 
-<br><br>
-<b>3.</b><a target=_blank_ href=https://github.com/m3g/packmol/releases/latest target=_blank_>
-<span class="blink"><b>[LATEST RELEASE REPOSITORY]:</b></span></a>
-This is the repository of the source-code of the latest release of Packmol.
-Download the <tt>zip</tt> or <tt>tar.gz</tt> file files, which contain the source code. 
-Next, follow the <a href="./userguide.shtml">installation instructions</a> to install the
-package.
-Current version: <img src=https://img.shields.io/github/release/m3g/packmol.svg?label="latest" alt="Packmol latest release version">
-
-<br><br>
-<b>4. </b><a href=https://github.com/conda-forge/packmol-feedstock><span class="blink"><b>[conda-forge/packmol-feedstock]:</b></span></a>
-Conda and mamba package managers:
-We *do not* maintain these packages, so please report any issues to the maintainers of the conda-forge feedstock.
-Current version: <img src=https://anaconda.org/conda-forge/packmol/badges/version.svg>
-
-<br><br>
-If you experience any problem while downloading, please write to leandromartinez98@gmail.com <br><br>
-</center>
-<br><br>
-Packmol is under constant development, and new features and bug fixes
-may introduce other bugs and regressions. Please let us know if you find any
-problem, or regressions, so we can fix them.
-
-</td></tr>
-</table>
+<div class="info-box">
+  <p>
+    If you experience any problem while downloading, please write to 
+    <a href="mailto:leandromartinez98@gmail.com">leandromartinez98@gmail.com</a>
+  </p>
+  <p>
+    Packmol is under constant development, and new features and bug fixes
+    may introduce other bugs and regressions. Please let us know if you find any
+    problem, or regressions, so we can fix them.
+  </p>
+</div>
 
 {% include_relative tail.shtml %}

@@ -3,789 +3,691 @@
 {% include_relative head.shtml %}
 {% include_relative mathjax.html %}
 
-<h3>User guide</h3>
-<i>Important:</i> always download the latest version of Packmol
-in order that all features are available.
-<br><br>
+<h3>User Guide</h3>
 
-<!-- START SECTION -->
-<b> Contents</b>
+<div class="info-box">
+  <strong>Important:</strong> Always download the latest version of Packmol to ensure all features are available.
+</div>
 
-<br>
-<a href="./userguide.shtml#need">1. What do you need?</a><br>
-<a href="./userguide.shtml#comp">2. How to compile Packmol.</a><br>
-<a href="./userguide.shtml#run">3. Running Packmol.</a><br>
-<a href="./userguide.shtml#basic">4. Basic input structure.</a><br>
-<a href="./userguide.shtml#more">5. More types of molecules.</a><br>
-<a href="./userguide.shtml#atom">6. Atom selections.</a><br>
-<a href="./userguide.shtml#types">7. Types of constraints.</a><br>
-<a href="./userguide.shtml#pbc">8. Periodic boundary conditions.</a><br>
-<a href="./userguide.shtml#radii">9. Different radii for different atoms.</a><br>
-<a href="./userguide.shtml#solvate.tcl">10. Solvating a large molecule automatically.</a><br>
-<a href="./userguide.shtml#numb">11. Controlling residue numbering in PDB files.</a><br>
-<a href="./userguide.shtml#restart">12. Building very large systems: using restart files.</a><br>
-<a href="./userguide.shtml#conv">13. Convergence problems: what to try.</a><br>
-<a href="./userguide.shtml#add">14. Additional input options and keywords.</a><br>
-<a href="./userguide.shtml#tutorials">15. Some tutorials available online.</a>
-<br><br>
+<div class="table-contents">
+  <b>Contents</b>
+  <a href="./userguide.shtml#need">1. What do you need?</a>
+  <a href="./userguide.shtml#comp">2. How to compile Packmol</a>
+  <a href="./userguide.shtml#run">3. Running Packmol</a>
+  <a href="./userguide.shtml#basic">4. Basic input structure</a>
+  <a href="./userguide.shtml#more">5. More types of molecules</a>
+  <a href="./userguide.shtml#atom">6. Atom selections</a>
+  <a href="./userguide.shtml#types">7. Types of constraints</a>
+  <a href="./userguide.shtml#pbc">8. Periodic boundary conditions</a>
+  <a href="./userguide.shtml#radii">9. Different radii for different atoms</a>
+  <a href="./userguide.shtml#solvate.tcl">10. Solvating a large molecule automatically</a>
+  <a href="./userguide.shtml#numb">11. Controlling residue numbering in PDB files</a>
+  <a href="./userguide.shtml#restart">12. Building very large systems: using restart files</a>
+  <a href="./userguide.shtml#conv">13. Convergence problems: what to try</a>
+  <a href="./userguide.shtml#add">14. Additional input options and keywords</a>
+  <a href="./userguide.shtml#tutorials">15. Some tutorials available online</a>
+</div>
 
-<!-- END SECTION -->
+<div class="section-header">
+  <a name="need"></a><b>1. What do you need?</b>
+</div>
 
+<p>
+  You need coordinate files for each type of molecule you want your
+  simulation to have. For example, if you are going to simulate a solution
+  of water and ions, you will need a coordinate file for <em>one</em> water
+  molecule, and independent coordinate files for each of the ions. These
+  coordinate files may be in the PDB, TINKER, or XYZ (MOLDEN) formats.
+</p>
 
-<!-- START SECTION -->
-<a name="need"></a><b>What do you need? </b>
-<br><br>
+<div class="info-box">
+  <strong>Tip:</strong> The simplest and best molecular structure builder we have used is 
+  <a href="http://biomodel.uah.es/en/DIY/JSME/draw.en.htm">this one</a>.
+</div>
 
-You need coordinate files for each type of molecule you want your
-simulation to have. For example, if you are going to simulate a solution
-of water and ions, you will need a coordinate file for <i>one</i>  water
-molecule, and independent coordinates files for each of the ions. This
-coordinate files may be in the PDB, TINKER, or XYZ (MOLDEN) formats. The
-simplest and best molecular structure builder we have used is 
-<a href=http://biomodel.uah.es/en/DIY/JSME/draw.en.htm>this one</a>.
-<br><br>
-Of course, you also need the <tt>Packmol</tt> package, which you can get from
-<pre><tt>  http://m3g.iqm.unicamp.br/packmol
-</tt></pre>
-by clicking on the <a target="contents" href="./download.shtml">
-Download </a> link. 
+<p>
+  Of course, you also need the <code>Packmol</code> package, which you can get from:
+</p>
+<pre><code>http://m3g.iqm.unicamp.br/packmol</code></pre>
 
+<p>
+  by clicking on the <a href="./download.shtml">Download</a> link. 
+  You can download the file <code>packmol-21.0.0.tar.gz</code> which contains the 
+  whole source code of Packmol. The <code>21.0.0</code> is the version number, which 
+  might change relative to this example.
+</p>
 
-You can download the file
-<tt>packmol-21.0.0.tar.gz</tt> which contains the whole source code of
-Packmol. The <tt>21.0.0</tt> is the version number, which might change
-relative to this example.
-<br><br>
-Windows users: We suggest trying to use the Julia-based distribution
-available at <a href="https://github.com/m3g/Packmol.jl">[Packmol.jl]</a>,
-which works on all platforms and doesn't need compilation.
-<br><br>
+<div class="success-box">
+  <strong>Windows users:</strong> We suggest trying to use the Julia-based distribution
+  available at <a href="https://github.com/m3g/Packmol.jl">Packmol.jl</a>,
+  which works on all platforms and doesn't need compilation.
+</div>
 
-<!-- END SECTION -->
+<div class="section-header">
+  <a name="comp"></a><b>2. How to compile Packmol</b>
+</div>
 
-<!-- START SECTION -->
-<a name="comp"></a><b>How to compile Packmol </b>
-<br>
-<br>
-<b>Follow these instructions if you have downloaded the Packmol source code.
-Most users should have downloaded the Julia wrapper, which doesn't need compilation.</b>
-<br><br>
-Once you have downloaded the <tt>packmol-21.0.0.tar.gz</tt> file from the home-page,
-you need to expand the files and compile the package. This is done by:
-<br><br>
-Expanding the files:
-<pre><tt>  tar -xvzf packmol-21.0.0.tar.gz</tt></pre>
-This will create a directory called <tt>packmol</tt> inside which you can find
-the source code. You can build the executable by:
-<pre><tt>  cd packmol
-  make
-</tt></pre>
-That's it, if no error was reported the packmol executable was 
-built. Note that <tt>21.0.0</tt> is the version number, which may differ
-relative to this example.
-<br><br>
------
-<br><br>
-If you have problems, let the configure script find a suitable
-compiler for you:<br><br>
-<tt>chmod +x ./configure </tt>  (this makes the script executable)
-<br><br>
-<tt>./configure </tt> (this executes the script)
-<br><br>
-If the script was not able to find a suitable compiler, then
-you can manually set the compiler by:
-<br><br>
-<tt>./configure /path/to/your/compiler/yourcompiler</tt>
-<br><br>
-Then, run the "make" command again:
-<br><br>
-<tt>make</tt>
-<br><br>
-If no error was
-detected, an executable called packmol is now ready.
-<br><br>
-<!-- END SECTION -->
+<div class="warning-box">
+  <strong>Note:</strong> Follow these instructions if you have downloaded the Packmol source code.
+  Most users should have downloaded the Julia wrapper, which doesn't need compilation.
+</div>
 
-<!-- START SECTION -->
-<a name="run"></a><b>Running Packmol </b>
-<br><br>
-Follow the instructions on running Packmol using the Julia wrapper, which is the easiest way to run Packmol on any platform.
+<p>
+  Once you have downloaded the <code>packmol-21.0.0.tar.gz</code> file from the home page,
+  you need to expand the files and compile the package. This is done by:
+</p>
 
-From the command-line, there are two alternatives to run Packmol:
-<br><br>
-- Using input file redirection:
-<br><br><tt>
-packmol < packmol.inp
-<br><br></tt>
-- Using command line arguments to specify the input and, optionally, the output file (from v21.1.0 onwards):
-<br><br><tt>
-packmol -i packmol.inp -o output.pdb
-<br><br></tt>
-The <tt>-o output.pdb</tt>  is optional, and will overwrite the definition of the output file in the input file.
-<br><br>
-The <code>packmol.inp</code> file is the input file (you can obtain example files by
-clicking at the 'Input examples' link on the left). <br><br> 
-A successful packing will end with something like
-<tt><br><br>
-<center>
-------------------------------
-<br>
-Success!<br>
-Final objective function value: .22503E-01<br>
-Maximum violation of target distance:   0.000000<br>
-Maximum violation of the constraints: .78985E-02<br>
-<br>
-------------------------------
-</center>
-<br><br></tt>
-Where the maximum violation of the target distance indicates the
-difference between the minimum distance between atoms required by
-the user and that of the solution. It will not be greater than 10<sup>-2</sup> 
-The maximum violation of the constrains must not be greater than 10<sup>-2</sup>.
-<br><br>
-A good idea is to check if your constraints are correct by using
-the "check" keyword in the input file. With this option a rough
-initial approximation will be built but no actual packing will
-be performed. You can look at the output to see if the molecules
-are within the desired regions (but do not expect a good structure
-at this point!). Just add the word "check" to any line of your
-input file (available since 28 Feb 2008).
-<br><br>
-<hr><br>
-<u>Common issues:</u> <br><br>
- - If you get "Command not found" when running Packmol, use <br>
-<tt>./packmol < packmol.inp</tt><br>
-(with a "./" before "packmol") 
-or add the directory where the packmol executable is located to your path.
-<br><br>
- - If you run packmol and get the message "Killed", this is because the
-package is trying to allocate more memory than available for static                          
-storage. Open the "sizes.i" file and decrease the "maxatom" parameter to
-the number of atoms of your system, compile the package again, and try
-again.
-<br><br>
-<!-- END SECTION -->
+<h4>Expanding the files:</h4>
 
-<!-- START SECTION -->
-<a name="basic"></a><b>Basic input structure </b>
-<br><br>
+<pre><code>tar -xvzf packmol-21.0.0.tar.gz</code></pre>
 
-The minimal input file must contain the distance tolerance required (for
-systems at room temperature and pressure and coordinates in Angstroms,
-2.0 Å is a good value <a href=./tolerance-note.shtml onClick="return popup(this, 'Help')">[note]</a>). This is specified with
-<br><br>
-<tt>tolerance 2.0</tt>
-<br><br>
-The file must contain also the name of the output file to be created,
-specified with
-<br><br>
-<tt>output test.pdb</tt>
-<br><br>
-and the file type (pdb, tinker, or xyz, pdb is the default value),
-<br><br>
-<tt>filetype pdb</tt>
-<br><br>
-At least one type of molecule must be present. This is set by the
-<tt>structure ... end structure</tt> section, for example, if
-<tt>water.pdb</tt> is the
-file containing the coordinates of a single water molecule, you could
-add to your input file something like
-<br><br>
-<tt>
-structure water.pdb     <br>
-&nbsp;&nbsp;number 2000   <br>
-&nbsp;&nbsp;inside cube 0. 0. 0. 40.  <br>
-end structure
-</tt>
-<br><br>
-This section specifies that 2000 molecules of the <tt>water.pdb</tt> type, will
-be placed inside a cube with minimum coordinates
-$(x,y,z) = (0,0,0)$
-and
-maximum coordinates $(40,40,40)$. Therefore, this minimum input file must
-be:
-<br><br>
-<tt>
-tolerance 2.0 <br>
-output test.pdb <br>
-filetype pdb <br>
-structure water.pdb <br>
-&nbsp;&nbsp;number 2000 <br>
-&nbsp;&nbsp;inside cube 0. 0. 0. 40.  <br>
-end structure
-</tt>
-<br><br>
-Running Packmol with this input file will fill a cube of side 40.0 Å
-with 2000 water molecules. Every pair of atoms of different molecules
-will be separated by, at least, 2.0 Å and the molecules will be
-randomly distributed inside de cube.
-<br><br>
-<!-- END SECTION -->
+<p>
+  This will create a directory called <code>packmol</code> inside which you can find
+  the source code. You can build the executable by:
+</p>
 
-<!-- START SECTION -->
-<a name="more"></a><b>More types of molecules </b>
-<br><br>
+<pre><code>cd packmol
+make</code></pre>
 
-You can add more types of molecules to the same region, or to different
-regions of the space, simply adding other <tt>structure ... end
-structure</tt>
-section to the input file.
-<br><br>
-<!-- END SECTION -->
+<p>
+  That's it! If no error was reported, the packmol executable was built. 
+  Note that <code>21.0.0</code> is the version number, which may differ relative to this example.
+</p>
 
-<!-- START SECTION -->
-<a name="atom"></a><b>Atom selections </b>
-<br><br>
+<hr>
 
-The coordinate file of a single molecule contains, for example, 10
-atoms. You can restrain a part of the molecule to be in a specified
-region of the space. This is useful for building vesicles where the
-hydrophilic  part of the surfactants must be pointing to the aqueous
-environment, for example. For the 10 atoms molecule, this is done by
-using the keyword atoms, as in
-<br><br>
-<tt>
-structure molecule.pdb           <br> 
-&nbsp;&nbsp;inside cube 0. 0. 0. 20.         <br> 
-&nbsp;&nbsp;atoms 9 10                       <br> 
-&nbsp;&nbsp;&nbsp;&nbsp;inside box 0. 0. 15. 20. 20. 20. <br> 
-&nbsp;&nbsp;end atoms                        <br> 
-end structure                     
-</tt>
-<br><br>
-In this case, all the atoms of the molecule will be put inside the
-defined cube, but atoms 9 and 10 will be restrained to be inside the
-box.
-<br><br>
-<!-- END SECTION -->
+<h4>If you have problems:</h4>
 
-<!-- START SECTION -->
-<a name="types"></a><b>Types  of constraints </b>
-<br><br>
+<p>Let the configure script find a suitable compiler for you:</p>
 
-There are several types of constraints that can be applied both to whole
-molecules or to parts of the molecule. These constraints define the
-region of the space in which the molecules must be at the solution. Very
-ordered systems can be built in such a way. The constraints  are:
-<br><br>
+<pre><code>chmod +x ./configure    # Makes the script executable
+./configure             # Executes the script</code></pre>
 
-<table align="center" width="80%">
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 1. </td>
-<td class=tdclean0 valign="bottom"><tt>
-fixed
-</tt></td>
-</tr>
+<p>
+  If the script was not able to find a suitable compiler, then you can manually set the compiler by:
+</p>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>fixed </tt><i>x   y   z  a   b   g</i><br><br>
+<pre><code>./configure /path/to/your/compiler/yourcompiler</code></pre>
+
+<p>Then, run the "make" command again:</p>
+
+<pre><code>make</code></pre>
+
+<p>If no error was detected, an executable called <code>packmol</code> is now ready.</p>
+
+<div class="section-header">
+  <a name="run"></a><b>3. Running Packmol</b>
+</div>
+
+<div class="info-box">
+  Follow the instructions on running Packmol using the Julia wrapper, which is the easiest way 
+  to run Packmol on any platform.
+</div>
+
+<p>From the command line, there are two alternatives to run Packmol:</p>
+
+<h4>Option 1: Using input file redirection</h4>
+
+<pre><code>packmol < packmol.inp</code></pre>
+
+<h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
+
+<pre><code>packmol -i packmol.inp -o output.pdb</code></pre>
+
+<p>
+  The <code>-o output.pdb</code> is optional, and will overwrite the definition of the 
+  output file in the input file.
+</p>
+
+<p>
+  The <code>packmol.inp</code> file is the input file (you can obtain example files by
+  clicking at the 'Input examples' link on the left).
+</p>
+
+<h4>A successful packing will end with something like:</h4>
+
+<div class="success-box">
+  <center>
+    <pre style="background: none; border: none;"><code>------------------------------
+Success!
+Final objective function value: .22503E-01
+Maximum violation of target distance:   0.000000
+Maximum violation of the constraints: .78985E-02
+------------------------------</code></pre>
+  </center>
+</div>
+
+<p>
+  Where the maximum violation of the target distance indicates the
+  difference between the minimum distance between atoms required by
+  the user and that of the solution. It will not be greater than 10<sup>-2</sup>. 
+  The maximum violation of the constraints must not be greater than 10<sup>-2</sup>.
+</p>
+
+<div class="info-box">
+  <strong>Tip:</strong> A good idea is to check if your constraints are correct by using
+  the "check" keyword in the input file. With this option, a rough
+  initial approximation will be built but no actual packing will
+  be performed. You can look at the output to see if the molecules
+  are within the desired regions (but do not expect a good structure
+  at this point!). Just add the word "check" to any line of your
+  input file (available since 28 Feb 2008).
+</div>
+
+<h4>Common issues:</h4>
+
+<div class="warning-box">
+  <ul>
+    <li>
+      <strong>If you get "Command not found"</strong> when running Packmol, use:
+      <pre><code>./packmol < packmol.inp</code></pre>
+      (with a "./" before "packmol") or add the directory where the packmol 
+      executable is located to your path.
+    </li>
+    <li>
+      <strong>If you run packmol and get the message "Killed"</strong>, this is because the
+      package is trying to allocate more memory than available for static storage. 
+      Open the "sizes.i" file and decrease the "maxatom" parameter to
+      the number of atoms of your system, compile the package again, and try again.
+    </li>
+  </ul>
+</div>
+
+<div class="section-header">
+  <a name="basic"></a><b>4. Basic input structure</b>
+</div>
+
+<p>
+  The minimal input file must contain the distance tolerance required (for
+  systems at room temperature and pressure and coordinates in Angstroms,
+  2.0 Å is a good value 
+  <a href="./tolerance-note.shtml" onClick="return popup(this, 'Help')">[note]</a>). 
+  This is specified with:
+</p>
+
+<pre><code>tolerance 2.0</code></pre>
+
+<p>The file must also contain the name of the output file to be created:</p>
+
+<pre><code>output test.pdb</code></pre>
+
+<p>and the file type (pdb, tinker, or xyz; pdb is the default value):</p>
+
+<pre><code>filetype pdb</code></pre>
+
+<p>
+  At least one type of molecule must be present. This is set by the
+  <code>structure ... end structure</code> section. For example, if
+  <code>water.pdb</code> is the file containing the coordinates of a single water molecule, 
+  you could add to your input file something like:
+</p>
+
+<pre><code>structure water.pdb
+  number 2000
+  inside cube 0. 0. 0. 40.
+end structure</code></pre>
+
+<p>
+  This section specifies that 2000 molecules of the <code>water.pdb</code> type will
+  be placed inside a cube with minimum coordinates $(x,y,z) = (0,0,0)$ and
+  maximum coordinates $(40,40,40)$. Therefore, this minimum input file must be:
+</p>
+
+<pre><code>tolerance 2.0
+output test.pdb
+filetype pdb
+structure water.pdb
+  number 2000
+  inside cube 0. 0. 0. 40.
+end structure</code></pre>
+
+<p>
+  Running Packmol with this input file will fill a cube of side 40.0 Å
+  with 2000 water molecules. Every pair of atoms of different molecules
+  will be separated by at least 2.0 Å and the molecules will be
+  randomly distributed inside the cube.
+</p>
+
+<div class="section-header">
+  <a name="more"></a><b>5. More types of molecules</b>
+</div>
+
+<p>
+  You can add more types of molecules to the same region, or to different
+  regions of the space, simply by adding other <code>structure ... end structure</code>
+  sections to the input file.
+</p>
+
+<div class="section-header">
+  <a name="atom"></a><b>6. Atom selections</b>
+</div>
+
+<p>
+  The coordinate file of a single molecule contains, for example, 10
+  atoms. You can restrain a part of the molecule to be in a specified
+  region of the space. This is useful for building vesicles where the
+  hydrophilic part of the surfactants must be pointing to the aqueous
+  environment, for example. For the 10 atoms molecule, this is done by
+  using the keyword <code>atoms</code>, as in:
+</p>
+
+<pre><code>structure molecule.pdb
+  inside cube 0. 0. 0. 20.
+  atoms 9 10
+    inside box 0. 0. 15. 20. 20. 20.
+  end atoms
+end structure</code></pre>
+
+<p>
+  In this case, all the atoms of the molecule will be put inside the
+  defined cube, but atoms 9 and 10 will be restrained to be inside the box.
+</p>
+
+<div class="section-header">
+  <a name="types"></a><b>7. Types of constraints</b>
+</div>
+
+<p>
+  There are several types of constraints that can be applied both to whole
+  molecules or to parts of the molecule. These constraints define the
+  region of the space in which the molecules must be at the solution. Very
+  ordered systems can be built in such a way. The constraints are:
+</p>
+
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">1</div>
+    <div class="constraint-name">fixed</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>fixed <em>x y z a b g</em></code>
+  </div>
+  <p>
 This options holds the molecule
 fixed in the position specified by the parameters. <i>x, y, z, a, b, g,</i>
 which are six real numbers. The first three determine the translation of
 the molecule relative to its position in the coordinate file. The latter
 three parameters are rotation angles (in radians). For this option it is
 required that only one molecule is set. It may be accompanied by the
-keyword <tt>center</tt>. If this keyword is present the first three numbers
+keyword <code>center</code>. If this keyword is present the first three numbers
 are the position of the baricenter (not really the center of mass,
 because we suppose that all atoms have the same mass). Therefore this
 keyword must be used in the following context:
-<br><br>
-<tt>
-structure molecule.pdb   <br>
-&nbsp;&nbsp;number 1                 <br>
-&nbsp;&nbsp;center            <br>
-&nbsp;&nbsp;fixed 0. 0. 0. 0. 0. 0.  <br>
-end structure
-</tt>
-<br><br>
-In this example, the molecule will be fixed with its center 
+</p>
+
+<pre><code>structure molecule.pdb
+  number 1
+  center
+  fixed 0. 0. 0. 0. 0. 0.
+end structure</code></pre>
+
+<p>
+In this example, the molecule will be fixed with its center at
 the origin and no rotation.
+</p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">2</div>
+    <div class="constraint-name">inside cube</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>inside cube <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> d</em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub></i> and <i>d</i>
+    are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
+    by this option will satisfy, at the solution:
+  </p>
+  <center>
+    <i>x<sub>min</sub></i> &lt; <i>x</i> &lt; <i>x<sub>min</sub></i> + <i>d</i><br>
+    <i>y<sub>min</sub></i> &lt; <i>y</i> &lt; <i>y<sub>min</sub></i> + <i>d</i><br>
+    <i>z<sub>min</sub></i> &lt; <i>z</i> &lt; <i>z<sub>min</sub></i> + <i>d</i>
+  </center>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">3</div>
+    <div class="constraint-name">outside cube</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>outside cube <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> d</em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub></i> and <i>d</i>
+    are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
+    by this option will satisfy, at the solution:
+  </p>
+  <center>
+    <i>x</i> &lt; <i>x<sub>min</sub></i> or <i>x</i> &gt; <i>x<sub>min</sub></i> + <i>d</i><br>
+    <i>y</i> &lt; <i>y<sub>min</sub></i> or <i>y</i> &gt; <i>y<sub>min</sub></i> + <i>d</i><br>
+    <i>z</i> &lt; <i>z<sub>min</sub></i> or <i>z</i> &gt; <i>z<sub>min</sub></i> + <i>d</i>
+  </center>
+</div>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-2. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside cube
-</tt></td>
-</tr>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">4</div>
+    <div class="constraint-name">inside box</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>inside box <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> x<sub>max</sub> y<sub>max</sub> z<sub>max</sub></em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub>, x<sub>max</sub>, y<sub>max</sub></i> and <i>z<sub>max</sub></i>
+    are six real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
+    solution:
+  </p>
+  <center>
+    <i>x<sub>min</sub></i> &lt; <i>x</i> &lt; <i>x<sub>max</sub></i><br>
+    <i>y<sub>min</sub></i> &lt; <i>y</i> &lt; <i>y<sub>max</sub></i><br>
+    <i>z<sub>min</sub></i> &lt; <i>z</i> &lt; <i>z<sub>max</sub></i>
+  </center>
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>inside cube </tt><i>x<sub>min</sub>&nbsp; y<sub>min</sub>&nbsp; z<sub>min</sub>&nbsp;    d</i><br><br>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">5</div>
+    <div class="constraint-name">outside box</div>
+  </div>
+  <div class="constraint-usage">
+    Usage: <code>outside box <em>x<sub>min</sub> y<sub>min</sub> z<sub>min</sub> x<sub>max</sub> y<sub>max</sub> z<sub>max</sub></em></code>
+  </div>
+  <p>
+    <i>x<sub>min</sub>, y<sub>min</sub>, z<sub>min</sub>, x<sub>max</sub>, y<sub>max</sub></i> and <i>z<sub>max</sub></i>
+    are six real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
+    solution:
+  </p>
+  <center>
+    <i>x</i> &lt; <i>x<sub>min</sub></i> or <i>x</i> &gt; <i>x<sub>max</sub></i><br>
+    <i>y</i> &lt; <i>y<sub>min</sub></i> or <i>y</i> &gt; <i>y<sub>max</sub></i><br>
+    <i>z</i> &lt; <i>z<sub>min</sub></i> or <i>z</i> &gt; <i>z<sub>max</sub></i>
+  </center>
+</div>
 
-<i>x<sub>min</sub> ,  y<sub>min</sub> ,  z<sub>min</sub></i> and <i>d</i>
-are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
-by this option will satisfy, at the solution:
-<center>
-<br><br>
-<i>x<sub>min</sub></i> < <i>x</i> < <i>x<sub>min</sub></i> + <i>d</i><br>
-<i>y<sub>min</sub></i> < <i>y</i> < <i>y<sub>min</sub></i> + <i>d</i><br>
-<i>z<sub>min</sub></i> < <i>z</i> < <i>z<sub>min</sub></i> + <i>d</i>
-</center>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">6</div>
+    <div class="constraint-name">inside (or outside) sphere</div>
+  </div>
+  <p>
+    Spheres are defined by equations of the general form
+  </p>
+  $$
+  (x - a)^2 + (y - b)^2 + (z - c)^2 - d^2 = 0
+  $$
+  <p>
+    and, therefore, you must provide four real parameters <i>a</i>,
+    <i>b</i>, <i>c</i> and <i>d</i> in
+    order to define it. The input syntax is, for example:
+  </p>
+  <pre><code>inside sphere 2.30 3.40 4.50 8.0</code></pre>
+  <p>
+    and therefore the coordinates of the atoms will satisfy the equation
+  </p>
+  $$
+  (x - 2.30)^2 + (y - 3.40)^2 + (z - 4.50)^2 - 8.0^2 \leq 0.0
+  $$
+  <p>
+    Other input alternative would be:
+  </p>
+  <pre><code>outside sphere 2.30 3.40 4.50 8.0</code></pre>
+  <p>
+    The <code>outside</code> parameter is similar to the <code>inside</code> parameter, but the
+    equation above uses $\geq$ instead of $\leq$ and, therefore, the
+    atoms will be placed outside the defined sphere.
+  </p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">7</div>
+    <div class="constraint-name">inside (or outside) ellipsoid</div>
+  </div>
+  <p>
+    Ellipsoids are defined by the general equation
+  </p>
+  $$
+  \frac{(x-a_1)^2}{a_2^2} +
+  \frac{(y-b_1)^2}{b_2^2} + 
+  \frac{(z-c_1)^2}{c_2^2} -
+  d^2 = 0
+  $$
+  <p>
+    The parameters must be given as in the sphere example, but now they are
+    7, and must be entered in the following order:
+  </p>
+  <div class="constraint-usage">
+    <code>inside ellipsoid <em>a<sub>1</sub> b<sub>1</sub> c<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c<sub>2</sub> d</em></code>
+  </div>
+  <p>
+    The coordinates (<i>a<sub>1</sub></i>,<i>b<sub>1</sub></i>,<i>c<sub>1</sub></i>) 
+    will define the center of the ellipsoid, the
+    coordinates (<i>a<sub>2</sub></i>,<i>b<sub>2</sub></i>,<i>c<sub>2</sub></i>) 
+    will define the relative size of the axes and <i>d</i>
+    will define the volume of the ellipsoid. Of course, the command:
+  </p>
+  <div class="constraint-usage">
+    <code>outside ellipsoid <em>a<sub>1</sub> b<sub>1</sub> c<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c<sub>2</sub> d</em></code>
+  </div>
+  <p>
+    can also be used in the same manner as the parameters for spheres. Note
+    that the case <i>a<sub>2</sub></i> = <i>b<sub>2</sub></i> = <i>c<sub>2</sub></i> = 1.0 
+    provides exactly the same as the sphere parameter. The parameters for the ellipsoid are not normalized.
+    Therefore, if <i>a<sub>2</sub></i>, <i>b<sub>2</sub></i> and <i>c<sub>2</sub></i> are large, 
+    the ellipsoid will be large, even for a small <i>d</i>.
+  </p>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">8</div>
+    <div class="constraint-name">above (or below) plane</div>
+  </div>
+  <p>
+    The planes are defined by the general equation
+  </p>
+  $$
+  ax + by + cz - d = 0
+  $$
+  <p>
+    And it is possible to restrict atoms to be above or below the plane. The syntax is:
+  </p>
+  <pre><code>above plane 2.5 3.2 1.2 6.2
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-3. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-outside cube
-</tt></td>
-</tr>
+below plane 2.5 3.2 1.2 6.2</code></pre>
+  <p>
+    where the <code>above</code> keyword will make the atoms satisfy the condition
+  </p>
+  $$
+  2.5x + 3.2y + 1.2z - 6.2 \geq 0
+  $$
+  <p>
+    and the <code>below</code> keyword will make the atoms satisfy
+  </p>
+  $$
+  2.5x + 3.2y + 1.2z - 6.2 \leq 0
+  $$
+  <p>
+    <em>Note: the <code>above</code> notation was introduced in version 20.1.1 (Sept. 5, 2020)</em>
+  </p>
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>outside cube </tt><i>x<sub>min</sub>&nbsp; y<sub>min</sub>&nbsp; z<sub>min</sub>&nbsp;    d</i><br><br>
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">9</div>
+    <div class="constraint-name">inside (or outside) cylinder</div>
+  </div>
+  <p>
+    In order to define a cylinder, it is necessary first to define a
+    line oriented in space. This line is defined in Packmol by the
+    parametric equation
+  </p>
+  $$
+  p = (a_1, b_1, c_1) + t \times (a_2, b_2, c_2)
+  $$
+  <p>
+    where $t$ is the independent parameter. The vector $(a_2, b_2, c_2)$ defines the
+    direction of the line. The cylinder is therefore defined by the distance
+    to this line, $d$, and a length $l$. Therefore, the usage must be:
+  </p>
+  <pre><code>inside cylinder a₁ b₁ c₁ a₂ b₂ c₂ d l
 
-<i>x<sub>min</sub> ,  y<sub>min</sub> ,  z<sub>min</sub></i> and <i>d</i>
-are four real numbers. The coordinates (<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained
-by this option will satisfy, at the solution:
-<center>
-<br><br>
-<i>x</i> < <i>x<sub>min</sub></i> or <i>x</i> > <i>x<sub>min</sub></i> + <i>d</i><br>
-<i>y</i> < <i>y<sub>min</sub></i> or <i>y</i> > <i>y<sub>min</sub></i> + <i>d</i><br>
-<i>z</i> < <i>z<sub>min</sub></i> or <i>z</i> > <i>z<sub>min</sub></i> + <i>d</i>
-</center>
+outside cylinder a₁ b₁ c₁ a₂ b₂ c₂ d l</code></pre>
+  <p>
+    Here, the first three parameters define the point where the cylinder
+    starts, and <i>l</i> defines the length of the cylinder. <i>d</i> defines the
+    radius of the cylinder. The simpler example is a cylinder oriented in
+    the <i>x</i> axis and starting at the origin, such as:
+  </p>
+  <pre><code>inside cylinder 0. 0. 0. 1. 0. 0. 10. 20.</code></pre>
+  <p>
+    This cylinder is specified by the points that have a distance of 10. to
+    the <i>x</i> axis (the cylinder has a radius of 10.). Furthermore, it starts at
+    the origin, therefore no atom restricted by this cylinder will have an <i>x</i>
+    coordinate less than 0. Furthermore, it has a length of 20. and, as
+    such, no atom will have an <i>x</i> coordinate greater than 20. The orientation
+    of the cylinder, parallel to the <i>x</i> axis is defined by the director
+    vector (1,0,0), the fourth, fifth and sixth parameters. Cylinders can be
+    oriented in space in anyway.
+  </p>
+</div>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">10</div>
+    <div class="constraint-name">Constrain rotations</div>
+  </div>
+  <p>
+    It is possible to constrain rotations of all molecules of each type, so
+    that they have some average orientation in space.
+  </p>
+  <p>
+    The keywords to be used are, within a structure...end structure section:
+  </p>
+  <pre><code>constrain_rotation x 180. 20.
+constrain_rotation y 180. 20.
+constrain_rotation z 180. 20.</code></pre>
+  <p>
+    Each of these keywords restricts the possible rotation angles around
+    each axis to be within 180±20 degrees (or any other value). For a
+    technical reason the rotation around the <code>z</code> axis will, alone, be
+    identical to the rotation around the <code>y</code> axis (we hope to fix
+    this some day). Constraining the three rotations will constrain
+    completely the rotations. Note that to have your molecules oriented
+    parallel to an axis, you need to constrain the rotations relative to the
+    other two.
+  </p>
+  <p>
+    For example, to constrain the rotation of your molecule along the
+    <code>z</code> axis, use something like:
+  </p>
+  <pre><code>constrain_rotation x 0. 20.
+constrain_rotation y 0. 20.</code></pre>
+  <p>
+    Note that these rotations are defined relative to the molecule in the
+    orientation which was provided by the user, in the input PDB file.
+    Therefore, it is a good idea to orient the molecule in a reasonable way
+    in order to understand the rotations. For example, if the molecule is
+    elongated in one direction, a good idea is to provide the molecule with
+    the larger dimension oriented along the <code>z</code> axis.
+  </p>
+</div>
 
+<div class="constraint-item">
+  <div class="constraint-header">
+    <div class="constraint-number">11</div>
+    <div class="constraint-name">over (or below) xygauss</div>
+  </div>
+  <p>
+    <em>(gaussian surface)</em>
+  </p>
+  <p>
+    Gaussian surfaces are defined by the equation
+  </p>
+  $$
+  h \times exp\left[−\frac{(x-a_1)^2}{2a_2^2}−\frac{(y-b_1)^2}{(2b_2^2)}\right]-(z-c)=0
+  $$
+  <p>
+    Parameters $(a_1, b_1)$ define center of the gaussian, while $c$ specifies the height in the $z$ dimension. 
+    $a_2$ and $b_2$ set the width of the gaussian in $x$ and $y$, respectively, while $h$ specifies its height. 
+    It is possible to restrict atoms to be over or below the gaussian plane. The gaussian surface 
+    as implemented is restricted to be over the $xy$ plane. The syntax is:
+  </p>
+  <pre><code>over xygauss a₁ b₁ a₂ b₂ c h
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-4. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside box
-</tt></td>
-</tr>
+below xygauss a₁ b₁ a₂ b₂ c h</code></pre>
+  <p>
+    For example, using:
+  </p>
+  <pre><code>over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0</code></pre>
+  <p>
+    the atoms satisfy the condition
+  </p>
+  $$
+  15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{2(20.0)^2}\right]-(z+23.0) \geq 0.0
+  $$
+</div>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>inside box</tt>&nbsp; 
-<i>x<sub>min</sub>&nbsp;
-y<sub>min</sub>&nbsp;
-z<sub>min</sub>&nbsp;
-x<sub>max</sub>&nbsp;   
-y<sub>max</sub>&nbsp; 
-z<sub>max</sub></i><br><br>
+<div class="section-header">
+  <a name="pbc"></a><b>8. Periodic Boundary Conditions</b>
+</div>
 
-<i>x<sub>min</sub>&nbsp;,
-y<sub>min</sub>&nbsp;,
-z<sub>min</sub>&nbsp;,
-x<sub>max</sub>&nbsp;,   
-y<sub>max</sub>&nbsp;</i> and <i> 
-z<sub>max</sub></i>
-are six real numbers. The coordinates
-(<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
-solution:
-<br><br>
-<center>
-<i>x<sub>min</sub></i> < <i>x</i> < <i>x<sub>max</sub></i><br>
-<i>y<sub>min</sub></i> < <i>y</i> < <i>y<sub>max</sub></i><br>
-<i>z<sub>min</sub></i> < <i>z</i> < <i>z<sub>max</sub></i>
-</center>
+<p>
+  As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
+  conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
+  contribution).
+</p>
 
+<h4>Usage:</h4>
 
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<p>For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:</p>
 
+<pre><code>pbc 30.0 30.0 60.0</code></pre>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-5. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-outside box
-</tt></td>
-</tr>
+<p>
+  In this case, all molecules will be set to stay in the box defined by minimum and maximum
+  coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
+  conditions at the boundaries for the computation of the inter-atomic distances.
+</p>
 
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Usage: <tt>outside box</tt>&nbsp; 
-<i>x<sub>min</sub>&nbsp;
-y<sub>min</sub>&nbsp;
-z<sub>min</sub>&nbsp;
-x<sub>max</sub>&nbsp;   
-y<sub>max</sub>&nbsp; 
-z<sub>max</sub></i><br><br>
+<p>
+  And if six parameters are provided, the periodic boundaries will be applied at
+  the minimum and maximum coordinates provided:
+</p>
 
-<i>x<sub>min</sub>&nbsp;,
-y<sub>min</sub>&nbsp;,
-z<sub>min</sub>&nbsp;,
-x<sub>max</sub>&nbsp;,   
-y<sub>max</sub>&nbsp;</i> and <i> 
-z<sub>max</sub></i>
-are six real numbers. The coordinates
-(<i>x</i>,<i>y</i>,<i>z</i>) of the atoms restrained by this option will satisfy, at the
-solution:
-<br><br>
-<center>
-<i>x</i> < <i>x<sub>min</sub></i> or <i>x</i> > <i>x<sub>max</sub></i><br>
-<i>y</i> < <i>y<sub>min</sub></i> or <i>y</i> > <i>y<sub>max</sub></i><br>
-<i>z</i> < <i>z<sub>min</sub></i> or <i>z</i> > <i>z<sub>max</sub></i>
-</center>
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
+<pre><code>pbc -15.0 -15.0 -30.0 15.0 15.0 60.0</code></pre>
 
+<p>
+  This keyword is a global keyword, and will affect all but fixed molecules. 
+  For example, this creates a periodic box of water:
+</p>
 
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-6. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) sphere
-</tt></td>
-</tr>
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Spheres are defined by equations of the general form <br><br>
-$$
-(x - a)^2 + (y - b)^2 + (z - c)^2 - d^2 = 0
-$$
-<br>
-and, therefore, you must provide four real parameters <i>a</i>,
-<i>b</i>, <i>c</i> and <i>d</i>  in
-order to define it. The input syntax is, for example,
-<br><br><tt>
-inside sphere 2.30 3.40 4.50 8.0
-</tt><br><br>
-and therefore the coordinates of the atoms will satisfy the equation
-<br><br>
-$$
-(x - 2.30)^2 + (y - 3.40)^2 + (z - 4.50)^2 - 8.0^2 \leq 0.0
-$$
-Other input alternative would be:
-<br><br><tt>
-outside sphere 2.30 3.40 4.50 8.0
-</tt><br><br>
-The <tt>outside</tt> parameter is similar to the <tt>inside</tt> parameter, but the
-equation above uses $\geq$ instead of $\leq$  and, therefore, the
-atoms will be placed outside the defined sphere.
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-7. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) ellipsoid 
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-Ellipsoids are defined by the general equation
-<br><br>
-$$
-\frac{(x-a_1)^2}{a_2^2} +
-\frac{(y-b_1)^2}{b_2^2} + 
-\frac{(z-c_1)^2}{c_2^2} -
-d² = 0
-$$
-The parameters must be given as in the sphere example, but now they are
-7, and must be entered in the following order:
-<br><br><tt>
-inside ellipsoid</tt> <i>&nbsp;
-a<sub>1</sub>&nbsp;  
-b<sub>1</sub>&nbsp;  
-c<sub>1</sub>&nbsp;  
-a<sub>2</sub>&nbsp;  
-b<sub>2</sub>&nbsp;
-c<sub>2</sub>&nbsp;  
-d</i>
-<br><br>
-The coordinates
-(<i>a<sub>1</sub></i>,<i>b<sub>1</sub></i>,<i>c<sub>1</sub></i>) 
-will define the center of the ellipsoid, the
-coordinates 
-(<i>a<sub>2</sub></i>,<i>b<sub>2</sub></i>,<i>c<sub>2</sub></i>) 
-will define the relative size of the axes and <i>d</i>
-will define the volume of the ellipsoid. Of course, the commands
-<br><br><tt>
-outside ellipsoid</tt> <i>&nbsp;
-a<sub>1</sub>&nbsp;  
-b<sub>1</sub>&nbsp;  
-c<sub>1</sub>&nbsp;  
-a<sub>2</sub>&nbsp;  
-b<sub>2</sub>&nbsp;
-c<sub>2</sub>&nbsp;  
-d</i>
-<br><br>
-can also be used in the same manner as the parameters for spheres. Note
-that the case 
-<i>a<sub>2</sub></i> = 
-<i>b<sub>2</sub></i> = 
-<i>c<sub>2</sub></i> = 1.0 provides the exactly the same as the
-sphere parameter. The parameters for the ellipsoid are not normalized.
-Therefore, if 
-<i>a<sub>2</sub></i>, 
-<i>b<sub>2</sub></i> and 
-<i>c<sub>2</sub></i> are large, the ellipsoid will be large, even
-for a small <i>d</i>.
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-8. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-above (or below) plane 
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-The planes are defined by the general equation
-<br><br>
-$$
-ax + by + cz - d = 0
-$$
-And it is possible to restrict atoms to be above or below the plane. The syntax is
-<br><br><tt>
-above plane 2.5 3.2 1.2 6.2
-<br><br>
-below plane 2.5 3.2 1.2 6.2
-<br><br></tt>
-where the <tt>above</tt> keyword will make the atoms satisfy the condition
-$$
-2.5x + 3.2y + 1.2z - 6.2 \geq 0
-$$
-and the <tt>below</tt> keyword will make the atoms satisfy
-$$
-2.5x + 3.2y + 1.2z - 6.2 \leq 0
-$$
-*Note: the <tt>above</tt> notation was introduced in version 20.1.1 (Sept. 5, 2020)
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-9. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-inside (or outside) cylinder
-</tt></td>
-</tr>
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-
-In order to define a cylinder, it is necessary first to define a
-line oriented in space. This line is defined in <tt>Packmol</tt> by the
-parametric equation
-$$
-p = (a_1, b_1, c_1) + t \times (a_2, b_2, c_2)
-$$
-where $t$ is the independent parameter. The vector 
-$(a_2, b_2, c_2)$ defines the
-direction of the line. The cylinder is therefore defined by the distance
-to this line, $d$, and a length $l$. Therefore, the usage must be:
-<br><br>
-inside cylinder 
-&nbsp;<i>a<sub>1</sub></i>  
-&nbsp;<i>b<sub>1</sub></i>  
-&nbsp;<i>c<sub>1</sub></i>  
-&nbsp;<i>a<sub>2</sub></i>  
-&nbsp;<i>b<sub>2</sub></i>  
-&nbsp;<i>c<sub>2</sub></i>  
-&nbsp;<i>d </i> 
-&nbsp;<i>l </i>
-<br><br>
-outside cylinder 
-&nbsp;<i>a<sub>1</sub></i>  
-&nbsp;<i>b<sub>1</sub></i>  
-&nbsp;<i>c<sub>1</sub></i>  
-&nbsp;<i>a<sub>2</sub></i>  
-&nbsp;<i>b<sub>2</sub></i>  
-&nbsp;<i>c<sub>2</sub></i>  
-&nbsp;<i>d </i> 
-&nbsp;<i>l </i>
-<br><br>
-
-Here, the first three parameters define the point where the cylinder
-starts, and <i>l</i> defines the length of the cylinder. <i>d</i> defines de
-radius of the cylinder. The simpler example is a cylinder oriented in
-the <i>x</i> axis and starting at the origin, such as
-<br><br><tt>
-inside cylinder 0. 0. 0. 1. 0. 0. 10. 20.
-<br><br></tt>
-This cylinder is specified by the points that have a distance of 10. to
-the <i>x</i> axis (the cylinder has a radius of 10.). Furthermore, it starts at
-the origin, therefore no atom restricted by this cylinder will have an
-<i>x</i>
-coordinate less than 0. Furthermore, it has a length of 20. and, as
-such, no atom will have an <i>x</i> coordinate greater than 20. The orientation
-of the cylinder, parallel to the <i>x</i> axis is defined by the director
-vector (1,0,0), the fourth, fifth and sixth parameters. Cylinders can be
-oriented in space in anyway.
-
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-10. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-Constrain rotations
-</tt></td>
-</tr>
-
-<tr><td class=tdclean0></td>
-<td class=tdclean0>
-It is possible to constrain rotations of all molecules of each type, so
-that they have some average orientation in space.
-<br><br>
-The keywords to be used are, within a structure...end structure section:
-<br><br><tt>
-constrain_rotation x 180. 20. <br>
-constrain_rotation y 180. 20. <br>
-constrain_rotation z 180. 20. </tt> 
-<br><br>
-Each of these keywords restricts the possible rotation angles around
-each axis to be within 180&plusmn;20 degrees (or any other value). For a
-technical reason the rotation around the <tt>z</tt> axis will, alone, be
-identical to the rotation around the <tt>y</tt> axis (we hope to fix
-this some day). Constraining the three rotations will constrain
-completely the rotations. Note that to have your molecules oriented
-parallel to an axis, you need to constrain the rotations relative to the
-other two.
-<br><br>
-For example, to constrain the rotation of your molecule along the
-<tt>z</tt> axis, use something like:
-<br><br><tt>
-constrain_rotation x 0. 20. <br>
-constrain_rotation y 0. 20. <br>
-<br></tt>
-Note that these rotations are defined relative to the molecule in the
-orientation which was provided by the user, in the input PDB file.
-Therefore, it is a good idea to orient the molecule in a reasonable way
-in order to understand the rotations. For example, if the molecule is
-elongated in one direction, a good idea is to provide the molecule with
-the larger dimension oriented along the <tt>z</tt> axis.<br><br>
-<br><br></td></tr>
-<!-- END CONSTRAINT -->
-
-<!-- START CONSTRAINT -->
-<tr>
-<td class=tdclean0 valign="bottom" align="right" width="20" height="30"> 
-11. 
-</td>
-<td class=tdclean0 valign="bottom"><tt>
-over (or below) xygauss </tt>
-<it>(gaussian surface)</it>
-</td>
-</tr>
-<tr><td class="tdclean0"></td>
-<td class="tdclean0">
-Gaussian surfaces are defined by the equation 
-$$
-h \times exp\left[−\frac{(x-a_1)^2}{2a_2^2}−\frac{(y-b_1)^2}{(2b_2^2)}\right]-(z-c)=0 
-$$
-Parameters $(a_1, b_1)$ define center of the gaussian, while $c$ specifies the height in the $z$ dimension. 
-$a_2$ and $b_2$ set the width of the gaussian in $x$ and $y$, respectively, while $h$ specifies its height. 
-It is possible to restrict atoms to be over or below the gaussian plane. The gaussian surface 
-as implemented is restricted to be over the $xy$ plane. The syntax is
-<br><br>
-<br><br><tt>
-over xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
-</tt><br><br><tt>
-below xygauss a<sub>1</sub> b<sub>1</sub> a<sub>2</sub> b<sub>2</sub> c h
-<br><br></tt>
-For example, using 
-<br><br><tt>
-over xygauss 21.0 5.0 10.0 20.0 -23.0 15.0
-</tt><br><br>
-the atoms satisfy the condition
-$$
-15.0 \times exp\left[−\frac{(x-21.0)^2}{2(10.0)^2}−\frac{(y-5.0)^2}{2(20.0)^2}\right]-(z+23.0) \geq 0.0 
-$$
-</td></tr>
-<!-- END CONSTRAINT -->
-
-
-</table>
-<br><br>
-<!-- END SECTION -->
-
-<!-- START SECTION -->
-<a name="pbc"></a><b>Periodic Boundary Conditions </b>
-<br><br>
-As of version 20.15.0, Packmol supports Orthorhombic periodic boundary
-conditions (thanks to <a href="https://github.com/yaoyi92">Yi Yao</a> for the
-contribution). 
-<br><br>
-Usage:
-<br><br>
-For example, to set a periodic boundary with a box of 30x30x60 Angstroms, use:
-<br><br>
-<code>
+<pre><code>tolerance 2.0
+output water_box.pdb
 pbc 30.0 30.0 60.0
-</code>
-<br><br>
-In this case, all molecules will be set to stay in the box defined by minimum and maximum
-coordinates <code>0.0 0.0 0.0 30.0 30.0 60.0</code>, but with periodic boundary
-conditions at the boundaries for the computation of the inter-atomic distances. 
-<br><br>
-And if six parameters are provided, the periodic boundaries will be applied at
-the minimum and maximum coordinates provided:
-<br><br>
-<code>
-pbc -15.0 -15.0 -30.0 15.0 15.0 60.0
-</code>
-<br><br>
-This keyword is a global keyword, and will affect all but fixed molecules. 
-For example, this creates a periodic box of water:
-<br><br>
-<code>
-tolerance 2.0<br>
-output water_box.pdb<br>
-pbc 30.0 30.0 60.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 1000<br>
-end<br>
-</code>
-<br><br>
-And this will create an interface of water and carbon tetrachloride, with
-the interface at the (z=0) plane:
-<br><br>
-<code>
-tolerance 2.0<br>
-output interface.pdb<br>
-pbc -20.0 -20.0 -30.0 20.0 20.0 30.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 1000<br>
-&nbsp;&nbsp;below plane 0.0 0.0 1.0 0.0<br>
-end structure<br>
-structure ccl4.pdb<br>
-&nbsp;&nbsp;number 200<br>
-&nbsp;&nbsp;above plane 0.0 0.0 1.0 0.0<br>
-end structure<br>
-</code>
+structure water.pdb
+  number 1000
+end</code></pre>
+
+<p>
+  And this will create an interface of water and carbon tetrachloride, with
+  the interface at the (z=0) plane:
+</p>
+
+<pre><code>tolerance 2.0
+output interface.pdb
+pbc -20.0 -20.0 -30.0 20.0 20.0 30.0
+structure water.pdb
+  number 1000
+  below plane 0.0 0.0 1.0 0.0
+end structure
+structure ccl4.pdb
+  number 200
+  above plane 0.0 0.0 1.0 0.0
+end structure</code></pre>
 <br><br>
 Importantly, the positions of the constraints refer to the periodic reference box,
 which is defined by the minimum and maximum coordinates provided. Fixed molecules 
@@ -795,9 +697,11 @@ positioning.
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="radii"></a><b>Different radii for different atoms </b>
-<br><br>
+<div class="section-header">
+  <a name="radii"></a><b>9. Different radii for different atoms</b>
+</div>
 
+<p>
 It is possible (from version 15.133 on) to attribute different radii to
 different atoms during the packing procedure. The default behavior is
 that all atoms will be distant to each other at the final structure at least
@@ -805,83 +709,106 @@ the distance defined by the <code>tolerance</code> parameter. In this
 case it is possible to think that the radius of every atom is half the
 distance tolerance. A tolerance of 2.0 Angs is usually fine for
 simulation of molecular systems using all-atom models.  
-<br><br>
+</p>
+
+<p>
 Most times, therefore, you won't need this option. This was requested by
 users that want to pack multiscale models, in which all-atom and
 coarse-grained representations are combined in the same system.
-<br><br>
+</p>
+
+<p>
 It is easy to define different radii to different molecules, or to atoms
 within a molecule. Just add the "<code>radius</code>" keyword within the
 <code>structure ... end structure</code> section of a molecule type, or
 within <code>atoms ... end atoms</code> section of an atom selection.
-<br><br>
-For example, in this case:<br><br>
-<code>
-tolerance 2.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 500<br>
-&nbsp;&nbsp;inside box 0. 0. 0. 30. 30. 30.<br>
-&nbsp;&nbsp;radius 1.5<br>
-end structure<br><br>
-</code>
+</p>
+
+<p>
+For example, in this case:
+</p>
+
+<pre><code>tolerance 2.0
+structure water.pdb
+  number 500
+  inside box 0. 0. 0. 30. 30. 30.
+  radius 1.5
+end structure</code></pre>
+
+<p>
 the radius of the atoms of the water molecules will be 1.5. Note that
 this implies a distance tolerance of 3.0 within water molecules.
-<br><br>
-In this case, on the other side:<br><br>
-<code>
-tolerance 2.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 500<br>
-&nbsp;&nbsp;inside box 0. 0. 0. 30. 30. 30.<br>
-&nbsp;&nbsp;atoms 1 2<br>
-&nbsp;&nbsp&nbsp;&nbsp;radius 1.5<br>
-&nbsp;&nbsp;end atoms<br>
-end structure<br><br>
-</code>
+</p>
+
+<p>
+In this case, on the other side:
+</p>
+
+<pre><code>tolerance 2.0
+structure water.pdb
+  number 500
+  inside box 0. 0. 0. 30. 30. 30.
+  atoms 1 2
+    radius 1.5
+  end atoms
+end structure</code></pre>
+
+<p>
 only atoms 1 and 2 of the water molecule (as listed in the water.pdb
 file) will have a radius of 1.5, while atom 3 will have a radius of 1.0,
-as defined by the tolerance of 2.0 
-<br><br>
+as defined by the tolerance of 2.0
+</p>
+
+<p>
 Always remember that the distance tolerance is the sum of the radii of
 each pair of atoms, and that the greatest the radii the harder the
 packing. Also, keep in mind that your minimization and equilibration
 will take care of the actual atom radii, and Packmol is designed only to
 give a first coordinate file.  
-<br><br>
+</p>
+
+<p>
 Finally, currently the restrictions are set to be fulfilled by the
 <b>center</b> of the atoms. Therefore, if you are using large radii, you
 might want to adjust the sizes of the boxes, spheres, etc., so that the
 whole atoms are within the desired regions. For standard all-atom
 simulations this is not usually an issue because the radii are small.
-<br><br>
+</p>
+
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="solvate.tcl"></a><b>Solvating large molecules automatically </b>
-<br><br>
+<div class="section-header">
+  <a name="solvate.tcl"></a><b>10. Solvating large molecules automatically</b>
+</div>
 
+<p>
 The Packmol distribution includes the <code>solvate.tcl</code> script,
 which is used to solvate large molecules, usually proteins, with water
 and ions (Na<sup>+</sup> and Cl<sup>-</sup>). Given the PDB file of the
-biomolecule, just run the script with: <br><br>
-<code>
-solvate.tcl PROTEIN.pdb
-</code><br><br>
+biomolecule, just run the script with:
+</p>
+
+<pre><code>solvate.tcl PROTEIN.pdb</code></pre>
+
+<p>
 And the script will create a input file for packmol called
-<code>packmol_input.inp</code>. With this file, run Packmol with<br><br
-<code>
-packmol < packmol_input.inp
-</code><br><br>
+<code>packmol_input.inp</code>. With this file, run Packmol with
+</p>
+
+<pre><code>packmol < packmol_input.inp</code></pre>
+
+<p>
 And your large molecule will be solvated by a shell of 15. Angs. of
 water, and ions to keep the system neutral and a physiological NaCl
 concentration of 0.16M. The script usually makes reasonable choices for
 every parameter (number of water molecules, number of ions, etc.), but
 these may be controlled manually with additional options, as described
-below:<br><br>
-<code>
-solvate.tcl structure.pdb -shell 15. -charge +5 -density 1.0 -i pack.inp
--o solvated.pdb
-</code>
+below:
+</p>
+
+<pre><code>solvate.tcl structure.pdb -shell 15. -charge +5 -density 1.0 -i pack.inp
+-o solvated.pdb</code></pre>
 <br><br>
 <table>
 <tr><td class=tdclean0 valign=top>
@@ -920,44 +847,56 @@ the suggested periodic boundary condition dimensions to be used.
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="numb"></a><b>Controlling residue numbering in PDB files.</b>
-<br><br>
+<div class="section-header">
+  <a name="numb"></a><b>11. Controlling residue numbering in PDB files</b>
+</div>
 
+<p>
 Since Packmol will create one or more copies of your molecules in a
 new PDB file, there are some options on how residue numbers are set to
 these new molecules. There are four options, which are set with the
-<tt>resnumbers</tt> keyword. This keyword may assume three values, 0, 1,
-2 or 3, and must be inserted within the <tt>structure ... end structure</tt>
-section of each type of molecule. The options are: <br><br>
-<tt>
-resnumbers 0 
-</tt><br><br>
+<code>resnumbers</code> keyword. This keyword may assume three values, 0, 1,
+2 or 3, and must be inserted within the <code>structure ... end structure</code>
+section of each type of molecule. The options are:
+</p>
+
+<p>
+<code>resnumbers 0</code>
 In this case the residue numbers of all residues will correspond to the
 molecule of each type, independently of the residue
 numbering of the original pdb file. This means that if you pack 10
 water molecules and 10 ethanol molecules, the water molecules will be numbered 
 1 to 10, and the ethanol molecules will be numbered 1 to 10. 
-<br><br>
-<tt>
-resnumbers 1
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 1</code>
+</p>
+
+<p>
 In this case, the residue numbers of the original pdb files are kept
 unmodified. This means that if you pack 10 proteins of 5 residues, the
 residue numbers will be preserved and, therefore, they will be
 repeated for equivalent residues in each molecule of the same protein.
-<br><br>
-<tt>
-resnumbers 2
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 2</code>
+</p>
+
+<p>
 In this case, the residue numbers of all residues for this structure
 will be numbered sequentially according to the number of residues that
 are printed previously in the same file. This means that if you pack
 10 proteins of 5 residues, there will be residue numbers ranging
 from 1 to 50.
-<br><br>
-<tt>
-resnumbers 3
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 3</code>
+</p>
+
+<p>
 In this case, the numbering of the residues will correspond to the
 sequential numbering of all residues in the file. That is, if you
 pack a protein with 150 residues followed by 10 water molecules, and
@@ -966,22 +905,28 @@ water molecules will be numbered from 151 to 161. Note: If you use
 this option for a protein, the whole protein will have its residue
 numbers overwritten by the same number, corresponding to the 
 residue that would follow in the complete structure. 
-<br><br>
+</p>
+
+<p>
 For example, this keyword may be used as in:
-<pre><tt>structure peptide.pdb  
+</p>
+
+<pre><code>structure peptide.pdb  
   number 10               
   resnumbers 1            
   inside box 0. 0. 0. 20. 20. 20.
-end structure        
-</tt></pre>
+end structure</code></pre>
+
+<p>
 <em>Default:</em> The default behavior is to use 0 for structures with
 only one residue and 1 for structures with more than one residue.
-<br><br>
-<em> Chain identifier: </em><br>
+</p>
+
+<p>
+<em>Chain identifier:</em><br>
 It is also possible to modify the "chain" identifiers of PDB files.
 By default, each type of molecule is set to a "chain". On the other side,
-using the <br><br><code>changechains</code><br><br> 
-whithin the <code>structure...end structure</code>
+using the <code>changechains</code> keyword within the <code>structure...end structure</code>
 section of a type of molecule, the chains will alternate between
 two values ("A" and "B" for example). This might be useful if the
 molecules are peptides, and topology builders sometimes think
@@ -995,37 +940,49 @@ where "D" is the desired identifier (Do not use "#").
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="restart"></a><b>Building very large systems: using restart files </b>
-<br><br>
+<div class="section-header">
+  <a name="restart"></a><b>12. Building very large systems: using restart files</b>
+</div>
+
+<p>
 From version 16.143 on, it is possible to build the system from multiple
 and independent executions of Packmol by the use of restart files. In
 order to write a restart file, the following keyword must be used:
-<tt>
-restart_to restart.pack
-</tt>
-where <tt>restart.pack</tt> is the name of the restart file to be
+
+<pre><code>restart_to restart.pack</code></pre>
+
+<p>
+where <code>restart.pack</code> is the name of the restart file to be
 created. It is possible to write restart files for the whole system, if
-the keyword is put outside <tt>structure...end structure</tt> sections,
+the keyword is put outside <code>structure...end structure</code> sections,
 or to write a restart file for a specific part of the system, using, for
 instance:
-<pre><tt>structure water.pdb
+</p>
+
+<pre><code>structure water.pdb
   number 1000
   inside cube 0. 0. 0. 40.
   restart_to water1.pack
-end structure
-</tt></pre>
-This will generate a restart file for the water molecules only.
-<br><br>
+end structure</code></pre>
 
+<p>
+This will generate a restart file for the water molecules only.
+</p>
+
+<p>
 These restart files can be used to start a new execution of Packmol with
-more molecules. The <tt>restart_from</tt> keyword must then be used. For
-example: 
-<pre><tt>structure water.pdb
+more molecules. The <code>restart_from</code> keyword must then be used. For
+example:
+</p>
+
+<pre><code>structure water.pdb
   number 1000
   inside cube 0. 0. 0. 40.
   restart_from water1.pack
 end structure
 </tt></pre>
+
+<p>
 The new input file might contain other molecules, as a regular Packmol
 input file, and these water molecules will be packed together with the
 new molecules, but starting from the previous runs. This can be used,
@@ -1034,24 +991,32 @@ bilayers could be built and, later, different solvents can be added to
 the bilayer, without having to restart the whole system construction
 from scratch every time. This could also be used to add some molecule to
 the bilayer.
-<br><br>
+</p>
+
+<p>
 <em>Tip:</em> the restart file can be used to restart the position of a
 <em>smaller</em> number of molecules of the same type. 
 For instance, if a new molecule is introduced
 inside a previous set of molecules (a lipid bilayer, for instance), you
 can tell Packmol to pack less molecules of the original set, in order to
 provide space for the new structure, while using the original restart
-file of more molecules. That is, a <tt> restart_from water1.pack </tt>
+file of more molecules. That is, a <code>restart_from water1.pack</code>
 similar to the ones of the example above could be used to restart the
-positions of 800 molecules.  
+positions of 800 molecules.
+</p>  
 <br><br>
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="conv"></a><b>Convergence problems: what to try </b>
-<br><br>
+<div class="section-header">
+  <a name="conv"></a><b>13. Convergence problems: what to try</b>
+</div>
+
+<p>
 Sometimes Packmol is not able to find an adequate packing solution. Here
-are some tips to try to overcome these difficulties:<br><br>
+are some tips to try to overcome these difficulties:
+</p>
+
 <table>
 <tr><td class=tdclean0>&bull; Look at the best solution obtained, many times it is good enough to
 be used. </td></tr>
@@ -1067,21 +1032,21 @@ first and then use it as a fixed molecule for a solvation run.</td></tr>
 improve the optimization: 
 <table width=90% align=center>
 <tr><td class=tdclean0 valign=top>1.</td>
-<td class=tdclean0><tt>discale [real]</tt><br>
+<td class=tdclean0><code>discale [real]</code><br>
 This option controls the distance tolerance actually used in the
 local optimization method. It was found that using larger distances
-helps sometimes. Try setting <tt>discale</tt> to 1.5, for example.
+helps sometimes. Try setting <code>discale</code> to 1.5, for example.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>2.</td>
-<td class=tdclean0><tt>maxit [integer]</tt><br>
+<td class=tdclean0><code>maxit [integer]</code><br>
 This is the maximum number of iterations of the local optimizer (GENCAN)
 per loop. The default value is currently 20, changing it may improve (or
 worse) the convergence.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>3.</td>
-<td class=tdclean0><tt>movebadrandom</tt><br>
+<td class=tdclean0><code>movebadrandom</code><br>
 One of the convergence heuristics of Packmol consists in moving
 molecules that are badly placed. If this option is set, the molecules
 will be placed in new random position in the box. If not (default), the
@@ -1092,21 +1057,21 @@ position might overlap with those.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>4.</td>
-<td class=tdclean0><tt>movefrac</tt> and <tt>maxmove</tt><br>
-In the heuristic that moves the worst molecules, <tt> movefrac</tt> defines
+<td class=tdclean0><code>movefrac</code> and <code>maxmove</code><br>
+In the heuristic that moves the worst molecules, <code>movefrac</code> defines
 which is the fraction of molecules that are going to be moved, for each
 type of molecule. For very large systems, it is isually a good idea to
-define a small value of <tt> movefrac</tt>, because otherwise the
+define a small value of <code>movefrac</code>, because otherwise the
 randomization of the system is too great. The default value is 0.05.
-At the same time, <tt>maxmove</tt> defines a maximum absolute number of molecules to be
+At the same time, <code>maxmove</code> defines a maximum absolute number of molecules to be
 displaced for each type of molecule. it must be set within
-a <tt>structure ... end structure</tt> section, and defaults to the number of molecules 
+a <code>structure ... end structure</code> section, and defaults to the number of molecules 
 of each type.
 </td></tr>                                  
 
-<tr><td class=tdclean0 valign=top>4.</td>
-<td class=tdclean0><tt>disable_movebad</tt><br>
-Global option, disables the <tt>movebad</tt> heuristic. The packing has good chances of
+<tr><td class=tdclean0 valign=top>5.</td>
+<td class=tdclean0><code>disable_movebad</code><br>
+Global option, disables the <code>movebad</code> heuristic. The packing has good chances of
 being trapped in local minima, but it may be useful for some systems (available since v21.0.1).
 </td></tr>                                  
 
@@ -1117,139 +1082,171 @@ being trapped in local minima, but it may be useful for some systems (available 
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="add"></a><b>Additional input options and keywords</b>
-<br><br>
+<div class="section-header">
+  <a name="add"></a><b>14. Additional input options and keywords</b>
+</div>
 
+<p>
 There are some input options which are probably not of interest of the
 general user, but may be useful in specific contexts. These keywords may
-be added in the input file in any position.<br><br>
+be added in the input file in any position.
+</p>
 
-<li>Control of PDB CONECT lines parsing: <br>
+<h4>Control of PDB CONECT lines parsing:</h4>
+<p>
 Two keywords control what should be done with the information in CONECT lines of PDB files:
-<br>
-Usage: <tt> ignore_conect </tt> <br> 
+</p>
+<p>
+Usage: <code>ignore_conect</code><br>
 Most times the connectivity of PDB files should be ignored, because
 the correct connectivity is defined with topology files that are specific for the simulation
 package to be used. Use this keyword if the parsing of the CONECT lines is causing any issue.
-<br>
-Usage: <tt> non_standard_conect </tt><br>
+</p>
+<p>
+Usage: <code>non_standard_conect</code><br>
 By default the CONECT fields of PDB files are fixed-width, and support only atom indices as 
 large as 99999. If this keyword is used, then the indices are expected to be separated by
 spaces, and there is no limit for the printed integers. But this does not conform with the
 standard PDB file format.
-<br>
-By default, both <tt>ignore_conect</tt> and <tt>non_standard_conect</tt> are set to false,
+</p>
+<p>
+By default, both <code>ignore_conect</code> and <code>non_standard_conect</code> are set to false,
 thus packmol will expect properly formatted CONECT lines.
-<br><br>
+</p>
 
-<li>Write a <tt>CHARMM CRD</tt> file as output:<br>
-Usage: <tt> writecrd output.crd</tt> <br>
+<h4>Write a CHARMM CRD file as output:</h4>
+<p>
+Usage: <code>writecrd output.crd</code><br>
 The segment identifier for each type of molecule can be set by adding,
-within the <tt>structure ... end structure</tt> section of each type,
-the following keyword:<br> 
-<tt>segid NAME</tt>.<br><br>
+within the <code>structure ... end structure</code> section of each type,
+the following keyword: <code>segid NAME</code>.
+</p>
 
-<li>Add the TER flag betwen every molecule (AMBER uses this): <br>
-Usage: <tt> add_amber_ter </tt> <br>
-<i>and</i><br>
-Usage: <tt> amber_ter_preserve </tt><br>
-(this option will preserve TER flags within input structures, fixed or not from v20.14.0 on).<br><br>
+<h4>Add the TER flag between every molecule (AMBER uses this):</h4>
+<p>
+Usage: <code>add_amber_ter</code><br>
+<em>and</em><br>
+Usage: <code>amber_ter_preserve</code><br>
+(this option will preserve TER flags within input structures, fixed or not from v20.14.0 on).
+</p>
 
-
-<li>Add box side information to output PDB File (GROMACS uses this): <br>
-Usage: <tt> add_box_sides </tt> <br>
+<h4>Add box side information to output PDB File (GROMACS uses this):</h4>
+<p>
+Usage: <code>add_box_sides</code><br>
 If no PBCs are used, this keyword adds a CRYST1 field to the output PDB file,
 where the length of the unitcell in each direction will be the maximum and 
 minimum coordinates of the atoms in the solution added by 1.1*tolerance.
 This can be used to prevent clashes at the boundaries. Nevertheless, it is 
-recommended to explicit use PBCs with the <tt>pbc</tt> keyword.
-<br><br>
+recommended to explicit use PBCs with the <code>pbc</code> keyword.
+</p>
 
-<li>Display, or not, connectivity of molecules in output PDB files: <br>
-Usage: <tt> connect yes/no </tt> <br>
-By default, if the input PDB file of a molecule has <tt>CONECT</tt> fields,
-the output PDB File of packmol will contain also <tt>CONECT</tt> fields
+<h4>Display, or not, connectivity of molecules in output PDB files:</h4>
+<p>
+Usage: <code>connect yes/no</code><br>
+By default, if the input PDB file of a molecule has <code>CONECT</code> fields,
+the output PDB File of packmol will contain also <code>CONECT</code> fields
 with the appropriate connectivity of the corresponding molecules. If you
-do not want this, add <tt>connect no</tt> to the structure section of 
+do not want this, add <code>connect no</code> to the structure section of 
 this molecule, and the output of the connectivity will be suppressed.
-<br><br>
+</p>
 
-<li>Increase maximum system dimensions: <br>
-Usage: <tt> sidemax [real] </tt> (ex: sidemax 2000.d0) <br>
-"<tt>sidemax</tt>" is used to build an initial approximation of the molecular
-distribution. Increase "<tt>sidemax</tt>" if your system is very large, or your
+<h4>Increase maximum system dimensions:</h4>
+<p>
+Usage: <code>sidemax [real]</code> (ex: <code>sidemax 2000.d0</code>)<br>
+<code>sidemax</code> is used to build an initial approximation of the molecular
+distribution. Increase <code>sidemax</code> if your system is very large, or your
 system may look cut out by this maximum dimension. All system
-coordinates must fit within <tt>-sidemax</tt> and <tt>+sidemax</tt>, and
-using a <tt>sidemax</tt>
+coordinates must fit within <code>-sidemax</code> and <code>+sidemax</code>, and
+using a <code>sidemax</code>
 that approximately fits your system may accelerate a little bit the
-packing calculation. The default value is 1000.d0. <br><br>
+packing calculation. The default value is 1000.d0.
+</p>
 
-<li>Change random number generator seed: <br>
-Usage: <tt> seed [integer] </tt> (ex: seed 191917) <br>
-Use <tt> seed -1 </tt> to generate a seed automatically from the computer
+<h4>Change random number generator seed:</h4>
+<p>
+Usage: <code>seed [integer]</code> (ex: <code>seed 191917</code>)<br>
+Use <code>seed -1</code> to generate a seed automatically from the computer
 time.
-<br><br>
+</p>
 
-<li>Use a truly random initial point for the minimization (the default
-option is to generate a roughly homogeneous-density initial approximation): <br>
-Usage: <tt> randominitialpoint </tt> <br><br>
-Avoid, or not, overlap with fixed molecules at initial point
-(avoiding this overlaps is generally recommended, but sometimes
-generates gaps that are too large):<br>
-Usage: <tt> avoid_overlap yes/no </tt> <br><br>
-Change the maximum number of Gencan iterations per loop:<br> Usage: <tt>
-maxit [integer] </tt> <br><br>
+<h4>Use a truly random initial point for the minimization:</h4>
+<p>
+(the default option is to generate a roughly homogeneous-density initial approximation)<br>
+Usage: <code>randominitialpoint</code>
+</p>
 
-<li>Change the maximum number of optimization loops (if this option is used
-inside the structure section, it affects the number of optimization
-loops only of that specific structure):<br>
-Usage: <tt> nloop [integer] </tt><br><br>
+<h4>Avoid, or not, overlap with fixed molecules at initial point:</h4>
+<p>
+(avoiding this overlaps is generally recommended, but sometimes generates gaps that are too large)<br>
+Usage: <code>avoid_overlap yes/no</code>
+</p>
 
-<li>Change the precision required for the solution: how close the solution
-must be to the desired distances to be considered correct.
-<br>
-Usage: <tt> precision [real] </tt> (Default: 0.01)<br><br>
+<h4>Change the maximum number of Gencan iterations per loop:</h4>
+<p>
+Usage: <code>maxit [integer]</code>
+</p>
 
-<li>Change the frequency of output file writing: <br>
-Usage: <tt> writeout [integer] </tt><br><br>
+<h4>Change the maximum number of optimization loops:</h4>
+<p>
+(if this option is used inside the structure section, it affects the number of optimization
+loops only of that specific structure)<br>
+Usage: <code>nloop [integer]</code>
+</p>
 
-<li>Write the current point to output file even if it is worse than the the
-best point so far (used for checking purposes only): <br>
-Usage: <tt> writebad </tt><br><br>
+<h4>Change the precision required for the solution:</h4>
+<p>
+How close the solution must be to the desired distances to be considered correct.<br>
+Usage: <code>precision [real]</code> (Default: 0.01)
+</p>
 
-<li>Change the optimization subroutine printing output: <br>
-Usage: <tt> iprint1 [integer] </tt> and/or <tt> iprint2 [integer]
-</tt><br>
+<h4>Change the frequency of output file writing:</h4>
+<p>
+Usage: <code>writeout [integer]</code>
+</p>
+
+<h4>Write the current point to output file even if worse than best point:</h4>
+<p>
+(used for checking purposes only)<br>
+Usage: <code>writebad</code>
+</p>
+
+<h4>Change the optimization subroutine printing output:</h4>
+<p>
+Usage: <code>iprint1 [integer]</code> and/or <code>iprint2 [integer]</code><br>
 where the integer must be 0, 1, 2 or 3.
-<br><br>
+</p>
 
-<li>Change the number of bins of the linked-cell method (technical): <br>
-Usage: <tt> fbins [real] </tt> 
-</tt><br>
+<h4>Change the number of bins of the linked-cell method (technical):</h4>
+<p>
+Usage: <code>fbins [real]</code><br>
 The default value is the square root of three.
-<br><br>
+</p>
 
-<li>Write all atom and residue indices in hexadecimal format (v20.16.0)<br>
-Usage: <tt>hexadecimal_indices</tt>
-<br><br>
+<h4>Write all atom and residue indices in hexadecimal format (v20.16.0):</h4>
+<p>
+Usage: <code>hexadecimal_indices</code>
+</p>
 
-<li>Compare analytical and finite-difference gradients: This is only for
-testing purposes. Writes chkgrad.log file containing the comparison.<br>
-Usage: <tt>chkgrad</tt>
-<br><br>
+<h4>Compare analytical and finite-difference gradients:</h4>
+<p>
+This is only for testing purposes. Writes chkgrad.log file containing the comparison.<br>
+Usage: <code>chkgrad</code>
+</p>
 
-<i><u><a href="#fscale" name="fscale">Options tho change the shape of the minimum-distance penalty function:</a></u></i>
-<br>
-<br>
-Usage: <tt> fscale [real] </tt><br>  
-This option must be used within <tt>structure ... end structure</tt> or 
-<tt> atoms ... end atoms </tt> sections, to change the weight of the
+<h3><a href="#fscale" name="fscale">Options to change the shape of the minimum-distance penalty function</a></h3>
+
+<p>
+Usage: <code>fscale [real]</code><br>  
+This option must be used within <code>structure ... end structure</code> or 
+<code>atoms ... end atoms</code> sections, to change the weight of the
 penalty function, as illustrated in the images below. The fscale defines
 how greater the penalty is relative to the default penalty.
-<br><br>
-Usage: <tt> use_short_tol </tt><br>  
-Usage: <tt> short_tol_dist [real] </tt><br>  
-Usage: <tt> short_tol_scale [real] </tt><br>  
+</p>
+
+<p>
+Usage: <code>use_short_tol</code><br>  
+Usage: <code>short_tol_dist [real]</code><br>  
+Usage: <code>short_tol_scale [real]</code><br>  
 These options define a new penalty tolerance for short distances, to increase the
 repulsion between atoms when they are too close to each other. The "use"
 parameter turns on this feature, using default parameters (dist=tolerance/2; scale=3).
@@ -1260,18 +1257,22 @@ default penalty. They affect the penalty of all atoms. Remember that the
 right, illustrates for example the build up of the penalty function using
 short_tol_dist=0.5; short_tol_scale=3, with the default overall tolerance 
 of 2.0 set. 
-<br><br>
-Usage: <tt> short_radius [real] </tt><br>  
-Usage: <tt> short_radius_scale [real] </tt><br>  
+</p>
+
+<p>
+Usage: <code>short_radius [real]</code><br>  
+Usage: <code>short_radius_scale [real]</code><br>  
 These parameters define a new penalty for short distances, but for specific
-atoms. These options must be used  within <tt>structure ... end structure</tt> or 
-<tt> atoms ... end atoms </tt> sections. Note that, in this case, the
+atoms. These options must be used  within <code>structure ... end structure</code> or 
+<code>atoms ... end atoms</code> sections. Note that, in this case, the
 <i>radius</i> is defined (the actual tolerance is the sum of the radii of each
 pair of atoms; for atoms without an explicit radius definition, the radius
 is one half of the overall set tolerance parameter). 
-<br><br><center>
+</p>
+
+<center>
 <img width=600px src=./penalty_options.png>
-</center><br>
+</center>
 <br>
 <!--
 Note: the overalp penalty function for a pair of atoms,
@@ -1304,46 +1305,28 @@ scale_short=short_tol_scale\times
 <!-- END SECTION -->
 
 <!-- START SECTION -->
-<a name="tutorials"></a><b>Third party tutorials:</b>
-<br><br>
+<div class="section-header">
+  <a name="tutorials"></a><b>15. Third party tutorials</b>
+</div>
+
+<p>
 Here are some tutorials developed by third-parties which might be useful:
+</p>
 
-<br><br>
-<a href=https://youtu.be/yCoNBvDK9w0>
-Install and Run Packmol on Window 10
-</a>
-<br>
-by: Vinay Thakur
-
-<br><br>
-<a href=https://youtu.be/Xfbdb1P_Yus>
-Packmol Software Using in Windows 10
-</a>
-<br>
-by: LAMMPS Tube
-
-<br><br>
-<a href=https://www.youtube.com/watch?v=VfYsCpkvLLA>
-Windows: Tutorial - Using Packmol to generate solvation shell around molecules.
-</a>
-<br>
-by: Filipe Camargo Dalmatti Alves Lima
-
-<br><br>
-<a href=https://www.youtube.com/watch?v=FWC6yy04NLY>
-PACKMOL tutorial- Solvation of proteins in non-standard solvents
-</a>
-<br>
-by: Mohamed Shehata 
-
-<br><br>
-<a href=https://drwongssolutions.ca/initial.html>
-Preparation of initial configuration of polymers for MD simulation 
-</a>
-<br>
-by: Jeremy Wong
-
-<br><br>
+<ul>
+  <li>
+    <a href=https://www.youtube.com/watch?v=VfYsCpkvLLA>Windows: Tutorial - Using Packmol to generate solvation shell around molecules</a>
+    <br>by: Filipe Camargo Dalmatti Alves Lima
+  </li>
+  <li>
+    <a href=https://www.youtube.com/watch?v=FWC6yy04NLY>PACKMOL tutorial- Solvation of proteins in non-standard solvents</a>
+    <br>by: Mohamed Shehata
+  </li>
+  <li>
+    <a href=https://drwongssolutions.ca/initial.html>Preparation of initial configuration of polymers for MD simulation</a>
+    <br>by: Jeremy Wong
+  </li>
+</ul>
 
 <!-- END SECTION -->
 
