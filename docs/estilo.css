@@ -450,10 +450,6 @@ tt {
   border-radius: 4px;
   line-height: 1.8;
 }
-
-.warning-b2rem 0;
-}
-
 .install-step {
   background: white;
   border: 1px solid #e0e0e0;
@@ -486,14 +482,8 @@ tt {
   line-height: 32px;
   text-align: center;
   border-radius: 50%;
-  margin-right: 0.7
-  margin: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.install-st2rem;
-  margin: 2rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-right: 0.5rem;
+  font-weight: bold;
 }
 
 .constraint-item p {
@@ -533,28 +523,8 @@ tt {
   background: #f9f9f9;
   padding: 1rem 1.5rem;
   border-radius: 4px;
-  margin: 1.5ottom: 0.5rem;
+  margin: 1.5rem 0;
   border-bottom: 2px solid var(--cp2);
-}
-
-.constraint-number {
-  background: var(--cp1);
-  color: var(--cp5);
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  border-radius: 50%;
-  margin-right: 1rem;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.constraint-name {
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 1.1rem;
-  font-weig.5rem 0;
-  padding-left: 2rem;
 }
 
 li {
