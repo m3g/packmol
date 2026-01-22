@@ -206,6 +206,47 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
+/* Home sections below hero */
+.home-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0 3rem 0;
+}
+
+.home-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.home-card h3 {
+  margin-bottom: 1rem;
+  color: var(--cp5);
+}
+
+.link-list li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.link-list a {
+  color: var(--cp6);
+  text-decoration: none;
+}
+
+.link-list a:hover {
+  color: var(--cp3);
+}
+
+@media (max-width: 900px) {
+  .home-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 900px) {
   .main-layout {
