@@ -40,6 +40,7 @@
 
   <div class="install-step">
     <h4><span class="step-number">b</span>Interactive Usage</h4>
+    
     <p><strong>b.1) Install Packmol:</strong></p>
     <p>Open Julia and type:</p>
     <pre><code>julia> import Pkg; Pkg.add("Packmol")</code></pre>
@@ -47,11 +48,13 @@
     <p><strong>b.2) Running Packmol:</strong></p>
     <p>Inside the Julia REPL, type:</p>
     <pre><code>julia> using Packmol; run_packmol()</code></pre>
+    
     <p>This will open a GUI from which you will be able to select the input file to be used by Packmol.</p>
   </div>
 
   <div class="install-step">
     <h4><span class="step-number">c</span>Command-line Interface</h4>
+    
     <p>
       The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.
     </p>
@@ -76,51 +79,60 @@
 
 <hr>
 
-<h3>Installation alternatives</h3>
-
-<div class="install-step">
-  <h4><span class="step-number">2</span>Python Package Index (PyPI)</h4>
-  <p>Install using pip:</p>
-  <pre><code>pip install packmol</code></pre>
-  <p>Or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:</p>
-  <pre><code>uvx packmol</code></pre>
-  <div class="version-badges">
-    <strong>Current version:</strong>
-    <img src="https://img.shields.io/pypi/v/packmol.svg" alt="PyPI version">
+<h  <h4><span class="step-number">2</span>Python Package Index (PyPI)</h4>
+    
+    <p>Install using pip:</p>
+    <pre><code>pip install packmol</code></pre>
+    
+    <p>Or run it using <a target="_blank" href="https://docs.astral.sh/uv/">uv</a>:</p>
+    <pre><code>uvx packmol</code></pre>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://img.shields.io/pypi/v/packmol.svg" alt="PyPI version">
+    </div>
   </div>
-</div>
 
-<div class="install-step">
-  <h4><span class="step-number">3</span>Source Code from GitHub</h4>
-  <p>
-    <a href="https://github.com/m3g/packmol/releases/latest" target="_blank">
-      <strong class="blink">[LATEST RELEASE REPOSITORY]</strong>
-    </a>
-  </p>
-  <p>
-    This is the repository of the source code of the latest release of Packmol.
-    Download the <tt>zip</tt> or <tt>tar.gz</tt> files, which contain the source code. 
-    Next, follow the <a href="./userguide.shtml">installation instructions</a> to compile the package.
-  </p>
-  <div class="version-badges">
-    <strong>Current version:</strong>
-    <img src="https://img.shields.io/github/release/m3g/packmol.svg?label=latest" alt="Latest release version">
+  <div class="install-step">
+    <h4><span class="step-number">3</span>Source Code from GitHub</h4>
+    
+    <p>
+      <a href="https://github.com/m3g/packmol/releases/latest" target="_blank">
+        <strong class="blink">[LATEST RELEASE REPOSITORY]</strong>
+      </a>
+    </p>
+    
+    <p>
+      This is the repository of the source code of the latest release of Packmol.
+      Download the <tt>zip</tt> or <tt>tar.gz</tt> files, which contain the source code. 
+      Next, follow the <a href="./userguide.shtml">installation instructions</a> to compile the package.
+    </p>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://img.shields.io/github/release/m3g/packmol.svg?label=latest" alt="Latest release version">
+    </div>
   </div>
-</div>
 
-<div class="install-step">
-  <h4><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
-  <p>
-    <a href="https://github.com/conda-forge/packmol-feedstock">
-      <strong class="blink">[conda-forge/packmol-feedstock]</strong>
-    </a>
-  </p>
-  <div class="warning-box">
-    <strong>Note:</strong> We do <em>not</em> maintain these packages. Please report any issues 
-    to the maintainers of the conda-forge feedstock.
-  </div>
-  <div class="version-badges">
-    <strong>Current version:</strong>
+  <div class="install-step">
+    <h4><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
+    
+    <p>
+      <a href="https://github.com/conda-forge/packmol-feedstock">
+        <strong class="blink">[conda-forge/packmol-feedstock]</strong>
+      </a>
+    </p>
+    
+    <div class="warning-box">
+      <strong>Note:</strong> We do <em>not</em> maintain these packages. Please report any issues 
+      to the maintainers of the conda-forge feedstock.
+    </div>
+    
+    <div class="version-badges">
+      <strong>Current version:</strong>
+      <img src="https://anaconda.org/conda-forge/packmol/badges/version.svg" alt="Conda version">
+    </div>
+      <strong>Current version:</strong>
     <img src="https://anaconda.org/conda-forge/packmol/badges/version.svg" alt="Conda version">
   </div>
 </div>

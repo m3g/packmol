@@ -326,7 +326,7 @@ a:hover {
 h3 {
   color: var(--cp5);
   font-size: 1.8rem;
-  margin: 2rem 0 1rem 0;
+  margin: 2.5rem 0 1.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 3px solid var(--cp1);
 }
@@ -334,13 +334,18 @@ h3 {
 h4 {
   color: var(--cp5);
   font-size: 1.3rem;
-  margin: 1.5rem 0 0.75rem 0;
+  margin: 2rem 0 1rem 0;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
 }
 
 .section-header {
   background: linear-gradient(to right, var(--cp1), transparent);
-  padding: 1rem;
-  margin: 2rem 0 1rem 0;
+  padding: 1.5rem;
+  margin: 3rem 0 2rem 0;
   border-left: 4px solid var(--cp3);
   border-radius: 4px;
 }
@@ -352,9 +357,9 @@ h4 {
 
 .table-contents {
   background: #f9f9f9;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 8px;
-  margin: 1rem 0 2rem 0;
+  margin: 2rem 0 3rem 0;
   border-left: 4px solid var(--cp2);
 }
 
@@ -362,12 +367,12 @@ h4 {
   font-size: 1.2rem;
   color: var(--cp5);
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .table-contents a {
   display: block;
-  padding: 0.4rem 0;
+  padding: 0.6rem 0;
   color: var(--cp6);
   text-decoration: none;
   transition: all 0.2s;
@@ -383,25 +388,25 @@ pre, code {
   background: #f4f4f4;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 0.9rem;
-}
-
-pre {
-  padding: 1rem;
+  font-famil.5rem;
   overflow-x: auto;
-  margin: 1rem 0;
-  line-height: 1.4;
+  margin: 1.5rem 0 2rem 0;
+  line-height: 1.6;
 }
 
 code {
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.5rem;
 }
 
 pre code {
   background: none;
   border: none;
   padding: 0;
+}
+
+tt {
+  background: #f4f4f4;
+  padding: 0.2rem 0.5
 }
 
 tt {
@@ -416,79 +421,112 @@ tt {
 .info-box {
   background: #e8f4f8;
   border-left: 4px solid #2196F3;
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
   border-radius: 4px;
+  line-height: 1.8;
+}
+
+.info-box p {
+  margin-bottom: 1rem;
+}
+
+.info-box p:last-child {
+  margin-bottom: 0;
 }
 
 .warning-box {
   background: #fff3cd;
   border-left: 4px solid #ffc107;
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
   border-radius: 4px;
+  line-height: 1.8;
 }
 
-.success-box {
-  background: #d4edda;
-  border-left: 4px solid #28a745;
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  border-radius: 4px;
-}
-
-/* Step-by-step instructions */
-.install-steps {
-  margin: 1.5rem 0;
+.warning-b2rem 0;
 }
 
 .install-step {
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem 0;
+  padding: 2rem;
+  margin: 2rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .install-step h4 {
   margin-top: 0;
+  margin-bottom: 1.5rem;
   color: var(--cp3);
+}
+
+.install-step p {
+  margin-bottom: 1rem;
+}
+
+.install-step p:last-child {
+  margin-bottom: 0;
 }
 
 .step-number {
   display: inline-block;
   background: var(--cp3);
   color: white;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
   text-align: center;
   border-radius: 50%;
-  margin-right: 0.5rem;
-  font-weight: bold;
-}
-
-/* Tables in content */
-.constraint-table {
-  width: 100%;
-  margin: 2rem 0;
-}
-
-.constraint-item {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
+  margin-right: 0.7
+  margin: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.install-st2rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.constraint-item p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
 }
 
 .constraint-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--cp2);
+}
+
+.constraint-number {
+  background: var(--cp1);
+  color: var(--cp5);
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.constraint-name {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--cp5);
+}
+
+.constraint-usage {
+  background: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  margin: 1.5ottom: 0.5rem;
   border-bottom: 2px solid var(--cp2);
 }
 
@@ -508,13 +546,13 @@ tt {
 .constraint-name {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 1.1rem;
-  font-weight: bold;
-  color: var(--cp5);
+  font-weig.5rem 0;
+  padding-left: 2rem;
 }
 
-.constraint-usage {
-  background: #f9f9f9;
-  padding: 0.75rem;
+li {
+  margin: 0.75rem 0;
+  line-height: 1.8;
   border-radius: 4px;
   margin: 1rem 0;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;

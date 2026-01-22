@@ -78,6 +78,7 @@
 </p>
 
 <h4>Expanding the files:</h4>
+
 <pre><code>tar -xvzf packmol-21.0.0.tar.gz</code></pre>
 
 <p>
@@ -125,8 +126,10 @@ make</code></pre>
 
 <p>From the command line, there are two alternatives to run Packmol:</p>
 
-<h4>Option 1: Using input file redirection</h4>
+
 <pre><code>packmol < packmol.inp</code></pre>
+
+<h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
 
 <h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
 <pre><code>packmol -i packmol.inp -o output.pdb</code></pre>
