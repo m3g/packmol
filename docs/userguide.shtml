@@ -46,14 +46,14 @@
 </div>
 
 <p>
-  Of course, you also need the <tt>Packmol</tt> package, which you can get from:
+  Of course, you also need the <code>Packmol</code> package, which you can get from:
 </p>
 <pre><code>http://m3g.iqm.unicamp.br/packmol</code></pre>
 
 <p>
   by clicking on the <a href="./download.shtml">Download</a> link. 
-  You can download the file <tt>packmol-21.0.0.tar.gz</tt> which contains the 
-  whole source code of Packmol. The <tt>21.0.0</tt> is the version number, which 
+  You can download the file <code>packmol-21.0.0.tar.gz</code> which contains the 
+  whole source code of Packmol. The <code>21.0.0</code> is the version number, which 
   might change relative to this example.
 </p>
 
@@ -73,7 +73,7 @@
 </div>
 
 <p>
-  Once you have downloaded the <tt>packmol-21.0.0.tar.gz</tt> file from the home page,
+  Once you have downloaded the <code>packmol-21.0.0.tar.gz</code> file from the home page,
   you need to expand the files and compile the package. This is done by:
 </p>
 
@@ -82,7 +82,7 @@
 <pre><code>tar -xvzf packmol-21.0.0.tar.gz</code></pre>
 
 <p>
-  This will create a directory called <tt>packmol</tt> inside which you can find
+  This will create a directory called <code>packmol</code> inside which you can find
   the source code. You can build the executable by:
 </p>
 
@@ -91,7 +91,7 @@ make</code></pre>
 
 <p>
   That's it! If no error was reported, the packmol executable was built. 
-  Note that <tt>21.0.0</tt> is the version number, which may differ relative to this example.
+  Note that <code>21.0.0</code> is the version number, which may differ relative to this example.
 </p>
 
 <hr>
@@ -113,7 +113,7 @@ make</code></pre>
 
 <pre><code>make</code></pre>
 
-<p>If no error was detected, an executable called <tt>packmol</tt> is now ready.</p>
+<p>If no error was detected, an executable called <code>packmol</code> is now ready.</p>
 
 <div class="section-header">
   <a name="run"></a><b>3. Running Packmol</b>
@@ -132,11 +132,10 @@ make</code></pre>
 
 <h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
 
-<h4>Option 2: Using command line arguments (from v21.1.0 onwards)</h4>
 <pre><code>packmol -i packmol.inp -o output.pdb</code></pre>
 
 <p>
-  The <tt>-o output.pdb</tt> is optional, and will overwrite the definition of the 
+  The <code>-o output.pdb</code> is optional, and will overwrite the definition of the 
   output file in the input file.
 </p>
 
@@ -218,8 +217,8 @@ Maximum violation of the constraints: .78985E-02
 
 <p>
   At least one type of molecule must be present. This is set by the
-  <tt>structure ... end structure</tt> section. For example, if
-  <tt>water.pdb</tt> is the file containing the coordinates of a single water molecule, 
+  <code>structure ... end structure</code> section. For example, if
+  <code>water.pdb</code> is the file containing the coordinates of a single water molecule, 
   you could add to your input file something like:
 </p>
 
@@ -229,7 +228,7 @@ Maximum violation of the constraints: .78985E-02
 end structure</code></pre>
 
 <p>
-  This section specifies that 2000 molecules of the <tt>water.pdb</tt> type will
+  This section specifies that 2000 molecules of the <code>water.pdb</code> type will
   be placed inside a cube with minimum coordinates $(x,y,z) = (0,0,0)$ and
   maximum coordinates $(40,40,40)$. Therefore, this minimum input file must be:
 </p>
@@ -255,7 +254,7 @@ end structure</code></pre>
 
 <p>
   You can add more types of molecules to the same region, or to different
-  regions of the space, simply by adding other <tt>structure ... end structure</tt>
+  regions of the space, simply by adding other <code>structure ... end structure</code>
   sections to the input file.
 </p>
 
@@ -269,7 +268,7 @@ end structure</code></pre>
   region of the space. This is useful for building vesicles where the
   hydrophilic part of the surfactants must be pointing to the aqueous
   environment, for example. For the 10 atoms molecule, this is done by
-  using the keyword <tt>atoms</tt>, as in:
+  using the keyword <code>atoms</code>, as in:
 </p>
 
 <pre><code>structure molecule.pdb
@@ -310,7 +309,7 @@ which are six real numbers. The first three determine the translation of
 the molecule relative to its position in the coordinate file. The latter
 three parameters are rotation angles (in radians). For this option it is
 required that only one molecule is set. It may be accompanied by the
-keyword <tt>center</tt>. If this keyword is present the first three numbers
+keyword <code>center</code>. If this keyword is present the first three numbers
 are the position of the baricenter (not really the center of mass,
 because we suppose that all atoms have the same mass). Therefore this
 keyword must be used in the following context:
@@ -718,33 +717,40 @@ within a molecule. Just add the "<code>radius</code>" keyword within the
 <code>structure ... end structure</code> section of a molecule type, or
 within <code>atoms ... end atoms</code> section of an atom selection.
 <br><br>
-For example, in this case:<br><br>
-<code>
-tolerance 2.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 500<br>
-&nbsp;&nbsp;inside box 0. 0. 0. 30. 30. 30.<br>
-&nbsp;&nbsp;radius 1.5<br>
-end structure<br><br>
-</code>
+For example, in this case:
+
+<pre><code>tolerance 2.0
+structure water.pdb
+  number 500
+  inside box 0. 0. 0. 30. 30. 30.
+  radius 1.5
+end structure</code></pre>
+
+<p>
 the radius of the atoms of the water molecules will be 1.5. Note that
 this implies a distance tolerance of 3.0 within water molecules.
-<br><br>
-In this case, on the other side:<br><br>
-<code>
-tolerance 2.0<br>
-structure water.pdb<br>
-&nbsp;&nbsp;number 500<br>
-&nbsp;&nbsp;inside box 0. 0. 0. 30. 30. 30.<br>
-&nbsp;&nbsp;atoms 1 2<br>
-&nbsp;&nbsp&nbsp;&nbsp;radius 1.5<br>
-&nbsp;&nbsp;end atoms<br>
-end structure<br><br>
-</code>
+</p>
+
+<p>
+In this case, on the other side:
+</p>
+
+<pre><code>tolerance 2.0
+structure water.pdb
+  number 500
+  inside box 0. 0. 0. 30. 30. 30.
+  atoms 1 2
+    radius 1.5
+  end atoms
+end structure</code></pre>
+
+<p>
 only atoms 1 and 2 of the water molecule (as listed in the water.pdb
 file) will have a radius of 1.5, while atom 3 will have a radius of 1.0,
-as defined by the tolerance of 2.0 
-<br><br>
+as defined by the tolerance of 2.0
+</p>
+
+<p>
 Always remember that the distance tolerance is the sum of the radii of
 each pair of atoms, and that the greatest the radii the harder the
 packing. Also, keep in mind that your minimization and equilibration
@@ -829,38 +835,48 @@ the suggested periodic boundary condition dimensions to be used.
 Since Packmol will create one or more copies of your molecules in a
 new PDB file, there are some options on how residue numbers are set to
 these new molecules. There are four options, which are set with the
-<tt>resnumbers</tt> keyword. This keyword may assume three values, 0, 1,
-2 or 3, and must be inserted within the <tt>structure ... end structure</tt>
-section of each type of molecule. The options are: <br><br>
-<tt>
-resnumbers 0 
-</tt><br><br>
+<code>resnumbers</code> keyword. This keyword may assume three values, 0, 1,
+2 or 3, and must be inserted within the <code>structure ... end structure</code>
+section of each type of molecule. The options are:
+</p>
+
+<p>
+<code>resnumbers 0</code>
 In this case the residue numbers of all residues will correspond to the
 molecule of each type, independently of the residue
 numbering of the original pdb file. This means that if you pack 10
 water molecules and 10 ethanol molecules, the water molecules will be numbered 
 1 to 10, and the ethanol molecules will be numbered 1 to 10. 
-<br><br>
-<tt>
-resnumbers 1
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 1</code>
+</p>
+
+<p>
 In this case, the residue numbers of the original pdb files are kept
 unmodified. This means that if you pack 10 proteins of 5 residues, the
 residue numbers will be preserved and, therefore, they will be
 repeated for equivalent residues in each molecule of the same protein.
-<br><br>
-<tt>
-resnumbers 2
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 2</code>
+</p>
+
+<p>
 In this case, the residue numbers of all residues for this structure
 will be numbered sequentially according to the number of residues that
 are printed previously in the same file. This means that if you pack
 10 proteins of 5 residues, there will be residue numbers ranging
 from 1 to 50.
-<br><br>
-<tt>
-resnumbers 3
-</tt><br><br>
+</p>
+
+<p>
+<code>resnumbers 3</code>
+</p>
+
+<p>
 In this case, the numbering of the residues will correspond to the
 sequential numbering of all residues in the file. That is, if you
 pack a protein with 150 residues followed by 10 water molecules, and
@@ -869,22 +885,28 @@ water molecules will be numbered from 151 to 161. Note: If you use
 this option for a protein, the whole protein will have its residue
 numbers overwritten by the same number, corresponding to the 
 residue that would follow in the complete structure. 
-<br><br>
+</p>
+
+<p>
 For example, this keyword may be used as in:
-<pre><tt>structure peptide.pdb  
+</p>
+
+<pre><code>structure peptide.pdb  
   number 10               
   resnumbers 1            
   inside box 0. 0. 0. 20. 20. 20.
-end structure        
-</tt></pre>
+end structure</code></pre>
+
+<p>
 <em>Default:</em> The default behavior is to use 0 for structures with
 only one residue and 1 for structures with more than one residue.
-<br><br>
-<em> Chain identifier: </em><br>
+</p>
+
+<p>
+<em>Chain identifier:</em><br>
 It is also possible to modify the "chain" identifiers of PDB files.
 By default, each type of molecule is set to a "chain". On the other side,
-using the <br><br><code>changechains</code><br><br> 
-whithin the <code>structure...end structure</code>
+using the <code>changechains</code> keyword within the <code>structure...end structure</code>
 section of a type of molecule, the chains will alternate between
 two values ("A" and "B" for example). This might be useful if the
 molecules are peptides, and topology builders sometimes think
@@ -903,27 +925,34 @@ where "D" is the desired identifier (Do not use "#").
 From version 16.143 on, it is possible to build the system from multiple
 and independent executions of Packmol by the use of restart files. In
 order to write a restart file, the following keyword must be used:
-<tt>
-restart_to restart.pack
-</tt>
-where <tt>restart.pack</tt> is the name of the restart file to be
+
+<pre><code>restart_to restart.pack</code></pre>
+
+<p>
+where <code>restart.pack</code> is the name of the restart file to be
 created. It is possible to write restart files for the whole system, if
-the keyword is put outside <tt>structure...end structure</tt> sections,
+the keyword is put outside <code>structure...end structure</code> sections,
 or to write a restart file for a specific part of the system, using, for
 instance:
-<pre><tt>structure water.pdb
+</p>
+
+<pre><code>structure water.pdb
   number 1000
   inside cube 0. 0. 0. 40.
   restart_to water1.pack
-end structure
-</tt></pre>
-This will generate a restart file for the water molecules only.
-<br><br>
+end structure</code></pre>
 
+<p>
+This will generate a restart file for the water molecules only.
+</p>
+
+<p>
 These restart files can be used to start a new execution of Packmol with
-more molecules. The <tt>restart_from</tt> keyword must then be used. For
-example: 
-<pre><tt>structure water.pdb
+more molecules. The <code>restart_from</code> keyword must then be used. For
+example:
+</p>
+
+<pre><code>structure water.pdb
   number 1000
   inside cube 0. 0. 0. 40.
   restart_from water1.pack
@@ -937,16 +966,19 @@ bilayers could be built and, later, different solvents can be added to
 the bilayer, without having to restart the whole system construction
 from scratch every time. This could also be used to add some molecule to
 the bilayer.
-<br><br>
+</p>
+
+<p>
 <em>Tip:</em> the restart file can be used to restart the position of a
 <em>smaller</em> number of molecules of the same type. 
 For instance, if a new molecule is introduced
 inside a previous set of molecules (a lipid bilayer, for instance), you
 can tell Packmol to pack less molecules of the original set, in order to
 provide space for the new structure, while using the original restart
-file of more molecules. That is, a <tt> restart_from water1.pack </tt>
+file of more molecules. That is, a <code>restart_from water1.pack</code>
 similar to the ones of the example above could be used to restart the
-positions of 800 molecules.  
+positions of 800 molecules.
+</p>  
 <br><br>
 <!-- END SECTION -->
 
@@ -970,21 +1002,21 @@ first and then use it as a fixed molecule for a solvation run.</td></tr>
 improve the optimization: 
 <table width=90% align=center>
 <tr><td class=tdclean0 valign=top>1.</td>
-<td class=tdclean0><tt>discale [real]</tt><br>
+<td class=tdclean0><code>discale [real]</code><br>
 This option controls the distance tolerance actually used in the
 local optimization method. It was found that using larger distances
-helps sometimes. Try setting <tt>discale</tt> to 1.5, for example.
+helps sometimes. Try setting <code>discale</code> to 1.5, for example.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>2.</td>
-<td class=tdclean0><tt>maxit [integer]</tt><br>
+<td class=tdclean0><code>maxit [integer]</code><br>
 This is the maximum number of iterations of the local optimizer (GENCAN)
 per loop. The default value is currently 20, changing it may improve (or
 worse) the convergence.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>3.</td>
-<td class=tdclean0><tt>movebadrandom</tt><br>
+<td class=tdclean0><code>movebadrandom</code><br>
 One of the convergence heuristics of Packmol consists in moving
 molecules that are badly placed. If this option is set, the molecules
 will be placed in new random position in the box. If not (default), the
@@ -995,21 +1027,21 @@ position might overlap with those.
 </td></tr>
 
 <tr><td class=tdclean0 valign=top>4.</td>
-<td class=tdclean0><tt>movefrac</tt> and <tt>maxmove</tt><br>
-In the heuristic that moves the worst molecules, <tt> movefrac</tt> defines
+<td class=tdclean0><code>movefrac</code> and <code>maxmove</code><br>
+In the heuristic that moves the worst molecules, <code>movefrac</code> defines
 which is the fraction of molecules that are going to be moved, for each
 type of molecule. For very large systems, it is isually a good idea to
-define a small value of <tt> movefrac</tt>, because otherwise the
+define a small value of <code>movefrac</code>, because otherwise the
 randomization of the system is too great. The default value is 0.05.
-At the same time, <tt>maxmove</tt> defines a maximum absolute number of molecules to be
+At the same time, <code>maxmove</code> defines a maximum absolute number of molecules to be
 displaced for each type of molecule. it must be set within
-a <tt>structure ... end structure</tt> section, and defaults to the number of molecules 
+a <code>structure ... end structure</code> section, and defaults to the number of molecules 
 of each type.
 </td></tr>                                  
 
-<tr><td class=tdclean0 valign=top>4.</td>
-<td class=tdclean0><tt>disable_movebad</tt><br>
-Global option, disables the <tt>movebad</tt> heuristic. The packing has good chances of
+<tr><td class=tdclean0 valign=top>5.</td>
+<td class=tdclean0><code>disable_movebad</code><br>
+Global option, disables the <code>movebad</code> heuristic. The packing has good chances of
 being trapped in local minima, but it may be useful for some systems (available since v21.0.1).
 </td></tr>                                  
 
@@ -1023,136 +1055,167 @@ being trapped in local minima, but it may be useful for some systems (available 
 <a name="add"></a><b>Additional input options and keywords</b>
 <br><br>
 
+<p>
 There are some input options which are probably not of interest of the
 general user, but may be useful in specific contexts. These keywords may
-be added in the input file in any position.<br><br>
+be added in the input file in any position.
+</p>
 
-<li>Control of PDB CONECT lines parsing: <br>
+<h4>Control of PDB CONECT lines parsing:</h4>
+<p>
 Two keywords control what should be done with the information in CONECT lines of PDB files:
-<br>
-Usage: <tt> ignore_conect </tt> <br> 
+</p>
+<p>
+Usage: <code>ignore_conect</code><br>
 Most times the connectivity of PDB files should be ignored, because
 the correct connectivity is defined with topology files that are specific for the simulation
 package to be used. Use this keyword if the parsing of the CONECT lines is causing any issue.
-<br>
-Usage: <tt> non_standard_conect </tt><br>
+</p>
+<p>
+Usage: <code>non_standard_conect</code><br>
 By default the CONECT fields of PDB files are fixed-width, and support only atom indices as 
 large as 99999. If this keyword is used, then the indices are expected to be separated by
 spaces, and there is no limit for the printed integers. But this does not conform with the
 standard PDB file format.
-<br>
-By default, both <tt>ignore_conect</tt> and <tt>non_standard_conect</tt> are set to false,
+</p>
+<p>
+By default, both <code>ignore_conect</code> and <code>non_standard_conect</code> are set to false,
 thus packmol will expect properly formatted CONECT lines.
-<br><br>
+</p>
 
-<li>Write a <tt>CHARMM CRD</tt> file as output:<br>
-Usage: <tt> writecrd output.crd</tt> <br>
+<h4>Write a CHARMM CRD file as output:</h4>
+<p>
+Usage: <code>writecrd output.crd</code><br>
 The segment identifier for each type of molecule can be set by adding,
-within the <tt>structure ... end structure</tt> section of each type,
-the following keyword:<br> 
-<tt>segid NAME</tt>.<br><br>
+within the <code>structure ... end structure</code> section of each type,
+the following keyword: <code>segid NAME</code>.
+</p>
 
-<li>Add the TER flag betwen every molecule (AMBER uses this): <br>
-Usage: <tt> add_amber_ter </tt> <br>
-<i>and</i><br>
-Usage: <tt> amber_ter_preserve </tt><br>
-(this option will preserve TER flags within input structures, fixed or not from v20.14.0 on).<br><br>
+<h4>Add the TER flag between every molecule (AMBER uses this):</h4>
+<p>
+Usage: <code>add_amber_ter</code><br>
+<em>and</em><br>
+Usage: <code>amber_ter_preserve</code><br>
+(this option will preserve TER flags within input structures, fixed or not from v20.14.0 on).
+</p>
 
-
-<li>Add box side information to output PDB File (GROMACS uses this): <br>
-Usage: <tt> add_box_sides </tt> <br>
+<h4>Add box side information to output PDB File (GROMACS uses this):</h4>
+<p>
+Usage: <code>add_box_sides</code><br>
 If no PBCs are used, this keyword adds a CRYST1 field to the output PDB file,
 where the length of the unitcell in each direction will be the maximum and 
 minimum coordinates of the atoms in the solution added by 1.1*tolerance.
 This can be used to prevent clashes at the boundaries. Nevertheless, it is 
-recommended to explicit use PBCs with the <tt>pbc</tt> keyword.
-<br><br>
+recommended to explicit use PBCs with the <code>pbc</code> keyword.
+</p>
 
-<li>Display, or not, connectivity of molecules in output PDB files: <br>
-Usage: <tt> connect yes/no </tt> <br>
-By default, if the input PDB file of a molecule has <tt>CONECT</tt> fields,
-the output PDB File of packmol will contain also <tt>CONECT</tt> fields
+<h4>Display, or not, connectivity of molecules in output PDB files:</h4>
+<p>
+Usage: <code>connect yes/no</code><br>
+By default, if the input PDB file of a molecule has <code>CONECT</code> fields,
+the output PDB File of packmol will contain also <code>CONECT</code> fields
 with the appropriate connectivity of the corresponding molecules. If you
-do not want this, add <tt>connect no</tt> to the structure section of 
+do not want this, add <code>connect no</code> to the structure section of 
 this molecule, and the output of the connectivity will be suppressed.
-<br><br>
+</p>
 
-<li>Increase maximum system dimensions: <br>
-Usage: <tt> sidemax [real] </tt> (ex: sidemax 2000.d0) <br>
-"<tt>sidemax</tt>" is used to build an initial approximation of the molecular
-distribution. Increase "<tt>sidemax</tt>" if your system is very large, or your
+<h4>Increase maximum system dimensions:</h4>
+<p>
+Usage: <code>sidemax [real]</code> (ex: <code>sidemax 2000.d0</code>)<br>
+<code>sidemax</code> is used to build an initial approximation of the molecular
+distribution. Increase <code>sidemax</code> if your system is very large, or your
 system may look cut out by this maximum dimension. All system
-coordinates must fit within <tt>-sidemax</tt> and <tt>+sidemax</tt>, and
-using a <tt>sidemax</tt>
+coordinates must fit within <code>-sidemax</code> and <code>+sidemax</code>, and
+using a <code>sidemax</code>
 that approximately fits your system may accelerate a little bit the
-packing calculation. The default value is 1000.d0. <br><br>
+packing calculation. The default value is 1000.d0.
+</p>
 
-<li>Change random number generator seed: <br>
-Usage: <tt> seed [integer] </tt> (ex: seed 191917) <br>
-Use <tt> seed -1 </tt> to generate a seed automatically from the computer
+<h4>Change random number generator seed:</h4>
+<p>
+Usage: <code>seed [integer]</code> (ex: <code>seed 191917</code>)<br>
+Use <code>seed -1</code> to generate a seed automatically from the computer
 time.
-<br><br>
+</p>
 
-<li>Use a truly random initial point for the minimization (the default
-option is to generate a roughly homogeneous-density initial approximation): <br>
-Usage: <tt> randominitialpoint </tt> <br><br>
-Avoid, or not, overlap with fixed molecules at initial point
-(avoiding this overlaps is generally recommended, but sometimes
-generates gaps that are too large):<br>
-Usage: <tt> avoid_overlap yes/no </tt> <br><br>
-Change the maximum number of Gencan iterations per loop:<br> Usage: <tt>
-maxit [integer] </tt> <br><br>
+<h4>Use a truly random initial point for the minimization:</h4>
+<p>
+(the default option is to generate a roughly homogeneous-density initial approximation)<br>
+Usage: <code>randominitialpoint</code>
+</p>
 
-<li>Change the maximum number of optimization loops (if this option is used
-inside the structure section, it affects the number of optimization
-loops only of that specific structure):<br>
-Usage: <tt> nloop [integer] </tt><br><br>
+<h4>Avoid, or not, overlap with fixed molecules at initial point:</h4>
+<p>
+(avoiding this overlaps is generally recommended, but sometimes generates gaps that are too large)<br>
+Usage: <code>avoid_overlap yes/no</code>
+</p>
 
-<li>Change the precision required for the solution: how close the solution
-must be to the desired distances to be considered correct.
-<br>
-Usage: <tt> precision [real] </tt> (Default: 0.01)<br><br>
+<h4>Change the maximum number of Gencan iterations per loop:</h4>
+<p>
+Usage: <code>maxit [integer]</code>
+</p>
 
-<li>Change the frequency of output file writing: <br>
-Usage: <tt> writeout [integer] </tt><br><br>
+<h4>Change the maximum number of optimization loops:</h4>
+<p>
+(if this option is used inside the structure section, it affects the number of optimization
+loops only of that specific structure)<br>
+Usage: <code>nloop [integer]</code>
+</p>
 
-<li>Write the current point to output file even if it is worse than the the
-best point so far (used for checking purposes only): <br>
-Usage: <tt> writebad </tt><br><br>
+<h4>Change the precision required for the solution:</h4>
+<p>
+How close the solution must be to the desired distances to be considered correct.<br>
+Usage: <code>precision [real]</code> (Default: 0.01)
+</p>
 
-<li>Change the optimization subroutine printing output: <br>
-Usage: <tt> iprint1 [integer] </tt> and/or <tt> iprint2 [integer]
-</tt><br>
+<h4>Change the frequency of output file writing:</h4>
+<p>
+Usage: <code>writeout [integer]</code>
+</p>
+
+<h4>Write the current point to output file even if worse than best point:</h4>
+<p>
+(used for checking purposes only)<br>
+Usage: <code>writebad</code>
+</p>
+
+<h4>Change the optimization subroutine printing output:</h4>
+<p>
+Usage: <code>iprint1 [integer]</code> and/or <code>iprint2 [integer]</code><br>
 where the integer must be 0, 1, 2 or 3.
-<br><br>
+</p>
 
-<li>Change the number of bins of the linked-cell method (technical): <br>
-Usage: <tt> fbins [real] </tt> 
-</tt><br>
+<h4>Change the number of bins of the linked-cell method (technical):</h4>
+<p>
+Usage: <code>fbins [real]</code><br>
 The default value is the square root of three.
-<br><br>
+</p>
 
-<li>Write all atom and residue indices in hexadecimal format (v20.16.0)<br>
-Usage: <tt>hexadecimal_indices</tt>
-<br><br>
+<h4>Write all atom and residue indices in hexadecimal format (v20.16.0):</h4>
+<p>
+Usage: <code>hexadecimal_indices</code>
+</p>
 
-<li>Compare analytical and finite-difference gradients: This is only for
-testing purposes. Writes chkgrad.log file containing the comparison.<br>
-Usage: <tt>chkgrad</tt>
-<br><br>
+<h4>Compare analytical and finite-difference gradients:</h4>
+<p>
+This is only for testing purposes. Writes chkgrad.log file containing the comparison.<br>
+Usage: <code>chkgrad</code>
+</p>
 
-<i><u><a href="#fscale" name="fscale">Options tho change the shape of the minimum-distance penalty function:</a></u></i>
-<br>
-<br>
-Usage: <tt> fscale [real] </tt><br>  
-This option must be used within <tt>structure ... end structure</tt> or 
-<tt> atoms ... end atoms </tt> sections, to change the weight of the
+<h3><a href="#fscale" name="fscale">Options to change the shape of the minimum-distance penalty function</a></h3>
+
+<p>
+Usage: <code>fscale [real]</code><br>  
+This option must be used within <code>structure ... end structure</code> or 
+<code>atoms ... end atoms</code> sections, to change the weight of the
 penalty function, as illustrated in the images below. The fscale defines
 how greater the penalty is relative to the default penalty.
-<br><br>
-Usage: <tt> use_short_tol </tt><br>  
-Usage: <tt> short_tol_dist [real] </tt><br>  
-Usage: <tt> short_tol_scale [real] </tt><br>  
+</p>
+
+<p>
+Usage: <code>use_short_tol</code><br>  
+Usage: <code>short_tol_dist [real]</code><br>  
+Usage: <code>short_tol_scale [real]</code><br>  
 These options define a new penalty tolerance for short distances, to increase the
 repulsion between atoms when they are too close to each other. The "use"
 parameter turns on this feature, using default parameters (dist=tolerance/2; scale=3).
@@ -1163,18 +1226,22 @@ default penalty. They affect the penalty of all atoms. Remember that the
 right, illustrates for example the build up of the penalty function using
 short_tol_dist=0.5; short_tol_scale=3, with the default overall tolerance 
 of 2.0 set. 
-<br><br>
-Usage: <tt> short_radius [real] </tt><br>  
-Usage: <tt> short_radius_scale [real] </tt><br>  
+</p>
+
+<p>
+Usage: <code>short_radius [real]</code><br>  
+Usage: <code>short_radius_scale [real]</code><br>  
 These parameters define a new penalty for short distances, but for specific
-atoms. These options must be used  within <tt>structure ... end structure</tt> or 
-<tt> atoms ... end atoms </tt> sections. Note that, in this case, the
+atoms. These options must be used  within <code>structure ... end structure</code> or 
+<code>atoms ... end atoms</code> sections. Note that, in this case, the
 <i>radius</i> is defined (the actual tolerance is the sum of the radii of each
 pair of atoms; for atoms without an explicit radius definition, the radius
 is one half of the overall set tolerance parameter). 
-<br><br><center>
+</p>
+
+<center>
 <img width=600px src=./penalty_options.png>
-</center><br>
+</center>
 <br>
 <!--
 Note: the overalp penalty function for a pair of atoms,
