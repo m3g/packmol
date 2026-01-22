@@ -55,9 +55,11 @@
   <div class="install-step">
     <h4 style="margin-top: 3rem;"><span class="step-number">c</span>Command-line Interface</h4>
     
-    <p>
-      The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.
-    </p>
+    <div class="info-box">
+        <p>
+             The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.
+        </p>
+    </div>
     
     <p><strong>c.1) Install the Packmol app:</strong></p>
     <pre><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></pre>
