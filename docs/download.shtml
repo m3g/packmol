@@ -22,13 +22,6 @@
   </p>
 </div>
 
-<h3>How to download and install Packmol</h3>
-
-<div class="success-box">
-  <strong>✓ Recommended:</strong> The main supported way to get Packmol running on any platform (Windows, MacOS, Linux) 
-  is to use the <a href="https://github.com/m3g/Packmol.jl#packmol">Julia wrapper for Packmol</a>.
-</div>
-
 <div class="install-steps">
   <div class="install-step">
     <h4><span class="step-number">1</span>Julia Wrapper (recommended)</h4>
