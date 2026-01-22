@@ -169,6 +169,7 @@ body {
 /* Main Content */
 .main-content {
   flex: 1;
+  min-width: 0;
   background: white;
   padding: 2rem;
   border-radius: 8px;
