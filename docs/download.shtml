@@ -31,59 +31,46 @@
 
 <div class="install-steps">
   <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">a</span>Install Julia</h4>
+    <h4><span class="step-number">1</span>Julia Wrapper (recommended)</h4>
+
+    <h4><span class="step-number">a</span>Install Julia</h4>
     <p>
-      Download and install the Julia programming language from: 
+      Download and install the Julia programming language from:
       <a target="_julia_" href="https://julialang.org/downloads/">https://julialang.org/downloads/</a>
     </p>
-  </div>
 
-  <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">b</span>Interactive Usage</h4>
-    
+    <h4><span class="step-number">b</span>Interactive Usage</h4>
     <p><strong>b.1) Install Packmol:</strong></p>
     <p>Open Julia and type:</p>
     <pre><code>julia> import Pkg; Pkg.add("Packmol")</code></pre>
-    
     <p><strong>b.2) Running Packmol:</strong></p>
     <p>Inside the Julia REPL, type:</p>
     <pre><code>julia> using Packmol; run_packmol()</code></pre>
-    
     <p>This will open a GUI from which you will be able to select the input file to be used by Packmol.</p>
-  </div>
 
-  <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">c</span>Command-line Interface</h4>
-    
+    <h4><span class="step-number">c</span>Command-line Interface</h4>
     <div class="info-box">
-        <p>
-             The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.
-        </p>
+      <p>The <code>~/.julia/bin/packmol</code> executable must be in your path after installation.</p>
     </div>
-    
     <p><strong>c.1) Install the Packmol app:</strong></p>
     <pre><code>julia -e 'import Pkg; Pkg.Apps.add("Packmol")'</code></pre>
-    
     <p><strong>c.2) Run Packmol as standalone app from the shell:</strong></p>
     <pre><code>packmol -i input.inp</code></pre>
-    
-    <p>
-      Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.
-    </p>
-  </div>
-</div>
+    <p>Additional details can be found in the <a href="https://github.com/m3g/Packmol.jl#packmol">Packmol.jl page</a>.</p>
 
-<div class="version-badges">
-  <strong>Current versions:</strong><br>
-  <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol" alt="Packmol version">
-  <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl" alt="Packmol.jl version">
+    <div class="version-badges">
+      <strong>Current versions:</strong><br>
+      <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol" alt="Packmol version">
+      <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl" alt="Packmol.jl version">
+    </div>
+  </div>
 </div>
 
 <hr>
 
 <div class="install-steps">
   <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">2</span>Python Package Index (PyPI)</h4>
+    <h4><span class="step-number">2</span>Python Package Index (PyPI)</h4>
     
     <p>Install using pip:</p>
     <pre><code>pip install packmol</code></pre>
@@ -98,7 +85,7 @@
   </div>
 
   <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">3</span>Source Code from GitHub</h4>
+    <h4><span class="step-number">3</span>Source Code from GitHub</h4>
     
     <p>
       <a href="https://github.com/m3g/packmol/releases/latest" target="_blank">
@@ -119,7 +106,7 @@
   </div>
 
   <div class="install-step">
-    <h4 style="margin-top: 3rem;"><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
+    <h4><span class="step-number">4</span>Conda/Mamba Package Managers</h4>
     
     <p>
       <a href="https://github.com/conda-forge/packmol-feedstock">
