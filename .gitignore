@@ -14,3 +14,5 @@ testing/chkgrad.log
 .vscode/settings.json
 *.mod
 *.o
+docs/_site/*
+_site*
