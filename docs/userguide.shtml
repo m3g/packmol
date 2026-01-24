@@ -310,8 +310,8 @@ the molecule relative to its position in the coordinate file. The latter
 three parameters are rotation angles (in radians). For this option it is
 required that only one molecule is set. It may be accompanied by the
 keyword <code>center</code>. If this keyword is present the first three numbers
-are the position of the baricenter (not really the center of mass,
-because we suppose that all atoms have the same mass). Therefore this
+are the position of the barycenter (not truly the center of mass,
+because we assume that all atoms have the same mass). Therefore this
 keyword must be used in the following context:
 </p>
 
@@ -551,7 +551,7 @@ outside cylinder a₁ b₁ c₁ a₂ b₂ c₂ d l</code></pre>
     such, no atom will have an <i>x</i> coordinate greater than 20. The orientation
     of the cylinder, parallel to the <i>x</i> axis is defined by the director
     vector (1,0,0), the fourth, fifth and sixth parameters. Cylinders can be
-    oriented in space in anyway.
+    oriented in any direction in space.
   </p>
 </div>
 
@@ -1060,7 +1060,7 @@ position might overlap with those.
 <td class=tdclean0><code>movefrac</code> and <code>maxmove</code><br>
 In the heuristic that moves the worst molecules, <code>movefrac</code> defines
 which is the fraction of molecules that are going to be moved, for each
-type of molecule. For very large systems, it is isually a good idea to
+type of molecule. For very large systems, it is usually a good idea to
 define a small value of <code>movefrac</code>, because otherwise the
 randomization of the system is too great. The default value is 0.05.
 At the same time, <code>maxmove</code> defines a maximum absolute number of molecules to be

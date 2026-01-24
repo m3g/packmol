@@ -9,7 +9,7 @@ different atoms.
 <br><br>
 
 &bull; The "constrain rotation" option can now constrain the angle of rotation
-of all molecules of one type, so that they their centers are randomly 
+of all molecules of one type, so that their centers are randomly 
 placed in space, but the molecules have an overall common orientation. This
 can be used also to build lipid layers, for example, or maybe to build
 anisotropic liquids.<br><br>
