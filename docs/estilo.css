@@ -43,14 +43,13 @@ body {
 
 .header-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
 }
 
 .logo-section {
   flex-shrink: 0;
-  padding-top: 0.5rem;
 }
 
 .logo-section img {
@@ -275,6 +274,9 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin: 2rem 0 3rem 0;
+  max-width: 100%;
+  overflow: hidden;
+  align-items: start;
 }
 
 .home-card {
@@ -283,9 +285,22 @@ body {
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.home-card table {
+  max-width: 100%;
+  width: 100% !important;
+}
+
+.home-card img {
+  max-width: 100%;
+  height: auto;
 }
 
 .home-card h3 {
+  margin-top: 0;
   margin-bottom: 1rem;
   color: var(--cp5);
 }
@@ -307,6 +322,11 @@ body {
 @media (max-width: 900px) {
   .home-sections {
     grid-template-columns: 1fr;
+  }
+  
+  .home-card {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -467,6 +487,10 @@ h3 {
 .main-content h3 {
   padding-bottom: 0.5rem;
   border-bottom: 3px solid var(--cp1);
+}
+
+.main-content > h3:first-of-type {
+  margin-top: 0;
 }
 
 h4 {
