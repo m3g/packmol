@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css" href="https://m3g.github.io/packmol/estilo.css">
+  <link rel="stylesheet" type="text/css" href="./estilo.css">
   <title>Packmol - Initial configurations for Molecular Dynamics</title>
 
 <script type="text/javascript">
@@ -18,6 +18,29 @@
     window.open(href, windowname, 'width=650,height=600,scrollbars=yes');
     return false;
   }
+
+  function toggleMobileMenu() {
+    var sidebar = document.getElementById('sidebar');
+    var toggle = document.getElementById('menuToggle');
+    var overlay = document.getElementById('menuOverlay');
+    
+    sidebar.classList.toggle('mobile-open');
+    toggle.classList.toggle('active');
+    overlay.classList.toggle('active');
+    
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+  }
+
+  // Close menu with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      var sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('mobile-open')) {
+        toggleMobileMenu();
+      }
+    }
+  });
 </script>
 
 </head>
@@ -55,10 +78,18 @@
     </ul>
   </nav>
 
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" id="menuToggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+    <span class="menu-icon">☰</span><span class="menu-text">Menu</span>
+  </button>
+
   <!-- Main Layout -->
   <div class="main-layout">
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-section">
         <div class="sidebar-header">Packmol:</div>
         <div class="sidebar-content">

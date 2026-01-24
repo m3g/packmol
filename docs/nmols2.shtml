@@ -4,40 +4,44 @@
 
 <h3> Volume guesser </h3>
 
+<p>
 This script guesses the volume of a system containing a given
 number of molecules of various types
 in order that the final density has a desired
 value.
+</p>
 
-<br><br>
-<table class=blackborder bgcolor="lightgrey" align=center>
-<tr align="center" border=1px>
-<form method="post" action="nmols_form1(this.form)">
-<td align="left"> Number of types of molecules: </td>
-<td align="left"> <input type="text" name="ntype" size="10" maxlength="350"> 
-<input type="submit" value="Proceed..."> 
-</form>
-</td></tr>
-</table>
+<div class="form-card">
+  <h4>Get Started</h4>
+  <form method="post" action="nmols_form1(this.form)">
+    <div class="form-row">
+      <label for="ntype">Number of molecule types:</label>
+      <input type="text" name="ntype" id="ntype" size="10" maxlength="350">
+      <button type="submit">Proceed</button>
+    </div>
+  </form>
+</div>
 
-<br><br>
-This estimative is obtained supposing that each molecules occupies 
+<p style="margin-top: 2rem;">
+This estimate is obtained supposing that each molecule occupies 
 a volume proportional to its molar mass. Unless your
 system is very sensitive to variations in density (as if it is gaseous), 
-the present estimative should be good enough for your simulation. For
+the present estimate should be good enough for your simulation. For
 gaseous mixtures or other pressure sensitive systems,
 we recommend performing NPT simulations for equilibrating the density
-towards the
-desired value.
+towards the desired value.
 More sophisticated
-estimatives for molecular volumes can be found in the literature. 
-<br><br>
-No information is saved in this site.
+estimates for molecular volumes can be found in the literature. 
+</p>
+
+<p><em>No information is saved on this site.</em></p>
 
 {% include_relative tail.shtml %}
 
+<script>
 function nmols_form1 (form) {
     var NumberOfMolecules = form.ntype.value;
     alert ("You typed: " + NumberOfMolecules)
 }
+</script>
 

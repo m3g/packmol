@@ -8,52 +8,43 @@
       var theForm = document.forms["NumberOfMolecularTypes"];
       ntypes = theForm.elements["nTypes"].value;
       
-target.innerHTML += `
+target.innerHTML = `
 <form id="EstimateVolume">
-
-<table border=1>
-<tr>
-<td>
-Desired density:
-</td>
-<td>
-<input type=\"text\" name=density size=\"10\"> g/mL 
-</td>
-</tr>
-</table>
-<br><br>
-
-<table border=1>`
+<div class="form-card">
+<h4>System Properties</h4>
+<div class="form-row">
+  <label for="density">Desired density:</label>
+  <input type="text" name="density" id="density" size="10">
+  <span class="unit">g/mL</span>
+</div>
+</div>
+`;
 
       for ( itype = 1; itype <= ntypes; itype++ ) {
           target.innerHTML += `
-<tr><td colspan=6> Type `+itype+`: </td></tr>
-<tr bgcolor=lightgrey><td colspan=\"2\" align=\"left\">  
-Number of molecules: 
-</td>
-<td>
-<input type=\"text\" name=nmols[] size=\"10\"> 
-</td>
-<td>
-Molar mass:*
-</td>
-<td>
-<input type=\"text\" name=mass[] size=\"10\"> g/mol 
-</td>
-</tr><br><br>`;
+<div class="form-card molecule-type">
+  <div class="molecule-type-header">Molecule Type ${itype}</div>
+  <div class="form-row">
+    <label for="nmols${itype}">Number of molecules:</label>
+    <input type="text" name="nmols[]" id="nmols${itype}" size="10">
+  </div>
+  <div class="form-row">
+    <label for="mass${itype}">Molar mass:*</label>
+    <input type="text" name="mass[]" id="mass${itype}" size="10">
+    <span class="unit">g/mol</span>
+  </div>
+</div>`;
       }
 
 target.innerHTML += `
-<tr><td align=right colspan=6>
-<button type="button" onclick="estimate_volume(`+ntypes+`)">Submit</button>
-</tr></td>
-</td></tr>
-</table>
-*Molar mass of one molecule. 
-</td>
-
+<div class="form-submit">
+  <button type="button" onclick="estimate_volume(${ntypes})">Calculate Volume</button>
+</div>
+<p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 1rem;">
+  *Molar mass of one molecule.
+</p>
 </form>    
-`
+`;
 } // end function ntypes
 
 function estimate_volume(ntypes) {
@@ -68,68 +59,57 @@ function estimate_volume(ntypes) {
           mol_vol = 1.660577881 * input_mass[itype].value / density;
           totvol = totvol + mol_vol * input_nmols[itype].value;
       }        
-      target.innerHTML += `
-      <br>
-      <table align=\"center\" width=\"50%\">
-      <tr><td align=\"center\">
-      <h3> Result: </h3>
-      Your system must have a volume of: 
-      `+totvol.toFixed(2)+` \&\#xC5;<sup>3</sup>
-      <br><br>
-      This means a cubic box of side
-      `+(totvol**(1.0/3.0)).toFixed(2)+` \&\#xC5;
-      <br><br>
-      Or a sphere of radius 
-      `+(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)+` \&\#xC5;
-      </tr></td>
-      <tr><td align=\"center\">
-      <b><a href=./nmols.shtml>[Reload the page to start over]</a></b>
-      </td></tr>
-      </table>   
-      `
+      target.innerHTML = `
+      <div class="result-card">
+        <h4>Result</h4>
+        <p>Your system must have a volume of:</p>
+        <div class="value">${totvol.toFixed(2)} &#xC5;<sup>3</sup></div>
+        <p>This means a cubic box of side:</p>
+        <div class="value">${(totvol**(1.0/3.0)).toFixed(2)} &#xC5;</div>
+        <p>Or a sphere of radius:</p>
+        <div class="value">${(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)} &#xC5;</div>
+        <a href="./nmols.shtml">&#8635; Start over</a>
+      </div>
+      `;
 } // end function estimate_volume
-</script>
-
 </script>
 
 <h3> Volume guesser </h3>
 
+<p>
 This script guesses the volume of a system containing a given
 number of molecules of various types
 in order that the final density has a desired
 value.
+</p>
 
-<br><br>
-<table class=blackborder bgcolor="lightgrey" align=center>
-<tr align="center" border=1px>
-<form id="NumberOfMolecularTypes">
-<td align="left"> Number of types of molecules: </td>
-<td align="left"> <input type="text" name="nTypes" size="10" maxlength="350" value="1"> 
-<button type="button" onclick="ntypes()">Submit</button>
-</form>
-</td></tr>
-</table>
+<div class="form-card">
+  <h4>Get Started</h4>
+  <form id="NumberOfMolecularTypes">
+    <div class="form-row">
+      <label for="nTypes">Number of molecule types:</label>
+      <input type="text" name="nTypes" id="nTypes" size="10" maxlength="350" value="1">
+      <button type="button" onclick="ntypes()">Proceed</button>
+    </div>
+  </form>
+</div>
 
-<br><br>
-This estimative is obtained supposing that each molecules occupies 
+<p style="margin-top: 2rem;">
+This estimate is obtained supposing that each molecule occupies 
 a volume proportional to its molar mass. Unless your
 system is very sensitive to variations in density (as if it is gaseous), 
-the present estimative should be good enough for your simulation. For
+the present estimate should be good enough for your simulation. For
 gaseous mixtures or other pressure sensitive systems,
 we recommend performing NPT simulations for equilibrating the density
-towards the
-desired value.
+towards the desired value.
 More sophisticated
-estimatives for molecular volumes can be found in the literature. 
-<br><br>
-No information is saved in this site.
+estimates for molecular volumes can be found in the literature. 
+</p>
 
-<center>
+<p><em>No information is saved on this site.</em></p>
 
 <div id="nmols1"></div>
 
 <div id="nmols2"></div>
-
-</center>
 
 {% include_relative tail.shtml %}
