@@ -305,6 +305,33 @@ body {
   color: var(--cp5);
 }
 
+/* Research Pick section */
+.home-card .research-pick {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+}
+
+.home-card .research-pick b,
+.home-card .research-pick a {
+  text-align: center;
+}
+
+.research-pick-img {
+  margin-top: 1rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.research-pick-img img {
+  max-width: 100%;
+  max-height: 350px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 .link-list li {
   margin: 0.5rem 0;
   line-height: 1.6;

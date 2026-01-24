@@ -36,16 +36,12 @@
                 return [ text[hl_number], link[hl_number], img[hl_number] ]
            }
     var hldata = randomhl()
-    document.write("<table width=100\%><tr><td class=tdmenu>")
-    document.write("<table width=100\% align=center>")
-    document.write("  <tr><td align=center valign=top class=tdmenu bgcolor=white>")
-    document.write("      <b>Research Pick:</b><br> "+hldata[0])
-    document.write("      <br><a target=_blank_ href="+hldata[1]+"> [click here] </a>")
-    document.write("      <center>")
-    document.write("        <img style=\"max-height:350px;max-width:350px;height:auto;width:auto;\" src="+hldata[2]+"><br><br>")
-    document.write("      </center>")
-    document.write("    </td></tr>")
-    document.write("</table>")
-    document.write("</td></tr></table>")
+    document.write("<div class='research-pick'>");
+    document.write("<b>Research Pick:</b><br>"+hldata[0]);
+    document.write("<br><a target='_blank' href='"+hldata[1]+"'>[click here]</a>");
+    document.write("<div class='research-pick-img'>");
+    document.write("<img src='"+hldata[2]+"'>");
+    document.write("</div>");
+    document.write("</div>");
    //-->
 </script>
