@@ -418,6 +418,7 @@ program packmol
           end if
           ival = 2
           do
+            if (ival > maxkeywords) exit
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -440,6 +441,7 @@ program packmol
           end if
           ival = 2
           do
+            if (ival > maxkeywords) exit
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -462,6 +464,7 @@ program packmol
           end if
           ival = 2
           do
+            if (ival > maxkeywords) exit
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -485,6 +488,7 @@ program packmol
           end if
           ival = 2
           do
+            if (ival > maxkeywords) exit
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
