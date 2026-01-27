@@ -847,6 +847,29 @@ button:active, .btn:active {
   font-weight: bold;
 }
 
+.result-card .start-over {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.result-card .start-over button {
+  background: var(--cp5);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.result-card .start-over button:hover {
+  background: var(--cp4);
+  transform: translateY(-2px);
+}
+
 .molecule-type {
   background: #f8f9fa;
   border: 1px solid #e0e0e0;

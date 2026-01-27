@@ -4,9 +4,12 @@
 
 <script>
     function ntypes() {
+      // Clear any previous results when starting over
+      document.getElementById("nmols2").innerHTML = "";
+      
       var target = document.getElementById("nmols1");
       var theForm = document.forms["NumberOfMolecularTypes"];
-      ntypes = theForm.elements["nTypes"].value;
+      var numTypes = parseInt(theForm.elements["nTypes"].value);
       
 target.innerHTML = `
 <form id="EstimateVolume">
@@ -20,7 +23,7 @@ target.innerHTML = `
 </div>
 `;
 
-      for ( itype = 1; itype <= ntypes; itype++ ) {
+      for ( var itype = 1; itype <= numTypes; itype++ ) {
           target.innerHTML += `
 <div class="form-card molecule-type">
   <div class="molecule-type-header">Molecule Type ${itype}</div>
@@ -38,7 +41,7 @@ target.innerHTML = `
 
 target.innerHTML += `
 <div class="form-submit">
-  <button type="button" onclick="estimate_volume(${ntypes})">Calculate Volume</button>
+  <button type="button" onclick="estimate_volume(${numTypes})">Calculate Volume</button>
 </div>
 <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 1rem;">
   *Molar mass of one molecule.
@@ -47,16 +50,16 @@ target.innerHTML += `
 `;
 } // end function ntypes
 
-function estimate_volume(ntypes) {
+function estimate_volume(numTypes) {
       var target = document.getElementById("nmols2");
       var theForm = document.forms["EstimateVolume"];
-      density = theForm.elements["density"].value;
-      input_mass = document.getElementsByName("mass[]");
-      input_nmols = document.getElementsByName("nmols[]");
+      var density = theForm.elements["density"].value;
+      var input_mass = document.getElementsByName("mass[]");
+      var input_nmols = document.getElementsByName("nmols[]");
       // volume occupied by each molecule
-      totvol = 0.0;
-      for ( itype = 0; itype < ntypes; itype ++ ) { 
-          mol_vol = 1.660577881 * input_mass[itype].value / density;
+      var totvol = 0.0;
+      for ( var itype = 0; itype < numTypes; itype++ ) { 
+          var mol_vol = 1.660577881 * input_mass[itype].value / density;
           totvol = totvol + mol_vol * input_nmols[itype].value;
       }        
       target.innerHTML = `
@@ -68,7 +71,9 @@ function estimate_volume(ntypes) {
         <div class="value">${(totvol**(1.0/3.0)).toFixed(2)} &#xC5;</div>
         <p>Or a sphere of radius:</p>
         <div class="value">${(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)} &#xC5;</div>
-        <a href="./nmols.shtml">&#8635; Start over</a>
+        <div class="start-over">
+          <button type="button" onclick="window.location.reload()">&#8635; Start over</button>
+        </div>
       </div>
       `;
 } // end function estimate_volume
