@@ -12,6 +12,7 @@ packmol changelog
 
 Version 21.2.1-DEV
 --------------
+- ![INFO][badge-info] Avoid looping above `maxkeywords` in input file reading of radii.
 
 Version 21.2.0
 --------------

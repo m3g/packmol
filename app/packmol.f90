@@ -417,8 +417,7 @@ program packmol
             stop exit_code_input_error
           end if
           ival = 2
-          do
-            if (ival > maxkeywords) exit
+          do while(ival <= maxkeywords)
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -440,8 +439,7 @@ program packmol
             stop exit_code_input_error
           end if
           ival = 2
-          do
-            if (ival > maxkeywords) exit
+          do while(ival <= maxkeywords)
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -463,8 +461,7 @@ program packmol
             stop exit_code_input_error
           end if
           ival = 2
-          do
-            if (ival > maxkeywords) exit
+          do while(ival <= maxkeywords)
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
@@ -487,8 +484,7 @@ program packmol
             stop exit_code_input_error
           end if
           ival = 2
-          do
-            if (ival > maxkeywords) exit
+          do while(ival <= maxkeywords)
             read(keyword(iline_atoms,ival),*,iostat=ioerr) iat
             if ( ioerr /= 0 ) exit
             if ( iat > natoms(itype) ) then
