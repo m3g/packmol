@@ -10,6 +10,9 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
+Version 21.2.2-DEV
+--------------
+
 Version 21.2.1
 --------------
 - ![INFO][badge-info] Avoid looping above `maxkeywords` in input file reading of radii.
