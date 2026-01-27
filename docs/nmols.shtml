@@ -3,79 +3,121 @@
 {% include_relative head.shtml %}
 
 <script>
+    var globalNumTypes = 1;
+    
     function ntypes() {
       // Clear any previous results when starting over
-      document.getElementById("nmols2").innerHTML = "";
+      document.getElementById("volumeResult").innerHTML = "";
       
       var target = document.getElementById("nmols1");
       var theForm = document.forms["NumberOfMolecularTypes"];
-      var numTypes = parseInt(theForm.elements["nTypes"].value);
+      globalNumTypes = parseInt(theForm.elements["nTypes"].value);
       
-target.innerHTML = `
-<form id="EstimateVolume">
-<div class="form-card">
-<h4>System Properties</h4>
-<div class="form-row">
-  <label for="density">Desired density:</label>
-  <input type="text" name="density" id="density" size="10">
-  <span class="unit">g/mL</span>
-</div>
-</div>
-`;
+      var html = '<form id="EstimateVolume" onsubmit="return false;">' +
+'<div class="form-card">' +
+'<h4>System Properties</h4>' +
+'<div class="form-row">' +
+'  <label for="density">Desired density:</label>' +
+'  <input type="text" name="density" id="density" size="10">' +
+'  <span class="unit">g/mL</span>' +
+'</div>' +
+'</div>';
 
-      for ( var itype = 1; itype <= numTypes; itype++ ) {
-          target.innerHTML += `
-<div class="form-card molecule-type">
-  <div class="molecule-type-header">Molecule Type ${itype}</div>
-  <div class="form-row">
-    <label for="nmols${itype}">Number of molecules:</label>
-    <input type="text" name="nmols[]" id="nmols${itype}" size="10">
-  </div>
-  <div class="form-row">
-    <label for="mass${itype}">Molar mass:*</label>
-    <input type="text" name="mass[]" id="mass${itype}" size="10">
-    <span class="unit">g/mol</span>
-  </div>
-</div>`;
+      for ( var itype = 1; itype <= globalNumTypes; itype++ ) {
+          html += '<div class="form-card molecule-type">' +
+'  <div class="molecule-type-header">Molecule Type ' + itype + '</div>' +
+'  <div class="form-row">' +
+'    <label for="nmols' + itype + '">Number of molecules:</label>' +
+'    <input type="text" name="nmols[]" id="nmols' + itype + '" size="10">' +
+'  </div>' +
+'  <div class="form-row">' +
+'    <label for="mass' + itype + '">Molar mass:*</label>' +
+'    <input type="text" name="mass[]" id="mass' + itype + '" size="10">' +
+'    <span class="unit">g/mol</span>' +
+'  </div>' +
+'</div>';
       }
 
-target.innerHTML += `
-<div class="form-submit">
-  <button type="button" onclick="estimate_volume(${numTypes})">Calculate Volume</button>
-</div>
-<p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 1rem;">
-  *Molar mass of one molecule.
-</p>
-</form>    
-`;
+        html += '<div class="form-submit">' +
+        // Add both inline and programmatic handler for robustness
+        '<button type="button" id="calcBtn" onclick="estimate_volume()">Calculate Volume</button>' +
+        '</div>' +
+        '<p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 1rem;">' +
+        '  *Molar mass of one molecule.' +
+        '</p>' +
+        // Add a div for error messages
+        '<div id="calcBtnError" style="color:red;text-align:center;"></div>' +
+        '</form>';
+
+        target.innerHTML = html;
+
+        // Attach click handler after DOM update (robust fallback)
+        var btn = document.getElementById("calcBtn");
+        var errorDiv = document.getElementById("calcBtnError");
+        if (btn) {
+          btn.onclick = function() {
+            console.log("Button was clicked!");
+            estimate_volume();
+          };
+          if (errorDiv) errorDiv.textContent = '';
+        } else {
+          if (errorDiv) errorDiv.textContent = 'Error: Calculate Volume button not found!';
+        }
 } // end function ntypes
 
-function estimate_volume(numTypes) {
-      var target = document.getElementById("nmols2");
+function estimate_volume() {
+      console.log("estimate_volume() called");
+      console.log("globalNumTypes:", globalNumTypes);
+      var target = document.getElementById("volumeResult");
       var theForm = document.forms["EstimateVolume"];
       var density = theForm.elements["density"].value;
       var input_mass = document.getElementsByName("mass[]");
       var input_nmols = document.getElementsByName("nmols[]");
+      console.log("density:", density);
+      for (var i = 0; i < input_mass.length; i++) {
+        console.log("mass["+i+"]:", input_mass[i].value, "nmols["+i+"]:", input_nmols[i].value);
+      }
+      // Validate inputs
+      if (!density || isNaN(parseFloat(density)) || parseFloat(density) <= 0) {
+        target.innerHTML = '<div style="color:red;text-align:center;">Please enter a valid density greater than 0.</div>';
+        return;
+      }
+      for (var i = 0; i < globalNumTypes; i++) {
+        if (!input_mass[i].value || isNaN(parseFloat(input_mass[i].value)) || parseFloat(input_mass[i].value) <= 0) {
+          target.innerHTML = '<div style="color:red;text-align:center;">Please enter a valid molar mass for molecule type ' + (i+1) + '.</div>';
+          return;
+        }
+        if (!input_nmols[i].value || isNaN(parseFloat(input_nmols[i].value)) || parseFloat(input_nmols[i].value) <= 0) {
+          target.innerHTML = '<div style="color:red;text-align:center;">Please enter a valid number of molecules for molecule type ' + (i+1) + '.</div>';
+          return;
+        }
+      }
       // volume occupied by each molecule
       var totvol = 0.0;
-      for ( var itype = 0; itype < numTypes; itype++ ) { 
-          var mol_vol = 1.660577881 * input_mass[itype].value / density;
-          totvol = totvol + mol_vol * input_nmols[itype].value;
-      }        
-      target.innerHTML = `
-      <div class="result-card">
-        <h4>Result</h4>
-        <p>Your system must have a volume of:</p>
-        <div class="value">${totvol.toFixed(2)} &#xC5;<sup>3</sup></div>
-        <p>This means a cubic box of side:</p>
-        <div class="value">${(totvol**(1.0/3.0)).toFixed(2)} &#xC5;</div>
-        <p>Or a sphere of radius:</p>
-        <div class="value">${(((3.0/(4.0*Math.PI))*totvol)**(1.0/3.0)).toFixed(2)} &#xC5;</div>
-        <div class="start-over">
-          <button type="button" onclick="window.location.reload()">&#8635; Start over</button>
-        </div>
-      </div>
-      `;
+      for ( var itype = 0; itype < globalNumTypes; itype++ ) { 
+          var mol_vol = 1.660577881 * parseFloat(input_mass[itype].value) / parseFloat(density);
+          totvol = totvol + mol_vol * parseFloat(input_nmols[itype].value);
+      }
+      console.log("totvol:", totvol);
+      if (isNaN(totvol) || totvol <= 0) {
+        target.innerHTML = '<div style="color:red;text-align:center;">Calculation error: please check your inputs.</div>';
+        return;
+      }
+      var resultHtml = '<div class="result-card">' +
+        '<h4>Result</h4>' +
+        '<p>Your system must have a volume of:</p>' +
+        '<div class="value">' + totvol.toFixed(2) + ' &#xC5;<sup>3</sup></div>' +
+        '<p>This means a cubic box of side:</p>' +
+        '<div class="value">' + Math.pow(totvol, 1.0/3.0).toFixed(2) + ' &#xC5;</div>' +
+        '<p>Or a sphere of radius:</p>' +
+        '<div class="value">' + Math.pow((3.0/(4.0*Math.PI))*totvol, 1.0/3.0).toFixed(2) + ' &#xC5;</div>' +
+        '<div class="start-over">' +
+          '<button type="button" onclick="window.location.reload()">&#8635; Start over</button>' +
+        '</div>' +
+      '</div>';
+      console.log("Setting target.innerHTML");
+      target.innerHTML = resultHtml;
+      console.log("target.innerHTML set");
 } // end function estimate_volume
 </script>
 
@@ -90,7 +132,7 @@ value.
 
 <div class="form-card">
   <h4>Get Started</h4>
-  <form id="NumberOfMolecularTypes">
+  <form id="NumberOfMolecularTypes" onsubmit="return false;">
     <div class="form-row">
       <label for="nTypes">Number of molecule types:</label>
       <input type="text" name="nTypes" id="nTypes" size="10" maxlength="350" value="1">
@@ -115,6 +157,6 @@ estimates for molecular volumes can be found in the literature.
 
 <div id="nmols1"></div>
 
-<div id="nmols2"></div>
+<div id="volumeResult"></div>
 
 {% include_relative tail.shtml %}
