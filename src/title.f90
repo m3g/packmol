@@ -13,7 +13,7 @@ subroutine title()
     write(*,"(' PACKMOL - Packing optimization for the automated generation of', /&
              &' starting configurations for molecular dynamics simulations.', /&
              &' ',/&
-             &t61,' Version 21.2.0 ')")
+             &t61,' Version 21.2.1 ')")
     write(*,hash3_line)
 
 end subroutine title
