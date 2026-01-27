@@ -12,6 +12,7 @@ packmol changelog
 
 Version 21.2.2-DEV
 --------------
+- ![INFO][badge-info] Add changelog verification CI run.
 
 Version 21.2.1
 --------------
