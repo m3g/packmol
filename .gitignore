@@ -19,3 +19,5 @@ testing/input_files/Project.toml
 testing/chkgrad.log
 .vscode/settings.json
 __pycache__/
+_site/*
+docs/_site/*
