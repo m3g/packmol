@@ -11,8 +11,8 @@
 subroutine pgencan(n,x,fx)
 
    use sizes
-   use compute_data
-   use usegencan
+   use compute_data, only : ntype, nmols, constrain_rot, rot_bound
+   use usegencan, only : maxit, iprint1, iprint2, wi, wd, l, u, g
    implicit none
 
    double precision :: lambda(1), rho(1)
