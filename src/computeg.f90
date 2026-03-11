@@ -26,6 +26,7 @@ subroutine computeg(n,x,g)
    integer :: neigh_first(n_forward_offsets)
 
    double precision :: min_cell_dist2, max_reach, max_reach2, reg_reach, short_reach
+   double precision :: cell_reg_reach, cell_short_reach
    double precision :: x(n), g(n)
    double precision :: dv1beta(3), dv1gama(3), dv1teta(3),&
       dv2beta(3), dv2gama(3), dv2teta(3),&
@@ -72,7 +73,6 @@ subroutine computeg(n,x,g)
             icart = icart + 1
             idatom = idatom + 1
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
-            call refresh_hot_buffers_atom(icart)
 
             ! Gradient relative to the wall distace
             do iratcount = 1, nratom(icart)
@@ -88,7 +88,10 @@ subroutine computeg(n,x,g)
 
                cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
                if ( use_short_radius(icart) ) then
-                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), short_radius(icart))
+                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1( &
+                  cell_max_short_radius(cell(1),cell(2),cell(3)), &
+                  short_radius(icart) &
+               )
                end if
 
                ! cell with atoms linked list
@@ -101,8 +104,9 @@ subroutine computeg(n,x,g)
 
                ibtype(icart) = itype
                ibmol(icart) = imol
-               call refresh_hot_buffers_atom(icart)
             end if
+
+            call refresh_hot_buffers_atom(icart)
 
          end do
          ilugan = ilugan + 3
@@ -124,6 +128,8 @@ subroutine computeg(n,x,g)
          i = cell(1)
          j = cell(2)
          k = cell(3)
+         cell_reg_reach = cell_max_radius(i,j,k)
+         cell_short_reach = cell_max_short_radius(i,j,k)
 
          ! Load current cell and forward neighbors using the shared offset ordering:
          ! (0,0,0), 3 faces, 6 edges, 4 vertices.
@@ -140,8 +146,9 @@ subroutine computeg(n,x,g)
             if ( neigh_first(ioffset) <= 0 ) cycle
 
             min_cell_dist2 = cell_pair_min_dist2(cell, neigh_cell)
-            reg_reach = cell_max_radius(cell(1),cell(2),cell(3)) + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-            short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+            reg_reach = cell_reg_reach + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+            short_reach = cell_short_reach + &
+               cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
             max_reach = dmax1(reg_reach, short_reach)
             max_reach2 = max_reach*max_reach
             if ( min_cell_dist2 > max_reach2 ) neigh_first(ioffset) = 0

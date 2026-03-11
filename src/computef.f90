@@ -24,6 +24,7 @@ subroutine computef(n,x,f)
    integer :: neigh_first(n_forward_offsets)
 
    double precision :: min_cell_dist2, max_reach, max_reach2, reg_reach, short_reach
+   double precision :: cell_reg_reach, cell_short_reach
 
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
@@ -80,7 +81,6 @@ subroutine computef(n,x,f)
             ! Computing the cartesian coordinates for this atom
 
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
-            call refresh_hot_buffers_atom(icart)
 
             ! Adding to f the value relative to constraints for this atom
 
@@ -116,9 +116,10 @@ subroutine computef(n,x,f)
 
                ibtype(icart) = itype
                ibmol(icart) = imol
-               call refresh_hot_buffers_atom(icart)
 
             end if
+
+            call refresh_hot_buffers_atom(icart)
 
          end do
 
@@ -139,6 +140,8 @@ subroutine computef(n,x,f)
       i = cell(1)
       j = cell(2)
       k = cell(3)
+      cell_reg_reach = cell_max_radius(i,j,k)
+      cell_short_reach = cell_max_short_radius(i,j,k)
 
       ! Load current cell and forward neighbors using the shared offset ordering:
       ! (0,0,0), 3 faces, 6 edges, 4 vertices.
@@ -155,8 +158,8 @@ subroutine computef(n,x,f)
          if ( neigh_first(ioffset) <= 0 ) cycle
 
          min_cell_dist2 = cell_pair_min_dist2(cell, neigh_cell)
-         reg_reach = cell_max_radius(cell(1),cell(2),cell(3)) + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-         short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + &
+         reg_reach = cell_reg_reach + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+         short_reach = cell_short_reach + &
             cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
          max_reach = dmax1(reg_reach, short_reach)
          max_reach2 = max_reach*max_reach
