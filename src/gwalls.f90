@@ -9,7 +9,7 @@
 subroutine gwalls(icart,irest)
 
    use sizes
-   use compute_data
+   use compute_data, only : ityperest, restpars, xcart, gxcar, scale, scale2
 
    implicit none
    integer :: icart, irest

@@ -12,7 +12,7 @@
 subroutine restmol(itype,ilubar,n,x,fx,solve)
 
    use sizes
-   use compute_data
+   use compute_data, only : ntotmol, ntype, nmols, comptype, init1, xmol, compsafe
    use usegencan
    implicit none
 

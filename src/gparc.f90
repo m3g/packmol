@@ -9,7 +9,8 @@
 subroutine gparc(icart,firstjcart)
 
    use sizes
-   use compute_data
+   use compute_data, only : comptype, radius, fscale, short_radius, short_radius_scale, fixed_short_marker, &
+      latomnext, gxcar, x_hot, y_hot, z_hot, ibmol_hot, ibtype_hot
    use pbc, only : pbc_length
    implicit none
 
