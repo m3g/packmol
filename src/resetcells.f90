@@ -34,7 +34,9 @@ subroutine resetcells()
             latomfirst(cell(1),cell(2),cell(3)) = icart
             cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
             if ( use_short_radius(icart) ) then
-               cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), short_radius(icart))
+               cell_max_short_radius(cell(1),cell(2),cell(3)) = &
+                  dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), &
+                        short_radius(icart))
             end if
 
             if ( empty_cell(cell(1),cell(2),cell(3)) ) then
@@ -48,4 +50,3 @@ subroutine resetcells()
    end if
 
 end subroutine resetcells
-
