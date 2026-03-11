@@ -10,7 +10,10 @@ subroutine computef(n,x,f)
 
    use sizes
    use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
-   use compute_data
+   use compute_data, only : ntotmol, ntype, ncells, nmols, natoms, idfirst, ibmol, ibtype, fdist, frest, &
+      cell_length, xcart, coor, radius, short_radius, frest_atom, comptype, use_short_radius, init1, move, &
+      latomnext, latomfirst, lcellfirst, lcellnext, empty_cell, cell_max_radius, cell_max_short_radius, &
+      refresh_hot_buffers_full, refresh_hot_buffers_atom
    use pbc
    implicit none
 

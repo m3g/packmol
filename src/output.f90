@@ -10,7 +10,7 @@ subroutine output(n, x, output_file_name)
 
    use exit_codes
    use sizes
-   use compute_data
+   use compute_data, only : ntotmol, ntype, ntotat, nmols, natoms, idfirst, xcart, coor
    use input
    use pbc
 
