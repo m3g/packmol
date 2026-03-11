@@ -118,18 +118,25 @@ subroutine computeg(n,x,g)
             neigh_cell(2) = cell_ind(j + forward_offsets(2,ioffset), ncells(2))
             neigh_cell(3) = cell_ind(k + forward_offsets(3,ioffset), ncells(3))
             neigh_first(ioffset) = latomfirst(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+            do while ( neigh_first(ioffset) > 0 )
+               if ( comptype(ibtype(neigh_first(ioffset))) ) exit
+               neigh_first(ioffset) = latomnext(neigh_first(ioffset))
+            end do
          end do
 
          icart = neigh_first(1)
          do while( icart > 0 )
 
-            if(comptype(ibtype(icart))) then
-               ! Offset #1 is self-cell and uses latomnext(icart) to keep forward-only pairs.
-               call gparc(icart,latomnext(icart))
-               do ioffset = 2, n_forward_offsets
-                  call gparc(icart,neigh_first(ioffset))
-               end do
+            if ( .not. comptype(ibtype(icart)) ) then
+               icart = latomnext(icart)
+               cycle
             end if
+
+            ! Offset #1 is self-cell and uses latomnext(icart) to keep forward-only pairs.
+            call gparc(icart,latomnext(icart))
+            do ioffset = 2, n_forward_offsets
+               call gparc(icart,neigh_first(ioffset))
+            end do
 
             icart = latomnext(icart)
          end do
