@@ -20,7 +20,7 @@ subroutine computef(n,x,f)
    integer :: ioffset
    integer :: neigh_first(n_forward_offsets)
 
-   double precision :: min_cell_dist2, max_reach, reg_reach, short_reach
+   double precision :: min_cell_dist2, max_reach, max_reach2, reg_reach, short_reach
 
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
@@ -152,7 +152,8 @@ subroutine computef(n,x,f)
          reg_reach = cell_max_radius(cell(1),cell(2),cell(3)) + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
          short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
          max_reach = dmax1(reg_reach, short_reach)
-         if ( min_cell_dist2 > max_reach*max_reach ) neigh_first(ioffset) = 0
+         max_reach2 = max_reach*max_reach
+         if ( min_cell_dist2 > max_reach2 ) neigh_first(ioffset) = 0
       end do
 
       icart = neigh_first(1)

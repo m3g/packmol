@@ -20,6 +20,7 @@ double precision function fparc(icart,firstjcart)
    ! LOCAL SCALARS
    integer :: jcart
    double precision :: datom, tol, short_tol, short_tol_penalty, short_tol_scale
+   double precision :: sumr, short_sumr, delta, tol_sq, short_tol_sq
    double precision :: dx, dy, dz
    double precision :: xi, yi, zi, ri, rii, fsi, short_ri, short_si
    double precision :: inv_pbcx, inv_pbcy, inv_pbcz
@@ -63,20 +64,26 @@ double precision function fparc(icart,firstjcart)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
          datom = dx*dx + dy*dy + dz*dz
 
-         tol = (ri + radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          if ( datom < tol ) then
-            fparc = fparc + fsi*fscale(jcart)*(datom-tol)**2
+            delta = datom - tol
+            fparc = fparc + fsi*fscale(jcart)*delta*delta
             if ( iand(fixed_short_marker(jcart),1) /= 0 ) then
-               short_tol = (short_ri + short_radius(jcart))**2
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
                if ( datom < short_tol ) then
                   short_tol_penalty = datom-short_tol
                   short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-                  short_tol_scale = short_tol_scale*(tol**2/short_tol**2)
-                  fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty**2
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*(tol_sq/short_tol_sq)
+                  fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty*short_tol_penalty
                end if
             end if
          end if
-         tol = (rii + radius_ini(jcart))**2
+         sumr = rii + radius_ini(jcart)
+         tol = sumr*sumr
          fdist = dmax1(tol-datom,fdist)
          if ( move ) then
             fdist_atom(icart) = dmax1(tol-datom,fdist_atom(icart))
@@ -105,18 +112,24 @@ double precision function fparc(icart,firstjcart)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
          datom = dx*dx + dy*dy + dz*dz
 
-         tol = (ri + radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          if ( datom < tol ) then
-            fparc = fparc + fsi*fscale(jcart)*(datom-tol)**2
-            short_tol = (short_ri + short_radius(jcart))**2
+            delta = datom - tol
+            fparc = fparc + fsi*fscale(jcart)*delta*delta
+            short_sumr = short_ri + short_radius(jcart)
+            short_tol = short_sumr*short_sumr
             if ( datom < short_tol ) then
                short_tol_penalty = datom-short_tol
                short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-               short_tol_scale = short_tol_scale*(tol**2/short_tol**2)
-               fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty**2
+               tol_sq = tol*tol
+               short_tol_sq = short_tol*short_tol
+               short_tol_scale = short_tol_scale*(tol_sq/short_tol_sq)
+               fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty*short_tol_penalty
             end if
          end if
-         tol = (rii + radius_ini(jcart))**2
+         sumr = rii + radius_ini(jcart)
+         tol = sumr*sumr
          fdist = dmax1(tol-datom,fdist)
          if ( move ) then
             fdist_atom(icart) = dmax1(tol-datom,fdist_atom(icart))
@@ -149,20 +162,26 @@ double precision function fparc(icart,firstjcart)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
          datom = dx*dx + dy*dy + dz*dz
 
-         tol = (ri + radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          if ( datom < tol ) then
-            fparc = fparc + fsi*fscale(jcart)*(datom-tol)**2
+            delta = datom - tol
+            fparc = fparc + fsi*fscale(jcart)*delta*delta
             if ( use_short_i .or. iand(fixed_short_marker(jcart),1) /= 0 ) then
-               short_tol = (short_ri + short_radius(jcart))**2
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
                if ( datom < short_tol ) then
                   short_tol_penalty = datom-short_tol
                   short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-                  short_tol_scale = short_tol_scale*(tol**2/short_tol**2)
-                  fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty**2
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*(tol_sq/short_tol_sq)
+                  fparc = fparc + fsi*fscale(jcart)*short_tol_scale*short_tol_penalty*short_tol_penalty
                end if
             end if
          end if
-         tol = (rii + radius_ini(jcart))**2
+         sumr = rii + radius_ini(jcart)
+         tol = sumr*sumr
          fdist = dmax1(tol-datom,fdist)
          if ( move ) then
             fdist_atom(icart) = dmax1(tol-datom,fdist_atom(icart))
