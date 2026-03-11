@@ -9,18 +9,16 @@
 subroutine computef(n,x,f)
 
    use sizes
-   use cell_indexing, only: index_cell, icell_to_cell, setcell
+   use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
    use compute_data
    use pbc
    implicit none
 
    integer :: n, i, j, k, icell
    integer :: ilugan, ilubar, icart, itype, imol, iatom, idatom
-   integer :: cell(3)
-   integer :: ip1, jp1, kp1, jm1, km1
-   integer :: neigh000, neigh100, neigh010, neigh001
-   integer :: neigh1m10, neigh10m1, neigh01m1, neigh011, neigh110, neigh101
-   integer :: neigh1m1m1, neigh1m11, neigh11m1, neigh111
+   integer :: cell(3), neigh_cell(3)
+   integer :: ioffset
+   integer :: neigh_first(n_forward_offsets)
 
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
@@ -124,49 +122,24 @@ subroutine computef(n,x,f)
       j = cell(2)
       k = cell(3)
 
-      ip1 = cell_ind(i + 1, ncells(1))
-      jp1 = cell_ind(j + 1, ncells(2))
-      kp1 = cell_ind(k + 1, ncells(3))
-      jm1 = cell_ind(j - 1, ncells(2))
-      km1 = cell_ind(k - 1, ncells(3))
+      ! Load current cell and forward neighbors using the shared offset ordering:
+      ! (0,0,0), 3 faces, 6 edges, 4 vertices.
+      do ioffset = 1, n_forward_offsets
+         neigh_cell(1) = cell_ind(i + forward_offsets(1,ioffset), ncells(1))
+         neigh_cell(2) = cell_ind(j + forward_offsets(2,ioffset), ncells(2))
+         neigh_cell(3) = cell_ind(k + forward_offsets(3,ioffset), ncells(3))
+         neigh_first(ioffset) = latomfirst(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+      end do
 
-      neigh000 = latomfirst(i,j,k)
-      neigh100 = latomfirst(ip1,j,k)
-      neigh010 = latomfirst(i,jp1,k)
-      neigh001 = latomfirst(i,j,kp1)
-      neigh1m10 = latomfirst(ip1,jm1,k)
-      neigh10m1 = latomfirst(ip1,j,km1)
-      neigh01m1 = latomfirst(i,jp1,km1)
-      neigh011 = latomfirst(i,jp1,kp1)
-      neigh110 = latomfirst(ip1,jp1,k)
-      neigh101 = latomfirst(ip1,j,kp1)
-      neigh1m1m1 = latomfirst(ip1,jm1,km1)
-      neigh1m11 = latomfirst(ip1,jm1,kp1)
-      neigh11m1 = latomfirst(ip1,jp1,km1)
-      neigh111 = latomfirst(ip1,jp1,kp1)
-
-      icart = neigh000
+      icart = neigh_first(1)
       do while( icart > 0 )
 
          if(comptype(ibtype(icart))) then
-            ! Interactions inside cell
+            ! Offset #1 is self-cell and uses latomnext(icart) to keep forward-only pairs.
             f = f + fparc(icart,latomnext(icart))
-            ! Interactions of cells that share faces (6 faces - 3 forward)
-            f = f + fparc(icart,neigh100) ! 4 - (1, 0, 0)
-            f = f + fparc(icart,neigh010) ! 5 - (0, 1, 0)
-            f = f + fparc(icart,neigh001) ! 6 - (0, 0, 1)
-            ! Interactions of cells that share axes (12 edges - 6 forward)
-            f = f + fparc(icart,neigh1m10) ! 4 - (1, -1, 0)
-            f = f + fparc(icart,neigh10m1) ! 5 - (1, 0, -1)
-            f = f + fparc(icart,neigh01m1) ! 6 - (0, 1, -1)
-            f = f + fparc(icart,neigh011) ! 9 - (0, 1, 1)
-            f = f + fparc(icart,neigh110) ! 10 - (1, 1, 0)
-            f = f + fparc(icart,neigh101) ! 11 - (1, 0, 1)
-            ! Interactions of cells that share vertices (8 vertices, 8 forward)
-            f = f + fparc(icart,neigh1m1m1) ! 5 - (1, -1, -1)
-            f = f + fparc(icart,neigh1m11) ! 6 - (1, -1, 1)
-            f = f + fparc(icart,neigh11m1) ! 7 - (1, 1, -1)
-            f = f + fparc(icart,neigh111) ! 8 - (1, 1, 1)
+            do ioffset = 2, n_forward_offsets
+               f = f + fparc(icart,neigh_first(ioffset))
+            end do
          end if
 
          icart = latomnext(icart)

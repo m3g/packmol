@@ -1,7 +1,30 @@
 module cell_indexing
 
 implicit none
-public :: setcell, icell_to_cell, index_cell
+public :: setcell, icell_to_cell, index_cell, n_forward_offsets, forward_offsets
+
+! Ordered list of relative cell offsets used for forward-only traversal.
+!  1: (0, 0, 0) -> self cell (handled with latomnext to avoid double-counting)
+!  2-4: forward face neighbors
+!  5-10: forward edge neighbors
+! 11-14: forward vertex neighbors
+integer, parameter :: n_forward_offsets = 14
+integer, parameter :: forward_offsets(3,n_forward_offsets) = reshape([ &
+   0, 0, 0, &
+   1, 0, 0, &
+   0, 1, 0, &
+   0, 0, 1, &
+   1,-1, 0, &
+   1, 0,-1, &
+   0, 1,-1, &
+   0, 1, 1, &
+   1, 1, 0, &
+   1, 0, 1, &
+   1,-1,-1, &
+   1,-1, 1, &
+   1, 1,-1, &
+   1, 1, 1  &
+], [3,n_forward_offsets])
 
 contains 
 !
