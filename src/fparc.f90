@@ -10,7 +10,8 @@
 double precision function fparc(icart,firstjcart)
 
    use sizes
-   use compute_data
+   use compute_data, only : comptype, fdist, fdist_atom, move, radius, radius_ini, fscale, short_radius, &
+      short_radius_scale, fixed_short_marker, latomnext, x_hot, y_hot, z_hot, ibmol_hot, ibtype_hot
    use pbc, only : pbc_length
    implicit none
 
