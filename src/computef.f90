@@ -100,7 +100,10 @@ subroutine computef(n,x,f)
 
                cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
                if ( use_short_radius(icart) ) then
-                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), short_radius(icart))
+                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1( &
+                     cell_max_short_radius(cell(1),cell(2),cell(3)), &
+                     short_radius(icart) &
+                  )
                end if
 
                ! cell with atoms linked list
@@ -153,7 +156,8 @@ subroutine computef(n,x,f)
 
          min_cell_dist2 = cell_pair_min_dist2(cell, neigh_cell)
          reg_reach = cell_max_radius(cell(1),cell(2),cell(3)) + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-         short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+         short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + &
+            cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
          max_reach = dmax1(reg_reach, short_reach)
          max_reach2 = max_reach*max_reach
          if ( min_cell_dist2 > max_reach2 ) neigh_first(ioffset) = 0
