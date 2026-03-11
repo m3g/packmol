@@ -13,6 +13,8 @@ packmol changelog
 Version 21.2.2-DEV
 --------------
 - ![INFO][badge-info] Add changelog verification CI run.
+- ![INFO][badge-info] Update README build/profile instructions and document recent cell-list and pair-kernel performance work.
+- ![INFO][badge-info] Add contributor credentials for Michele Bonus (Heinrich Heine University Düsseldorf).
 
 Version 21.2.1
 --------------

@@ -95,12 +95,24 @@ This profile prioritizes stability and portability with conservative optimizatio
 - **Makefile**: `make` (or `make baseline`)
 - **CMake**: `cmake -S . -B build -DPACKMOL_PROFILE=baseline`
 
+Then build with:
+
+```bash
+cmake --build build --config Release
+```
+
 #### Aggressive benchmark profile (`perf-native`)
 
 This profile is opt-in and applies compiler-specific native tuning (for example, `-march=native` for GNU or `-xHost` for Intel compilers). Use this for local benchmarking only.
 
 - **Makefile**: `make perf-native`
 - **CMake**: `cmake -S . -B build -DPACKMOL_PROFILE=perf-native`
+
+Then build with:
+
+```bash
+cmake --build build --config Release
+```
 
 #### Debug / sanitized profiles
 
@@ -110,6 +122,31 @@ Use these profiles for troubleshooting and memory/UB diagnostics.
 - **Makefile sanitizers (GNU)**: `make sanitize`
 - **CMake debug checks**: `cmake -S . -B build -DPACKMOL_PROFILE=debug`
 - **CMake sanitizers (GNU)**: `cmake -S . -B build -DPACKMOL_PROFILE=sanitize`
+
+Then build with:
+
+```bash
+cmake --build build --config Debug
+```
+
+### Performance-oriented kernel improvements
+
+Recent performance work in the pairwise cell-list kernels includes:
+
+- Prebuilt neighbor-cell offsets used in `computef` / `computeg` traversal.
+- Reduced branch pressure in pair kernels by separating hot paths.
+- Better data locality in hot loops through structure-of-arrays style access.
+- Conservative per-cell broad-phase reject checks before expensive pair evaluation.
+- Consistent `x*x` math micro-optimizations replacing hot-loop `**2` exponentiation.
+- Build-profile driven tuning with numerics validation support.
+
+These updates are designed to speed up large systems while preserving numerical behavior.
+
+## Contributors
+
+- Michele Bonus, Heinrich Heine University Düsseldorf  
+  Email: `michele.bonus@hhu.de`  
+  GitHub: https://github.com/MicheleBonus/
 
 #### Unsafe math is explicit opt-in
 
@@ -149,6 +186,5 @@ L Martinez, R Andrade, EG Birgin, JM Martinez, Packmol: A package for building i
 
 JM Martinez, L Martinez, Packing optimization for the automated generation of complex system's initial configurations for molecular dynamics and docking. Journal of Computational Chemistry, 24, 819-825, 2003.
 (https://doi.org/10.1002/jcc.10216)
-
 
 
