@@ -134,6 +134,7 @@ subroutine initial(n,x)
             idatom = idatom + 1
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
             fixedatom(icart) = .false.
+            call refresh_hot_buffers_atom(icart)
          end do
       end do
    end do
@@ -148,6 +149,7 @@ subroutine initial(n,x)
             xcart(icart,2) = coor(idfatom,2)
             xcart(icart,3) = coor(idfatom,3)
             fixedatom(icart) = .true.
+            call refresh_hot_buffers_atom(icart)
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3

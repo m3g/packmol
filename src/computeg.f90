@@ -35,7 +35,10 @@ subroutine computeg(n,x,g)
 
    ! Reset cells
 
-   if(.not.init1) call resetcells()
+   if(.not.init1) then
+      call resetcells()
+      call refresh_hot_buffers_full()
+   end if
 
    ! Transform baricenter and angles into cartesian coordinates
 
@@ -65,6 +68,7 @@ subroutine computeg(n,x,g)
             icart = icart + 1
             idatom = idatom + 1
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
+            call refresh_hot_buffers_atom(icart)
 
             ! Gradient relative to the wall distace
             do iratcount = 1, nratom(icart)
@@ -88,6 +92,7 @@ subroutine computeg(n,x,g)
 
                ibtype(icart) = itype
                ibmol(icart) = imol
+               call refresh_hot_buffers_atom(icart)
             end if
 
          end do
