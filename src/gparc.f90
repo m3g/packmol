@@ -19,6 +19,7 @@ subroutine gparc(icart,firstjcart)
    ! LOCAL SCALARS
    integer :: jcart
    double precision :: datom, dtemp, xdiff, tol, short_tol, short_tol_scale
+   double precision :: sumr, short_sumr, tol_sq, short_tol_sq
    double precision :: dx, dy, dz
    double precision :: xi, yi, zi, ri, fsi, short_ri, short_si
    double precision :: inv_pbcx, inv_pbcy, inv_pbcz
@@ -52,7 +53,8 @@ subroutine gparc(icart,firstjcart)
             cycle
          end if
 
-         tol = (ri+radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          dx = xi - x(jcart)
          dy = yi - y(jcart)
          dz = zi - z(jcart)
@@ -72,10 +74,13 @@ subroutine gparc(icart,firstjcart)
             gxcar(icart,3)= gxcar(icart,3) + xdiff
             gxcar(jcart,3)= gxcar(jcart,3) - xdiff
             if ( iand(fixed_short_marker(jcart),1) /= 0 ) then
-               short_tol = ( short_ri + short_radius(jcart) )**2
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
                if ( datom < short_tol ) then
                   short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-                  short_tol_scale = short_tol_scale*( tol**2 / short_tol**2 )
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
                   dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
                   xdiff = dtemp*dx
                   gxcar(icart,1)= gxcar(icart,1) + xdiff
@@ -105,7 +110,8 @@ subroutine gparc(icart,firstjcart)
             cycle
          end if
 
-         tol = (ri+radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          dx = xi - x(jcart)
          dy = yi - y(jcart)
          dz = zi - z(jcart)
@@ -124,10 +130,13 @@ subroutine gparc(icart,firstjcart)
             xdiff = dtemp*dz
             gxcar(icart,3)= gxcar(icart,3) + xdiff
             gxcar(jcart,3)= gxcar(jcart,3) - xdiff
-            short_tol = ( short_ri + short_radius(jcart) )**2
+            short_sumr = short_ri + short_radius(jcart)
+            short_tol = short_sumr*short_sumr
             if ( datom < short_tol ) then
                short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-               short_tol_scale = short_tol_scale*( tol**2 / short_tol**2 )
+               tol_sq = tol*tol
+               short_tol_sq = short_tol*short_tol
+               short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
                dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
                xdiff = dtemp*dx
                gxcar(icart,1)= gxcar(icart,1) + xdiff
@@ -160,7 +169,8 @@ subroutine gparc(icart,firstjcart)
             cycle
          end if
 
-         tol = (ri+radius(jcart))**2
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
          dx = xi - x(jcart)
          dy = yi - y(jcart)
          dz = zi - z(jcart)
@@ -180,10 +190,13 @@ subroutine gparc(icart,firstjcart)
             gxcar(icart,3)= gxcar(icart,3) + xdiff
             gxcar(jcart,3)= gxcar(jcart,3) - xdiff
             if ( use_short_i .or. iand(fixed_short_marker(jcart),1) /= 0 ) then
-               short_tol = ( short_ri + short_radius(jcart) )**2
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
                if ( datom < short_tol ) then
                   short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
-                  short_tol_scale = short_tol_scale*( tol**2 / short_tol**2 )
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
                   dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
                   xdiff = dtemp*dx
                   gxcar(icart,1)= gxcar(icart,1) + xdiff
