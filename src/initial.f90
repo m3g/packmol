@@ -12,7 +12,10 @@ subroutine initial(n,x)
    use exit_codes
    use sizes
    use cell_indexing, only: setcell
-   use compute_data
+   use compute_data, only : ntotmol, ntype, nfixedat, ntotat, ncells, nmols, natoms, idfirst, &
+      ibmol, ibtype, scale, scale2, fdist, frest, sizemin, sizemax, cell_length, radmax, xcart, coor, &
+      rot_bound, dmax, constrain_rot, comptype, fixedatom, init1, move, latomnext, latomfirst, latomfix, &
+      lcellfirst, lcellnext, empty_cell, cell_max_radius, cell_max_short_radius, refresh_hot_buffers_atom
    use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type

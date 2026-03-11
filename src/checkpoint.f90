@@ -12,7 +12,7 @@
 subroutine checkpoint(n,x)
 
    use sizes
-   use compute_data
+   use compute_data, only : comptype, init1
    use input
    use usegencan
    use ahestetic

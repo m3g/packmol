@@ -27,9 +27,9 @@ double precision function fparc(icart,firstjcart)
    integer :: marker_i
    logical :: use_short_i, fixed_i
 
-   xi = x(icart)
-   yi = y(icart)
-   zi = z(icart)
+   xi = x_hot(icart)
+   yi = y_hot(icart)
+   zi = z_hot(icart)
    ri = radius(icart)
    rii = radius_ini(icart)
    fsi = fscale(icart)
@@ -56,9 +56,9 @@ double precision function fparc(icart,firstjcart)
             cycle
          end if
 
-         dx = xi - x(jcart)
-         dy = yi - y(jcart)
-         dz = zi - z(jcart)
+         dx = xi - x_hot(jcart)
+         dy = yi - y_hot(jcart)
+         dz = zi - z_hot(jcart)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
@@ -104,9 +104,9 @@ double precision function fparc(icart,firstjcart)
             cycle
          end if
 
-         dx = xi - x(jcart)
-         dy = yi - y(jcart)
-         dz = zi - z(jcart)
+         dx = xi - x_hot(jcart)
+         dy = yi - y_hot(jcart)
+         dz = zi - z_hot(jcart)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
@@ -154,9 +154,9 @@ double precision function fparc(icart,firstjcart)
             cycle
          end if
 
-         dx = xi - x(jcart)
-         dy = yi - y(jcart)
-         dz = zi - z(jcart)
+         dx = xi - x_hot(jcart)
+         dy = yi - y_hot(jcart)
+         dz = zi - z_hot(jcart)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)

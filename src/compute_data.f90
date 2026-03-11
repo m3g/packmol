@@ -29,7 +29,7 @@ module compute_data
    double precision :: radmax
 
    double precision, allocatable :: xcart(:,:) ! (ntotat,3)
-   double precision, allocatable :: x(:), y(:), z(:) ! hot scalar streams for xcart
+   double precision, allocatable :: x_hot(:), y_hot(:), z_hot(:) ! hot scalar streams for xcart
    double precision, allocatable :: coor(:,:) ! (ntotat,3)
    double precision, allocatable :: restpars(:,:) ! (maxrest,9)
    double precision, allocatable :: rot_bound(:,:,:) ! (ntype,3,2)
@@ -70,10 +70,10 @@ contains
    subroutine refresh_hot_buffers_full()
       implicit none
 
-      if ( .not. allocated(x) ) return
-      x(:) = xcart(:,1)
-      y(:) = xcart(:,2)
-      z(:) = xcart(:,3)
+      if ( .not. allocated(x_hot) ) return
+      x_hot(:) = xcart(:,1)
+      y_hot(:) = xcart(:,2)
+      z_hot(:) = xcart(:,3)
       ibtype_hot(:) = ibtype(:)
       ibmol_hot(:) = ibmol(:)
       fixed_short_marker(:) = merge(2, 0, fixedatom(:)) + merge(1, 0, use_short_radius(:))
@@ -83,10 +83,10 @@ contains
       implicit none
       integer, intent(in) :: icart
 
-      if ( .not. allocated(x) ) return
-      x(icart) = xcart(icart,1)
-      y(icart) = xcart(icart,2)
-      z(icart) = xcart(icart,3)
+      if ( .not. allocated(x_hot) ) return
+      x_hot(icart) = xcart(icart,1)
+      y_hot(icart) = xcart(icart,2)
+      z_hot(icart) = xcart(icart,3)
       ibtype_hot(icart) = ibtype(icart)
       ibmol_hot(icart) = ibmol(icart)
       fixed_short_marker(icart) = merge(2, 0, fixedatom(icart)) + merge(1, 0, use_short_radius(icart))

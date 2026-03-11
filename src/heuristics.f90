@@ -9,7 +9,8 @@
 subroutine movebad(n,x,fx,movebadprint)
 
    use sizes
-   use compute_data
+   use compute_data, only : ntotmol, ntype, ntotat, nmols, natoms, sizemin, sizemax, radius, radius_ini, &
+      fdist_atom, frest_atom, dmax, comptype, move, fmol, radiuswork
    use input, only : movefrac, movebadrandom, precision, maxmove
    use usegencan
    use flashsort

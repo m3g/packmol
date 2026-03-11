@@ -10,7 +10,10 @@ subroutine computeg(n,x,g)
 
    use sizes
    use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
-   use compute_data
+   use compute_data, only : ntotmol, ntype, ncells, nmols, natoms, idfirst, nratom, iratom, ibmol, ibtype, &
+      cell_length, xcart, coor, radius, short_radius, gxcar, comptype, use_short_radius, init1, latomnext, &
+      latomfirst, lcellfirst, lcellnext, empty_cell, cell_max_radius, cell_max_short_radius, &
+      refresh_hot_buffers_full, refresh_hot_buffers_atom
    use pbc
    implicit none
 
