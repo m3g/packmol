@@ -20,6 +20,10 @@ subroutine computeg(n,x,g)
    integer :: icell, cell(3)
    integer :: k1, k2
    integer :: iratcount
+   integer :: ip1, jp1, kp1, jm1, km1
+   integer :: neigh000, neigh100, neigh010, neigh001
+   integer :: neigh1m10, neigh10m1, neigh01m1, neigh011, neigh110, neigh101
+   integer :: neigh1m1m1, neigh1m11, neigh11m1, neigh111
 
    double precision :: x(n), g(n)
    double precision :: dv1beta(3), dv1gama(3), dv1teta(3),&
@@ -110,28 +114,49 @@ subroutine computeg(n,x,g)
          j = cell(2)
          k = cell(3)
 
-         icart = latomfirst(i,j,k)
+         ip1 = cell_ind(i + 1, ncells(1))
+         jp1 = cell_ind(j + 1, ncells(2))
+         kp1 = cell_ind(k + 1, ncells(3))
+         jm1 = cell_ind(j - 1, ncells(2))
+         km1 = cell_ind(k - 1, ncells(3))
+
+         neigh000 = latomfirst(i,j,k)
+         neigh100 = latomfirst(ip1,j,k)
+         neigh010 = latomfirst(i,jp1,k)
+         neigh001 = latomfirst(i,j,kp1)
+         neigh011 = latomfirst(i,jp1,kp1)
+         neigh01m1 = latomfirst(i,jp1,km1)
+         neigh110 = latomfirst(ip1,jp1,k)
+         neigh101 = latomfirst(ip1,j,kp1)
+         neigh1m10 = latomfirst(ip1,jm1,k)
+         neigh10m1 = latomfirst(ip1,j,km1)
+         neigh111 = latomfirst(ip1,jp1,kp1)
+         neigh11m1 = latomfirst(ip1,jp1,km1)
+         neigh1m11 = latomfirst(ip1,jm1,kp1)
+         neigh1m1m1 = latomfirst(ip1,jm1,km1)
+
+         icart = neigh000
          do while( icart > 0 )
 
             if(comptype(ibtype(icart))) then
                ! Interactions inside cell
                call gparc(icart,latomnext(icart))
                ! Interactions of cells that share faces (6 faces - 3 forward)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k)) ! 4 - (1, 0, 0)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k)) ! 5 - (0, 1, 0)
-               call gparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3)))) ! 6 - (0, 0, 1)
+               call gparc(icart,neigh100) ! 4 - (1, 0, 0)
+               call gparc(icart,neigh010) ! 5 - (0, 1, 0)
+               call gparc(icart,neigh001) ! 6 - (0, 0, 1)
                ! Interactions of cells that share axes (12 edges - 6 forward)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 5 - (0, 1, 1)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (0, 1, -1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 9 - (1, 1, 0)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 10 - (1, 0, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 11 - (1, -1, 0)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 12 - (1, 0, -1)
+               call gparc(icart,neigh011) ! 5 - (0, 1, 1)
+               call gparc(icart,neigh01m1) ! 6 - (0, 1, -1)
+               call gparc(icart,neigh110) ! 9 - (1, 1, 0)
+               call gparc(icart,neigh101) ! 10 - (1, 0, 1)
+               call gparc(icart,neigh1m10) ! 11 - (1, -1, 0)
+               call gparc(icart,neigh10m1) ! 12 - (1, 0, -1)
                ! Interactions of cells that share vertices (8 vertices, 4 forward)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 1 - (1, 1, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 2 - (1, 1, -1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 3 - (1, -1, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 4 - (1, -1, -1)
+               call gparc(icart,neigh111) ! 1 - (1, 1, 1)
+               call gparc(icart,neigh11m1) ! 2 - (1, 1, -1)
+               call gparc(icart,neigh1m11) ! 3 - (1, -1, 1)
+               call gparc(icart,neigh1m1m1) ! 4 - (1, -1, -1)
             end if
 
             icart = latomnext(icart)
@@ -242,4 +267,3 @@ subroutine computeg(n,x,g)
 
    return
 end subroutine computeg
-
