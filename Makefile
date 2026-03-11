@@ -18,7 +18,26 @@ FORTRAN=/usr/bin/gfortran
 #
 # Change the flags of the compilation if you want:
 #
-FLAGS= -O3 -march=native -funroll-loops
+PROFILE ?= baseline
+UNSAFE_MATH ?= 0
+
+ifneq (,$(filter perf perf-native,$(MAKECMDGOALS)))
+PROFILE := perf-native
+endif
+ifneq (,$(filter devel,$(MAKECMDGOALS)))
+PROFILE := devel
+endif
+ifneq (,$(filter sanitize,$(MAKECMDGOALS)))
+PROFILE := sanitize
+endif
+ifneq (,$(filter static,$(MAKECMDGOALS)))
+PROFILE := static
+endif
+ifneq (,$(filter baseline,$(MAKECMDGOALS)))
+PROFILE := baseline
+endif
+
+FLAGS=
 SRCDIR= src
 MAINDIR= app 
 ###################################################################
@@ -30,20 +49,54 @@ MAINDIR= app
 # Flags for compiling development version
 #
 GENCANFLAGS := $(FLAGS)
-# Flags for the routines that signal with --fast-math
-IEEE_SIGNAL_FLAGS := $(FLAGS)
-ifeq ($(MAKECMDGOALS),devel)
+FC_VERSION := $(shell $(FORTRAN) --version 2>/dev/null | head -n 1)
+
+ifeq ($(PROFILE),baseline)
+FLAGS = -O2
+GENCANFLAGS = $(FLAGS)
+endif
+
+ifeq ($(PROFILE),perf-native)
+FLAGS = -O3
+GENCANFLAGS = $(FLAGS)
+ifneq (,$(findstring GNU Fortran,$(FC_VERSION)))
+FLAGS += -march=native -mtune=native -funroll-loops
+GENCANFLAGS += -march=native -mtune=native -funroll-loops
+else ifneq (,$(findstring ifx,$(FC_VERSION)))
+FLAGS += -xHost -ipo
+GENCANFLAGS += -xHost -ipo
+else ifneq (,$(findstring ifort,$(FC_VERSION)))
+FLAGS += -xHost -ipo
+GENCANFLAGS += -xHost -ipo
+endif
+endif
+
+ifeq ($(PROFILE),devel)
 FLAGS = -Wall -fcheck=bounds -g -fbacktrace -ffpe-trap=zero,overflow,underflow
-GENCANFLAGS = -fcheck=bounds -g -fbacktrace -ffpe-trap=zero,overflow,underflow 
+GENCANFLAGS = -fcheck=bounds -g -fbacktrace -ffpe-trap=zero,overflow,underflow
 endif
-ifeq ($(MAKECMDGOALS),perf)
-FLAGS = -g -pg
-GENCANFLAGS = -g -pg
+
+ifeq ($(PROFILE),sanitize)
+FLAGS = -O1 -g -fno-omit-frame-pointer
+GENCANFLAGS = $(FLAGS)
+ifneq (,$(findstring GNU Fortran,$(FC_VERSION)))
+FLAGS += -fsanitize=address,undefined -fcheck=all
+GENCANFLAGS += -fsanitize=address,undefined -fcheck=all
 endif
-ifeq ($(MAKECMDGOALS),static)
-FLAGS = -O3 --fast-math -static
-GENCANFLAGS = -O3 --fast-math -static
 endif
+
+ifeq ($(PROFILE),static)
+FLAGS = -O2 -static
+GENCANFLAGS = $(FLAGS)
+endif
+
+ifeq ($(UNSAFE_MATH),1)
+FLAGS += -ffast-math
+GENCANFLAGS += -ffast-math
+endif
+IEEE_SIGNAL_FLAGS = $(FLAGS)
+
+
 #
 # Files required
 #
@@ -103,17 +156,22 @@ all : $(oall)
 #
 # Compiling with flags for development
 #
-static : devel
-perf : devel
-devel : $(oall)
-	@echo " ------------------------------------------------------ " 
-	@echo " Compiling packmol with $(FORTRAN) " 
-	@echo " Flags: $(FLAGS)"
-	@echo " ------------------------------------------------------ "
-	@$(FORTRAN) -o packmol $(oall) $(FLAGS)
-	@echo " ------------------------------------------------------ " 
-	@echo " Packmol succesfully built. " 
-	@echo " ------------------------------------------------------ " 
+baseline: PROFILE=baseline
+baseline: all
+
+perf-native: PROFILE=perf-native
+perf-native: all
+
+devel: PROFILE=devel
+devel: all
+
+sanitize: PROFILE=sanitize
+sanitize: all
+
+static: PROFILE=static
+static: all
+
+perf : perf-native
 #
 # Modules
 #

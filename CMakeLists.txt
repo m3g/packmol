@@ -1,15 +1,48 @@
 cmake_minimum_required(VERSION 3.10)
 project(packmol Fortran)
 
+set(PACKMOL_PROFILE "baseline" CACHE STRING "Build profile: baseline, perf-native, debug, sanitize")
+set_property(CACHE PACKMOL_PROFILE PROPERTY STRINGS baseline perf-native debug sanitize)
+option(PACKMOL_UNSAFE_MATH "Enable unsafe/fast math optimizations" OFF)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
-endif(NOT CMAKE_BUILD_TYPE)
+endif()
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
-    add_compile_options(
-        -Wall "$<$<CONFIG:Debug>:-Werror>"
-    )
+    add_compile_options(-Wall)
+endif()
+
+if(PACKMOL_PROFILE STREQUAL "baseline")
+    add_compile_options(-O2)
+elseif(PACKMOL_PROFILE STREQUAL "perf-native")
+    add_compile_options(-O3)
+    if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
+        add_compile_options(-march=native -mtune=native -funroll-loops)
+    elseif(CMAKE_Fortran_COMPILER_ID MATCHES IntelLLVM OR CMAKE_Fortran_COMPILER_ID MATCHES Intel)
+        add_compile_options(-xHost -ipo)
+    endif()
+elseif(PACKMOL_PROFILE STREQUAL "debug")
+    add_compile_options(-g)
+    if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
+        add_compile_options(-fcheck=bounds -fbacktrace -ffpe-trap=zero,overflow,underflow)
+    endif()
+elseif(PACKMOL_PROFILE STREQUAL "sanitize")
+    add_compile_options(-O1 -g)
+    if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
+        add_compile_options(-fno-omit-frame-pointer -fsanitize=address,undefined -fcheck=all)
+        add_link_options(-fsanitize=address,undefined)
+    endif()
+else()
+    message(FATAL_ERROR "Unknown PACKMOL_PROFILE='${PACKMOL_PROFILE}'. Use one of: baseline, perf-native, debug, sanitize")
+endif()
+
+if(PACKMOL_UNSAFE_MATH)
+    if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
+        add_compile_options(-ffast-math)
+    elseif(CMAKE_Fortran_COMPILER_ID MATCHES IntelLLVM OR CMAKE_Fortran_COMPILER_ID MATCHES Intel)
+        add_compile_options(-fp-model fast=2)
+    endif()
 endif()
 
 # Build the executable
