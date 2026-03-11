@@ -20,6 +20,8 @@ subroutine computef(n,x,f)
    integer :: ioffset
    integer :: neigh_first(n_forward_offsets)
 
+   double precision :: min_cell_dist2, max_reach, reg_reach, short_reach
+
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
    double precision :: f,fparc,fplus
@@ -93,6 +95,11 @@ subroutine computef(n,x,f)
                latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
                latomfirst(cell(1),cell(2),cell(3)) = icart
 
+               cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
+               if ( use_short_radius(icart) ) then
+                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), short_radius(icart))
+               end if
+
                ! cell with atoms linked list
                if ( empty_cell(cell(1),cell(2),cell(3)) ) then
                   empty_cell(cell(1),cell(2),cell(3)) = .false.
@@ -138,6 +145,14 @@ subroutine computef(n,x,f)
             if ( comptype(ibtype(neigh_first(ioffset))) ) exit
             neigh_first(ioffset) = latomnext(neigh_first(ioffset))
          end do
+
+         if ( neigh_first(ioffset) <= 0 ) cycle
+
+         min_cell_dist2 = cell_pair_min_dist2(cell, neigh_cell)
+         reg_reach = cell_max_radius(cell(1),cell(2),cell(3)) + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+         short_reach = cell_max_short_radius(cell(1),cell(2),cell(3)) + cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+         max_reach = dmax1(reg_reach, short_reach)
+         if ( min_cell_dist2 > max_reach*max_reach ) neigh_first(ioffset) = 0
       end do
 
       icart = neigh_first(1)
@@ -161,4 +176,21 @@ subroutine computef(n,x,f)
    end do
 
    return
+contains
+
+   double precision function cell_pair_min_dist2(cell_a, cell_b)
+      integer, intent(in) :: cell_a(3), cell_b(3)
+      integer :: idim
+      double precision :: center_a, center_b, delta, gap
+
+      cell_pair_min_dist2 = 0.d0
+      do idim = 1, 3
+         center_a = pbc_min(idim) + (dble(cell_a(idim)) - 0.5d0) * cell_length(idim)
+         center_b = pbc_min(idim) + (dble(cell_b(idim)) - 0.5d0) * cell_length(idim)
+         delta = dabs(delta_vector(center_a, center_b, pbc_length(idim)))
+         gap = dmax1(0.d0, delta - cell_length(idim))
+         cell_pair_min_dist2 = cell_pair_min_dist2 + gap*gap
+      end do
+   end function cell_pair_min_dist2
+
 end subroutine computef

@@ -295,12 +295,16 @@ subroutine initial(n,x)
    allocate(latomfix(ncells(1),ncells(2),ncells(3)))
    allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
    allocate(empty_cell(ncells(1),ncells(2),ncells(3)))
+   allocate(cell_max_radius(ncells(1),ncells(2),ncells(3)))
+   allocate(cell_max_short_radius(ncells(1),ncells(2),ncells(3)))
 
    ! Reseting linked lists arrays
    latomfix(:,:,:) = 0
    latomfirst(:,:,:) = 0
    latomnext(:) = 0
    empty_cell(:,:,:) = .true.
+   cell_max_radius(:,:,:) = 0.d0
+   cell_max_short_radius(:,:,:) = 0.d0
 
    ! If there are fixed molecules, add them permanently to the latomfix array
    if(fix) then

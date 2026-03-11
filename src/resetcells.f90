@@ -11,7 +11,8 @@ subroutine resetcells()
    use input, only: fix, ntype_with_fixed
    use cell_indexing, only: icell_to_cell, index_cell, setcell
    use compute_data, only: latomfirst, lcellfirst, lcellnext, empty_cell, ncells, &
-                           ntype, natoms, ntotat, nfixedat, xcart, latomnext
+                           ntype, natoms, ntotat, nfixedat, xcart, latomnext, radius, &
+                           use_short_radius, short_radius, cell_max_radius, cell_max_short_radius
    implicit none
    integer :: cell(3), icell, iftype, icart, ifatom
 
@@ -21,6 +22,8 @@ subroutine resetcells()
    latomfirst(:,:,:) = 0
    latomnext(:) = 0
    empty_cell(:,:,:) = .true.
+   cell_max_radius(:,:,:) = 0.d0
+   cell_max_short_radius(:,:,:) = 0.d0
    if(fix) then
       icart = ntotat - nfixedat
       do iftype = ntype + 1, ntype_with_fixed
@@ -29,6 +32,11 @@ subroutine resetcells()
             call setcell(xcart(icart,:),cell)
             latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
             latomfirst(cell(1),cell(2),cell(3)) = icart
+            cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
+            if ( use_short_radius(icart) ) then
+               cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_short_radius(cell(1),cell(2),cell(3)), short_radius(icart))
+            end if
+
             if ( empty_cell(cell(1),cell(2),cell(3)) ) then
                empty_cell(cell(1),cell(2),cell(3)) = .false.
                icell = index_cell(cell,ncells)
