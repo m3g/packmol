@@ -34,7 +34,10 @@ subroutine computef(n,x,f)
 
    ! Reset cells
 
-   if(.not.init1) call resetcells()
+   if(.not.init1) then
+      call resetcells()
+      call refresh_hot_buffers_full()
+   end if
 
    ! Transform baricenter and angles into cartesian coordinates
    ! Computes cartesian coordinates from vector x and coor
@@ -72,6 +75,7 @@ subroutine computef(n,x,f)
             ! Computing the cartesian coordinates for this atom
 
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
+            call refresh_hot_buffers_atom(icart)
 
             ! Adding to f the value relative to constraints for this atom
 
@@ -99,6 +103,7 @@ subroutine computef(n,x,f)
 
                ibtype(icart) = itype
                ibmol(icart) = imol
+               call refresh_hot_buffers_atom(icart)
 
             end if
 
