@@ -62,6 +62,8 @@ module compute_data
    integer :: lcellfirst
    integer, allocatable :: lcellnext(:) ! (ncells(1)*ncells(2)*ncells(3))
    logical, allocatable :: empty_cell(:,:,:) ! (ncells(1),ncells(2),ncells(3))
+   double precision, allocatable :: cell_max_radius(:,:,:) ! (ncells(1),ncells(2),ncells(3))
+   double precision, allocatable :: cell_max_short_radius(:,:,:) ! (ncells(1),ncells(2),ncells(3))
 
 contains
 
