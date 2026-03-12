@@ -9,14 +9,18 @@
 subroutine computef(n,x,f)
 
    use sizes
-   use cell_indexing, only: index_cell, icell_to_cell, setcell
-   use compute_data
+   use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
+   use compute_data, only : ntotmol, ntype, ncells, nmols, natoms, idfirst, ibmol, ibtype, fdist, frest, &
+      xcart, coor, radius, frest_atom, comptype, init1, move, &
+      latomnext, latomfirst, lcellfirst, lcellnext, empty_cell
    use pbc
    implicit none
 
    integer :: n, i, j, k, icell
    integer :: ilugan, ilubar, icart, itype, imol, iatom, idatom
-   integer :: cell(3)
+   integer :: cell(3), neigh_cell(3)
+   integer :: ioffset
+   integer :: neigh_first(n_forward_offsets)
 
    double precision :: v1(3), v2(3), v3(3)
    double precision :: x(n)
@@ -32,7 +36,9 @@ subroutine computef(n,x,f)
 
    ! Reset cells
 
-   if(.not.init1) call resetcells()
+   if(.not.init1) then
+      call resetcells()
+   end if
 
    ! Transform baricenter and angles into cartesian coordinates
    ! Computes cartesian coordinates from vector x and coor
@@ -120,29 +126,27 @@ subroutine computef(n,x,f)
       j = cell(2)
       k = cell(3)
 
-      icart = latomfirst(i,j,k)
+      ! Load forward neighbor heads (self-cell + 13 forward neighbors).
+      do ioffset = 1, n_forward_offsets
+         neigh_cell(1) = cell_ind(i + forward_offsets(1,ioffset), ncells(1))
+         neigh_cell(2) = cell_ind(j + forward_offsets(2,ioffset), ncells(2))
+         neigh_cell(3) = cell_ind(k + forward_offsets(3,ioffset), ncells(3))
+         neigh_first(ioffset) = latomfirst(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+      end do
+
+      icart = neigh_first(1)
       do while( icart > 0 )
 
-         if(comptype(ibtype(icart))) then
-            ! Interactions inside cell
-            f = f + fparc(icart,latomnext(icart))
-            ! Interactions of cells that share faces (6 faces - 3 forward)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k)) ! 4 - (1, 0, 0)
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k)) ! 5 - (0, 1, 0)
-            f = f + fparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3)))) ! 6 - (0, 0, 1)
-            ! Interactions of cells that share axes (12 edges - 6 forward)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 4 - (1, -1, 0)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 5 - (1, 0, -1)
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (0, 1, -1)
-            f = f + fparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 9 - (0, 1, 1)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 10 - (1, 1, 0)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 11 - (1, 0, 1)
-            ! Interactions of cells that share vertices (8 vertices, 8 forward)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 5 - (1, -1, -1)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 6 - (1, -1, 1)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 7 - (1, 1, -1)
-            f = f + fparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 8 - (1, 1, 1)
+         if ( .not. comptype(ibtype(icart)) ) then
+            icart = latomnext(icart)
+            cycle
          end if
+
+         ! Offset #1 is self-cell and uses latomnext(icart) to keep forward-only pairs.
+         f = f + fparc(icart,latomnext(icart))
+         do ioffset = 2, n_forward_offsets
+            f = f + fparc(icart,neigh_first(ioffset))
+         end do
 
          icart = latomnext(icart)
       end do
@@ -151,4 +155,5 @@ subroutine computef(n,x,f)
    end do
 
    return
+
 end subroutine computef

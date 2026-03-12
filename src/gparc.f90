@@ -9,8 +9,9 @@
 subroutine gparc(icart,firstjcart)
 
    use sizes
-   use compute_data
-   use pbc, only : delta_vector, pbc_length
+   use compute_data, only : comptype, radius, fscale, short_radius, short_radius_scale, fixed_short_marker, &
+      latomnext, gxcar, xcart, ibmol, ibtype
+   use pbc, only : pbc_length
    implicit none
 
    ! SCALAR ARGUMENTS
@@ -19,69 +20,203 @@ subroutine gparc(icart,firstjcart)
    ! LOCAL SCALARS
    integer :: jcart
    double precision :: datom, dtemp, xdiff, tol, short_tol, short_tol_scale
-   double precision :: vdiff(3)
+   double precision :: sumr, short_sumr, tol_sq, short_tol_sq
+   double precision :: dx, dy, dz
+   double precision :: xi, yi, zi, ri, fsi, short_ri, short_si
+   double precision :: inv_pbcx, inv_pbcy, inv_pbcz
+   integer :: marker_i, itype_i, imol_i
+   logical :: use_short_i, fixed_i
 
-   jcart = firstjcart
-   do while ( jcart > 0 )
-      !
-      ! Cycle if this type is not to be computed
-      !
-      if ( .not. comptype(ibtype(jcart))) then
+   xi = xcart(icart,1)
+   yi = xcart(icart,2)
+   zi = xcart(icart,3)
+   ri = radius(icart)
+   fsi = fscale(icart)
+   short_ri = short_radius(icart)
+   short_si = short_radius_scale(icart)
+   marker_i = fixed_short_marker(icart)
+   use_short_i = iand(marker_i,1) /= 0
+   fixed_i = marker_i >= 2
+   itype_i = ibtype(icart)
+   imol_i = ibmol(icart)
+   inv_pbcx = 1.d0 / pbc_length(1)
+   inv_pbcy = 1.d0 / pbc_length(2)
+   inv_pbcz = 1.d0 / pbc_length(3)
+
+   if ( .not. fixed_i .and. .not. use_short_i ) then
+      ! Fast path: movable atom i and no short-radius term from i.
+      jcart = firstjcart
+      do while ( jcart > 0 )
+         if ( .not. comptype(ibtype(jcart))) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
+         dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
+         dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
+         dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
+         datom = dx*dx + dy*dy + dz*dz
+         if( datom < tol ) then
+            dtemp = fsi*fscale(jcart) * 4.d0 * (datom - tol)
+            xdiff = dtemp*dx
+            gxcar(icart,1)= gxcar(icart,1) + xdiff
+            gxcar(jcart,1)= gxcar(jcart,1) - xdiff
+            xdiff = dtemp*dy
+            gxcar(icart,2)= gxcar(icart,2) + xdiff
+            gxcar(jcart,2)= gxcar(jcart,2) - xdiff
+            xdiff = dtemp*dz
+            gxcar(icart,3)= gxcar(icart,3) + xdiff
+            gxcar(jcart,3)= gxcar(jcart,3) - xdiff
+            if ( iand(fixed_short_marker(jcart),1) /= 0 ) then
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
+               if ( datom < short_tol ) then
+                  short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
+                  dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
+                  xdiff = dtemp*dx
+                  gxcar(icart,1)= gxcar(icart,1) + xdiff
+                  gxcar(jcart,1)= gxcar(jcart,1) - xdiff
+                  xdiff = dtemp*dy
+                  gxcar(icart,2)= gxcar(icart,2) + xdiff
+                  gxcar(jcart,2)= gxcar(jcart,2) - xdiff
+                  xdiff = dtemp*dz
+                  gxcar(icart,3)= gxcar(icart,3) + xdiff
+                  gxcar(jcart,3)= gxcar(jcart,3) - xdiff
+               end if
+            end if
+         end if
+
          jcart = latomnext(jcart)
-         cycle
-      end if
-      !
-      ! Cycle if the atoms are from the same molecule
-      !
-      if ( ibmol(icart) == ibmol(jcart) .and. &
-         ibtype(icart) == ibtype(jcart) ) then
-         jcart = latomnext(jcart)
-         cycle
-      end if
-      !
-      ! Cycle if both atoms are from fixed molecules
-      !
-      if ( fixedatom(icart) .and. fixedatom(jcart) ) then
-         jcart = latomnext(jcart)
-         cycle
-      end if
-      !
-      ! Otherwise, compute distance and evaluate function for this pair
-      !
-      tol = (radius(icart)+radius(jcart))**2
-      vdiff = delta_vector(xcart(icart,:), xcart(jcart,:), pbc_length)
-      datom = (vdiff(1))**2 + (vdiff(2))**2 + (vdiff(3))**2
-      if( datom < tol ) then
-         dtemp = fscale(icart)*fscale(jcart) * 4.d0 * (datom - tol)
-         xdiff = dtemp*vdiff(1)
-         gxcar(icart,1)= gxcar(icart,1) + xdiff
-         gxcar(jcart,1)= gxcar(jcart,1) - xdiff
-         xdiff = dtemp*vdiff(2)
-         gxcar(icart,2)= gxcar(icart,2) + xdiff
-         gxcar(jcart,2)= gxcar(jcart,2) - xdiff
-         xdiff = dtemp*vdiff(3)
-         gxcar(icart,3)= gxcar(icart,3) + xdiff
-         gxcar(jcart,3)= gxcar(jcart,3) - xdiff
-         if ( use_short_radius(icart) .or. use_short_radius(jcart) ) then
-            short_tol = ( short_radius(icart) + short_radius(jcart) )**2
+      end do
+   else if ( .not. fixed_i ) then
+      ! Short-radius-enabled path for movable atoms.
+      jcart = firstjcart
+      do while ( jcart > 0 )
+         if ( .not. comptype(ibtype(jcart))) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
+         dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
+         dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
+         dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
+         datom = dx*dx + dy*dy + dz*dz
+         if( datom < tol ) then
+            dtemp = fsi*fscale(jcart) * 4.d0 * (datom - tol)
+            xdiff = dtemp*dx
+            gxcar(icart,1)= gxcar(icart,1) + xdiff
+            gxcar(jcart,1)= gxcar(jcart,1) - xdiff
+            xdiff = dtemp*dy
+            gxcar(icart,2)= gxcar(icart,2) + xdiff
+            gxcar(jcart,2)= gxcar(jcart,2) - xdiff
+            xdiff = dtemp*dz
+            gxcar(icart,3)= gxcar(icart,3) + xdiff
+            gxcar(jcart,3)= gxcar(jcart,3) - xdiff
+            short_sumr = short_ri + short_radius(jcart)
+            short_tol = short_sumr*short_sumr
             if ( datom < short_tol ) then
-               short_tol_scale = dsqrt(short_radius_scale(icart)*short_radius_scale(jcart))
-               short_tol_scale = short_tol_scale*( tol**2 / short_tol**2 )
-               dtemp = fscale(icart)*fscale(jcart) * 4.d0 * short_tol_scale*(datom - short_tol)
-               xdiff = dtemp*vdiff(1)
+               short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
+               tol_sq = tol*tol
+               short_tol_sq = short_tol*short_tol
+               short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
+               dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
+               xdiff = dtemp*dx
                gxcar(icart,1)= gxcar(icart,1) + xdiff
                gxcar(jcart,1)= gxcar(jcart,1) - xdiff
-               xdiff = dtemp*vdiff(2)
+               xdiff = dtemp*dy
                gxcar(icart,2)= gxcar(icart,2) + xdiff
                gxcar(jcart,2)= gxcar(jcart,2) - xdiff
-               xdiff = dtemp*vdiff(3)
+               xdiff = dtemp*dz
                gxcar(icart,3)= gxcar(icart,3) + xdiff
                gxcar(jcart,3)= gxcar(jcart,3) - xdiff
             end if
          end if
-      end if
-      jcart = latomnext(jcart)
-   end do
+
+         jcart = latomnext(jcart)
+      end do
+   else
+      ! Fixed-atom path (keeps explicit fixed/fixed exclusion).
+      jcart = firstjcart
+      do while ( jcart > 0 )
+         if ( .not. comptype(ibtype(jcart))) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+         if ( fixed_short_marker(jcart) >= 2 ) then
+            jcart = latomnext(jcart)
+            cycle
+         end if
+
+         sumr = ri + radius(jcart)
+         tol = sumr*sumr
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
+         dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
+         dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
+         dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
+         datom = dx*dx + dy*dy + dz*dz
+         if( datom < tol ) then
+            dtemp = fsi*fscale(jcart) * 4.d0 * (datom - tol)
+            xdiff = dtemp*dx
+            gxcar(icart,1)= gxcar(icart,1) + xdiff
+            gxcar(jcart,1)= gxcar(jcart,1) - xdiff
+            xdiff = dtemp*dy
+            gxcar(icart,2)= gxcar(icart,2) + xdiff
+            gxcar(jcart,2)= gxcar(jcart,2) - xdiff
+            xdiff = dtemp*dz
+            gxcar(icart,3)= gxcar(icart,3) + xdiff
+            gxcar(jcart,3)= gxcar(jcart,3) - xdiff
+            if ( use_short_i .or. iand(fixed_short_marker(jcart),1) /= 0 ) then
+               short_sumr = short_ri + short_radius(jcart)
+               short_tol = short_sumr*short_sumr
+               if ( datom < short_tol ) then
+                  short_tol_scale = dsqrt(short_si*short_radius_scale(jcart))
+                  tol_sq = tol*tol
+                  short_tol_sq = short_tol*short_tol
+                  short_tol_scale = short_tol_scale*( tol_sq / short_tol_sq )
+                  dtemp = fsi*fscale(jcart) * short_tol_scale * 4.d0 * (datom - short_tol)
+                  xdiff = dtemp*dx
+                  gxcar(icart,1)= gxcar(icart,1) + xdiff
+                  gxcar(jcart,1)= gxcar(jcart,1) - xdiff
+                  xdiff = dtemp*dy
+                  gxcar(icart,2)= gxcar(icart,2) + xdiff
+                  gxcar(jcart,2)= gxcar(jcart,2) - xdiff
+                  xdiff = dtemp*dz
+                  gxcar(icart,3)= gxcar(icart,3) + xdiff
+                  gxcar(jcart,3)= gxcar(jcart,3) - xdiff
+               end if
+            end if
+         end if
+
+         jcart = latomnext(jcart)
+      end do
+   end if
+
    return
 end subroutine gparc
-

@@ -12,7 +12,10 @@ subroutine initial(n,x)
    use exit_codes
    use sizes
    use cell_indexing, only: setcell
-   use compute_data
+   use compute_data, only : ntotmol, ntype, nfixedat, ntotat, ncells, nmols, natoms, idfirst, &
+      ibmol, ibtype, scale, scale2, fdist, frest, sizemin, sizemax, cell_length, radmax, xcart, coor, &
+      rot_bound, dmax, constrain_rot, comptype, fixedatom, init1, move, latomnext, latomfirst, latomfix, &
+      lcellfirst, lcellnext, empty_cell
    use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type
@@ -134,6 +137,7 @@ subroutine initial(n,x)
             idatom = idatom + 1
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
             fixedatom(icart) = .false.
+
          end do
       end do
    end do
@@ -148,6 +152,7 @@ subroutine initial(n,x)
             xcart(icart,2) = coor(idfatom,2)
             xcart(icart,3) = coor(idfatom,3)
             fixedatom(icart) = .true.
+
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3

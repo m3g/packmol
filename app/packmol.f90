@@ -593,9 +593,14 @@ program packmol
                    keyword(iline,1).eq.'below') then
                   nratom(icart) = nratom(icart) + 1
                   iratcount = iratcount + 1
+                  iirest = -1
                   do irest = 1, nrest
                     if(irestline(irest).eq.iline) iirest = irest
                   end do
+                  if(iirest.eq.-1) then
+                    write(*,*) ' ERROR: Could not map atom-level restriction to definition at line ', iline
+                    stop exit_code_input_error
+                  end if
                   iratom(icart,iratcount) = iirest
                 end if
               end if
@@ -608,9 +613,14 @@ program packmol
                   keyword(iline,1).eq.'below') then
             nratom(icart) = nratom(icart) + 1    
             iratcount = iratcount + 1
+            iirest = -1
             do irest = 1, nrest
               if(irestline(irest).eq.iline) iirest = irest
             end do
+            if(iirest.eq.-1) then
+              write(*,*) ' ERROR: Could not map restriction to definition at line ', iline
+              stop exit_code_input_error
+            end if
             iratom(icart,iratcount) = iirest
           end if
         end do
@@ -709,6 +719,9 @@ program packmol
   !
 
   call initial(n,x)
+
+  ! Pre-compute fixed_short_marker once (fixedatom and use_short_radius are static)
+  call init_fixed_short_marker()
 
   ! Computing the energy at the initial point
 
@@ -978,4 +991,3 @@ program packmol
   end if
 
 end program packmol
-

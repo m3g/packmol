@@ -10,7 +10,7 @@ subroutine output(n, x, output_file_name)
 
    use exit_codes
    use sizes
-   use compute_data
+   use compute_data, only : ntotmol, ntype, ntotat, nmols, natoms, idfirst, xcart, coor
    use input
    use pbc
 
@@ -21,6 +21,7 @@ subroutine output(n, x, output_file_name)
       icart, i_ref_atom, ioerr, ifirst_mol
    integer :: nres, imark
    integer :: i_fixed, i_not_fixed
+   logical :: has_residue_records
 
    double precision :: x(n)
    double precision :: v1(3), v2(3), v3(3)
@@ -328,13 +329,15 @@ subroutine output(n, x, output_file_name)
 
             open(15,file=pdbfile(i_fixed),status='old')
             ifres = 0
+            ilres = 0
+            has_residue_records = .false.
             do
                read(15,str_format,iostat=ioerr) record
                if ( ioerr /= 0 ) exit
                if ( record(1:4).eq.'ATOM'.or.record(1:6).eq.'HETATM' ) then
                   read(record(23:26),*,iostat=ioerr) imark
                   if ( ioerr /= 0 ) then
-                     record = pdbfile(i_not_fixed)
+                     record = pdbfile(i_fixed)
                      write(*,*) ' ERROR: Failed reading residue number ',&
                         ' from PDB file: ', trim(adjustl(record))
                      write(*,*) ' Residue numbers are integers that must',&
@@ -348,8 +351,17 @@ subroutine output(n, x, output_file_name)
                   end if
                   if ( ifres .eq. 0 ) ifres = imark
                   ilres = imark
+                  has_residue_records = .true.
                end if
             end do
+            if ( .not. has_residue_records ) then
+               record = pdbfile(i_fixed)
+               write(*,*) ' ERROR: Could not determine residue numbering '&
+                  //'for fixed molecule file: ', trim(adjustl(record))
+               write(*,*) ' At least one ATOM or HETATM record must be '&
+                  //'present in the input PDB file. '
+               stop exit_code_input_error
+            end if
             nres = ilres - ifres + 1
 
             iimol = iimol + 1

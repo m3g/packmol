@@ -49,8 +49,15 @@ C     ARRAY ARGUMENTS
       double precision lambda(m),rho(m),x(n)
 
 C     LOCAL SCALARS
+      double precision ignore
 
       flag = 0
+
+C     Keep ALGENCAN-compatible dummy arguments intentionally referenced.
+      ignore = 0.0d0
+      if ( m .gt. 0 ) then
+          ignore = ignore + lambda(1) - lambda(1) + rho(1) - rho(1)
+      end if
 
       call computef(n,x,f)
 
@@ -107,8 +114,15 @@ C     ARRAY ARGUMENTS
       double precision g(n),lambda(m),rho(m),x(n)
 
 C     LOCAL SCALARS
+      double precision ignore
 
       flag = 0
+
+C     Keep ALGENCAN-compatible dummy arguments intentionally referenced.
+      ignore = 0.0d0
+      if ( m .gt. 0 ) then
+          ignore = ignore + lambda(1) - lambda(1) + rho(1) - rho(1)
+      end if
 
       call computeg(n,x,g)
 
@@ -117,12 +131,7 @@ C     LOCAL SCALARS
 C     *****************************************************************
 C     *****************************************************************
 
-c Modified by L. Martinez (there was an error on the number of
-c parameters when calling this subroutine). This subroutine does
-c nothing.
-c      subroutine evalhd(nind,ind,n,x,m,lambda,rho,d,hd,flag)
-
-      subroutine evalhd(n)
+      subroutine evalhd(nind,ind,n,x,m,lambda,rho,d,hd,flag)
 
 C     This subroutine computes the product of the Hessian matrix times
 C     the input vector argument d. If GENCAN is being used stand-alone 
@@ -184,14 +193,28 @@ C           1 means "some error occurs in the gradient evaluation".
       implicit none
 
 C     SCALAR ARGUMENTS
-c      integer flag,m,n,nind
-      integer n
+      integer flag,m,n,nind
 
 C     ARRAY ARGUMENTS
-c      integer ind(nind)
-c      double precision d(n),hd(n),lambda(m),rho(m),x(n)
+      integer ind(nind)
+      double precision d(n),hd(n),lambda(m),rho(m),x(n)
 
-c      flag = - 1
+C     LOCAL SCALARS
+      double precision ignore
+
+C     Keep the full evalhd API for compatibility with GENCAN/ALGENCAN.
+C     This default stub intentionally does not compute Hessian products.
+      flag = 0
+      ignore = 0.0d0
+      if ( nind .gt. 0 ) then
+          ignore = ignore + ind(1) - ind(1)
+      end if
+      if ( n .gt. 0 ) then
+          ignore = ignore + d(1) - d(1) + x(1) - x(1) + hd(1) - hd(1)
+      end if
+      if ( m .gt. 0 ) then
+          ignore = ignore + lambda(1) - lambda(1) + rho(1) - rho(1)
+      end if
 
       end
  
@@ -1719,6 +1742,11 @@ C     for testing progress in f, and
       bestprog =  0.0d0
       itnfp    =      0
 
+C     Initialize BB-related scalars. They are updated at the end of each
+C     iteration; zero defaults force first-iteration fallback formulas.
+      sts      =  0.0d0
+      sty      =  0.0d0
+
 C     for testing progress in the projected gradient norm.
       do i = 0,maxitngp - 1
           lastgpns(i) = infabs
@@ -2125,7 +2153,9 @@ C         Compute trust-region radius
                   delta = udelta0
               end if
           else
-              delta = max( delmin, 10.0d0 * sqrt( sts ) )
+C             sts=<s,s> should be non-negative; guard protects against
+C             accidental first-use reads and round-off negatives.
+              delta = max( delmin, 10.0d0 * sqrt( max( 0.0d0, sts ) ) )
           end if
 
 C         Shrink the point, its gradient and the bounds
@@ -3244,6 +3274,18 @@ C     ==================================================================
       snorm2   =  0.0d0
       rnorm2   = gnorm2
 
+C     Safe defaults for quantities that are only meaningful after the
+C     first CG step update. These values preserve first-iteration logic.
+      alpha    =  0.0d0
+      dnorm2   =  0.0d0
+      dtr      =  0.0d0
+      dtw      =  0.0d0
+      rnorm2prev = rnorm2
+      rbdposaind  = 1
+      rbdposatype = 1
+      rbdnegaind  = 1
+      rbdnegatype = 1
+
 C     ==================================================================
 C     Print initial information
 C     ==================================================================
@@ -3329,7 +3371,13 @@ C     ==================================================================
 
       else
 
-          beta = rnorm2 / rnorm2prev
+C         Polak-Ribiere-like coefficient requires previous residual norm.
+C         If it is unavailable/non-positive, restart with beta=0.
+          if ( rnorm2prev .gt. 0.0d0 ) then
+              beta = rnorm2 / rnorm2prev
+          else
+              beta = 0.0d0
+          end if
 
           do i = 1,nind
               d(i) = - r(i) + beta * d(i)
@@ -3625,6 +3673,8 @@ C     If we are in the boundary of the box also stop
 
       if ( alpha .eq. amax2 .or. alpha .eq. amax2n ) then
 
+C         Boundary metadata is set when a finite box step is identified.
+C         Keep initialized fallback values for degenerate directions.
           if ( alpha .eq. amax2 ) then
               rbdind  = rbdposaind
               rbdtype = rbdposatype
@@ -5214,7 +5264,7 @@ C     Expand x and d to the full space
 C     Compute the Hessian times vector d product calling the user 
 C     supplied subroutine evalhd
 
-      call evalhd(n)
+      call evalhd(nind,ind,n,x,m,lambda,rho,d,hd,inform)
 
 C     Shrink x, d and hd to the reduced space
 

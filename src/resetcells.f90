@@ -13,14 +13,22 @@ subroutine resetcells()
    use compute_data, only: latomfirst, lcellfirst, lcellnext, empty_cell, ncells, &
                            ntype, natoms, ntotat, nfixedat, xcart, latomnext
    implicit none
-   integer :: cell(3), icell, iftype, icart, ifatom
+   integer :: cell(3), icell, next_icell, iftype, icart, ifatom
 
-   ! Reset data for cells that contain fixed atom
-   lcellnext(:) = 0
+   ! Incrementally reset only previously-occupied cells instead of
+   ! clearing all ncells^3 entries. Walk the old occupied-cell linked
+   ! list and reset each cell's data, then rebuild the fixed-atom lists.
+   icell = lcellfirst
+   do while ( icell > 0 )
+      next_icell = lcellnext(icell)
+      call icell_to_cell(icell, ncells, cell)
+      latomfirst(cell(1),cell(2),cell(3)) = 0
+      empty_cell(cell(1),cell(2),cell(3)) = .true.
+      lcellnext(icell) = 0
+      icell = next_icell
+   end do
    lcellfirst = 0
-   latomfirst(:,:,:) = 0
-   latomnext(:) = 0
-   empty_cell(:,:,:) = .true.
+
    if(fix) then
       icart = ntotat - nfixedat
       do iftype = ntype + 1, ntype_with_fixed
@@ -29,6 +37,7 @@ subroutine resetcells()
             call setcell(xcart(icart,:),cell)
             latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
             latomfirst(cell(1),cell(2),cell(3)) = icart
+
             if ( empty_cell(cell(1),cell(2),cell(3)) ) then
                empty_cell(cell(1),cell(2),cell(3)) = .false.
                icell = index_cell(cell,ncells)
@@ -40,4 +49,3 @@ subroutine resetcells()
    end if
 
 end subroutine resetcells
-

@@ -83,6 +83,101 @@ uvx packmol < inp.pack
    `FPM_FC=compiler`, for example for `ifort`, use in bash, `export FPM_FC=ifort`.
 
 
+
+### Build profiles (Makefile and CMake)
+
+Packmol now supports explicit build profiles so you can choose between conservative optimized builds, aggressive benchmarking builds, and debugging/sanitized builds.
+
+#### Baseline release profile (default)
+
+This profile prioritizes stability and portability with conservative optimization.
+
+- **Makefile**: `make` (or `make baseline`)
+- **CMake**: `cmake -S . -B build -DPACKMOL_PROFILE=baseline`
+
+Then build with:
+
+```bash
+cmake --build build --config Release
+```
+
+#### Aggressive benchmark profile (`perf-native`)
+
+This profile is opt-in and applies compiler-specific native tuning (for example, `-march=native` for GNU or `-xHost` for Intel compilers). Use this for local benchmarking only.
+
+- **Makefile**: `make perf-native`
+- **CMake**: `cmake -S . -B build -DPACKMOL_PROFILE=perf-native`
+
+Then build with:
+
+```bash
+cmake --build build --config Release
+```
+
+#### Debug / sanitized profiles
+
+Use these profiles for troubleshooting and memory/UB diagnostics.
+
+- **Makefile debug checks**: `make devel`
+- **Makefile sanitizers (GNU)**: `make sanitize`
+- **CMake debug checks**: `cmake -S . -B build -DPACKMOL_PROFILE=debug`
+- **CMake sanitizers (GNU)**: `cmake -S . -B build -DPACKMOL_PROFILE=sanitize`
+
+Then build with:
+
+```bash
+cmake --build build --config Debug
+```
+
+### Performance-oriented kernel improvements
+
+Recent performance work in the pairwise cell-list kernels includes:
+
+- Prebuilt neighbor-cell offsets used in `computef` / `computeg` traversal.
+- Reduced branch pressure in pair kernels by separating hot paths.
+- Better data locality in hot loops through structure-of-arrays style access.
+- Conservative per-cell broad-phase reject checks before expensive pair evaluation.
+- Consistent `x*x` math micro-optimizations replacing hot-loop `**2` exponentiation.
+- Build-profile driven tuning with numerics validation support.
+
+These updates are designed to speed up large systems while preserving numerical behavior.
+
+## Contributors
+
+- Michele Bonus, Heinrich Heine University Düsseldorf  
+  Email: `michele.bonus@hhu.de`  
+  GitHub: https://github.com/MicheleBonus/
+
+#### Unsafe math is explicit opt-in
+
+Unsafe/fast-math is **not** enabled globally.
+
+- **Makefile**: add `UNSAFE_MATH=1`, e.g. `make perf-native UNSAFE_MATH=1`
+- **CMake**: set `-DPACKMOL_UNSAFE_MATH=ON`
+
+### Reproducibility and numerics check across profiles
+
+To compare objective and gradient behavior across profiles using existing inputs under `testing/`, run:
+
+```bash
+./testing/check_numerics_profiles.sh
+```
+
+What it does:
+
+1. Builds and runs `baseline` and `perf-native` binaries.
+2. Uses `testing/input_files/benzene2.inp` with `chkgrad` enabled (small system for fast finite-difference gradient checking).
+3. Compares values extracted from each run's `chkgrad.log`:
+   - Objective function value (`Function Value = ...`)
+   - Gradient check summary (`Maximum difference = ... Error= ...`)
+4. Fails if differences exceed tolerances.
+
+You can override tolerances with environment variables:
+
+```bash
+OBJ_TOL=1e-8 GRAD_TOL=1e-3 ./testing/check_numerics_profiles.sh
+```
+
 ## References
 
 Please always cite one of the following references in publications for which Packmol was useful:
@@ -91,6 +186,5 @@ L Martinez, R Andrade, EG Birgin, JM Martinez, Packmol: A package for building i
 
 JM Martinez, L Martinez, Packing optimization for the automated generation of complex system's initial configurations for molecular dynamics and docking. Journal of Computational Chemistry, 24, 819-825, 2003.
 (https://doi.org/10.1002/jcc.10216)
-
 
 

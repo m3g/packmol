@@ -18,6 +18,7 @@ module compute_data
    integer, allocatable :: ityperest(:) ! (maxrest)
    integer, allocatable :: ibmol(:) ! (ntotat)
    integer, allocatable :: ibtype(:) ! (ntotat)
+   integer, allocatable :: fixed_short_marker(:) ! 0: movable/no-short, 1: movable/short, 2: fixed/no-short, 3: fixed/short
 
    double precision :: scale, scale2
    double precision :: fdist, frest
@@ -58,5 +59,13 @@ module compute_data
    integer :: lcellfirst
    integer, allocatable :: lcellnext(:) ! (ncells(1)*ncells(2)*ncells(3))
    logical, allocatable :: empty_cell(:,:,:) ! (ncells(1),ncells(2),ncells(3))
+
+contains
+
+   subroutine init_fixed_short_marker()
+      implicit none
+      if ( .not. allocated(fixed_short_marker) ) return
+      fixed_short_marker(:) = merge(2, 0, fixedatom(:)) + merge(1, 0, use_short_radius(:))
+   end subroutine init_fixed_short_marker
 
 end module compute_data

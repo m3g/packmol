@@ -9,17 +9,20 @@
 subroutine computeg(n,x,g)
 
    use sizes
-   use cell_indexing, only: index_cell, icell_to_cell, setcell
-   use compute_data
+   use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
+   use compute_data, only : ntotmol, ntype, ncells, nmols, natoms, idfirst, nratom, iratom, ibmol, ibtype, &
+      xcart, coor, radius, gxcar, comptype, init1, latomnext, &
+      latomfirst, lcellfirst, lcellnext, empty_cell
    use pbc
    implicit none
 
    integer :: n
    integer :: idatom, iatom, irest
    integer :: i, j, k, ilubar, ilugan, icart, itype, imol
-   integer :: icell, cell(3)
+   integer :: icell, cell(3), neigh_cell(3)
    integer :: k1, k2
-   integer :: iratcount
+   integer :: iratcount, ioffset
+   integer :: neigh_first(n_forward_offsets)
 
    double precision :: x(n), g(n)
    double precision :: dv1beta(3), dv1gama(3), dv1teta(3),&
@@ -34,7 +37,9 @@ subroutine computeg(n,x,g)
 
    ! Reset cells
 
-   if(.not.init1) call resetcells()
+   if(.not.init1) then
+      call resetcells()
+   end if
 
    ! Transform baricenter and angles into cartesian coordinates
 
@@ -110,29 +115,27 @@ subroutine computeg(n,x,g)
          j = cell(2)
          k = cell(3)
 
-         icart = latomfirst(i,j,k)
+         ! Load forward neighbor heads (self-cell + 13 forward neighbors).
+         do ioffset = 1, n_forward_offsets
+            neigh_cell(1) = cell_ind(i + forward_offsets(1,ioffset), ncells(1))
+            neigh_cell(2) = cell_ind(j + forward_offsets(2,ioffset), ncells(2))
+            neigh_cell(3) = cell_ind(k + forward_offsets(3,ioffset), ncells(3))
+            neigh_first(ioffset) = latomfirst(neigh_cell(1),neigh_cell(2),neigh_cell(3))
+         end do
+
+         icart = neigh_first(1)
          do while( icart > 0 )
 
-            if(comptype(ibtype(icart))) then
-               ! Interactions inside cell
-               call gparc(icart,latomnext(icart))
-               ! Interactions of cells that share faces (6 faces - 3 forward)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,k)) ! 4 - (1, 0, 0)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),k)) ! 5 - (0, 1, 0)
-               call gparc(icart,latomfirst(i,j,cell_ind(k+1, ncells(3)))) ! 6 - (0, 0, 1)
-               ! Interactions of cells that share axes (12 edges - 6 forward)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 5 - (0, 1, 1)
-               call gparc(icart,latomfirst(i,cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 6 - (0, 1, -1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),k)) ! 9 - (1, 1, 0)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k+1, ncells(3)))) ! 10 - (1, 0, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),k)) ! 11 - (1, -1, 0)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),j,cell_ind(k-1, ncells(3)))) ! 12 - (1, 0, -1)
-               ! Interactions of cells that share vertices (8 vertices, 4 forward)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 1 - (1, 1, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j+1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 2 - (1, 1, -1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k+1, ncells(3)))) ! 3 - (1, -1, 1)
-               call gparc(icart,latomfirst(cell_ind(i+1, ncells(1)),cell_ind(j-1, ncells(2)),cell_ind(k-1, ncells(3)))) ! 4 - (1, -1, -1)
+            if ( .not. comptype(ibtype(icart)) ) then
+               icart = latomnext(icart)
+               cycle
             end if
+
+            ! Offset #1 is self-cell and uses latomnext(icart) to keep forward-only pairs.
+            call gparc(icart,latomnext(icart))
+            do ioffset = 2, n_forward_offsets
+               call gparc(icart,neigh_first(ioffset))
+            end do
 
             icart = latomnext(icart)
          end do
@@ -241,5 +244,5 @@ subroutine computeg(n,x,g)
    end do
 
    return
-end subroutine computeg
 
+end subroutine computeg
