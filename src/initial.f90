@@ -15,7 +15,7 @@ subroutine initial(n,x)
    use compute_data, only : ntotmol, ntype, nfixedat, ntotat, ncells, nmols, natoms, idfirst, &
       ibmol, ibtype, scale, scale2, fdist, frest, sizemin, sizemax, cell_length, radmax, xcart, coor, &
       rot_bound, dmax, constrain_rot, comptype, fixedatom, init1, move, latomnext, latomfirst, latomfix, &
-      lcellfirst, lcellnext, empty_cell, cell_max_radius, cell_max_short_radius, refresh_hot_buffers_atom
+      lcellfirst, lcellnext, empty_cell
    use input, only : randini, ntype_with_fixed, fix, chkgrad, avoidoverlap,&
       discale, precision, sidemax, restart_from, input_itype,&
       nloop0_type
@@ -137,7 +137,7 @@ subroutine initial(n,x)
             idatom = idatom + 1
             call compcart(xcart(icart,1:3),xcm,coor(idatom,1:3),v1,v2,v3)
             fixedatom(icart) = .false.
-            call refresh_hot_buffers_atom(icart)
+
          end do
       end do
    end do
@@ -152,7 +152,7 @@ subroutine initial(n,x)
             xcart(icart,2) = coor(idfatom,2)
             xcart(icart,3) = coor(idfatom,3)
             fixedatom(icart) = .true.
-            call refresh_hot_buffers_atom(icart)
+
             ! Check if fixed molecules are compatible with PBC given
             if (using_pbc) then
                do i = 1, 3
@@ -298,16 +298,12 @@ subroutine initial(n,x)
    allocate(latomfix(ncells(1),ncells(2),ncells(3)))
    allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
    allocate(empty_cell(ncells(1),ncells(2),ncells(3)))
-   allocate(cell_max_radius(ncells(1),ncells(2),ncells(3)))
-   allocate(cell_max_short_radius(ncells(1),ncells(2),ncells(3)))
 
    ! Reseting linked lists arrays
    latomfix(:,:,:) = 0
    latomfirst(:,:,:) = 0
    latomnext(:) = 0
    empty_cell(:,:,:) = .true.
-   cell_max_radius(:,:,:) = 0.d0
-   cell_max_short_radius(:,:,:) = 0.d0
 
    ! If there are fixed molecules, add them permanently to the latomfix array
    if(fix) then

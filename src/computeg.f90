@@ -11,9 +11,8 @@ subroutine computeg(n,x,g)
    use sizes
    use cell_indexing, only: index_cell, icell_to_cell, setcell, n_forward_offsets, forward_offsets
    use compute_data, only : ntotmol, ntype, ncells, nmols, natoms, idfirst, nratom, iratom, ibmol, ibtype, &
-      cell_length, xcart, coor, radius, short_radius, gxcar, comptype, use_short_radius, init1, latomnext, &
-      latomfirst, lcellfirst, lcellnext, empty_cell, cell_max_radius, cell_max_short_radius, &
-      refresh_hot_buffers_full, refresh_hot_buffers_atom
+      xcart, coor, radius, gxcar, comptype, init1, latomnext, &
+      latomfirst, lcellfirst, lcellnext, empty_cell
    use pbc
    implicit none
 
@@ -25,8 +24,6 @@ subroutine computeg(n,x,g)
    integer :: iratcount, ioffset
    integer :: neigh_first(n_forward_offsets)
 
-   double precision :: min_cell_dist2, max_reach, max_reach2, reg_reach, short_reach
-   double precision :: cell_reg_reach, cell_short_reach
    double precision :: x(n), g(n)
    double precision :: dv1beta(3), dv1gama(3), dv1teta(3),&
       dv2beta(3), dv2gama(3), dv2teta(3),&
@@ -42,7 +39,6 @@ subroutine computeg(n,x,g)
 
    if(.not.init1) then
       call resetcells()
-      call refresh_hot_buffers_full()
    end if
 
    ! Transform baricenter and angles into cartesian coordinates
@@ -86,14 +82,6 @@ subroutine computeg(n,x,g)
                latomnext(icart) = latomfirst(cell(1),cell(2),cell(3))
                latomfirst(cell(1),cell(2),cell(3)) = icart
 
-               cell_max_radius(cell(1),cell(2),cell(3)) = dmax1(cell_max_radius(cell(1),cell(2),cell(3)), radius(icart))
-               if ( use_short_radius(icart) ) then
-                  cell_max_short_radius(cell(1),cell(2),cell(3)) = dmax1( &
-                  cell_max_short_radius(cell(1),cell(2),cell(3)), &
-                  short_radius(icart) &
-               )
-               end if
-
                ! cell with atoms linked list
                if ( empty_cell(cell(1),cell(2),cell(3))) then
                   empty_cell(cell(1),cell(2),cell(3)) = .false.
@@ -105,8 +93,6 @@ subroutine computeg(n,x,g)
                ibtype(icart) = itype
                ibmol(icart) = imol
             end if
-
-            call refresh_hot_buffers_atom(icart)
 
          end do
          ilugan = ilugan + 3
@@ -128,30 +114,13 @@ subroutine computeg(n,x,g)
          i = cell(1)
          j = cell(2)
          k = cell(3)
-         cell_reg_reach = cell_max_radius(i,j,k)
-         cell_short_reach = cell_max_short_radius(i,j,k)
 
-         ! Load current cell and forward neighbors using the shared offset ordering:
-         ! (0,0,0), 3 faces, 6 edges, 4 vertices.
+         ! Load forward neighbor heads (self-cell + 13 forward neighbors).
          do ioffset = 1, n_forward_offsets
             neigh_cell(1) = cell_ind(i + forward_offsets(1,ioffset), ncells(1))
             neigh_cell(2) = cell_ind(j + forward_offsets(2,ioffset), ncells(2))
             neigh_cell(3) = cell_ind(k + forward_offsets(3,ioffset), ncells(3))
             neigh_first(ioffset) = latomfirst(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-            do while ( neigh_first(ioffset) > 0 )
-               if ( comptype(ibtype(neigh_first(ioffset))) ) exit
-               neigh_first(ioffset) = latomnext(neigh_first(ioffset))
-            end do
-
-            if ( neigh_first(ioffset) <= 0 ) cycle
-
-            min_cell_dist2 = cell_pair_min_dist2(cell, neigh_cell)
-            reg_reach = cell_reg_reach + cell_max_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-            short_reach = cell_short_reach + &
-               cell_max_short_radius(neigh_cell(1),neigh_cell(2),neigh_cell(3))
-            max_reach = dmax1(reg_reach, short_reach)
-            max_reach2 = max_reach*max_reach
-            if ( min_cell_dist2 > max_reach2 ) neigh_first(ioffset) = 0
          end do
 
          icart = neigh_first(1)
@@ -275,21 +244,5 @@ subroutine computeg(n,x,g)
    end do
 
    return
-contains
-
-   double precision function cell_pair_min_dist2(cell_a, cell_b)
-      integer, intent(in) :: cell_a(3), cell_b(3)
-      integer :: idim
-      double precision :: center_a, center_b, delta, gap
-
-      cell_pair_min_dist2 = 0.d0
-      do idim = 1, 3
-         center_a = pbc_min(idim) + (dble(cell_a(idim)) - 0.5d0) * cell_length(idim)
-         center_b = pbc_min(idim) + (dble(cell_b(idim)) - 0.5d0) * cell_length(idim)
-         delta = dabs(delta_vector(center_a, center_b, pbc_length(idim)))
-         gap = dmax1(0.d0, delta - cell_length(idim))
-         cell_pair_min_dist2 = cell_pair_min_dist2 + gap*gap
-      end do
-   end function cell_pair_min_dist2
 
 end subroutine computeg

@@ -720,6 +720,9 @@ program packmol
 
   call initial(n,x)
 
+  ! Pre-compute fixed_short_marker once (fixedatom and use_short_radius are static)
+  call init_fixed_short_marker()
+
   ! Computing the energy at the initial point
 
   radscale = 1.d0

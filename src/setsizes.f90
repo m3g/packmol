@@ -325,8 +325,8 @@ subroutine setsizes()
    ! Allocate arrays depending on ntotat, nn, maxrest, and mrperatom
 
    allocate(nratom(ntotat),iratom(ntotat,mrperatom),ibmol(ntotat),&
-      ibtype(ntotat),ibmol_hot(ntotat),ibtype_hot(ntotat),fixed_short_marker(ntotat),&
-      xcart(ntotat,3),x_hot(ntotat),y_hot(ntotat),z_hot(ntotat),coor(ntotat,3),&
+      ibtype(ntotat),fixed_short_marker(ntotat),&
+      xcart(ntotat,3),coor(ntotat,3),&
       radius(ntotat),radius_ini(ntotat),fscale(ntotat),&
       use_short_radius(ntotat), short_radius(ntotat), short_radius_scale(ntotat),&
       gxcar(ntotat,3),&

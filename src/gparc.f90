@@ -10,7 +10,7 @@ subroutine gparc(icart,firstjcart)
 
    use sizes
    use compute_data, only : comptype, radius, fscale, short_radius, short_radius_scale, fixed_short_marker, &
-      latomnext, gxcar, x_hot, y_hot, z_hot, ibmol_hot, ibtype_hot
+      latomnext, gxcar, xcart, ibmol, ibtype
    use pbc, only : pbc_length
    implicit none
 
@@ -24,12 +24,12 @@ subroutine gparc(icart,firstjcart)
    double precision :: dx, dy, dz
    double precision :: xi, yi, zi, ri, fsi, short_ri, short_si
    double precision :: inv_pbcx, inv_pbcy, inv_pbcz
-   integer :: marker_i
+   integer :: marker_i, itype_i, imol_i
    logical :: use_short_i, fixed_i
 
-   xi = x_hot(icart)
-   yi = y_hot(icart)
-   zi = z_hot(icart)
+   xi = xcart(icart,1)
+   yi = xcart(icart,2)
+   zi = xcart(icart,3)
    ri = radius(icart)
    fsi = fscale(icart)
    short_ri = short_radius(icart)
@@ -37,6 +37,8 @@ subroutine gparc(icart,firstjcart)
    marker_i = fixed_short_marker(icart)
    use_short_i = iand(marker_i,1) /= 0
    fixed_i = marker_i >= 2
+   itype_i = ibtype(icart)
+   imol_i = ibmol(icart)
    inv_pbcx = 1.d0 / pbc_length(1)
    inv_pbcy = 1.d0 / pbc_length(2)
    inv_pbcz = 1.d0 / pbc_length(3)
@@ -45,20 +47,20 @@ subroutine gparc(icart,firstjcart)
       ! Fast path: movable atom i and no short-radius term from i.
       jcart = firstjcart
       do while ( jcart > 0 )
-         if ( .not. comptype(ibtype_hot(jcart))) then
+         if ( .not. comptype(ibtype(jcart))) then
             jcart = latomnext(jcart)
             cycle
          end if
-         if ( ibmol_hot(icart) == ibmol_hot(jcart) .and. ibtype_hot(icart) == ibtype_hot(jcart) ) then
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
             jcart = latomnext(jcart)
             cycle
          end if
 
          sumr = ri + radius(jcart)
          tol = sumr*sumr
-         dx = xi - x_hot(jcart)
-         dy = yi - y_hot(jcart)
-         dz = zi - z_hot(jcart)
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
@@ -102,20 +104,20 @@ subroutine gparc(icart,firstjcart)
       ! Short-radius-enabled path for movable atoms.
       jcart = firstjcart
       do while ( jcart > 0 )
-         if ( .not. comptype(ibtype_hot(jcart))) then
+         if ( .not. comptype(ibtype(jcart))) then
             jcart = latomnext(jcart)
             cycle
          end if
-         if ( ibmol_hot(icart) == ibmol_hot(jcart) .and. ibtype_hot(icart) == ibtype_hot(jcart) ) then
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
             jcart = latomnext(jcart)
             cycle
          end if
 
          sumr = ri + radius(jcart)
          tol = sumr*sumr
-         dx = xi - x_hot(jcart)
-         dy = yi - y_hot(jcart)
-         dz = zi - z_hot(jcart)
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
@@ -157,11 +159,11 @@ subroutine gparc(icart,firstjcart)
       ! Fixed-atom path (keeps explicit fixed/fixed exclusion).
       jcart = firstjcart
       do while ( jcart > 0 )
-         if ( .not. comptype(ibtype_hot(jcart))) then
+         if ( .not. comptype(ibtype(jcart))) then
             jcart = latomnext(jcart)
             cycle
          end if
-         if ( ibmol_hot(icart) == ibmol_hot(jcart) .and. ibtype_hot(icart) == ibtype_hot(jcart) ) then
+         if ( imol_i == ibmol(jcart) .and. itype_i == ibtype(jcart) ) then
             jcart = latomnext(jcart)
             cycle
          end if
@@ -172,9 +174,9 @@ subroutine gparc(icart,firstjcart)
 
          sumr = ri + radius(jcart)
          tol = sumr*sumr
-         dx = xi - x_hot(jcart)
-         dy = yi - y_hot(jcart)
-         dz = zi - z_hot(jcart)
+         dx = xi - xcart(jcart,1)
+         dy = yi - xcart(jcart,2)
+         dz = zi - xcart(jcart,3)
          dx = dx - pbc_length(1) * dnint(dx * inv_pbcx)
          dy = dy - pbc_length(2) * dnint(dy * inv_pbcy)
          dz = dz - pbc_length(3) * dnint(dz * inv_pbcz)
