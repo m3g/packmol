@@ -17,6 +17,14 @@ lipid bilayers!
 <a href=http://ambermd.org/AmberTools.php target="_blank">[Home-Page]</a>
 <br><br>
 
+<b> GEMS-Pack: A Graphical User Interface for the Packmol Program </b></br>
+A graphical user interface for Packmol. The authors developed a GUI for Packmol with tools for 
+number/volume/density calculations. A visualization utility is included to preview how their 
+systems will look like even before running the packing procedure. 
+<a href=https://github.com/lucasandradechem-lab/GEMS-Pack target="_blank">[GitHub repository]</a>
+<a href=https://pubs.acs.org/doi/10.1021/acs.jcim.9b00740 target="_blank">[Reference]</a>
+<br><br>
+
 <b> Molecular Dynamics Studio </b> <br> 
 This is a collection of software
 modifications created to integrate NanoEngineer-1, PACKMOL and MSI2LMP
