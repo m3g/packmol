@@ -56,6 +56,10 @@
       <img src="https://img.shields.io/github/v/release/JuliaBinaryWrappers/Packmol_jll.jl?label=packmol" alt="Packmol version">
       <img src="https://img.shields.io/github/v/release/m3g/Packmol.jl?label=Packmol.jl" alt="Packmol.jl version">
     </div>
+
+    <p><strong>c.3) Updating (remove and add the app):</strong></p>
+    <pre><code>julia -e 'import Pkg.Apps; Apps.rm("Packmol"); Apps.add("Packmol"); Apps.status(["Packmol"])'</code></pre>
+
   </div>
 </div>
 
