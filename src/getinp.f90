@@ -91,10 +91,10 @@ subroutine getinp()
          write(*,*) ' Optional movefrac set: ', movefrac
       else if(keyword(i,1).eq.'movebadrandom') then
          movebadrandom = .true.
-         write(*,*) ' Will move randomly bad molecues (movebadrandom) '
+         write(*,*) ' Will move randomly bad molecules (movebadrandom) '
       else if(keyword(i,1).eq.'disable_movebad') then
          disable_movebad = .true.
-         write(*,*) ' Move-bad heursitic is dsabled. '
+         write(*,*) ' Move-bad heuristic is disabled. '
       else if(keyword(i,1).eq.'chkgrad') then
          chkgrad = .true.
       else if(keyword(i,1).eq.'writeout') then
@@ -155,7 +155,7 @@ subroutine getinp()
          read(keyword(i,2),*,iostat=ioerr) crdfile
       else if(keyword(i,1).eq.'add_box_sides') then
          add_box_sides = .true.
-         write(*,*) ' Will print BOX SIDE informations. '
+         write(*,*) ' Will print BOX SIDE information. '
          read(keyword(i,2),*,iostat=ioerr) add_sides_fix
          if ( ioerr /= 0 ) then
             ioerr = 0

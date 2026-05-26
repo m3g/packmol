@@ -30,9 +30,9 @@ end subroutine setcell
 !  Ernesto G. Birgin.
 !
 ! Subroutines that set the indexes of a three-dimensional array
-! given the undimensional counter of the vector (for an array
+! given the one-dimensional counter of the vector (for an array
 ! with dimensions (ncells(1),ncells(2),ncells(3)), and
-! vice-versa.
+! vice-versa).
 !
 subroutine icell_to_cell(icell,ncells,cell)
    integer, intent(in) :: icell, ncells(3)

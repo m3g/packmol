@@ -31,7 +31,7 @@ subroutine checkpoint(n,x)
       comptype(i) = .true.
    end do
 
-   ! Call the subroutine that computes de function value
+   ! Call the subroutine that computes the function value
 
    call computef(n,x,fx)
 
@@ -84,7 +84,7 @@ subroutine checkpoint(n,x)
    xyzout_forced = trim(adjustl(xyzout))//'_FORCED'
    call output(n,x,xyzout_forced)
 
-   write(*,*) ' The forced point was writen to the '
+   write(*,*) ' The forced point was written to the '
    write(*,*) ' output file: ', trim(adjustl(xyzout_forced))
    if ( crd ) write(*,*) ' ... and to CRD file: ', trim(adjustl(crdfile))
    write(*,*)
@@ -108,7 +108,7 @@ subroutine checkpoint(n,x)
    write(*,*)
    write(*,*) ' Very likely, if the input data was correct, '
    write(*,*) ' it is a reasonable starting configuration.'
-   write(*,*) ' Check commentaries above for more details. '
+   write(*,*) ' Check comments above for more details. '
    write(*,hash1_line)
 
    return

@@ -70,9 +70,9 @@ subroutine initial(n,x)
       if(dmax(itype).eq.0.) dmax(itype) = 1.d0
    end do
 
-   ! Maximum size of the system: if you system is very large (about
+   ! Maximum size of the system: if your system is very large (about
    ! 80 nm wide), increase the sidemax parameter.
-   ! Otherwise, the packing can be slow and unsucesful
+   ! Otherwise, the packing can be slow and unsuccessful
    allocate(cm_min(ntype,3), cm_max(ntype,3))
    x(:) = 0.d0
    call restmol(1,0,n,x,fx,.true.)
@@ -84,7 +84,7 @@ subroutine initial(n,x)
    write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
    write(*,*) ' If the system is larger than this, increase the sidemax parameter. '
 
-   ! Create first aleatory guess
+   ! Create first random guess
 
    i = 0
    j = ntotmol*3
@@ -152,10 +152,10 @@ subroutine initial(n,x)
             if (using_pbc) then
                do i = 1, 3
                   if (xcart(icart, i) < pbc_min(i) .or. xcart(icart, i) > pbc_max(i)) then
-                     write(*,*) "ERROR: Fixed molecule are outside the PBC box:"
+                     write(*,*) "ERROR: Fixed molecules are outside the PBC box:"
                      write(*,*) "   Atom: ", ifatom, " of molecule: ", input_itype(iftype), " - coordinate: ", i
                      write(*,*) "  ", xcart(icart, i), " not in [", pbc_min(i), ", ", pbc_max(i), "]"
-                     write(*,*) "(after translating/rotation the fixed molecule with the given orientation)"
+                     write(*,*) "(after translating/rotating the fixed molecule with the given orientation)"
                      stop exit_code_input_error
                   end if
                end do
@@ -259,14 +259,14 @@ subroutine initial(n,x)
          end do
       end do
    end do
-   write(*,*) ' Mininum and maximum coordinates after constraint fitting: '
+   write(*,*) ' Minimum and maximum coordinates after constraint fitting: '
    write(*,*) '  x: [ ', sizemin(1),', ', sizemax(1), ' ] '
    write(*,*) '  y: [ ', sizemin(2),', ', sizemax(2), ' ] '
    write(*,*) '  z: [ ', sizemin(3),', ', sizemax(3), ' ] '
    sizemin = sizemin - 1.1d0 * radmax
    sizemax = sizemax + 1.1d0 * radmax
    ! When *not* using PBC, actually PBCs are used, but particles
-   ! wont interact across the PBC because there is an empty layer
+   ! will not interact across the PBC because there is an empty layer
    ! of cells, given by the shift in the sizemin and sizemax dimensions,
    ! above defined. 
    if (.not. using_pbc) then
@@ -294,7 +294,7 @@ subroutine initial(n,x)
    allocate(lcellnext(ncells(1)*ncells(2)*ncells(3)))
    allocate(empty_cell(ncells(1),ncells(2),ncells(3)))
 
-   ! Reseting linked lists arrays
+   ! Resetting linked-list arrays
    latomfix(:,:,:) = 0
    latomfirst(:,:,:) = 0
    latomnext(:) = 0
@@ -317,7 +317,7 @@ subroutine initial(n,x)
       end do
    end if
 
-   ! Reseting mass centers to be within the regions
+   ! Resetting mass centers to be within the regions
 
    write(*,*) ' Reseting center of mass... '
    cm_min = 1.d20
