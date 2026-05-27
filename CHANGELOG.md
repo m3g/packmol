@@ -10,7 +10,7 @@ packmol changelog
 [badge-fix]: https://img.shields.io/badge/Fix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
-Version 21.2.3-DEV
+Version 21.2.3
 --------------
 - ![INFO][badge-info] Update versions of CellListMap.jl and PDBTools.jl packages in test infraestructure.
 
