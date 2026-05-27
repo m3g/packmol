@@ -1,3 +1,7 @@
+[compat]
+CellListMap = "0.10.2"
+PDBTools = "3.27.0"
+
 [deps]
 CellListMap = "69e1c6dd-3888-40e6-b3c8-31ac5f578864"
 PDBTools = "e29189f1-7114-4dbd-93d0-c5673a921a58"

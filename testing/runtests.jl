@@ -22,14 +22,15 @@ struct MinimumDistance
     j::Int
     d::Float64 
 end
-function update_mind(i, j, d2, pdb, md::MinimumDistance)
+function update_mind(pair, pdb, md::MinimumDistance)
+    (; i, j, d2) = pair
     residue(pdb[i]) == residue(pdb[j]) && return md
     d = sqrt(d2)
     return d < md.d ?  MinimumDistance(i, j, d) : md
 end
-CellListMap.reducer(md1::MinimumDistance, md2::MinimumDistance) = md1.d < md2.d ? md1 : md2
+CellListMap.reducer!(md1::MinimumDistance, md2::MinimumDistance) = md1.d < md2.d ? md1 : md2
 CellListMap.copy_output(md::MinimumDistance) = md
-CellListMap.reset_output(::MinimumDistance) = MinimumDistance(0, 0, +Inf)
+CellListMap.reset_output!(::MinimumDistance) = MinimumDistance(0, 0, +Inf)
 
 function check_mind(input_file::String)
     tolerance = nothing
@@ -63,7 +64,7 @@ function check_mind(input_file::String)
         cutoff = tolerance * 1.5,
         output = MinimumDistance(0, 0, +Inf),
     )
-    mind = map_pairwise((x,y,i,j,d2,md) -> update_mind(i, j, d2, pdb, md), sys)
+    mind = pairwise!((pair,md) -> update_mind(pair, pdb, md), sys)
     if (mind.d < (1 - precision) * tolerance)
         error("""\n
 
