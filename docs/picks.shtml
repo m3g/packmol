@@ -1,47 +1,14 @@
-<script type="text/javascript">
-  <!--
-    var currentdate = 0;
-    var number = 0;
-    function Array (n) {
-             this.length = n;
-             for (var i =1; i <= n; i++) {
-                        this[i] = ' '
-                      }
-           }
-    var nn = 3
-    text = new Array(nn)
-    link = new Array(nn)
-    img = new Array(nn)
-
-    var ii = 0
-    text[ii] = "Solvation structure of complex solutes by means of minimum distance distribution functions."
-    link[ii] = "http://m3g.iqm.unicamp.br/ComplexMixtures"
-    img[ii] = "./highlights/mddf.png"
-
-    var ii = 1
-    text[ii] = "Automatic identification of mobile substructures in protein MD simulations."
-    link[ii] = "http://m3g.iqm.unicamp.br/mdlovofit/home.shtml"
-    img[ii] = "./mdlovofit.png"
-
-    var ii = 2
-    text[ii] = "PACKMOL-SIRAH Zika Virus Factory"
-    link[ii] = "https://pubs.acs.org/doi/full/10.1021/acs.jcim.0c01205"
-    img[ii] = "./highlights/packmol_sirah.png"
-
-    var rand = 1000/text.length
-    function randomhl() {
-                currentdate = new Date()
-                hl_number = currentdate.getMilliseconds()
-                hl_number = Math.floor(hl_number/rand)
-                return [ text[hl_number], link[hl_number], img[hl_number] ]
-           }
-    var hldata = randomhl()
-    document.write("<div class='research-pick'>");
-    document.write("<b>Research Pick:</b><br>"+hldata[0]);
-    document.write("<br><a target='_blank' href='"+hldata[1]+"'>[click here]</a>");
-    document.write("<div class='research-pick-img'>");
-    document.write("<img src='"+hldata[2]+"'>");
-    document.write("</div>");
-    document.write("</div>");
-   //-->
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Packmol has moved</title>
+<link rel="canonical" href="https://m3g.github.io/Packmol.jl/stable/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=https://m3g.github.io/Packmol.jl/stable/">
+<script>window.location.replace("https://m3g.github.io/Packmol.jl/stable/");</script>
+</head>
+<body>
+<p>Packmol has moved to <a href="https://m3g.github.io/Packmol.jl/stable/">https://m3g.github.io/Packmol.jl/stable/</a>.</p>
+</body>
+</html>

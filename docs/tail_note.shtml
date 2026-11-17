@@ -1,9 +1,14 @@
-
-<!-- CONTENT ENDS HERE --> 
-
-</td></tr>
-</table>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Packmol has moved</title>
+<link rel="canonical" href="https://m3g.github.io/Packmol.jl/stable/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=https://m3g.github.io/Packmol.jl/stable/">
+<script>window.location.replace("https://m3g.github.io/Packmol.jl/stable/");</script>
+</head>
+<body>
+<p>Packmol has moved to <a href="https://m3g.github.io/Packmol.jl/stable/">https://m3g.github.io/Packmol.jl/stable/</a>.</p>
 </body>
 </html>
-

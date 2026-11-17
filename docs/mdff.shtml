@@ -1,10 +1,14 @@
-<table border=0 width=100%>
-<tr><td align=center valign=top class="tdclean" border=2 bgcolor=lightgrey>
-<b>Method Highlight:</b> Solvation structure of complex solutes by means of minimum
-distance distribution functions. 
-<a target=_blank_ href=http://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00599> [click here] </a>
-<center>
-<img width=180px src=http://m3g.iqm.unicamp.br/packmol/examples/mddf.png><br><br>
-</center>
-</td></tr>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Packmol has moved</title>
+<link rel="canonical" href="https://m3g.github.io/Packmol.jl/stable/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=https://m3g.github.io/Packmol.jl/stable/">
+<script>window.location.replace("https://m3g.github.io/Packmol.jl/stable/");</script>
+</head>
+<body>
+<p>Packmol has moved to <a href="https://m3g.github.io/Packmol.jl/stable/">https://m3g.github.io/Packmol.jl/stable/</a>.</p>
+</body>
+</html>
