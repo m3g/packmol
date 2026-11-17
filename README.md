@@ -1,3 +1,8 @@
+> [!NOTE]
+> Packmol has been rewritten entirely and is now available at https://github.com/m3g/Packmol.jl
+>
+> New documentation page: https://m3g.github.io/Packmol.jl
+
 # Packmol
 
 Packmol - Creates Initial Configurations for Molecular Dynamics Simulations
